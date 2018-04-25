@@ -9,6 +9,6 @@ package jsonconverter;
  *
  * @author Mape
  */
-public class TomekYouFuckingIdiot {
+public class MichalIsFuckingIdiot {
     
 }
