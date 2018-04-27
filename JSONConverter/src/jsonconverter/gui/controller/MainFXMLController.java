@@ -12,9 +12,15 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+<<<<<<< HEAD
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.FileChooser;
+=======
+import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.TableColumn;
+import javafx.scene.input.MouseEvent;
+>>>>>>> 8d8a2dc6e8461b044bc92193689173f649b35b09
 
 /**
  * FXML Controller class
@@ -26,11 +32,25 @@ public class MainFXMLController implements Initializable {
     @FXML
     private Button importFileButton;
     @FXML
+<<<<<<< HEAD
     private Button btn;
     @FXML
     private TextField textFieldFileImport;
     @FXML
     private Label labelFileExtension;
+=======
+    private TableColumn<?, ?> nameOfTheFileColumn;
+    @FXML
+    private TableColumn<?, ?> configNameColumn;
+    @FXML
+    private TableColumn<?, ?> progressBarColumn;
+    @FXML
+    private TableColumn<?, ?> stopButtonColumn;
+    @FXML
+    private TableColumn<?, ?> pauseButtonColumn;
+    @FXML
+    private ChoiceBox<?> configChoiceBox;
+>>>>>>> 8d8a2dc6e8461b044bc92193689173f649b35b09
 
     /**
      * Initializes the controller class.
@@ -71,6 +91,7 @@ public class MainFXMLController implements Initializable {
         FileChooser.ExtensionFilter XLSX = new FileChooser.ExtensionFilter("Import xlsx", "*.xlsx");
         fileChooser.getExtensionFilters().addAll(ALL, CSV, XLSX);
     }
+<<<<<<< HEAD
     /**
      * This method manages the label next to the text field where you can see
      * where extension did you load without surfing through the text
@@ -85,4 +106,36 @@ public class MainFXMLController implements Initializable {
         }
     }
 
+=======
+
+    @FXML
+    private void createNewConfigButtonClick(ActionEvent event) {
+    }
+
+    @FXML
+    private void addTaskButtonClick(ActionEvent event) {
+    }
+
+    @FXML
+    private void chooseDestinationButtonClick(ActionEvent event) {
+    }
+
+    @FXML
+    private void convertTasksButtonClick(ActionEvent event) {
+    }
+
+    @FXML
+    private void pauseTasksButtonClick(ActionEvent event) {
+    }
+
+    @FXML
+    private void deleteTasksButtonClick(ActionEvent event) {
+    }
+
+    @FXML
+    private void historyPageButtonClick(MouseEvent event) {
+    }
+    
+    
+>>>>>>> 8d8a2dc6e8461b044bc92193689173f649b35b09
 }
