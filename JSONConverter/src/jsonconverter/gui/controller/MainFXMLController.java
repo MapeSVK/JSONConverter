@@ -12,15 +12,15 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
-<<<<<<< HEAD
+
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.FileChooser;
-=======
+
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.input.MouseEvent;
->>>>>>> 8d8a2dc6e8461b044bc92193689173f649b35b09
+
 
 /**
  * FXML Controller class
@@ -32,13 +32,11 @@ public class MainFXMLController implements Initializable {
     @FXML
     private Button importFileButton;
     @FXML
-<<<<<<< HEAD
     private Button btn;
     @FXML
     private TextField textFieldFileImport;
     @FXML
     private Label labelFileExtension;
-=======
     private TableColumn<?, ?> nameOfTheFileColumn;
     @FXML
     private TableColumn<?, ?> configNameColumn;
@@ -50,7 +48,6 @@ public class MainFXMLController implements Initializable {
     private TableColumn<?, ?> pauseButtonColumn;
     @FXML
     private ChoiceBox<?> configChoiceBox;
->>>>>>> 8d8a2dc6e8461b044bc92193689173f649b35b09
 
     /**
      * Initializes the controller class.
@@ -83,7 +80,7 @@ public class MainFXMLController implements Initializable {
     /**
      * This method manages the file chooser.
      * The "ALL" contains all the possibles file extensions
-     * The other ones are dedicated for one in concret
+     * The other ones are dedicated for one in concrete
      */
     private void fileChooserSettings() {
         FileChooser.ExtensionFilter ALL = new FileChooser.ExtensionFilter("Import *.XXX", "*.csv", "*xlsx");
@@ -91,7 +88,7 @@ public class MainFXMLController implements Initializable {
         FileChooser.ExtensionFilter XLSX = new FileChooser.ExtensionFilter("Import xlsx", "*.xlsx");
         fileChooser.getExtensionFilters().addAll(ALL, CSV, XLSX);
     }
-<<<<<<< HEAD
+
     /**
      * This method manages the label next to the text field where you can see
      * where extension did you load without surfing through the text
@@ -106,7 +103,7 @@ public class MainFXMLController implements Initializable {
         }
     }
 
-=======
+
 
     @FXML
     private void createNewConfigButtonClick(ActionEvent event) {
@@ -136,6 +133,5 @@ public class MainFXMLController implements Initializable {
     private void historyPageButtonClick(MouseEvent event) {
     }
     
-    
->>>>>>> 8d8a2dc6e8461b044bc92193689173f649b35b09
+
 }
