@@ -11,6 +11,9 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.TableColumn;
+import javafx.scene.input.MouseEvent;
 
 /**
  * FXML Controller class
@@ -20,9 +23,19 @@ import javafx.scene.control.Button;
 public class MainFXMLController implements Initializable {
 
     @FXML
-    private Button btn;
-    @FXML
     private Button importFileButton;
+    @FXML
+    private TableColumn<?, ?> nameOfTheFileColumn;
+    @FXML
+    private TableColumn<?, ?> configNameColumn;
+    @FXML
+    private TableColumn<?, ?> progressBarColumn;
+    @FXML
+    private TableColumn<?, ?> stopButtonColumn;
+    @FXML
+    private TableColumn<?, ?> pauseButtonColumn;
+    @FXML
+    private ChoiceBox<?> configChoiceBox;
 
     /**
      * Initializes the controller class.
@@ -47,6 +60,34 @@ public class MainFXMLController implements Initializable {
             else {
                 System.out.println("File was not choosen.");
             }              
+    }
+
+    @FXML
+    private void createNewConfigButtonClick(ActionEvent event) {
+    }
+
+    @FXML
+    private void addTaskButtonClick(ActionEvent event) {
+    }
+
+    @FXML
+    private void chooseDestinationButtonClick(ActionEvent event) {
+    }
+
+    @FXML
+    private void convertTasksButtonClick(ActionEvent event) {
+    }
+
+    @FXML
+    private void pauseTasksButtonClick(ActionEvent event) {
+    }
+
+    @FXML
+    private void deleteTasksButtonClick(ActionEvent event) {
+    }
+
+    @FXML
+    private void historyPageButtonClick(MouseEvent event) {
     }
     
     
