@@ -5,12 +5,16 @@
  */
 package jsonconverter.GUI.controller;
 
+import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import javafx.stage.FileChooser;
 
 /**
  * FXML Controller class
@@ -20,9 +24,13 @@ import javafx.scene.control.Button;
 public class MainFXMLController implements Initializable {
 
     @FXML
+    private Button importFileButton;
+    @FXML
     private Button btn;
     @FXML
-    private Button importFileButton;
+    private TextField textFieldFileImport;
+    @FXML
+    private Label labelFileExtension;
 
     /**
      * Initializes the controller class.
@@ -30,24 +38,51 @@ public class MainFXMLController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
-    }    
-
+    }
+    private String filePath;
+    private FileChooser fileChooser;
+    /**
+     * 
+     * @param event When you click the button "Import". This method will load
+     * the file chooser.
+     */
     @FXML
     private void importFileButtonClick(ActionEvent event) {
-        FileChooser fileChooser = new FileChooser();
-            FileChooser.ExtensionFilter filtermP4 = new FileChooser.ExtensionFilter("select mp4","*.mp4");
-            FileChooser.ExtensionFilter filterMpeg4 = new FileChooser.ExtensionFilter("select mpeg4","*.mpeg4");
-            fileChooser.getExtensionFilters().addAll(filtermP4,filterMpeg4);
-            File file = fileChooser.showOpenDialog(null);
-            
-            if (file!=null){ //if statement only to avoid nullPointException after pressing "cancel" in filechooser
-            String filePath = file.toString();
-            FileTextField.setText(filePath); //insert path of the file into the textField
-            }
-            else {
-                System.out.println("File was not choosen.");
-            }              
+        fileChooser = new FileChooser();
+        fileChooserSettings();
+        File file = fileChooser.showOpenDialog(null);
+
+        if (file != null) { //if statement only to avoid nullPointException after pressing "cancel" in filechooser
+            filePath = file.toString();
+            textFieldFileImport.setText(filePath); //insert path of the file into the textField
+            fileExtendionIdentifier();
+        } else {
+            System.out.println("File could not be choosen.");
+        }
     }
-    
-    
+    /**
+     * This method manages the file chooser.
+     * The "ALL" contains all the possibles file extensions
+     * The other ones are dedicated for one in concret
+     */
+    private void fileChooserSettings() {
+        FileChooser.ExtensionFilter ALL = new FileChooser.ExtensionFilter("Import *.XXX", "*.csv", "*xlsx");
+        FileChooser.ExtensionFilter CSV = new FileChooser.ExtensionFilter("Import csv", "*.csv");
+        FileChooser.ExtensionFilter XLSX = new FileChooser.ExtensionFilter("Import xlsx", "*.xlsx");
+        fileChooser.getExtensionFilters().addAll(ALL, CSV, XLSX);
+    }
+    /**
+     * This method manages the label next to the text field where you can see
+     * where extension did you load without surfing through the text
+     */
+    private void fileExtendionIdentifier() {
+        if (filePath.endsWith(".csv")) {
+            labelFileExtension.setText(".csv");
+        } else if (filePath.endsWith("xlsx")) {
+            labelFileExtension.setText(".xlsx");
+        } else {
+            labelFileExtension.setText("???");
+        }
+    }
+
 }
