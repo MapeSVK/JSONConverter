@@ -20,17 +20,17 @@
                <content>
                   <AnchorPane id="AnchorPane" onDragDetected="#historyPageButtonClick" prefHeight="564.0" prefWidth="908.0">
                      <children>
-                        <Button fx:id="importFileButton" layoutX="21.0" layoutY="53.0" mnemonicParsing="false" onAction="#importFileButtonClick" prefHeight="13.0" prefWidth="59.0" text="Import" />
+                        <Button fx:id="importFileButton" layoutX="20.0" layoutY="72.0" mnemonicParsing="false" onAction="#importFileButtonClick" prefHeight="13.0" prefWidth="59.0" text="Import" />
                         <Button layoutX="21.0" layoutY="168.0" mnemonicParsing="false" onAction="#createNewConfigButtonClick" text="Create new" />
                         <Button layoutX="21.0" layoutY="265.0" mnemonicParsing="false" onAction="#addTaskButtonClick" text="Add Task" />
                         <Separator layoutX="202.0" layoutY="39.0" orientation="VERTICAL" prefHeight="521.0" prefWidth="4.0" />
-                        <TableView layoutX="202.0" layoutY="39.0" prefHeight="459.0" prefWidth="705.0">
+                        <TableView fx:id="tasksTableView" layoutX="202.0" layoutY="39.0" prefHeight="459.0" prefWidth="705.0">
                           <columns>
                             <TableColumn fx:id="nameOfTheFileColumn" prefWidth="208.34767150878906" text="NAME" />
-                            <TableColumn fx:id="configNameColumn" prefWidth="190.05313110351562" text="CONGIF NAME" />
-                              <TableColumn fx:id="progressBarColumn" prefWidth="138.77740478515625" text="progressBar" />
-                              <TableColumn fx:id="stopButtonColumn" prefWidth="85.64208984375" text="Stop button" />
-                              <TableColumn fx:id="pauseButtonColumn" prefWidth="79.00006103515625" text="Pause button" />
+                            <TableColumn fx:id="configNameColumn" prefWidth="242.0" text="CONGIF NAME" />
+                              <TableColumn fx:id="progressCircleColumn" maxWidth="50.0" minWidth="50.0" prefWidth="50.0" />
+                              <TableColumn fx:id="stopButtonColumn" prefWidth="92.0" />
+                              <TableColumn fx:id="pauseButtonColumn" prefWidth="79.00006103515625" />
                           </columns>
                         </TableView>
                         <Button layoutX="227.0" layoutY="513.0" mnemonicParsing="false" onAction="#chooseDestinationButtonClick" text="Choose Destination" />
@@ -39,7 +39,7 @@
                         <Button layoutX="745.0" layoutY="513.0" mnemonicParsing="false" onAction="#deleteTasksButtonClick" prefHeight="27.0" prefWidth="138.0" text="DELETE PROCESS" />
                         <ChoiceBox fx:id="configChoiceBox" layoutX="20.0" layoutY="129.0" prefWidth="150.0" />
                         <TextField fx:id="textFieldFileImport" editable="false" layoutX="21.0" layoutY="17.0" promptText="Destination path" />
-                        <Label fx:id="labelFileExtension" layoutX="172.0" layoutY="20.0" text=".XXX">
+                        <Label fx:id="labelFileExtension" layoutX="21.0" layoutY="44.0" text="extension">
                            <font>
                               <Font size="14.0" />
                            </font>

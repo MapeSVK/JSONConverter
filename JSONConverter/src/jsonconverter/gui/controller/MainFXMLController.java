@@ -8,6 +8,7 @@ package jsonconverter.GUI.controller;
 import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -19,7 +20,12 @@ import javafx.stage.FileChooser;
 
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
+import jsonconverter.BE.Task;
+import jsonconverter.GUI.model.Model;
+import jsonconverter.GUI.util.RingProgressIndicator;
 
 
 /**
@@ -32,32 +38,57 @@ public class MainFXMLController implements Initializable {
     @FXML
     private Button importFileButton;
     @FXML
-    private Button btn;
-    @FXML
     private TextField textFieldFileImport;
     @FXML
     private Label labelFileExtension;
-    private TableColumn<?, ?> nameOfTheFileColumn;
     @FXML
-    private TableColumn<?, ?> configNameColumn;
+    private TableColumn<Task, String> nameOfTheFileColumn;
     @FXML
-    private TableColumn<?, ?> progressBarColumn;
+    private TableColumn<Task, String> configNameColumn;
     @FXML
-    private TableColumn<?, ?> stopButtonColumn;
+    private TableColumn<Task, Button> stopButtonColumn;
     @FXML
-    private TableColumn<?, ?> pauseButtonColumn;
+    private TableColumn<Task, Button> pauseButtonColumn;
     @FXML
-    private ChoiceBox<?> configChoiceBox;
-
-    /**
-     * Initializes the controller class.
-     */
-    @Override
-    public void initialize(URL url, ResourceBundle rb) {
-        // TODO
-    }
+    private TableColumn<Task, RingProgressIndicator> progressCircleColumn;
+    @FXML
+    private ChoiceBox<String> configChoiceBox;
+    @FXML
+    private TableView<Task> tasksTableView;
+    
     private String filePath;
     private FileChooser fileChooser;
+    Model model = new Model();
+    
+   
+    
+    @Override
+    public void initialize(URL url, ResourceBundle rb) {
+        setTasksTableViewItems();
+        setConfigChoiceBoxItems();
+        
+        
+        tasksTableView.setItems(FXCollections.observableArrayList(new Task("name", "configName")));
+        
+    }
+   
+    
+    /* set tableView columns */
+    public void setTasksTableViewItems() {
+        nameOfTheFileColumn.setCellValueFactory(new PropertyValueFactory("name"));
+        configNameColumn.setCellValueFactory(new PropertyValueFactory("configName"));
+        progressCircleColumn.setCellValueFactory(new PropertyValueFactory("ringProgressIndicator"));
+        stopButtonColumn.setCellValueFactory(new PropertyValueFactory("stopTask"));
+        pauseButtonColumn.setCellValueFactory(new PropertyValueFactory("closeTask"));
+    }
+    
+    
+    /* getting data from the model and setting this data in the choiceBox */
+    public void setConfigChoiceBoxItems() {
+        configChoiceBox.setItems(model.getConfigChoiceBoxItems());
+    }
+    
+    
     /**
      * 
      * @param event When you click the button "Import". This method will load
@@ -74,13 +105,14 @@ public class MainFXMLController implements Initializable {
             textFieldFileImport.setText(filePath); //insert path of the file into the textField
             fileExtendionIdentifier();
         } else {
-            System.out.println("File could not be choosen.");
+            System.out.println("ERROR: File could not be imported.");
         }
     }
+    
     /**
      * This method manages the file chooser.
-     * The "ALL" contains all the possibles file extensions
-     * The other ones are dedicated for one in concrete
+     * "ALL" contains all the possibles file extensions
+     * It is possible to choose specific extensions
      */
     private void fileChooserSettings() {
         FileChooser.ExtensionFilter ALL = new FileChooser.ExtensionFilter("Import *.XXX", "*.csv", "*xlsx");
@@ -90,8 +122,7 @@ public class MainFXMLController implements Initializable {
     }
 
     /**
-     * This method manages the label next to the text field where you can see
-     * where extension did you load without surfing through the text
+        Setting text of the label depending on the file extension 
      */
     private void fileExtendionIdentifier() {
         if (filePath.endsWith(".csv")) {
