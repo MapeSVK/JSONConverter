@@ -20,6 +20,7 @@ import jsonconverter.GUI.util.RingProgressIndicator;
  */
 public class Task {
     
+    private String extensionOfTheFile;
     private String nameOfTheFile;
     private String configName;
     ImageView closeTask;
@@ -30,9 +31,10 @@ public class Task {
     private int progress = 0;
 
 
-    public Task(String name, String configName) {
+    public Task(String name, String configName, String extensionOfTheFile) {
         this.nameOfTheFile = name;
         this.configName = configName;
+        this.extensionOfTheFile = extensionOfTheFile;
         this.closeTask = new ImageView();
         closeTask.setImage(closeImage);
         this.pauseTask = new ImageView();
@@ -42,10 +44,14 @@ public class Task {
         
     }
 
+    public String getExtensionOfTheFile() {
+        return extensionOfTheFile;
+    }
 
-    
-    
-    
+    public void setExtensionOfTheFile(String extensionOfTheFile) {
+        this.extensionOfTheFile = extensionOfTheFile;
+    }
+   
     
     public void setRingProgressIndicator (RingProgressIndicator rpi) {
         rpi.setRingWidth(30); // requires changes in the CSS file (2 places)

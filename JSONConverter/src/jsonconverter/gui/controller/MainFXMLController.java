@@ -37,8 +37,7 @@ public class MainFXMLController implements Initializable {
 
     @FXML
     private Button importFileButton;
-    @FXML
-    private TextField textFieldFileImport;
+    
     @FXML
     private Label labelFileExtension;
     @FXML
@@ -57,8 +56,13 @@ public class MainFXMLController implements Initializable {
     private TableView<Task> tasksTableView;
     
     private String filePath;
+    private String nameOfImportedFile;
     private FileChooser fileChooser;
     Model model = new Model();
+    @FXML
+    private TableColumn<String, String> extensionColumn;
+    @FXML
+    private Label nameOfImportedFileLabel;
     
    
     
@@ -68,13 +72,13 @@ public class MainFXMLController implements Initializable {
         setConfigChoiceBoxItems();
         
         
-        tasksTableView.setItems(FXCollections.observableArrayList(new Task("name", "configName")));
         
     }
    
     
     /* set tableView columns */
     public void setTasksTableViewItems() {
+        extensionColumn.setCellValueFactory(new PropertyValueFactory("extension"));
         nameOfTheFileColumn.setCellValueFactory(new PropertyValueFactory("name"));
         configNameColumn.setCellValueFactory(new PropertyValueFactory("configName"));
         progressCircleColumn.setCellValueFactory(new PropertyValueFactory("ringProgressIndicator"));
@@ -99,15 +103,23 @@ public class MainFXMLController implements Initializable {
         fileChooser = new FileChooser();
         fileChooserSettings();
         File file = fileChooser.showOpenDialog(null);
+        nameOfImportedFile  = gettingTheFileNameFromThePath(file);
 
         if (file != null) { //if statement only to avoid nullPointException after pressing "cancel" in filechooser
-            filePath = file.toString();
-            textFieldFileImport.setText(filePath); //insert path of the file into the textField
+            importFileButton.setText(nameOfImportedFile); //insert path of the file into the textField
             fileExtendionIdentifier();
+
         } else {
             System.out.println("ERROR: File could not be imported.");
         }
+        
+        
+       
+      
     }
+    
+    
+   
     
     /**
      * This method manages the file chooser.
@@ -134,6 +146,17 @@ public class MainFXMLController implements Initializable {
         }
     }
 
+    /**
+    * getting the name of the file from the path 
+    */
+    public String gettingTheFileNameFromThePath(File file) {
+        String nameOfTheFile = file.getName();
+        int pos = nameOfTheFile.lastIndexOf(".");
+        if (pos > 0) {
+            nameOfTheFile = nameOfTheFile.substring(0, pos);
+        }
+        return nameOfTheFile;
+    }
 
 
     @FXML
@@ -142,11 +165,17 @@ public class MainFXMLController implements Initializable {
 
     @FXML
     private void addTaskButtonClick(ActionEvent event) {
+        Task task = new Task(
+                TitleTextField.getText(),
+                Double.valueOf(PRatingTextField.getText()),
+                Double.valueOf(IMDBRatingTextField.getText()),
+                FileTextField.getText(),
+                null);
+                model.addMovie(myMovie); 
+                addMovieToCat(myMovie);
+                closeWindow();
     }
 
-    @FXML
-    private void chooseDestinationButtonClick(ActionEvent event) {
-    }
 
     @FXML
     private void convertTasksButtonClick(ActionEvent event) {
@@ -162,6 +191,10 @@ public class MainFXMLController implements Initializable {
 
     @FXML
     private void historyPageButtonClick(MouseEvent event) {
+    }
+
+    @FXML
+    private void chooseDirectoryButtonClick(ActionEvent event) {
     }
     
 
