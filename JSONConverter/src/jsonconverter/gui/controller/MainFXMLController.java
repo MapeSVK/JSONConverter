@@ -13,7 +13,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
-
+import javax.swing.JFileChooser;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.FileChooser;
@@ -23,10 +23,11 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
+import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import jsonconverter.BE.Task;
 import jsonconverter.GUI.model.Model;
 import jsonconverter.GUI.util.RingProgressIndicator;
-
 
 /**
  * FXML Controller class
@@ -54,11 +55,13 @@ public class MainFXMLController implements Initializable {
     private ChoiceBox<String> configChoiceBox;
     @FXML
     private TableView<Task> tasksTableView;
-    
+
     private String filePath;
     private String nameOfImportedFile;
     private FileChooser fileChooser;
+    private JFileChooser jfileChooser;
     Model model = new Model();
+<<<<<<< HEAD
     @FXML
     private TableColumn<String, String> extensionColumn;
     @FXML
@@ -66,16 +69,24 @@ public class MainFXMLController implements Initializable {
     
    
     
+=======
+
+>>>>>>> 96e2e088c478e58d861a696dcd35641ecf4c2bf4
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         setTasksTableViewItems();
         setConfigChoiceBoxItems();
+<<<<<<< HEAD
         
         
         
+=======
+
+        tasksTableView.setItems(FXCollections.observableArrayList(new Task("name", "configName")));
+
+>>>>>>> 96e2e088c478e58d861a696dcd35641ecf4c2bf4
     }
-   
-    
+
     /* set tableView columns */
     public void setTasksTableViewItems() {
         extensionColumn.setCellValueFactory(new PropertyValueFactory("extension"));
@@ -85,16 +96,14 @@ public class MainFXMLController implements Initializable {
         stopButtonColumn.setCellValueFactory(new PropertyValueFactory("stopTask"));
         pauseButtonColumn.setCellValueFactory(new PropertyValueFactory("closeTask"));
     }
-    
-    
+
     /* getting data from the model and setting this data in the choiceBox */
     public void setConfigChoiceBoxItems() {
         configChoiceBox.setItems(model.getConfigChoiceBoxItems());
     }
-    
-    
+
     /**
-     * 
+     *
      * @param event When you click the button "Import". This method will load
      * the file chooser.
      */
@@ -117,24 +126,28 @@ public class MainFXMLController implements Initializable {
        
       
     }
+<<<<<<< HEAD
     
     
    
     
+=======
+
+>>>>>>> 96e2e088c478e58d861a696dcd35641ecf4c2bf4
     /**
-     * This method manages the file chooser.
-     * "ALL" contains all the possibles file extensions
-     * It is possible to choose specific extensions
+     * This method manages the file chooser. "ALL" contains all the possibles
+     * file extensions It is possible to choose specific extensions
      */
     private void fileChooserSettings() {
         FileChooser.ExtensionFilter ALL = new FileChooser.ExtensionFilter("Import *.XXX", "*.csv", "*xlsx");
         FileChooser.ExtensionFilter CSV = new FileChooser.ExtensionFilter("Import csv", "*.csv");
         FileChooser.ExtensionFilter XLSX = new FileChooser.ExtensionFilter("Import xlsx", "*.xlsx");
         fileChooser.getExtensionFilters().addAll(ALL, CSV, XLSX);
+
     }
 
     /**
-        Setting text of the label depending on the file extension 
+     * Setting text of the label depending on the file extension
      */
     private void fileExtendionIdentifier() {
         if (filePath.endsWith(".csv")) {
@@ -146,6 +159,7 @@ public class MainFXMLController implements Initializable {
         }
     }
 
+<<<<<<< HEAD
     /**
     * getting the name of the file from the path 
     */
@@ -159,6 +173,8 @@ public class MainFXMLController implements Initializable {
     }
 
 
+=======
+>>>>>>> 96e2e088c478e58d861a696dcd35641ecf4c2bf4
     @FXML
     private void createNewConfigButtonClick(ActionEvent event) {
     }
@@ -176,6 +192,25 @@ public class MainFXMLController implements Initializable {
                 closeWindow();
     }
 
+<<<<<<< HEAD
+=======
+    @FXML
+    private void chooseDestinationButtonClick(ActionEvent event) {
+        jfileChooser = new JFileChooser();
+
+        jfileChooser.setCurrentDirectory(new java.io.File("."));
+        jfileChooser.setDialogTitle("Select a directory");
+        jfileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        jfileChooser.setAcceptAllFileFilterUsed(false);
+        if (jfileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+            System.out.println("Get current directory: " + jfileChooser.getCurrentDirectory());
+            System.out.println("Get current file: " + jfileChooser.getSelectedFile());
+        } else {
+            System.out.println("No Selection ");
+        }
+
+    }
+>>>>>>> 96e2e088c478e58d861a696dcd35641ecf4c2bf4
 
     @FXML
     private void convertTasksButtonClick(ActionEvent event) {
@@ -192,10 +227,13 @@ public class MainFXMLController implements Initializable {
     @FXML
     private void historyPageButtonClick(MouseEvent event) {
     }
+<<<<<<< HEAD
 
     @FXML
     private void chooseDirectoryButtonClick(ActionEvent event) {
     }
     
+=======
+>>>>>>> 96e2e088c478e58d861a696dcd35641ecf4c2bf4
 
 }
