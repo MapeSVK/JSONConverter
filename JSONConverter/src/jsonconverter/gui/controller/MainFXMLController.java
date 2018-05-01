@@ -142,18 +142,13 @@ public class MainFXMLController implements Initializable {
     private void chooseDestinationButtonClick(ActionEvent event) {
         jfileChooser = new JFileChooser();
 
-        FileFilter csvFilter = new FileNameExtensionFilter("CSV File", ".csv");
-        FileFilter xlsxFilter = new FileNameExtensionFilter("XLSX File", ".xlsx");
-
-        jfileChooser.setFileFilter(csvFilter);
-        jfileChooser.setFileFilter(xlsxFilter);
-
-        jfileChooser.setCurrentDirectory(new java.io.File("."));
+        jfileChooser.setCurrentDirectory(new File(filePath));
         jfileChooser.setDialogTitle("Select a directory");
         jfileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        jfileChooser.setAcceptAllFileFilterUsed(false);
         if (jfileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
-            System.out.println("getCurrentDirectory(): " + jfileChooser.getCurrentDirectory());
-            System.out.println("getSelectedFile() : " + jfileChooser.getSelectedFile());
+            System.out.println("Get current directory: " + jfileChooser.getCurrentDirectory());
+            System.out.println("Get current file: " + jfileChooser.getSelectedFile());
         } else {
             System.out.println("No Selection ");
         }
