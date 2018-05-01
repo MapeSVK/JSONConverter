@@ -1,43 +1,25 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package jsonconverter.GUI.controller;
 
 import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
-import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javax.swing.JFileChooser;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 import javafx.stage.FileChooser;
-
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
-import javax.swing.filechooser.FileFilter;
-import javax.swing.filechooser.FileNameExtensionFilter;
 import jsonconverter.BE.Task;
 import jsonconverter.GUI.model.Model;
 import jsonconverter.GUI.util.RingProgressIndicator;
 
-/**
- * FXML Controller class
- *
- * @author Samuel
- */
-public class MainFXMLController implements Initializable {
-
-    @FXML
-    private Button importFileButton;
+public class MainFXMLController implements Initializable {  
     
     @FXML
     private Label labelFileExtension;
@@ -61,30 +43,20 @@ public class MainFXMLController implements Initializable {
     private FileChooser fileChooser;
     private JFileChooser jfileChooser;
     Model model = new Model();
-<<<<<<< HEAD
+
     @FXML
     private TableColumn<String, String> extensionColumn;
     @FXML
     private Label nameOfImportedFileLabel;
     
    
-    
-=======
-
->>>>>>> 96e2e088c478e58d861a696dcd35641ecf4c2bf4
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         setTasksTableViewItems();
         setConfigChoiceBoxItems();
-<<<<<<< HEAD
-        
-        
-        
-=======
 
-        tasksTableView.setItems(FXCollections.observableArrayList(new Task("name", "configName")));
 
->>>>>>> 96e2e088c478e58d861a696dcd35641ecf4c2bf4
+
     }
 
     /* set tableView columns */
@@ -115,25 +87,16 @@ public class MainFXMLController implements Initializable {
         nameOfImportedFile  = gettingTheFileNameFromThePath(file);
 
         if (file != null) { //if statement only to avoid nullPointException after pressing "cancel" in filechooser
-            importFileButton.setText(nameOfImportedFile); //insert path of the file into the textField
+            nameOfImportedFileLabel.setText(nameOfImportedFile); //set text of the label to NAME of the imported file
+            filePath = file.toString();
             fileExtendionIdentifier();
 
         } else {
             System.out.println("ERROR: File could not be imported.");
         }
-        
-        
-       
-      
+                    
     }
-<<<<<<< HEAD
-    
-    
-   
-    
-=======
 
->>>>>>> 96e2e088c478e58d861a696dcd35641ecf4c2bf4
     /**
      * This method manages the file chooser. "ALL" contains all the possibles
      * file extensions It is possible to choose specific extensions
@@ -159,7 +122,6 @@ public class MainFXMLController implements Initializable {
         }
     }
 
-<<<<<<< HEAD
     /**
     * getting the name of the file from the path 
     */
@@ -172,30 +134,17 @@ public class MainFXMLController implements Initializable {
         return nameOfTheFile;
     }
 
-
-=======
->>>>>>> 96e2e088c478e58d861a696dcd35641ecf4c2bf4
     @FXML
     private void createNewConfigButtonClick(ActionEvent event) {
     }
 
     @FXML
     private void addTaskButtonClick(ActionEvent event) {
-        Task task = new Task(
-                TitleTextField.getText(),
-                Double.valueOf(PRatingTextField.getText()),
-                Double.valueOf(IMDBRatingTextField.getText()),
-                FileTextField.getText(),
-                null);
-                model.addMovie(myMovie); 
-                addMovieToCat(myMovie);
-                closeWindow();
+        //Task task = new Task(
     }
 
-<<<<<<< HEAD
-=======
     @FXML
-    private void chooseDestinationButtonClick(ActionEvent event) {
+    private void chooseDirectoryButtonClick(ActionEvent event) {
         jfileChooser = new JFileChooser();
 
         jfileChooser.setCurrentDirectory(new java.io.File("."));
@@ -210,7 +159,7 @@ public class MainFXMLController implements Initializable {
         }
 
     }
->>>>>>> 96e2e088c478e58d861a696dcd35641ecf4c2bf4
+
 
     @FXML
     private void convertTasksButtonClick(ActionEvent event) {
@@ -227,13 +176,10 @@ public class MainFXMLController implements Initializable {
     @FXML
     private void historyPageButtonClick(MouseEvent event) {
     }
-<<<<<<< HEAD
 
-    @FXML
-    private void chooseDirectoryButtonClick(ActionEvent event) {
-    }
+
+  
     
-=======
->>>>>>> 96e2e088c478e58d861a696dcd35641ecf4c2bf4
+
 
 }
