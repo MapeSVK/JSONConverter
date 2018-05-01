@@ -13,7 +13,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
-
+import javax.swing.JFileChooser;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.FileChooser;
@@ -23,10 +23,11 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
+import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import jsonconverter.BE.Task;
 import jsonconverter.GUI.model.Model;
 import jsonconverter.GUI.util.RingProgressIndicator;
-
 
 /**
  * FXML Controller class
@@ -55,24 +56,21 @@ public class MainFXMLController implements Initializable {
     private ChoiceBox<String> configChoiceBox;
     @FXML
     private TableView<Task> tasksTableView;
-    
+
     private String filePath;
     private FileChooser fileChooser;
+    private JFileChooser jfileChooser;
     Model model = new Model();
-    
-   
-    
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         setTasksTableViewItems();
         setConfigChoiceBoxItems();
-        
-        
+
         tasksTableView.setItems(FXCollections.observableArrayList(new Task("name", "configName")));
-        
+
     }
-   
-    
+
     /* set tableView columns */
     public void setTasksTableViewItems() {
         nameOfTheFileColumn.setCellValueFactory(new PropertyValueFactory("name"));
@@ -81,16 +79,14 @@ public class MainFXMLController implements Initializable {
         stopButtonColumn.setCellValueFactory(new PropertyValueFactory("stopTask"));
         pauseButtonColumn.setCellValueFactory(new PropertyValueFactory("closeTask"));
     }
-    
-    
+
     /* getting data from the model and setting this data in the choiceBox */
     public void setConfigChoiceBoxItems() {
         configChoiceBox.setItems(model.getConfigChoiceBoxItems());
     }
-    
-    
+
     /**
-     * 
+     *
      * @param event When you click the button "Import". This method will load
      * the file chooser.
      */
@@ -108,21 +104,21 @@ public class MainFXMLController implements Initializable {
             System.out.println("ERROR: File could not be imported.");
         }
     }
-    
+
     /**
-     * This method manages the file chooser.
-     * "ALL" contains all the possibles file extensions
-     * It is possible to choose specific extensions
+     * This method manages the file chooser. "ALL" contains all the possibles
+     * file extensions It is possible to choose specific extensions
      */
     private void fileChooserSettings() {
         FileChooser.ExtensionFilter ALL = new FileChooser.ExtensionFilter("Import *.XXX", "*.csv", "*xlsx");
         FileChooser.ExtensionFilter CSV = new FileChooser.ExtensionFilter("Import csv", "*.csv");
         FileChooser.ExtensionFilter XLSX = new FileChooser.ExtensionFilter("Import xlsx", "*.xlsx");
         fileChooser.getExtensionFilters().addAll(ALL, CSV, XLSX);
+
     }
 
     /**
-        Setting text of the label depending on the file extension 
+     * Setting text of the label depending on the file extension
      */
     private void fileExtendionIdentifier() {
         if (filePath.endsWith(".csv")) {
@@ -134,8 +130,6 @@ public class MainFXMLController implements Initializable {
         }
     }
 
-
-
     @FXML
     private void createNewConfigButtonClick(ActionEvent event) {
     }
@@ -146,6 +140,24 @@ public class MainFXMLController implements Initializable {
 
     @FXML
     private void chooseDestinationButtonClick(ActionEvent event) {
+        jfileChooser = new JFileChooser();
+
+        FileFilter csvFilter = new FileNameExtensionFilter("CSV File", ".csv");
+        FileFilter xlsxFilter = new FileNameExtensionFilter("XLSX File", ".xlsx");
+
+        jfileChooser.setFileFilter(csvFilter);
+        jfileChooser.setFileFilter(xlsxFilter);
+
+        jfileChooser.setCurrentDirectory(new java.io.File("."));
+        jfileChooser.setDialogTitle("Select a directory");
+        jfileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        if (jfileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+            System.out.println("getCurrentDirectory(): " + jfileChooser.getCurrentDirectory());
+            System.out.println("getSelectedFile() : " + jfileChooser.getSelectedFile());
+        } else {
+            System.out.println("No Selection ");
+        }
+
     }
 
     @FXML
@@ -163,6 +175,5 @@ public class MainFXMLController implements Initializable {
     @FXML
     private void historyPageButtonClick(MouseEvent event) {
     }
-    
 
 }

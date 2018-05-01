@@ -39,7 +39,12 @@
                         <Button layoutX="745.0" layoutY="513.0" mnemonicParsing="false" onAction="#deleteTasksButtonClick" prefHeight="27.0" prefWidth="138.0" text="DELETE PROCESS" />
                         <ChoiceBox fx:id="configChoiceBox" layoutX="20.0" layoutY="129.0" prefWidth="150.0" />
                         <TextField fx:id="textFieldFileImport" editable="false" layoutX="21.0" layoutY="17.0" promptText="Destination path" />
-                        <Label fx:id="labelFileExtension" layoutX="21.0" layoutY="44.0" text="extension">
+                        <Label fx:id="labelFileExtension" layoutX="113.0" layoutY="42.0" text=".XXX">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="labelFileExtension1" layoutX="21.0" layoutY="42.0" text="File extension:" underline="true">
                            <font>
                               <Font size="14.0" />
                            </font>
