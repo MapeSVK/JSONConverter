@@ -142,7 +142,7 @@ public class MainFXMLController implements Initializable {
     private void chooseDestinationButtonClick(ActionEvent event) {
         jfileChooser = new JFileChooser();
 
-        jfileChooser.setCurrentDirectory(new File(filePath));
+        jfileChooser.setCurrentDirectory(new java.io.File("."));
         jfileChooser.setDialogTitle("Select a directory");
         jfileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
         jfileChooser.setAcceptAllFileFilterUsed(false);
