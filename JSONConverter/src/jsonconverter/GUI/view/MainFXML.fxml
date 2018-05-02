@@ -45,7 +45,10 @@
                               <Font size="14.0" />
                            </font>
                         </Label>
-                        <Label fx:id="nameOfImportedFileLabel" layoutX="20.0" layoutY="34.0" text="File name" />
+                        <Label fx:id="nameOfImportedFileLabel" layoutX="20.0" layoutY="34.0" text="File name">
+                           <font>
+                              <Font size="14.0" />
+                           </font></Label>
                      </children>
                   </AnchorPane>
                </content>
