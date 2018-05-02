@@ -64,11 +64,10 @@ public class MainFXMLController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         setTasksTableViewItems();
         setConfigChoiceBoxItems();
-<<<<<<< HEAD
+
         tasksTableView.setItems(model.getTasksInTheTableView());
 
-=======
->>>>>>> 1fcdc903dac367f9609347dc578851baec54d21e
+
 
     }
     
