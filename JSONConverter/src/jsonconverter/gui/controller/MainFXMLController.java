@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -47,9 +49,9 @@ public class MainFXMLController implements Initializable {
     private JFileChooser jfileChooser;
     private File file;
     private File directoryPath;
-    String newFileName;
-    final String newFileExtension = ".json";
-    private String newFileInfo  = newFileName + newFileExtension;
+    String newFileName = "Test";//Name needs to be indicate! It's just an example
+    private final String newFileExtension = ".json";
+    private String newFileInfo = newFileName + newFileExtension;
 
     Model model = new Model();
 
@@ -171,9 +173,24 @@ public class MainFXMLController implements Initializable {
 
     @FXML
     private void convertTasksButtonClick(ActionEvent event) throws IOException {
-        newFileName = "Test"; //Name needs to be indicate! It's just an example
-        File newfile = new File(directoryPath, newFileInfo);
-        newfile.createNewFile();
+        
+        Thread t;
+        t = new Thread(() -> {
+            try {
+                System.out.println("Go 2 Sleep!");
+                System.out.println("Try to use the program now! You have less than 8s!!");
+                Thread.sleep(8000);
+                System.out.println("Hello, I am a thread");
+                File newfile = new File(directoryPath, newFileInfo);
+                newfile.createNewFile();
+
+            } catch (InterruptedException ex) {
+                Logger.getLogger(MainFXMLController.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IOException ex) {
+                Logger.getLogger(MainFXMLController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        });
+        t.start();
     }
 
     @FXML
