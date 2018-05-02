@@ -6,6 +6,8 @@
 package jsonconverter.GUI.controller;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
@@ -23,8 +25,6 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
-import javax.swing.filechooser.FileFilter;
-import javax.swing.filechooser.FileNameExtensionFilter;
 import jsonconverter.BE.Task;
 import jsonconverter.GUI.model.Model;
 import jsonconverter.GUI.util.RingProgressIndicator;
@@ -60,6 +60,8 @@ public class MainFXMLController implements Initializable {
     private String filePath;
     private FileChooser fileChooser;
     private JFileChooser jfileChooser;
+    private PrintWriter file2Print;
+    private File file;
     Model model = new Model();
 
     @Override
@@ -94,7 +96,7 @@ public class MainFXMLController implements Initializable {
     private void importFileButtonClick(ActionEvent event) {
         fileChooser = new FileChooser();
         fileChooserSettings();
-        File file = fileChooser.showOpenDialog(null);
+        file = fileChooser.showOpenDialog(null);
 
         if (file != null) { //if statement only to avoid nullPointException after pressing "cancel" in filechooser
             filePath = file.toString();
@@ -138,25 +140,45 @@ public class MainFXMLController implements Initializable {
     private void addTaskButtonClick(ActionEvent event) {
     }
 
+    /*
+    *   This method contains mainly the directory chooser interface.
+     */
     @FXML
-    private void chooseDestinationButtonClick(ActionEvent event) {
+    private void chooseDestinationButtonClick(ActionEvent event) throws FileNotFoundException {
         jfileChooser = new JFileChooser();
-
-        jfileChooser.setCurrentDirectory(new java.io.File("."));
+        File workingDirectory = new File(System.getProperty("user.dir"));
+        jfileChooser.setCurrentDirectory(workingDirectory);
         jfileChooser.setDialogTitle("Select a directory");
         jfileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
         jfileChooser.setAcceptAllFileFilterUsed(false);
+        chooseDirectoryFuncionality();
+
+    }
+
+    /*
+    * This method manages the funcionality of the previous one.
+     */
+    private File chooseDirectoryFuncionality() throws FileNotFoundException {
+
         if (jfileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
             System.out.println("Get current directory: " + jfileChooser.getCurrentDirectory());
             System.out.println("Get current file: " + jfileChooser.getSelectedFile());
+            return jfileChooser.getSelectedFile();
         } else {
             System.out.println("No Selection ");
+            return null;
         }
 
     }
 
+    private void chooseDirectoryFileSaving() throws FileNotFoundException {
+        file2Print = new PrintWriter(new File(chooseDirectoryFuncionality().getAbsolutePath() + chooseDirectoryFuncionality().getName()));
+    }
+
     @FXML
-    private void convertTasksButtonClick(ActionEvent event) {
+    private void convertTasksButtonClick(ActionEvent event) throws FileNotFoundException {
+        chooseDirectoryFileSaving();
+
     }
 
     @FXML
