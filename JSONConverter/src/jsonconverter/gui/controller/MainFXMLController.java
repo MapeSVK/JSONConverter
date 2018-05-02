@@ -15,7 +15,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
-import jsonconverter.BE.Task;
+import jsonconverter.BE.TaskInOurProgram;
 import jsonconverter.GUI.model.Model;
 import jsonconverter.GUI.util.RingProgressIndicator;
 
@@ -24,19 +24,19 @@ public class MainFXMLController implements Initializable {
     @FXML
     private Label labelFileExtension;
     @FXML
-    private TableColumn<Task, String> nameOfTheFileColumn;
+    private TableColumn<TaskInOurProgram, String> nameOfTheFileColumn;
     @FXML
-    private TableColumn<Task, String> configNameColumn;
+    private TableColumn<TaskInOurProgram, String> configNameColumn;
     @FXML
-    private TableColumn<Task, Button> stopButtonColumn;
+    private TableColumn<TaskInOurProgram, Button> stopButtonColumn;
     @FXML
-    private TableColumn<Task, Button> pauseButtonColumn;
+    private TableColumn<TaskInOurProgram, Button> pauseButtonColumn;
     @FXML
-    private TableColumn<Task, RingProgressIndicator> progressCircleColumn;
+    private TableColumn<TaskInOurProgram, RingProgressIndicator> progressCircleColumn;
     @FXML
     private ChoiceBox<String> configChoiceBox;
     @FXML
-    private TableView<Task> tasksTableView;
+    private TableView<TaskInOurProgram> tasksTableView;
 
     private String filePath;
     private String nameOfImportedFile;
@@ -54,10 +54,12 @@ public class MainFXMLController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         setTasksTableViewItems();
         setConfigChoiceBoxItems();
-
+        tasksTableView.setItems(model.getTasksInTheTableView());
 
 
     }
+    
+    
 
     /* set tableView columns */
     public void setTasksTableViewItems() {
@@ -74,11 +76,7 @@ public class MainFXMLController implements Initializable {
         configChoiceBox.setItems(model.getConfigChoiceBoxItems());
     }
 
-    /**
-     *
-     * @param event When you click the button "Import". This method will load
-     * the file chooser.
-     */
+   
     @FXML
     private void importFileButtonClick(ActionEvent event) {
         fileChooser = new FileChooser();
@@ -102,7 +100,7 @@ public class MainFXMLController implements Initializable {
      * file extensions It is possible to choose specific extensions
      */
     private void fileChooserSettings() {
-        FileChooser.ExtensionFilter ALL = new FileChooser.ExtensionFilter("Import *.XXX", "*.csv", "*xlsx");
+        FileChooser.ExtensionFilter ALL = new FileChooser.ExtensionFilter("Import *.XXX", "*.csv", "*.xlsx");
         FileChooser.ExtensionFilter CSV = new FileChooser.ExtensionFilter("Import csv", "*.csv");
         FileChooser.ExtensionFilter XLSX = new FileChooser.ExtensionFilter("Import xlsx", "*.xlsx");
         fileChooser.getExtensionFilters().addAll(ALL, CSV, XLSX);
@@ -114,9 +112,9 @@ public class MainFXMLController implements Initializable {
      */
     private void fileExtendionIdentifier() {
         if (filePath.endsWith(".csv")) {
-            labelFileExtension.setText(".csv");
-        } else if (filePath.endsWith("xlsx")) {
-            labelFileExtension.setText(".xlsx");
+            labelFileExtension.setText("csv");
+        } else if (filePath.endsWith(".xlsx")) {
+            labelFileExtension.setText("xlsx");
         } else {
             labelFileExtension.setText("???");
         }
@@ -140,7 +138,31 @@ public class MainFXMLController implements Initializable {
 
     @FXML
     private void addTaskButtonClick(ActionEvent event) {
-        //Task task = new Task(
+        /* CONDITIONS */
+        boolean isRightNameOfTheFile = false;
+        boolean isConfigSet = false;
+        boolean isRightExtension = false;
+        
+        if (nameOfImportedFile != null && !nameOfImportedFile.equals("")) {
+            isRightNameOfTheFile = true;
+        }
+        
+        if (!configChoiceBox.getSelectionModel().getSelectedItem().equals("") && 
+                configChoiceBox.getSelectionModel().getSelectedItem() != null) {
+            isConfigSet = true;
+        }
+        
+        if (!labelFileExtension.getText().equals("") && labelFileExtension.getText() != null ) {
+            isRightExtension = true;
+        }
+        
+        /* ADDING */
+        if (isRightNameOfTheFile == true && isConfigSet == true && isRightExtension == true) {
+//            TaskInOurProgram task = new TaskInOurProgram(nameOfImportedFile, configChoiceBox.getSelectionModel().getSelectedItem(), 
+//                    labelFileExtension.getText());
+//            model.addTask(task); 
+        }
+                
     }
 
     @FXML
