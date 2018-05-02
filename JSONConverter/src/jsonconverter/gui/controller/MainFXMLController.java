@@ -1,8 +1,13 @@
 package jsonconverter.GUI.controller;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -19,8 +24,8 @@ import jsonconverter.BE.TaskInOurProgram;
 import jsonconverter.GUI.model.Model;
 import jsonconverter.GUI.util.RingProgressIndicator;
 
-public class MainFXMLController implements Initializable {  
-    
+public class MainFXMLController implements Initializable {
+
     @FXML
     private Label labelFileExtension;
     @FXML
@@ -42,20 +47,28 @@ public class MainFXMLController implements Initializable {
     private String nameOfImportedFile;
     private FileChooser fileChooser;
     private JFileChooser jfileChooser;
+    private File file;
+    private File directoryPath;
+    String newFileName = "Test";//Name needs to be indicate! It's just an example
+    private final String newFileExtension = ".json";
+    private String newFileInfo = newFileName + newFileExtension;
+
     Model model = new Model();
 
     @FXML
     private TableColumn<String, String> extensionColumn;
     @FXML
     private Label nameOfImportedFileLabel;
-    
-   
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         setTasksTableViewItems();
         setConfigChoiceBoxItems();
+<<<<<<< HEAD
         tasksTableView.setItems(model.getTasksInTheTableView());
 
+=======
+>>>>>>> 1fcdc903dac367f9609347dc578851baec54d21e
 
     }
     
@@ -81,8 +94,8 @@ public class MainFXMLController implements Initializable {
     private void importFileButtonClick(ActionEvent event) {
         fileChooser = new FileChooser();
         fileChooserSettings();
-        File file = fileChooser.showOpenDialog(null);
-        nameOfImportedFile  = gettingTheFileNameFromThePath(file);
+        file = fileChooser.showOpenDialog(null);
+        nameOfImportedFile = gettingTheFileNameFromThePath(file);
 
         if (file != null) { //if statement only to avoid nullPointException after pressing "cancel" in filechooser
             nameOfImportedFileLabel.setText(nameOfImportedFile); //set text of the label to NAME of the imported file
@@ -92,7 +105,7 @@ public class MainFXMLController implements Initializable {
         } else {
             System.out.println("ERROR: File could not be imported.");
         }
-                    
+
     }
 
     /**
@@ -121,8 +134,8 @@ public class MainFXMLController implements Initializable {
     }
 
     /**
-    * getting the name of the file from the path 
-    */
+     * getting the name of the file from the path
+     */
     public String gettingTheFileNameFromThePath(File file) {
         String nameOfTheFile = file.getName();
         int pos = nameOfTheFile.lastIndexOf(".");
@@ -165,26 +178,46 @@ public class MainFXMLController implements Initializable {
                 
     }
 
+    /*
+    *   This method contains mainly the directory chooser interface.
+     */
     @FXML
     private void chooseDirectoryButtonClick(ActionEvent event) {
         jfileChooser = new JFileChooser();
-
-        jfileChooser.setCurrentDirectory(new java.io.File("."));
+        jfileChooser.setCurrentDirectory(new java.io.File(".")); //It will set as directory the current folder project
         jfileChooser.setDialogTitle("Select a directory");
         jfileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
         jfileChooser.setAcceptAllFileFilterUsed(false);
         if (jfileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
-            System.out.println("Get current directory: " + jfileChooser.getCurrentDirectory());
-            System.out.println("Get current file: " + jfileChooser.getSelectedFile());
+            directoryPath = jfileChooser.getSelectedFile().getAbsoluteFile();
+            System.out.println("Get current directory: " + directoryPath);
+
         } else {
             System.out.println("No Selection ");
         }
 
     }
 
-
     @FXML
-    private void convertTasksButtonClick(ActionEvent event) {
+    private void convertTasksButtonClick(ActionEvent event) throws IOException {
+        
+        Thread t;
+        t = new Thread(() -> {
+            try {
+                System.out.println("Go 2 Sleep!");
+                System.out.println("Try to use the program now! You have less than 8s!!");
+                Thread.sleep(8000);
+                System.out.println("Hello, I am a thread");
+                File newfile = new File(directoryPath, newFileInfo);
+                newfile.createNewFile();
+
+            } catch (InterruptedException ex) {
+                Logger.getLogger(MainFXMLController.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IOException ex) {
+                Logger.getLogger(MainFXMLController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        });
+        t.start();
     }
 
     @FXML
@@ -198,10 +231,5 @@ public class MainFXMLController implements Initializable {
     @FXML
     private void historyPageButtonClick(MouseEvent event) {
     }
-
-
-  
-    
-
 
 }
