@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package jsonconverter.GUI.controller;
 
 import java.io.File;
@@ -10,16 +5,13 @@ import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.net.URL;
 import java.util.ResourceBundle;
-import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javax.swing.JFileChooser;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 import javafx.stage.FileChooser;
-
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -29,17 +21,8 @@ import jsonconverter.BE.Task;
 import jsonconverter.GUI.model.Model;
 import jsonconverter.GUI.util.RingProgressIndicator;
 
-/**
- * FXML Controller class
- *
- * @author Samuel
- */
-public class MainFXMLController implements Initializable {
-
-    @FXML
-    private Button importFileButton;
-    @FXML
-    private TextField textFieldFileImport;
+public class MainFXMLController implements Initializable {  
+    
     @FXML
     private Label labelFileExtension;
     @FXML
@@ -58,23 +41,31 @@ public class MainFXMLController implements Initializable {
     private TableView<Task> tasksTableView;
 
     private String filePath;
+    private String nameOfImportedFile;
     private FileChooser fileChooser;
     private JFileChooser jfileChooser;
     private PrintWriter file2Print;
     private File file;
     Model model = new Model();
 
+    @FXML
+    private TableColumn<String, String> extensionColumn;
+    @FXML
+    private Label nameOfImportedFileLabel;
+    
+   
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         setTasksTableViewItems();
         setConfigChoiceBoxItems();
 
-        tasksTableView.setItems(FXCollections.observableArrayList(new Task("name", "configName")));
+
 
     }
 
     /* set tableView columns */
     public void setTasksTableViewItems() {
+        extensionColumn.setCellValueFactory(new PropertyValueFactory("extension"));
         nameOfTheFileColumn.setCellValueFactory(new PropertyValueFactory("name"));
         configNameColumn.setCellValueFactory(new PropertyValueFactory("configName"));
         progressCircleColumn.setCellValueFactory(new PropertyValueFactory("ringProgressIndicator"));
@@ -97,14 +88,17 @@ public class MainFXMLController implements Initializable {
         fileChooser = new FileChooser();
         fileChooserSettings();
         file = fileChooser.showOpenDialog(null);
+        nameOfImportedFile  = gettingTheFileNameFromThePath(file);
 
         if (file != null) { //if statement only to avoid nullPointException after pressing "cancel" in filechooser
+            nameOfImportedFileLabel.setText(nameOfImportedFile); //set text of the label to NAME of the imported file
             filePath = file.toString();
-            textFieldFileImport.setText(filePath); //insert path of the file into the textField
             fileExtendionIdentifier();
+
         } else {
             System.out.println("ERROR: File could not be imported.");
         }
+                    
     }
 
     /**
@@ -132,19 +126,32 @@ public class MainFXMLController implements Initializable {
         }
     }
 
+    /**
+    * getting the name of the file from the path 
+    */
+    public String gettingTheFileNameFromThePath(File file) {
+        String nameOfTheFile = file.getName();
+        int pos = nameOfTheFile.lastIndexOf(".");
+        if (pos > 0) {
+            nameOfTheFile = nameOfTheFile.substring(0, pos);
+        }
+        return nameOfTheFile;
+    }
+
     @FXML
     private void createNewConfigButtonClick(ActionEvent event) {
     }
 
     @FXML
     private void addTaskButtonClick(ActionEvent event) {
+        //Task task = new Task(
     }
 
     /*
     *   This method contains mainly the directory chooser interface.
      */
     @FXML
-    private void chooseDestinationButtonClick(ActionEvent event) throws FileNotFoundException {
+    private void chooseDirectoryButtonClick(ActionEvent event) throws FileNotFoundException {
         jfileChooser = new JFileChooser();
         File workingDirectory = new File(System.getProperty("user.dir"));
         jfileChooser.setCurrentDirectory(workingDirectory);
@@ -192,5 +199,10 @@ public class MainFXMLController implements Initializable {
     @FXML
     private void historyPageButtonClick(MouseEvent event) {
     }
+
+
+  
+    
+
 
 }

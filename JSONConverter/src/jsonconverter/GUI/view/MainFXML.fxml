@@ -8,7 +8,6 @@
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
@@ -20,35 +19,33 @@
                <content>
                   <AnchorPane id="AnchorPane" onDragDetected="#historyPageButtonClick" prefHeight="564.0" prefWidth="908.0">
                      <children>
-                        <Button fx:id="importFileButton" layoutX="20.0" layoutY="72.0" mnemonicParsing="false" onAction="#importFileButtonClick" prefHeight="13.0" prefWidth="59.0" text="Import" />
+                        <Button layoutX="20.0" layoutY="72.0" mnemonicParsing="false" onAction="#importFileButtonClick" prefHeight="13.0" prefWidth="59.0" text="Import" />
                         <Button layoutX="21.0" layoutY="168.0" mnemonicParsing="false" onAction="#createNewConfigButtonClick" text="Create new" />
                         <Button layoutX="21.0" layoutY="265.0" mnemonicParsing="false" onAction="#addTaskButtonClick" text="Add Task" />
                         <Separator layoutX="202.0" layoutY="39.0" orientation="VERTICAL" prefHeight="521.0" prefWidth="4.0" />
                         <TableView fx:id="tasksTableView" layoutX="202.0" layoutY="39.0" prefHeight="459.0" prefWidth="705.0">
                           <columns>
-                            <TableColumn fx:id="nameOfTheFileColumn" prefWidth="208.34767150878906" text="NAME" />
-                            <TableColumn fx:id="configNameColumn" prefWidth="242.0" text="CONGIF NAME" />
-                              <TableColumn fx:id="progressCircleColumn" maxWidth="50.0" minWidth="50.0" prefWidth="50.0" />
-                              <TableColumn fx:id="stopButtonColumn" prefWidth="92.0" />
-                              <TableColumn fx:id="pauseButtonColumn" prefWidth="79.00006103515625" />
+                              <TableColumn fx:id="extensionColumn" prefWidth="44.0" />
+                            <TableColumn fx:id="nameOfTheFileColumn" prefWidth="223.0" text="NAME" />
+                            <TableColumn fx:id="configNameColumn" prefWidth="245.0" text="CONGIF NAME" />
+                              <TableColumn fx:id="progressCircleColumn" maxWidth="335.0" minWidth="0.0" prefWidth="59.0" />
+                              <TableColumn fx:id="stopButtonColumn" prefWidth="68.0" />
+                              <TableColumn fx:id="pauseButtonColumn" prefWidth="65.0" />
                           </columns>
                         </TableView>
-                        <Button layoutX="227.0" layoutY="513.0" mnemonicParsing="false" onAction="#chooseDestinationButtonClick" text="Choose Destination" />
+                        <Button layoutX="227.0" layoutY="513.0" mnemonicParsing="false" onAction="#chooseDirectoryButtonClick" text="Choose Directory" />
                         <Button layoutX="399.0" layoutY="513.0" mnemonicParsing="false" onAction="#convertTasksButtonClick" text="CONVERT" />
                         <Button layoutX="588.0" layoutY="512.0" mnemonicParsing="false" onAction="#pauseTasksButtonClick" prefHeight="27.0" prefWidth="138.0" text="PAUSE PROCESS" />
                         <Button layoutX="745.0" layoutY="513.0" mnemonicParsing="false" onAction="#deleteTasksButtonClick" prefHeight="27.0" prefWidth="138.0" text="DELETE PROCESS" />
                         <ChoiceBox fx:id="configChoiceBox" layoutX="20.0" layoutY="129.0" prefWidth="150.0" />
-                        <TextField fx:id="textFieldFileImport" editable="false" layoutX="21.0" layoutY="17.0" promptText="Destination path" />
-                        <Label fx:id="labelFileExtension" layoutX="113.0" layoutY="42.0" text=".XXX">
+
+
+                        <Label fx:id="labelFileExtension" layoutX="109.0" layoutY="34.0" text=".XXX">
                            <font>
                               <Font size="14.0" />
                            </font>
                         </Label>
-                        <Label fx:id="labelFileExtension1" layoutX="21.0" layoutY="42.0" text="File extension:" underline="true">
-                           <font>
-                              <Font size="14.0" />
-                           </font>
-                        </Label>
+                        <Label fx:id="nameOfImportedFileLabel" layoutX="20.0" layoutY="34.0" text="File name" />
                      </children>
                   </AnchorPane>
                </content>
