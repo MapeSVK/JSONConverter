@@ -1,9 +1,7 @@
 package jsonconverter.GUI.controller;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -92,12 +90,12 @@ public class MainFXMLController implements Initializable {
         fileChooser = new FileChooser();
         fileChooserSettings();
         file = fileChooser.showOpenDialog(null);
-        nameOfImportedFile = gettingTheFileNameFromThePath(file);
 
         if (file != null) { //if statement only to avoid nullPointException after pressing "cancel" in filechooser
             nameOfImportedFileLabel.setText(nameOfImportedFile); //set text of the label to NAME of the imported file
             filePath = file.toString();
             fileExtendionIdentifier();
+            nameOfImportedFile = gettingTheFileNameFromThePath(file);
 
         } else {
             System.out.println("ERROR: File could not be imported.");
@@ -150,7 +148,7 @@ public class MainFXMLController implements Initializable {
     private void addTaskButtonClick(ActionEvent event) {
         //Task task = new Task(
     }
-
+    
     /*
     *   This method contains mainly the directory chooser interface.
      */
@@ -164,16 +162,14 @@ public class MainFXMLController implements Initializable {
         if (jfileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
             directoryPath = jfileChooser.getSelectedFile().getAbsoluteFile();
             System.out.println("Get current directory: " + directoryPath);
-
         } else {
             System.out.println("No Selection ");
         }
-
     }
 
     @FXML
     private void convertTasksButtonClick(ActionEvent event) throws IOException {
-        
+
         Thread t;
         t = new Thread(() -> {
             try {
@@ -195,6 +191,7 @@ public class MainFXMLController implements Initializable {
 
     @FXML
     private void pauseTasksButtonClick(ActionEvent event) {
+
     }
 
     @FXML
