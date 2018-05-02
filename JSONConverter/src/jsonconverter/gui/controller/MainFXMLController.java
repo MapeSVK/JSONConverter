@@ -48,8 +48,8 @@ public class MainFXMLController implements Initializable {
     private File file;
     private File directoryPath;
     String newFileName;
-    String newFileExtension;
-    String newFileInfo;
+    final String newFileExtension = ".json";
+    private String newFileInfo  = newFileName + newFileExtension;
 
     Model model = new Model();
 
@@ -171,10 +171,7 @@ public class MainFXMLController implements Initializable {
 
     @FXML
     private void convertTasksButtonClick(ActionEvent event) throws IOException {
-        newFileName = "Test";
-        newFileExtension = ".csv";
-        newFileInfo = newFileName + newFileExtension;
-        System.out.println(newFileInfo);
+        newFileName = "Test"; //Name needs to be indicate! It's just an example
         File newfile = new File(directoryPath, newFileInfo);
         newfile.createNewFile();
     }
