@@ -8,7 +8,10 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javax.swing.JFileChooser;
 import javafx.scene.control.Label;
@@ -18,14 +21,16 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import jsonconverter.BE.Task;
+import jsonconverter.DAL.readAndSave.CSV;
+import jsonconverter.DAL.readAndSave.IConverter;
 import jsonconverter.GUI.model.Model;
 import jsonconverter.GUI.util.RingProgressIndicator;
 
 public class MainFXMLController implements Initializable {
 
-    @FXML
-    private Label labelFileExtension;
     @FXML
     private TableColumn<Task, String> nameOfTheFileColumn;
     @FXML
@@ -40,8 +45,10 @@ public class MainFXMLController implements Initializable {
     private ChoiceBox<String> configChoiceBox;
     @FXML
     private TableView<Task> tasksTableView;
-
+    
+    private IConverter converter;
     private String filePath;
+    private String fileType;
     private String nameOfImportedFile;
     private FileChooser fileChooser;
     private JFileChooser jfileChooser;
@@ -93,7 +100,6 @@ public class MainFXMLController implements Initializable {
         nameOfImportedFile = gettingTheFileNameFromThePath(file);
 
         if (file != null) { //if statement only to avoid nullPointException after pressing "cancel" in filechooser
-            nameOfImportedFileLabel.setText(nameOfImportedFile); //set text of the label to NAME of the imported file
             filePath = file.toString();
             fileExtendionIdentifier();
 
@@ -120,11 +126,14 @@ public class MainFXMLController implements Initializable {
      */
     private void fileExtendionIdentifier() {
         if (filePath.endsWith(".csv")) {
-            labelFileExtension.setText(".csv");
-        } else if (filePath.endsWith("xlsx")) {
-            labelFileExtension.setText(".xlsx");
+            fileType=".csv";
+            nameOfImportedFileLabel.setText(nameOfImportedFile+".csv");  //set text of the label to NAME of the imported file
+            converter = new CSV(filePath);
+        } else if (filePath.endsWith(".xlsx")) {
+            fileType=".xlsx";
+             nameOfImportedFileLabel.setText(nameOfImportedFile+".xlsx");  
         } else {
-            labelFileExtension.setText("???");
+            nameOfImportedFileLabel.setText(nameOfImportedFile+".???");
         }
     }
 
@@ -141,7 +150,16 @@ public class MainFXMLController implements Initializable {
     }
 
     @FXML
-    private void createNewConfigButtonClick(ActionEvent event) {
+    private void createNewConfigButtonClick(ActionEvent event) throws IOException {
+       Parent root;
+                  Stage stage = new Stage();
+                  FXMLLoader loader = new FXMLLoader(getClass().getResource("/jsonconverter/GUI/view/ConfigFXML.fxml"));
+                  root = loader.load();
+                  ConfigFXMLController controller = loader.getController();
+                  controller.setFileTypeAndConverter(fileType, converter);
+                  stage.initModality(Modality.APPLICATION_MODAL);
+                  stage.setScene(new Scene(root));
+                  stage.showAndWait();
     }
 
     @FXML
@@ -172,7 +190,7 @@ public class MainFXMLController implements Initializable {
     @FXML
     private void convertTasksButtonClick(ActionEvent event) throws IOException {
         newFileName = "Test";
-        newFileExtension = ".csv";
+        newFileExtension = ".json";
         newFileInfo = newFileName + newFileExtension;
         System.out.println(newFileInfo);
         File newfile = new File(directoryPath, newFileInfo);
@@ -181,10 +199,16 @@ public class MainFXMLController implements Initializable {
 
     @FXML
     private void pauseTasksButtonClick(ActionEvent event) {
+       model.getCSVHeaders(converter).forEach((key, value) -> System.out.printf("%s = %s\n", key, value));
+          
     }
 
     @FXML
     private void deleteTasksButtonClick(ActionEvent event) {
+        for(String line : model.getCSVValues(converter))
+        {
+            System.out.println(line);
+        }
     }
 
     @FXML
