@@ -51,7 +51,7 @@ public class MainFXMLController implements Initializable {
     @FXML
     private ChoiceBox<String> configChoiceBox;
     @FXML
-    private TableView<Task> tasksTableView;
+    private TableView<TaskInOurProgram> tasksTableView;
     
     private IConverter converter;
     private String filePath;
@@ -126,19 +126,16 @@ public class MainFXMLController implements Initializable {
         fileChooserSettings();
         file = fileChooser.showOpenDialog(null);
 
-<<<<<<< HEAD
+
         if (file != null) { 
             filePath = file.toString();         
             nameOfImportedFile = gettingTheFileNameFromThePath(file);
             fileExtendionIdentifier();
             nameOfImportedFileLabel.setText(nameOfImportedFile);
 
-=======
-        if (file != null) { //if statement only to avoid nullPointException after pressing "cancel" in filechooser
-            filePath = file.toString();           
-            nameOfImportedFile = gettingTheFileNameFromThePath(file);
-             fileExtendionIdentifier();
->>>>>>> c4b6938f01b85935741f7bda0285dadeaa83c875
+
+      
+
         } else {
             System.out.println("ERROR: File could not be imported.");
         }
