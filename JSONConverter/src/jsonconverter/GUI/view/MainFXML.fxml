@@ -22,7 +22,7 @@
                         <Button layoutX="20.0" layoutY="72.0" mnemonicParsing="false" onAction="#importFileButtonClick" prefHeight="13.0" prefWidth="59.0" text="Import" />
                         <Button layoutX="21.0" layoutY="168.0" mnemonicParsing="false" onAction="#createNewConfigButtonClick" text="Create new" />
                         <Button layoutX="21.0" layoutY="265.0" mnemonicParsing="false" onAction="#addTaskButtonClick" text="Add Task" />
-                        <Separator layoutX="202.0" layoutY="39.0" orientation="VERTICAL" prefHeight="521.0" prefWidth="4.0" />
+                        <Separator layoutX="201.0" layoutY="39.0" orientation="VERTICAL" prefHeight="521.0" prefWidth="4.0" />
                         <TableView fx:id="tasksTableView" layoutX="202.0" layoutY="39.0" prefHeight="459.0" prefWidth="705.0">
                           <columns>
                               <TableColumn fx:id="extensionColumn" prefWidth="44.0" />

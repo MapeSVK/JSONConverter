@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import jsonconverter.BE.TaskInOurProgram;
 import jsonconverter.BLL.BLLManager;
 import jsonconverter.DAL.readAndSave.IConverter;
 
@@ -14,7 +15,9 @@ public class Model {
     
     /* contains configs from the database which can be chosen in the choiceBox */
     private ObservableList<String> configChoiceBoxItems = FXCollections.observableArrayList();
-
+    /* contains every task in tableview */
+    private ObservableList<TaskInOurProgram> tasksInTheTableView = FXCollections.observableArrayList();
+   
     
     /* importing configs from the database and then adding them to the configChoiceBoxItems ObservableArrayList */
     public void addConfigsToConfigChoiceBox() {
@@ -32,6 +35,19 @@ public class Model {
     {
         return manager.getCSVHeaders(converter);
     }
+    /* adding tasks to the observableArrayList */
+    public void addTask(TaskInOurProgram task){
+        tasksInTheTableView.add(task);
+    }
+    
+    /* getting observableArrayList with the tasks */
+    public ObservableList<TaskInOurProgram> getTasksInTheTableView() {
+        return tasksInTheTableView;
+    }
+    
+    
+    
+    
     
     public ArrayList<String> getCSVValues(IConverter converter)
     {
