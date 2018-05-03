@@ -81,7 +81,7 @@ public class MainFXMLController implements Initializable {
     /* set tableView columns */
     public void setTasksTableViewItems() {
         extensionColumn.setCellValueFactory(new PropertyValueFactory("extensionOfTheFile"));
-        nameOfTheFileColumn.setCellValueFactory(new PropertyValueFactory("name"));
+        nameOfTheFileColumn.setCellValueFactory(new PropertyValueFactory("nameOfTheFile"));
         configNameColumn.setCellValueFactory(new PropertyValueFactory("configName"));
         
         stopButtonColumn.setCellValueFactory(new PropertyValueFactory("stopTask"));
@@ -116,11 +116,11 @@ public class MainFXMLController implements Initializable {
         fileChooserSettings();
         file = fileChooser.showOpenDialog(null);
 
-        if (file != null) { //if statement only to avoid nullPointException after pressing "cancel" in filechooser
-            nameOfImportedFileLabel.setText(nameOfImportedFile); //set text of the label to NAME of the imported file
-            filePath = file.toString();
-            fileExtendionIdentifier();
+        if (file != null) { 
+            filePath = file.toString();         
             nameOfImportedFile = gettingTheFileNameFromThePath(file);
+            fileExtendionIdentifier();
+            nameOfImportedFileLabel.setText(nameOfImportedFile);
 
         } else {
             System.out.println("ERROR: File could not be imported.");
@@ -191,6 +191,7 @@ public class MainFXMLController implements Initializable {
         
         /* ADDING */
         System.out.println(nameOfImportedFile);
+        
         if (isRightNameOfTheFile == true && isConfigSet == true && isRightExtension == true) {
             TaskInOurProgram task = new TaskInOurProgram(nameOfImportedFile, configChoiceBox.getSelectionModel().getSelectedItem(), 
                     labelFileExtension.getText());
@@ -227,6 +228,7 @@ public class MainFXMLController implements Initializable {
         t.setDaemon(true);
         return t;
       }
+      
     });
 
 
@@ -237,23 +239,23 @@ public class MainFXMLController implements Initializable {
         
         
 
-        Thread t;
-        t = new Thread(() -> {
-            try {
-                System.out.println("Go 2 Sleep!");
-                System.out.println("Try to use the program now! You have less than 8s!!");
-                Thread.sleep(8000);
-                System.out.println("Hello, I am a thread");
-                File newfile = new File(directoryPath, newFileInfo);
-                newfile.createNewFile();
-
-            } catch (InterruptedException ex) {
-                Logger.getLogger(MainFXMLController.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (IOException ex) {
-                Logger.getLogger(MainFXMLController.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        });
-        t.start();
+//        Thread t;
+//        t = new Thread(() -> {
+//            try {
+//                System.out.println("Go 2 Sleep!");
+//                System.out.println("Try to use the program now! You have less than 8s!!");
+//                Thread.sleep(8000);
+//                System.out.println("Hello, I am a thread");
+//                File newfile = new File(directoryPath, newFileInfo);
+//                newfile.createNewFile();
+//
+//            } catch (InterruptedException ex) {
+//                Logger.getLogger(MainFXMLController.class.getName()).log(Level.SEVERE, null, ex);
+//            } catch (IOException ex) {
+//                Logger.getLogger(MainFXMLController.class.getName()).log(Level.SEVERE, null, ex);
+//            }
+//        });
+//        t.start();
     }
 
     @FXML

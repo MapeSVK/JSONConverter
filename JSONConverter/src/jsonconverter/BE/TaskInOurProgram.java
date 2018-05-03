@@ -39,13 +39,14 @@ public class TaskInOurProgram extends Task<Void> {
       this.updateProgress(ProgressIndicator.INDETERMINATE_PROGRESS, 1);
       this.updateMessage("Waiting...");
       
-        System.out.println("tvoja mamka");
+        System.out.println("START CONVERSION");
         
       this.updateMessage("Running...");
       for (int i = 0; i < NUM_ITERATIONS; i++) {
         updateProgress((1.0 * i) / NUM_ITERATIONS, 1);
         
-        System.out.println("tvoj tatko");
+          System.out.println("FINISH CONVERSION");
+        
         
       }
       this.updateMessage("Done");
