@@ -3,28 +3,25 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package jsonconverter.BLL;
+package jsonconverter.DAL.facade;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import jsonconverter.DAL.facade.DALFacade;
 import jsonconverter.DAL.readAndSave.IConverter;
 
 /**
  *
- * @author Samuel
+ * @author Pepe15224
  */
-public class BLLManager {
-    private DALFacade manager = new DALFacade();
-    
+public class DALFacade {
+
     public HashMap<String, Integer> getCSVHeaders(IConverter converter)
     {
-        return manager.getCSVHeaders(converter);
+        return converter.getCSVHeaders();
     }
     
     public ArrayList<String> getCSVValues(IConverter converter)
     {
-        return manager.getCSVValues(converter);
+        return converter.getCSVValues();
     }
-    
 }

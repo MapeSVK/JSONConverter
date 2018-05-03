@@ -9,9 +9,13 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javax.swing.JFileChooser;
 import javafx.scene.control.Label;
@@ -22,7 +26,11 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.ProgressBarTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import jsonconverter.BE.TaskInOurProgram;
+import jsonconverter.DAL.readAndSave.CSV;
+import jsonconverter.DAL.readAndSave.IConverter;
 import jsonconverter.GUI.model.Model;
 import jsonconverter.GUI.util.RingProgressIndicator;
 
@@ -43,9 +51,11 @@ public class MainFXMLController implements Initializable {
     @FXML
     private ChoiceBox<String> configChoiceBox;
     @FXML
-    private TableView<TaskInOurProgram> tasksTableView;
-
+    private TableView<Task> tasksTableView;
+    
+    private IConverter converter;
     private String filePath;
+    private String fileType;
     private String nameOfImportedFile;
     private FileChooser fileChooser;
     private JFileChooser jfileChooser;
@@ -67,7 +77,7 @@ public class MainFXMLController implements Initializable {
         setTasksTableViewItems();
         setConfigChoiceBoxItems();
 
-        tasksTableView.setItems(model.getTasksInTheTableView());
+     //   tasksTableView.setItems(model.getTasksInTheTableView());
 
         
         
@@ -116,12 +126,19 @@ public class MainFXMLController implements Initializable {
         fileChooserSettings();
         file = fileChooser.showOpenDialog(null);
 
+<<<<<<< HEAD
         if (file != null) { 
             filePath = file.toString();         
             nameOfImportedFile = gettingTheFileNameFromThePath(file);
             fileExtendionIdentifier();
             nameOfImportedFileLabel.setText(nameOfImportedFile);
 
+=======
+        if (file != null) { //if statement only to avoid nullPointException after pressing "cancel" in filechooser
+            filePath = file.toString();           
+            nameOfImportedFile = gettingTheFileNameFromThePath(file);
+             fileExtendionIdentifier();
+>>>>>>> c4b6938f01b85935741f7bda0285dadeaa83c875
         } else {
             System.out.println("ERROR: File could not be imported.");
         }
@@ -145,11 +162,14 @@ public class MainFXMLController implements Initializable {
      */
     private void fileExtendionIdentifier() {
         if (filePath.endsWith(".csv")) {
-            labelFileExtension.setText("csv");
+            fileType=".csv";
+            nameOfImportedFileLabel.setText(nameOfImportedFile+".csv");  //set text of the label to NAME of the imported file
+            converter = new CSV(filePath);
         } else if (filePath.endsWith(".xlsx")) {
-            labelFileExtension.setText("xlsx");
+            fileType=".xlsx";
+             nameOfImportedFileLabel.setText(nameOfImportedFile+".xlsx");  
         } else {
-            labelFileExtension.setText("???");
+            nameOfImportedFileLabel.setText(nameOfImportedFile+".???");
         }
     }
 
@@ -166,7 +186,16 @@ public class MainFXMLController implements Initializable {
     }
 
     @FXML
-    private void createNewConfigButtonClick(ActionEvent event) {
+    private void createNewConfigButtonClick(ActionEvent event) throws IOException {
+       Parent root;
+                  Stage stage = new Stage();
+                  FXMLLoader loader = new FXMLLoader(getClass().getResource("/jsonconverter/GUI/view/ConfigFXML.fxml"));
+                  root = loader.load();
+                  ConfigFXMLController controller = loader.getController();
+                  controller.setFileTypeAndConverter(fileType, converter);
+                  stage.initModality(Modality.APPLICATION_MODAL);
+                  stage.setScene(new Scene(root));
+                  stage.showAndWait();
     }
 
     @FXML
@@ -265,6 +294,10 @@ public class MainFXMLController implements Initializable {
 
     @FXML
     private void deleteTasksButtonClick(ActionEvent event) {
+        for(String line : model.getCSVValues(converter))
+        {
+            System.out.println(line);
+        }
     }
 
     @FXML
