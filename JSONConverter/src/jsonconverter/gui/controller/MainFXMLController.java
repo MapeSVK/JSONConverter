@@ -77,7 +77,7 @@ public class MainFXMLController implements Initializable {
         setTasksTableViewItems();
         setConfigChoiceBoxItems();
 
-     //   tasksTableView.setItems(model.getTasksInTheTableView());
+        tasksTableView.setItems(model.getTasksInTheTableView());
 
         
         
@@ -160,11 +160,11 @@ public class MainFXMLController implements Initializable {
     private void fileExtendionIdentifier() {
         if (filePath.endsWith(".csv")) {
             fileType=".csv";
-            nameOfImportedFileLabel.setText(nameOfImportedFile+".csv");  //set text of the label to NAME of the imported file
+            labelFileExtension.setText("csv");
             converter = new CSV(filePath);
         } else if (filePath.endsWith(".xlsx")) {
             fileType=".xlsx";
-             nameOfImportedFileLabel.setText(nameOfImportedFile+".xlsx");  
+            labelFileExtension.setText("xlsx");
         } else {
             nameOfImportedFileLabel.setText(nameOfImportedFile+".???");
         }
