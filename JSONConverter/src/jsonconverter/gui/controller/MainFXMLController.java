@@ -4,6 +4,9 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadFactory;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.concurrent.Task;
@@ -20,6 +23,7 @@ import javafx.stage.FileChooser;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.cell.ProgressBarTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
@@ -43,7 +47,7 @@ public class MainFXMLController implements Initializable {
     @FXML
     private TableColumn<TaskInOurProgram, Button> pauseButtonColumn;
     @FXML
-    private TableColumn<TaskInOurProgram, RingProgressIndicator> progressCircleColumn;
+    private TableColumn<TaskInOurProgram, Double> progressCircleColumn;
     @FXML
     private ChoiceBox<String> configChoiceBox;
     @FXML
@@ -75,7 +79,10 @@ public class MainFXMLController implements Initializable {
 
      //   tasksTableView.setItems(model.getTasksInTheTableView());
 
-
+        
+        
+    
+    
 
     }
     
@@ -83,13 +90,29 @@ public class MainFXMLController implements Initializable {
 
     /* set tableView columns */
     public void setTasksTableViewItems() {
-        extensionColumn.setCellValueFactory(new PropertyValueFactory("extension"));
+        extensionColumn.setCellValueFactory(new PropertyValueFactory("extensionOfTheFile"));
         nameOfTheFileColumn.setCellValueFactory(new PropertyValueFactory("name"));
         configNameColumn.setCellValueFactory(new PropertyValueFactory("configName"));
-        progressCircleColumn.setCellValueFactory(new PropertyValueFactory("ringProgressIndicator"));
+        
         stopButtonColumn.setCellValueFactory(new PropertyValueFactory("stopTask"));
         pauseButtonColumn.setCellValueFactory(new PropertyValueFactory("closeTask"));
+        
+        TableColumn<TaskInOurProgram, String> statusCol = new TableColumn("Status");
+    statusCol.setCellValueFactory(new PropertyValueFactory<TaskInOurProgram, String>(
+        "message"));
+    statusCol.setPrefWidth(75);
+    
+    
+    progressCircleColumn.setCellValueFactory(new PropertyValueFactory<TaskInOurProgram, Double>(
+        "progress"));
+    progressCircleColumn
+        .setCellFactory(ProgressBarTableCell.<TaskInOurProgram> forTableColumn());
+
+    tasksTableView.getColumns().addAll(statusCol);
+    
     }
+    
+    
 
     /* getting data from the model and setting this data in the choiceBox */
     public void setConfigChoiceBoxItems() {
@@ -187,10 +210,11 @@ public class MainFXMLController implements Initializable {
         }
         
         /* ADDING */
+        System.out.println(nameOfImportedFile);
         if (isRightNameOfTheFile == true && isConfigSet == true && isRightExtension == true) {
-//            TaskInOurProgram task = new TaskInOurProgram(nameOfImportedFile, configChoiceBox.getSelectionModel().getSelectedItem(), 
-//                    labelFileExtension.getText());
-//            model.addTask(task); 
+            TaskInOurProgram task = new TaskInOurProgram(nameOfImportedFile, configChoiceBox.getSelectionModel().getSelectedItem(), 
+                    labelFileExtension.getText());
+            model.addTask(task); 
         }
                 
     }
@@ -215,6 +239,23 @@ public class MainFXMLController implements Initializable {
 
     @FXML
     private void convertTasksButtonClick(ActionEvent event) throws IOException {
+        
+        ExecutorService executor = Executors.newFixedThreadPool(tasksTableView.getItems().size(), new ThreadFactory() {
+      @Override
+      public Thread newThread(Runnable r) {
+        Thread t = new Thread(r);
+        t.setDaemon(true);
+        return t;
+      }
+    });
+
+
+    for (TaskInOurProgram task : tasksTableView.getItems()) {
+      executor.execute(task);
+    }    
+    
+        
+        
 
         Thread t;
         t = new Thread(() -> {

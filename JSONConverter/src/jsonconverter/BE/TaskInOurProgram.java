@@ -3,12 +3,14 @@ package jsonconverter.BE;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Platform;
+import javafx.concurrent.Task;
+import javafx.scene.control.ProgressIndicator;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import jsonconverter.GUI.util.RingProgressIndicator;
 
 
-public class TaskInOurProgram {
+public class TaskInOurProgram extends Task<Void> {
     
     private String extensionOfTheFile;
     private String nameOfTheFile;
@@ -17,8 +19,9 @@ public class TaskInOurProgram {
     ImageView pauseTask;
     private final Image pauseImage = new Image("file:images/pause.png");
     private final Image closeImage = new Image("file:images/close.png");
+    public static final int NUM_ITERATIONS = 100;
   
-    public TaskInOurProgram(String name, String configName, String extensionOfTheFile /*RingProgressIndicator rpi*/) {
+    public TaskInOurProgram(String name, String configName, String extensionOfTheFile) {
         this.nameOfTheFile = name;
         this.configName = configName;
         this.extensionOfTheFile = extensionOfTheFile;
@@ -28,6 +31,26 @@ public class TaskInOurProgram {
         pauseTask.setImage(pauseImage);
        
         
+    }
+ 
+    
+    @Override
+    protected Void call() throws Exception {
+      this.updateProgress(ProgressIndicator.INDETERMINATE_PROGRESS, 1);
+      this.updateMessage("Waiting...");
+      
+        System.out.println("tvoja mamka");
+        
+      this.updateMessage("Running...");
+      for (int i = 0; i < NUM_ITERATIONS; i++) {
+        updateProgress((1.0 * i) / NUM_ITERATIONS, 1);
+        
+        System.out.println("tvoj tatko");
+        
+      }
+      this.updateMessage("Done");
+      this.updateProgress(1, 1);
+      return null;
     }
 
     public String getExtensionOfTheFile() {
