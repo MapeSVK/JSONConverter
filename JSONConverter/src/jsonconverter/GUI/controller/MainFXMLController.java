@@ -6,6 +6,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -23,7 +24,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import jsonconverter.BE.Task;
+import jsonconverter.BE.TaskInOurProgram;
 import jsonconverter.DAL.readAndSave.CSV;
 import jsonconverter.DAL.readAndSave.IConverter;
 import jsonconverter.GUI.model.Model;
@@ -72,7 +73,7 @@ public class MainFXMLController implements Initializable {
         setTasksTableViewItems();
         setConfigChoiceBoxItems();
 
-        tasksTableView.setItems(model.getTasksInTheTableView());
+     //   tasksTableView.setItems(model.getTasksInTheTableView());
 
 
 
@@ -103,10 +104,9 @@ public class MainFXMLController implements Initializable {
         file = fileChooser.showOpenDialog(null);
 
         if (file != null) { //if statement only to avoid nullPointException after pressing "cancel" in filechooser
-            filePath = file.toString();
-            fileExtendionIdentifier();
+            filePath = file.toString();           
             nameOfImportedFile = gettingTheFileNameFromThePath(file);
-
+             fileExtendionIdentifier();
         } else {
             System.out.println("ERROR: File could not be imported.");
         }
