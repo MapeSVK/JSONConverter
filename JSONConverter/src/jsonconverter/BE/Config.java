@@ -10,7 +10,7 @@ package jsonconverter.BE;
  * @author Pepe15224
  */
 public class Config {
-    
+
     private int id;
     private String fileType;
     private String name;
@@ -29,7 +29,6 @@ public class Config {
         this.name = name;
     }
 
-
     public String getFileType() {
         return fileType;
     }
@@ -37,7 +36,6 @@ public class Config {
     public void setFileType(String fileType) {
         this.fileType = fileType;
     }
-
 
     public int getId() {
         return id;
@@ -47,5 +45,4 @@ public class Config {
         this.id = id;
     }
 
-    
 }

@@ -9,8 +9,9 @@ package jsonconverter.BE;
  *
  * @author Pepe15224
  */
-public class CsvObject {
-    private String siteName="";
+public class JSONObject {
+
+    private String siteName = "";
     private String assetSerialNumber;
     private String type;
     private String externalWorkOrderId;
@@ -20,9 +21,23 @@ public class CsvObject {
     private String createdBy;
     private String name;
     private String priority;
-    private String status="NEW";
-    
+    private String status = "NEW";
     private Planning planning;
+
+    public JSONObject(String siteName, String assetSerialNumber, String type, String externalWorkOrderId, String systemStatus, String userStatus, String createdOn, String createdBy, String name, String priority, String status, Planning planning) {
+        this.assetSerialNumber = assetSerialNumber;
+        this.type = type;
+        this.externalWorkOrderId = externalWorkOrderId;
+        this.systemStatus = systemStatus;
+        this.userStatus = userStatus;
+        this.createdOn = createdOn;
+        this.createdBy = createdBy;
+        this.name = name;
+        this.priority = priority;
+        this.siteName = siteName;
+        this.status = status;
+        this.planning = planning;
+    }
 
     public Planning getPlanning() {
         return planning;
@@ -32,23 +47,6 @@ public class CsvObject {
         this.planning = planning;
     }
 
-
-    public CsvObject(String siteName, String assetSerialNumber, String type, String externalWorkOrderId, String systemStatus, String userStatus, String createdOn, String createdBy, String name, String priority,String status, Planning planning) {
-        this.assetSerialNumber = assetSerialNumber;
-        this.type = type;
-        this.externalWorkOrderId = externalWorkOrderId;
-        this.systemStatus = systemStatus;
-        this.userStatus = userStatus;
-        this.createdOn = createdOn;
-        this.createdBy = createdBy;
-        this.name = name;
-        this.priority = priority;
-        this.siteName= siteName;
-        this.status= status;
-        this.planning=planning;
-    }
-
-    
     public String getStatus() {
         return status;
     }
@@ -56,7 +54,6 @@ public class CsvObject {
     public void setStatus(String status) {
         this.status = status;
     }
-
 
     public String getPriority() {
         return priority;
@@ -66,7 +63,6 @@ public class CsvObject {
         this.priority = priority;
     }
 
-
     public String getName() {
         return name;
     }
@@ -74,7 +70,6 @@ public class CsvObject {
     public void setName(String name) {
         this.name = name;
     }
-
 
     public String getCreatedBy() {
         return createdBy;
@@ -84,7 +79,6 @@ public class CsvObject {
         this.createdBy = createdBy;
     }
 
-
     public String getCreatedOn() {
         return createdOn;
     }
@@ -92,7 +86,6 @@ public class CsvObject {
     public void setCreatedOn(String createdOn) {
         this.createdOn = createdOn;
     }
-
 
     public String getUserStatus() {
         return userStatus;
@@ -102,7 +95,6 @@ public class CsvObject {
         this.userStatus = userStatus;
     }
 
-
     public String getSystemStatus() {
         return systemStatus;
     }
@@ -110,7 +102,6 @@ public class CsvObject {
     public void setSystemStatus(String systemStatus) {
         this.systemStatus = systemStatus;
     }
-
 
     public String getExternalWorkOrderId() {
         return externalWorkOrderId;
@@ -120,7 +111,6 @@ public class CsvObject {
         this.externalWorkOrderId = externalWorkOrderId;
     }
 
-
     public String getType() {
         return type;
     }
@@ -129,7 +119,6 @@ public class CsvObject {
         this.type = type;
     }
 
-
     public String getAssetSerialNumber() {
         return assetSerialNumber;
     }
@@ -137,7 +126,6 @@ public class CsvObject {
     public void setAssetSerialNumber(String assetSerialNumber) {
         this.assetSerialNumber = assetSerialNumber;
     }
-
 
     public String getSiteName() {
         return siteName;

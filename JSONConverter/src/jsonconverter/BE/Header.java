@@ -10,7 +10,7 @@ package jsonconverter.BE;
  * @author Samuel
  */
 public class Header {
-    
+
     private int cinfig_id;
     private String siteName;
     private String assetSerialNumber;

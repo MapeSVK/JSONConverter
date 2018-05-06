@@ -3,12 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package jsonconverter.DAL.manager;
+package jsonconverter.DAL.readFilesAndWriteJson;
 
 /**
  *
- * @author Samuel
+ * @author Pepe15224
  */
-public class DALManager {
+public class ReadEXEL {
     
 }

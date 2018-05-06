@@ -12,13 +12,12 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */ 
+ */
 package jsonconverter.GUI.util;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
 import javafx.beans.property.DoubleProperty;
 import javafx.css.CssMetaData;
 import javafx.css.Styleable;
@@ -31,11 +30,12 @@ import com.sun.javafx.css.converters.SizeConverter;
 
 /**
  * Progress indicator showing a filling arc.
- * 
+ *
  * @author Andrea Vacondio
  *
  */
 public class RingProgressIndicator extends ProgressCircleIndicator {
+
     public RingProgressIndicator() {
         this.getStylesheets().add(RingProgressIndicator.class.getResource("/jsonconverter/GUI/styles/ringprogress.css").toExternalForm());
         this.getStyleClass().add("ringindicator");
@@ -79,6 +79,7 @@ public class RingProgressIndicator extends ProgressCircleIndicator {
     };
 
     private static class StyleableProperties {
+
         private static final CssMetaData<RingProgressIndicator, Number> RING_WIDTH = new CssMetaData<RingProgressIndicator, Number>(
                 "-fx-ring-width", SizeConverter.getInstance(), 22) {
 
@@ -94,6 +95,7 @@ public class RingProgressIndicator extends ProgressCircleIndicator {
         };
 
         public static final List<CssMetaData<? extends Styleable, ?>> STYLEABLES;
+
         static {
             final List<CssMetaData<? extends Styleable, ?>> styleables = new ArrayList<>(Control.getClassCssMetaData());
             styleables.addAll(ProgressCircleIndicator.getClassCssMetaData());
@@ -104,6 +106,6 @@ public class RingProgressIndicator extends ProgressCircleIndicator {
 
     @Override
     public List<CssMetaData<? extends Styleable, ?>> getControlCssMetaData() {
-    	 return StyleableProperties.STYLEABLES;
+        return StyleableProperties.STYLEABLES;
     }
 }
