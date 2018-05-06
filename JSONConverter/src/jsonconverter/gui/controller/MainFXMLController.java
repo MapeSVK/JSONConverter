@@ -28,11 +28,12 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import jdk.nashorn.tools.Shell;
 import jsonconverter.BE.TaskInOurProgram;
 import jsonconverter.DAL.readAndSave.CSV;
 import jsonconverter.DAL.readAndSave.IConverter;
 import jsonconverter.GUI.model.Model;
-import jsonconverter.GUI.util.RingProgressIndicator;
+
 
 public class MainFXMLController implements Initializable {
 
@@ -231,17 +232,18 @@ public class MainFXMLController implements Initializable {
      */
     @FXML
     private void chooseDirectoryButtonClick(ActionEvent event) {
-        jfileChooser = new JFileChooser();
-        jfileChooser.setCurrentDirectory(new java.io.File(".")); //It will set as directory the current folder project
-        jfileChooser.setDialogTitle("Select a directory");
-        jfileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-        jfileChooser.setAcceptAllFileFilterUsed(false);
-        if (jfileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
-            directoryPath = jfileChooser.getSelectedFile().getAbsoluteFile();
-            System.out.println("Get current directory: " + directoryPath);
-        } else {
-            System.out.println("No Selection ");
-        }
+//        jfileChooser = new JFileChooser();
+//        jfileChooser.setCurrentDirectory(new java.io.File(".")); //It will set as directory the current folder project
+//        jfileChooser.setDialogTitle("Select a directory");
+//        jfileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+//        jfileChooser.setAcceptAllFileFilterUsed(false);
+//        if (jfileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+//            directoryPath = jfileChooser.getSelectedFile().getAbsoluteFile();
+//            System.out.println("Get current directory: " + directoryPath);
+//        } else {
+//            System.out.println("No Selection ");
+//        }
+        
     }
 
     @FXML
