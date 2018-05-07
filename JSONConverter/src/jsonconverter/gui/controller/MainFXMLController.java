@@ -216,12 +216,12 @@ public class MainFXMLController implements Initializable {
     private void chooseDirectoryButtonClick(ActionEvent event) {
         DirectoryChooser directoryChooser = new DirectoryChooser();
         File selectedDirectory = directoryChooser.showDialog(buttonChooseDirectory.getScene().getWindow());
-        directoryChooser.setInitialDirectory(new java.io.File("."));
         directoryChooser.setTitle("Select a directory");
         if (selectedDirectory == null) {
             System.out.println("Nothing selected");
         } else {
             System.out.println("Selected directory: " + selectedDirectory.getAbsolutePath());
+            directoryPath = selectedDirectory.getAbsoluteFile();
         }
     }
 
