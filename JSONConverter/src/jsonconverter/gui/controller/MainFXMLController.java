@@ -13,6 +13,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javax.swing.JFileChooser;
 import javafx.scene.control.Label;
@@ -62,7 +63,7 @@ public class MainFXMLController implements Initializable {
     String newFileName = "Test";//Name needs to be indicate! It's just an example
     private final String newFileExtension = ".json";
     private String newFileInfo = newFileName + newFileExtension;
-
+    private String folderDirectoryForSavingJSON;
     Model model = new Model();
 
     @FXML
@@ -105,6 +106,7 @@ public class MainFXMLController implements Initializable {
     /* getting data from the model and setting this data in the choiceBox */
     public void setConfigChoiceBoxItems() {
         configChoiceBox.setItems(model.getConfigChoiceBoxItems());
+        configChoiceBox.setValue("Choose Configuration");
     }
 
     @FXML
@@ -214,25 +216,15 @@ public class MainFXMLController implements Initializable {
      */
     @FXML
     private void chooseDirectoryButtonClick(ActionEvent event) {
-//        jfileChooser = new JFileChooser();
-//        jfileChooser.setCurrentDirectory(new java.io.File(".")); //It will set as directory the current folder project
-//        jfileChooser.setDialogTitle("Select a directory");
-//        jfileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-//        jfileChooser.setAcceptAllFileFilterUsed(false);
-//        if (jfileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
-//            directoryPath = jfileChooser.getSelectedFile().getAbsoluteFile();
-//            System.out.println("Get current directory: " + directoryPath);
-//        } else {
-//            System.out.println("No Selection ");
-//        }
+       
         DirectoryChooser directoryChooser = new DirectoryChooser();
         File selectedDirectory = directoryChooser.showDialog(buttonChooseDirectory.getScene().getWindow());
         directoryChooser.setInitialDirectory(new java.io.File("."));
         directoryChooser.setTitle("Select a directory");
         if (selectedDirectory == null) {
-            System.out.println("Nothing selected");
+            Alert("Directory problem", "You did not select any directory. Try again!");
         } else {
-            System.out.println("Selected directory: " + selectedDirectory.getAbsolutePath());
+            folderDirectoryForSavingJSON = selectedDirectory.getAbsolutePath();
         }
     }
 
@@ -287,5 +279,15 @@ public class MainFXMLController implements Initializable {
     @FXML
     private void historyPageButtonClick(MouseEvent event) {
     }
+    
+    
+    private void Alert(String title,String text)
+    {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setContentText(text);
+        alert.showAndWait();
+    }
+    
 
 }
