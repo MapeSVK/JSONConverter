@@ -27,11 +27,12 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-
+import jdk.nashorn.tools.Shell;
 import jsonconverter.BE.TaskInOurProgram;
 import jsonconverter.DAL.readFilesAndWriteJson.ReadCSV;
 import jsonconverter.DAL.readFilesAndWriteJson.IConverter;
 import jsonconverter.GUI.model.Model;
+
 
 public class MainFXMLController implements Initializable {
 
@@ -52,8 +53,6 @@ public class MainFXMLController implements Initializable {
     @FXML
     private TableView<TaskInOurProgram> tasksTableView;
 
-    @FXML
-    private Button buttonChooseDirectory;
     private IConverter converter;
     private String filePath;
     private String fileType;
@@ -73,6 +72,8 @@ public class MainFXMLController implements Initializable {
     private TableColumn<String, String> extensionColumn;
     @FXML
     private Label nameOfImportedFileLabel;
+    @FXML
+    private Button buttonChooseDirectory;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -175,8 +176,8 @@ public class MainFXMLController implements Initializable {
         Stage stage = new Stage();
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/jsonconverter/GUI/view/ConfigFXML.fxml"));
         root = loader.load();
-        ConfigFXMLController controller = loader.getController();
-        controller.getConverter(converter);
+  //      ConfigFXMLController controller = loader.getController();
+       // controller.setFileTypeAndConverter(fileType, converter, file);
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.setScene(new Scene(root));
         stage.showAndWait();
@@ -212,6 +213,8 @@ public class MainFXMLController implements Initializable {
         }
 
     }
+    File newfile = new File(directoryPath, newFileInfo);
+
     /*
     *   This method contains mainly the directory chooser interface.
      */
@@ -268,11 +271,12 @@ public class MainFXMLController implements Initializable {
 
     @FXML
     private void pauseTasksButtonClick(ActionEvent event) {
- 
+
     }
 
     @FXML
     private void deleteTasksButtonClick(ActionEvent event) {
+
     }
 
     @FXML
