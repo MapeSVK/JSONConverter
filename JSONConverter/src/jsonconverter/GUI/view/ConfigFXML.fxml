@@ -5,7 +5,7 @@
 <?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jsonconverter.GUI.controller.ConfigFXMLController">
+<AnchorPane id="AnchorPane" prefHeight="382.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jsonconverter.GUI.controller.ConfigFXMLController">
    <children>
       <JFXTextField fx:id="siteNameField" layoutX="14.0" layoutY="26.0" />
       <JFXTextField fx:id="assetSerialNumberField" layoutX="14.0" layoutY="77.0" />
@@ -17,7 +17,7 @@
       <JFXTextField fx:id="statusField" layoutX="180.0" layoutY="244.0" />
       <JFXTextField fx:id="latestFinishDateField" layoutX="180.0" layoutY="307.0" />
       <JFXTextField fx:id="earliestStartDateField" layoutX="340.0" layoutY="26.0" />
-      <JFXButton layoutX="534.0" layoutY="347.0" onAction="#convert" text="Convert" />
+      <JFXButton layoutX="533.0" layoutY="343.0" onAction="#convert" text="Accept" />
       <JFXNodesList layoutX="93.0" layoutY="26.0" prefHeight="25.0" prefWidth="31.0" />
       <JFXTextField fx:id="createdByField" layoutX="180.0" layoutY="77.0" />
       <JFXTextField fx:id="nameField" layoutX="180.0" layoutY="132.0" />
