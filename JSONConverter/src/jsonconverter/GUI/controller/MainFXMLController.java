@@ -206,7 +206,6 @@ public class MainFXMLController implements Initializable {
         }
 
     }
-    File newfile = new File(directoryPath, newFileInfo);
 
     /*
     *   This method contains mainly the directory chooser interface.
@@ -240,15 +239,15 @@ public class MainFXMLController implements Initializable {
 //        for (TaskInOurProgram task : tasksTableView.getItems()) {
 //            executor.execute(task);
 //        }
-        Thread t;
-        t = new Thread(() -> {
+        Thread testThread;
+        testThread = new Thread(() -> {
             try {
                 System.out.println("Go 2 Sleep!");
-                System.out.println("Try to use the program now! You have less than 8s!!");
-                Thread.sleep(8000);
+                System.out.println("Try to use the program now! You have less than 6s!!");
+                Thread.sleep(6000);
                 System.out.println("Hello, I am a thread and your file has been created");
-                File newfile = new File(directoryPath, newFileInfo);
-                newfile.createNewFile();
+                File newFileToCreate = new File(directoryPath, newFileInfo);
+                newFileToCreate.createNewFile();
 
             } catch (InterruptedException ex) {
                 Logger.getLogger(MainFXMLController.class.getName()).log(Level.SEVERE, null, ex);
@@ -256,7 +255,7 @@ public class MainFXMLController implements Initializable {
                 Logger.getLogger(MainFXMLController.class.getName()).log(Level.SEVERE, null, ex);
             }
         });
-        t.start();
+        testThread.start();
     }
 
     @FXML
