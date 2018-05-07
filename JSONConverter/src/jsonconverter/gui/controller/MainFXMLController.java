@@ -59,8 +59,6 @@ public class MainFXMLController implements Initializable {
     private String newFileName = "Test";//Name needs to be indicate! It's just an example
     private final String newFileExtension = ".json";
     private String newFileInfo = newFileName + newFileExtension;
-
-    private String folderDirectoryForSavingJSON;
     Model model = new Model();
 
     @FXML
@@ -221,11 +219,8 @@ public class MainFXMLController implements Initializable {
         if (selectedDirectory == null) {
             Alert("Directory problem", "You did not select any directory. Try again!");
         } else {
-
-            folderDirectoryForSavingJSON = selectedDirectory.getAbsolutePath();
             System.out.println("Selected directory: " + selectedDirectory.getAbsolutePath());
             directoryPath = selectedDirectory.getAbsoluteFile();
-
         }
     }
 
