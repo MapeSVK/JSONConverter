@@ -7,10 +7,13 @@ package jsonconverter.GUI.controller;
 
 import com.jfoenix.controls.JFXTextField;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
+import javafx.scene.control.TextField;
 import jsonconverter.BE.Config;
 import jsonconverter.DAL.readFilesAndWriteJson.IConverter;
 import jsonconverter.GUI.model.Model;
@@ -58,6 +61,9 @@ public class ConfigFXMLController implements Initializable {
     private JFXTextField estimatedTimeField;
     @FXML
     private JFXTextField headerNameField;
+    
+    ArrayList<JFXTextField> arrayListWithTextFields = new ArrayList<JFXTextField>();
+    boolean isValid;
 
     /**
      * Initializes the controller class.
@@ -76,7 +82,9 @@ public class ConfigFXMLController implements Initializable {
 
     @FXML
     private void convert(ActionEvent event) {
-        createAndSaveConfig();
+      //  if (isValid == true) {
+            createAndSaveConfig();
+     //   }
     }
 
     /* binds textfields with autocompletion */
@@ -97,6 +105,7 @@ public class ConfigFXMLController implements Initializable {
         TextFields.bindAutoCompletion(latestStartDateField, model.getOnlyFileHeaders(converter));
         TextFields.bindAutoCompletion(estimatedTimeField, model.getOnlyFileHeaders(converter));
     }
+  
 
     /* creates config based on users texFields and saves it in the database */
     private void createAndSaveConfig() {
@@ -119,4 +128,47 @@ public class ConfigFXMLController implements Initializable {
         
         model.addToFakeConfigDatabase(newConfig); //<---------------------------FAKE CONFIG
     }
+    
+    private void arrayCreation() {
+        arrayListWithTextFields.add(siteNameField);
+        arrayListWithTextFields.add(assetSerialNumberField);
+        arrayListWithTextFields.add(typeField);
+        arrayListWithTextFields.add(externalWorkOrderIdField);
+        arrayListWithTextFields.add(userStatusField);
+        arrayListWithTextFields.add(createdOnField);
+        arrayListWithTextFields.add(createdByField);
+        arrayListWithTextFields.add(nameField);
+        arrayListWithTextFields.add(priorityField);
+        arrayListWithTextFields.add(statusField);
+        arrayListWithTextFields.add(systemStatusField);
+        arrayListWithTextFields.add(latestFinishDateField);
+        arrayListWithTextFields.add(earliestStartDateField);
+        arrayListWithTextFields.add(latestStartDateField);
+        arrayListWithTextFields.add(estimatedTimeField);
+        arrayListWithTextFields.add(headerNameField);
+    }
+    
+    
+    /* VALIDATION */
+    private void validation() {
+        for (String header : model.getOnlyFileHeaders(converter)) {
+            for (JFXTextField textField : arrayListWithTextFields) {
+                if (textField.getText().equals(header)) {
+                    isValid = true;
+                }
+                else {
+                    Alert("Error", "Text imputs are not good! Check each text and then try it again!");
+                }
+            }
+        }
+    }
+    
+    private void Alert(String title,String text)
+    {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setContentText(text);
+        alert.showAndWait();
+    }
+    
 }

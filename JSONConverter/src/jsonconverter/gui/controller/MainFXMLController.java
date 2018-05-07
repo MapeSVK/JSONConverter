@@ -4,20 +4,16 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ThreadFactory;
-import java.util.concurrent.TimeUnit;
-import javafx.concurrent.Service;
-import javafx.concurrent.Task;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javax.swing.JFileChooser;
 import javafx.scene.control.Label;
 import javafx.stage.FileChooser;
 import javafx.scene.control.ChoiceBox;
@@ -62,15 +58,15 @@ public class MainFXMLController implements Initializable {
     private String fileType;
     private String nameOfImportedFile;
     private FileChooser fileChooser;
-    private JFileChooser jfileChooser;
-    private File file;
+    private File fileChoosedByImport;
     private File directoryPath;
+    private boolean directoryPathHasBeenSelected = false;
     private String newFileName = "Test";//Name needs to be indicate! It's just an example
     private final String newFileExtension = ".json";
     private String newFileInfo = newFileName + newFileExtension;
     private Model model = new Model();
-    private Service service;
 
+    
     @FXML
     private TableColumn<String, String> extensionColumn;
     @FXML
@@ -116,11 +112,11 @@ public class MainFXMLController implements Initializable {
     private void importFileButtonClick(ActionEvent event) {
         fileChooser = new FileChooser();
         fileChooserSettings();
-        file = fileChooser.showOpenDialog(null);
+        fileChoosedByImport = fileChooser.showOpenDialog(null);
 
-        if (file != null) {
-            filePath = file.toString();
-            nameOfImportedFile = gettingTheFileNameFromThePath(file);
+        if (fileChoosedByImport != null) {
+            filePath = fileChoosedByImport.toString();
+            nameOfImportedFile = gettingTheFileNameFromThePath(fileChoosedByImport);
             fileExtendionIdentifier();
             nameOfImportedFileLabel.setText(nameOfImportedFile);
 
@@ -215,6 +211,8 @@ public class MainFXMLController implements Initializable {
         }
 
     }
+
+
     /*
     *   This method contains mainly the directory chooser interface.
      */
@@ -224,47 +222,51 @@ public class MainFXMLController implements Initializable {
         File selectedDirectory = directoryChooser.showDialog(buttonChooseDirectory.getScene().getWindow());
         directoryChooser.setTitle("Select a directory");
         if (selectedDirectory == null) {
-            System.out.println("Nothing selected");
+            Alert("Directory problem", "You did not select any directory. Try again!");
         } else {
             System.out.println("Selected directory: " + selectedDirectory.getAbsolutePath());
             directoryPath = selectedDirectory.getAbsoluteFile();
+            directoryPathHasBeenSelected = true;
         }
     }
 
     @FXML
     private void convertTasksButtonClick(ActionEvent event) throws IOException {
 
-        ExecutorService executor = Executors.newFixedThreadPool(tasksTableView.getItems().size(), new ThreadFactory() {
-            @Override
-            public Thread newThread(Runnable r) {
-                Thread t = new Thread(r);
-                t.setDaemon(true);
-                return t;
-            }
-
-        });
-
-        for (TaskInOurProgram task : tasksTableView.getItems()) {
-            executor.execute(task);
-        }
-
-//        Thread t;
-//        t = new Thread(() -> {
-//            try {
-//                System.out.println("Go 2 Sleep!");
-//                System.out.println("Try to use the program now! You have less than 8s!!");
-//                Thread.sleep(8000);
-//                System.out.println("Hello, I am a thread");
-//                File newfile = new File(directoryPath, newFileInfo);
-//                newfile.createNewFile();
-//
-//            } catch (InterruptedException ex) {
-//                Logger.getLogger(MainFXMLController.class.getName()).log(Level.SEVERE, null, ex);
-//            } catch (IOException ex) {
-//                Logger.getLogger(MainFXMLController.class.getName()).log(Level.SEVERE, null, ex);
+//        ExecutorService executor = Executors.newFixedThreadPool(tasksTableView.getItems().size(), new ThreadFactory() {
+//            @Override
+//            public Thread newThread(Runnable r) {
+//                Thread t = new Thread(r);
+//                t.setDaemon(true);
+//                return t;
 //            }
+//
 //        });
-//        t.start();
+//
+//        for (TaskInOurProgram task : tasksTableView.getItems()) {
+//            executor.execute(task);
+//        }
+        if (directoryPathHasBeenSelected == false) {
+            Alert("Directory problem", "You did not select any directory.");
+        } else {
+            Thread testThread;
+            testThread = new Thread(() -> {
+                try {
+                    System.out.println("Go 2 Sleep!");
+                    System.out.println("Try to use the program now! You have less than 6s!!");
+                    Thread.sleep(6000);
+                    System.out.println("Hello, I am a thread and your file has been created");
+                    File newFileToCreate = new File(directoryPath, newFileInfo);
+                    newFileToCreate.createNewFile();
+
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(MainFXMLController.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (IOException ex) {
+                    Logger.getLogger(MainFXMLController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            });
+            testThread.start();
+        }
     }
 
     @FXML
@@ -277,6 +279,13 @@ public class MainFXMLController implements Initializable {
 
     @FXML
     private void historyPageButtonClick(MouseEvent event) {
+    }
+
+    private void Alert(String title, String text) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setContentText(text);
+        alert.showAndWait();
     }
 
 }
