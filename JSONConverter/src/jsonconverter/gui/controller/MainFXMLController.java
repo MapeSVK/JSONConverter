@@ -7,9 +7,6 @@ import java.util.ResourceBundle;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -26,14 +23,13 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.ProgressBarTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.DirectoryChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import jdk.nashorn.tools.Shell;
 import jsonconverter.BE.TaskInOurProgram;
 import jsonconverter.DAL.readAndSave.CSV;
 import jsonconverter.DAL.readAndSave.IConverter;
 import jsonconverter.GUI.model.Model;
-
 
 public class MainFXMLController implements Initializable {
 
@@ -53,7 +49,8 @@ public class MainFXMLController implements Initializable {
     private ChoiceBox<String> configChoiceBox;
     @FXML
     private TableView<TaskInOurProgram> tasksTableView;
-    
+    @FXML
+    private Button buttonChooseDirectory;
     private IConverter converter;
     private String filePath;
     private String fileType;
@@ -80,62 +77,47 @@ public class MainFXMLController implements Initializable {
 
         tasksTableView.setItems(model.getTasksInTheTableView());
 
-        
-        
-    
-    
-
     }
-    
-    
 
     /* set tableView columns */
     public void setTasksTableViewItems() {
         extensionColumn.setCellValueFactory(new PropertyValueFactory("extensionOfTheFile"));
         nameOfTheFileColumn.setCellValueFactory(new PropertyValueFactory("nameOfTheFile"));
         configNameColumn.setCellValueFactory(new PropertyValueFactory("configName"));
-        
+
         stopButtonColumn.setCellValueFactory(new PropertyValueFactory("stopTask"));
         pauseButtonColumn.setCellValueFactory(new PropertyValueFactory("closeTask"));
-        
-        TableColumn<TaskInOurProgram, String> statusCol = new TableColumn("Status");
-    statusCol.setCellValueFactory(new PropertyValueFactory<TaskInOurProgram, String>(
-        "message"));
-    statusCol.setPrefWidth(75);
-    
-    
-    progressCircleColumn.setCellValueFactory(new PropertyValueFactory<TaskInOurProgram, Double>(
-        "progress"));
-    progressCircleColumn
-        .setCellFactory(ProgressBarTableCell.<TaskInOurProgram> forTableColumn());
 
-    tasksTableView.getColumns().addAll(statusCol);
-    
+        TableColumn<TaskInOurProgram, String> statusCol = new TableColumn("Status");
+        statusCol.setCellValueFactory(new PropertyValueFactory<TaskInOurProgram, String>(
+                "message"));
+        statusCol.setPrefWidth(75);
+
+        progressCircleColumn.setCellValueFactory(new PropertyValueFactory<TaskInOurProgram, Double>(
+                "progress"));
+        progressCircleColumn
+                .setCellFactory(ProgressBarTableCell.<TaskInOurProgram>forTableColumn());
+
+        tasksTableView.getColumns().addAll(statusCol);
+
     }
-    
-    
 
     /* getting data from the model and setting this data in the choiceBox */
     public void setConfigChoiceBoxItems() {
         configChoiceBox.setItems(model.getConfigChoiceBoxItems());
     }
 
-   
     @FXML
     private void importFileButtonClick(ActionEvent event) {
         fileChooser = new FileChooser();
         fileChooserSettings();
         file = fileChooser.showOpenDialog(null);
 
-
-        if (file != null) { 
-            filePath = file.toString();         
+        if (file != null) {
+            filePath = file.toString();
             nameOfImportedFile = gettingTheFileNameFromThePath(file);
             fileExtendionIdentifier();
             nameOfImportedFileLabel.setText(nameOfImportedFile);
-
-
-      
 
         } else {
             System.out.println("ERROR: File could not be imported.");
@@ -160,14 +142,14 @@ public class MainFXMLController implements Initializable {
      */
     private void fileExtendionIdentifier() {
         if (filePath.endsWith(".csv")) {
-            fileType=".csv";
+            fileType = ".csv";
             labelFileExtension.setText("csv");
             converter = new CSV(filePath);
         } else if (filePath.endsWith(".xlsx")) {
-            fileType=".xlsx";
+            fileType = ".xlsx";
             labelFileExtension.setText("xlsx");
         } else {
-            nameOfImportedFileLabel.setText(nameOfImportedFile+".???");
+            nameOfImportedFileLabel.setText(nameOfImportedFile + ".???");
         }
     }
 
@@ -185,15 +167,15 @@ public class MainFXMLController implements Initializable {
 
     @FXML
     private void createNewConfigButtonClick(ActionEvent event) throws IOException {
-       Parent root;
-                  Stage stage = new Stage();
-                  FXMLLoader loader = new FXMLLoader(getClass().getResource("/jsonconverter/GUI/view/ConfigFXML.fxml"));
-                  root = loader.load();
-                  ConfigFXMLController controller = loader.getController();
-                  controller.setFileTypeAndConverter(fileType, converter);
-                  stage.initModality(Modality.APPLICATION_MODAL);
-                  stage.setScene(new Scene(root));
-                  stage.showAndWait();
+        Parent root;
+        Stage stage = new Stage();
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/jsonconverter/GUI/view/ConfigFXML.fxml"));
+        root = loader.load();
+        ConfigFXMLController controller = loader.getController();
+        controller.setFileTypeAndConverter(fileType, converter);
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.setScene(new Scene(root));
+        stage.showAndWait();
     }
 
     @FXML
@@ -202,31 +184,31 @@ public class MainFXMLController implements Initializable {
         boolean isRightNameOfTheFile = false;
         boolean isConfigSet = false;
         boolean isRightExtension = false;
-        
+
         if (nameOfImportedFile != null && !nameOfImportedFile.equals("")) {
             isRightNameOfTheFile = true;
         }
-        
-        if (!configChoiceBox.getSelectionModel().getSelectedItem().equals("") && 
-                configChoiceBox.getSelectionModel().getSelectedItem() != null) {
+
+        if (!configChoiceBox.getSelectionModel().getSelectedItem().equals("")
+                && configChoiceBox.getSelectionModel().getSelectedItem() != null) {
             isConfigSet = true;
         }
-        
-        if (!labelFileExtension.getText().equals("") && labelFileExtension.getText() != null ) {
+
+        if (!labelFileExtension.getText().equals("") && labelFileExtension.getText() != null) {
             isRightExtension = true;
         }
-        
+
         /* ADDING */
         System.out.println(nameOfImportedFile);
-        
+
         if (isRightNameOfTheFile == true && isConfigSet == true && isRightExtension == true) {
-            TaskInOurProgram task = new TaskInOurProgram(nameOfImportedFile, configChoiceBox.getSelectionModel().getSelectedItem(), 
+            TaskInOurProgram task = new TaskInOurProgram(nameOfImportedFile, configChoiceBox.getSelectionModel().getSelectedItem(),
                     labelFileExtension.getText());
-            model.addTask(task); 
+            model.addTask(task);
         }
-                
+
     }
-    
+
     /*
     *   This method contains mainly the directory chooser interface.
      */
@@ -243,29 +225,33 @@ public class MainFXMLController implements Initializable {
 //        } else {
 //            System.out.println("No Selection ");
 //        }
-        
+        DirectoryChooser directoryChooser = new DirectoryChooser();
+        File selectedDirectory = directoryChooser.showDialog(buttonChooseDirectory.getScene().getWindow());
+        directoryChooser.setInitialDirectory(new java.io.File("."));
+        directoryChooser.setTitle("Select a directory");
+        if (selectedDirectory == null) {
+            System.out.println("Nothing selected");
+        } else {
+            System.out.println("Selected directory: " + selectedDirectory.getAbsolutePath());
+        }
     }
 
     @FXML
     private void convertTasksButtonClick(ActionEvent event) throws IOException {
-        
+
         ExecutorService executor = Executors.newFixedThreadPool(tasksTableView.getItems().size(), new ThreadFactory() {
-      @Override
-      public Thread newThread(Runnable r) {
-        Thread t = new Thread(r);
-        t.setDaemon(true);
-        return t;
-      }
-      
-    });
+            @Override
+            public Thread newThread(Runnable r) {
+                Thread t = new Thread(r);
+                t.setDaemon(true);
+                return t;
+            }
 
+        });
 
-    for (TaskInOurProgram task : tasksTableView.getItems()) {
-      executor.execute(task);
-    }    
-    
-        
-        
+        for (TaskInOurProgram task : tasksTableView.getItems()) {
+            executor.execute(task);
+        }
 
 //        Thread t;
 //        t = new Thread(() -> {
@@ -293,8 +279,7 @@ public class MainFXMLController implements Initializable {
 
     @FXML
     private void deleteTasksButtonClick(ActionEvent event) {
-        for(String line : model.getCSVValues(converter))
-        {
+        for (String line : model.getCSVValues(converter)) {
             System.out.println(line);
         }
     }
