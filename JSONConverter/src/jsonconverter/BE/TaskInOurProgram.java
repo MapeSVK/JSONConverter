@@ -12,12 +12,13 @@ public class TaskInOurProgram extends Task<Void> {
     private String extensionOfTheFile;
     private String nameOfTheFile;
     private String configName;
-    IConverter converter;
+    private Config config;
+    private IConverter converter;
     ImageView closeTask;
     ImageView pauseTask;
     private final Image pauseImage = new Image("file:images/pause.png");
     private final Image closeImage = new Image("file:images/close.png");
-  
+    
     public TaskInOurProgram(String name, String configName, String extensionOfTheFile) {
         this.nameOfTheFile = name;
         this.configName = configName;
@@ -89,6 +90,20 @@ public class TaskInOurProgram extends Task<Void> {
 
     public void setStopTask(ImageView stopTask) {
         this.pauseTask = pauseTask;
+    }
+    public Config getConfig() {
+        return config;
+    }
+
+    public void setConfig(Config config) {
+        this.config = config;
+    }
+    public IConverter getConverter() {
+        return converter;
+    }
+
+    public void setConverter(IConverter converter) {
+        this.converter = converter;
     }
 
 }

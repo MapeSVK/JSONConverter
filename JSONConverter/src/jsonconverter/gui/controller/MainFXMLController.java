@@ -7,6 +7,9 @@ import java.util.ResourceBundle;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.TimeUnit;
+import javafx.concurrent.Service;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -65,8 +68,8 @@ public class MainFXMLController implements Initializable {
     private String newFileName = "Test";//Name needs to be indicate! It's just an example
     private final String newFileExtension = ".json";
     private String newFileInfo = newFileName + newFileExtension;
-    
     private Model model = new Model();
+    private Service service;
 
     @FXML
     private TableColumn<String, String> extensionColumn;
@@ -206,6 +209,8 @@ public class MainFXMLController implements Initializable {
         if (isRightNameOfTheFile == true && isConfigSet == true && isRightExtension == true) {
             TaskInOurProgram task = new TaskInOurProgram(nameOfImportedFile, configChoiceBox.getSelectionModel().getSelectedItem().getConfigName(),
                     labelFileExtension.getText());
+            task.setConverter(converter);
+            task.setConfig(configChoiceBox.getValue());
             model.addTask(task);
         }
 
@@ -243,6 +248,32 @@ public class MainFXMLController implements Initializable {
             executor.execute(task);
         }
 
+     
+service = new Service() {
+            @Override
+            protected Task createTask() {
+                return new Task() {
+                    @Override
+                    protected Object call() throws Exception {
+                       for (TaskInOurProgram task : tasksTableView.getItems()) {
+                           if(task.isDone())
+        {
+            System.out.println("done");
+        }
+                           else
+        {
+      
+        
+     TimeUnit.SECONDS.sleep(3);
+        }
+     
+    }    
+                       return null;
+                    }
+                };
+            }
+        };
+service.start();
 //        Thread t;
 //        t = new Thread(() -> {
 //            try {
