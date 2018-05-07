@@ -56,6 +56,7 @@ public class MainFXMLController implements Initializable {
     private FileChooser fileChooser;
     private File fileChoosedByImport;
     private File directoryPath;
+    private boolean directoryPathHasBeenSelected = false;
     private String newFileName = "Test";//Name needs to be indicate! It's just an example
     private final String newFileExtension = ".json";
     private String newFileInfo = newFileName + newFileExtension;
@@ -220,6 +221,7 @@ public class MainFXMLController implements Initializable {
         } else {
             System.out.println("Selected directory: " + selectedDirectory.getAbsolutePath());
             directoryPath = selectedDirectory.getAbsoluteFile();
+            directoryPathHasBeenSelected = true;
         }
     }
 
@@ -239,23 +241,27 @@ public class MainFXMLController implements Initializable {
 //        for (TaskInOurProgram task : tasksTableView.getItems()) {
 //            executor.execute(task);
 //        }
-        Thread testThread;
-        testThread = new Thread(() -> {
-            try {
-                System.out.println("Go 2 Sleep!");
-                System.out.println("Try to use the program now! You have less than 6s!!");
-                Thread.sleep(6000);
-                System.out.println("Hello, I am a thread and your file has been created");
-                File newFileToCreate = new File(directoryPath, newFileInfo);
-                newFileToCreate.createNewFile();
+        if (directoryPathHasBeenSelected == false) {
+            Alert("Directory problem", "You did not select any directory.");
+        } else {
+            Thread testThread;
+            testThread = new Thread(() -> {
+                try {
+                    System.out.println("Go 2 Sleep!");
+                    System.out.println("Try to use the program now! You have less than 6s!!");
+                    Thread.sleep(6000);
+                    System.out.println("Hello, I am a thread and your file has been created");
+                    File newFileToCreate = new File(directoryPath, newFileInfo);
+                    newFileToCreate.createNewFile();
 
-            } catch (InterruptedException ex) {
-                Logger.getLogger(MainFXMLController.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (IOException ex) {
-                Logger.getLogger(MainFXMLController.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        });
-        testThread.start();
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(MainFXMLController.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (IOException ex) {
+                    Logger.getLogger(MainFXMLController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            });
+            testThread.start();
+        }
     }
 
     @FXML
