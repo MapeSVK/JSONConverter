@@ -65,15 +65,12 @@ public class MainFXMLController implements Initializable {
     private final String newFileExtension = ".json";
     private String newFileInfo = newFileName + newFileExtension;
     private Model model = new Model();
-    private Service service;
 
     
     @FXML
     private TableColumn<String, String> extensionColumn;
     @FXML
     private Label nameOfImportedFileLabel;
-    @FXML
-    private Button buttonChooseDirectory;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {

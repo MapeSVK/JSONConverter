@@ -5,6 +5,7 @@
  */
 package jsonconverter.GUI.controller;
 
+import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 import java.net.URL;
 import java.util.ArrayList;
@@ -14,6 +15,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 import jsonconverter.BE.Config;
 import jsonconverter.DAL.readFilesAndWriteJson.IConverter;
 import jsonconverter.GUI.model.Model;
@@ -64,13 +66,15 @@ public class ConfigFXMLController implements Initializable {
     
     ArrayList<JFXTextField> arrayListWithTextFields = new ArrayList<JFXTextField>();
     boolean isValid;
+    @FXML
+    private JFXButton saveConfigButton;
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-
+        
     }
 
     /* gets converter of imported file */
@@ -82,9 +86,16 @@ public class ConfigFXMLController implements Initializable {
 
     @FXML
     private void convert(ActionEvent event) {
-      //  if (isValid == true) {
+        //arrayCreation();
+       // validation();
+       // if (isValid == true) {
             createAndSaveConfig();
-     //   }
+            Stage stage = (Stage) saveConfigButton.getScene().getWindow();
+            stage.close();
+        //}
+//        else {
+//            Alert("Error", "Text imputs are not good! Check each text and then try it again!");
+//        }
     }
 
     /* binds textfields with autocompletion */
@@ -145,23 +156,23 @@ public class ConfigFXMLController implements Initializable {
         arrayListWithTextFields.add(earliestStartDateField);
         arrayListWithTextFields.add(latestStartDateField);
         arrayListWithTextFields.add(estimatedTimeField);
-        arrayListWithTextFields.add(headerNameField);
+        
     }
     
     
-    /* VALIDATION */
-    private void validation() {
-        for (String header : model.getOnlyFileHeaders(converter)) {
-            for (JFXTextField textField : arrayListWithTextFields) {
-                if (textField.getText().equals(header)) {
-                    isValid = true;
-                }
-                else {
-                    Alert("Error", "Text imputs are not good! Check each text and then try it again!");
-                }
-            }
-        }
-    }
+//    /* VALIDATION */
+//    private void validation() {
+//        for (String header : model.getOnlyFileHeaders(converter)) {
+//            for (JFXTextField textField : arrayListWithTextFields) {
+//                if (textField.getText().equals(header)) {
+//                    isValid = true;
+//                    
+//                }
+//                
+//                
+//            }
+//        }
+//    }
     
     private void Alert(String title,String text)
     {
@@ -170,5 +181,7 @@ public class ConfigFXMLController implements Initializable {
         alert.setContentText(text);
         alert.showAndWait();
     }
+    
+    
     
 }
