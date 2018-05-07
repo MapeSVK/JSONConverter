@@ -1,23 +1,20 @@
-
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package jsonconverter.GUI.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
-import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import jsonconverter.BE.CsvObject;
-import jsonconverter.BE.Header;
-import jsonconverter.BE.Planning;
-import jsonconverter.DAL.readAndSave.IConverter;
+import jsonconverter.BE.Config;
+import jsonconverter.DAL.readFilesAndWriteJson.IConverter;
 import jsonconverter.GUI.model.Model;
+import org.controlsfx.control.textfield.TextFields;
 
 /**
  * FXML Controller class
@@ -26,17 +23,9 @@ import jsonconverter.GUI.model.Model;
  */
 public class ConfigFXMLController implements Initializable {
 
-    private String fileType;
+    private Model model = new Model();
     private IConverter converter;
-    Header head;
-    Model model = new Model();
-    Integer[] saveNumbers = new Integer[16];
-    
-    public void setFileTypeAndConverter(String fileType, IConverter converter) {
-        this.fileType = fileType;
-        this.converter = converter;
-    }
-    
+
     @FXML
     private JFXTextField siteNameField;
     @FXML
@@ -45,87 +34,90 @@ public class ConfigFXMLController implements Initializable {
     private JFXTextField typeField;
     @FXML
     private JFXTextField externalWorkOrderIdField;
-    @FXML
     private JFXTextField systemStatus;
     @FXML
     private JFXTextField userStatusField;
     @FXML
     private JFXTextField createdOnField;
     @FXML
-    private JFXPasswordField createdByField;
+    private JFXTextField createdByField;
     @FXML
-    private JFXPasswordField nameField;
+    private JFXTextField nameField;
     @FXML
-    private JFXPasswordField priorityField;
+    private JFXTextField priorityField;
     @FXML
     private JFXTextField statusField;
-    @FXML
     private JFXTextField latestFinishDate;
-    @FXML
     private JFXTextField earliestStartDate;
+    private JFXTextField latestStartDate;
+    private JFXTextField estimatedTime;
     @FXML
-    private JFXPasswordField latestStartDate;
+    private JFXTextField systemStatusField;
     @FXML
-    private JFXPasswordField estimatedTime;
+    private JFXTextField latestFinishDateField;
+    @FXML
+    private JFXTextField earliestStartDateField;
+    @FXML
+    private JFXTextField latestStartDateField;
+    @FXML
+    private JFXTextField estimatedTimeField;
+    @FXML
+    private JFXTextField headerNameField;
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
-    }    
+
+    }
+
+    /* gets converter of imported file */
+    public void getConverter(IConverter converter) {
+        this.converter = converter;
+        addAutoCompletionToFields();
+    }
 
     @FXML
-    private void convert(ActionEvent event) throws IOException {
-        head = new Header(-1,
-               siteNameField.getText(),
-               assetSerialNumberField.getText(),
+    private void convert(ActionEvent event) {
+        createAndSaveConfig();
+    }
+
+    /* binds textfields with autocompletion */
+    private void addAutoCompletionToFields() {
+        TextFields.bindAutoCompletion(siteNameField, model.getOnlyFileHeaders(converter));
+        TextFields.bindAutoCompletion(assetSerialNumberField, model.getOnlyFileHeaders(converter));
+        TextFields.bindAutoCompletion(typeField, model.getOnlyFileHeaders(converter));
+        TextFields.bindAutoCompletion(externalWorkOrderIdField, model.getOnlyFileHeaders(converter));
+        TextFields.bindAutoCompletion(systemStatusField, model.getOnlyFileHeaders(converter));
+        TextFields.bindAutoCompletion(userStatusField, model.getOnlyFileHeaders(converter));
+        TextFields.bindAutoCompletion(createdOnField, model.getOnlyFileHeaders(converter));
+        TextFields.bindAutoCompletion(createdByField, model.getOnlyFileHeaders(converter));
+        TextFields.bindAutoCompletion(nameField, model.getOnlyFileHeaders(converter));
+        TextFields.bindAutoCompletion(priorityField, model.getOnlyFileHeaders(converter));
+        TextFields.bindAutoCompletion(statusField, model.getOnlyFileHeaders(converter));
+        TextFields.bindAutoCompletion(latestFinishDateField, model.getOnlyFileHeaders(converter));
+        TextFields.bindAutoCompletion(earliestStartDateField, model.getOnlyFileHeaders(converter));
+        TextFields.bindAutoCompletion(latestStartDateField, model.getOnlyFileHeaders(converter));
+        TextFields.bindAutoCompletion(estimatedTimeField, model.getOnlyFileHeaders(converter));
+    }
+
+    /* creates config based on users texFields and saves it in the database */
+    private void createAndSaveConfig() {
+        Config newConfig = new Config(-1, siteNameField.getText(),
+                assetSerialNumberField.getText(),
                 typeField.getText(),
                 externalWorkOrderIdField.getText(),
-                systemStatus.getText(),
+                systemStatusField.getText(),
                 userStatusField.getText(),
                 createdOnField.getText(),
                 createdByField.getText(),
                 nameField.getText(),
                 priorityField.getText(),
                 statusField.getText(),
-                latestFinishDate.getText(),
-                earliestStartDate.getText(),
-                latestStartDate.getText(),
-                estimatedTime.getText());
-        testJasonfile();
-    }
-    
-    private void testJasonfile() throws IOException
-    {
-       ObjectMapper mapper = new ObjectMapper(); 
-mapper.enable(SerializationFeature.INDENT_OUTPUT); 
-mapper.writeValue(System.out, testGetValue());
-    }
-    private List<CsvObject> testGetValue()
-    {
-         List<CsvObject> cobjectList = new ArrayList();
-        for(String line : model.getCSVValues(converter))
-        {
-            String[] fields = line.split(";");
-            CsvObject aaa = new CsvObject(fields[model.getCSVHeaders(converter).get(head.getSiteName())],
-                    fields[model.getCSVHeaders(converter).get(head.getAssetSerialNumber())],
-                    fields[model.getCSVHeaders(converter).get(head.getType())],
-                   fields[model.getCSVHeaders(converter).get(head.getExternalWorkOrderId())],
-                   fields[model.getCSVHeaders(converter).get(head.getSystemStatus())],
-                    fields[model.getCSVHeaders(converter).get(head.getUserStatus())], 
-                    fields[model.getCSVHeaders(converter).get(head.getCreatedOn())], 
-                    fields[model.getCSVHeaders(converter).get(head.getCreatedBy())],
-                    fields[model.getCSVHeaders(converter).get(head.getName())],
-                   fields[model.getCSVHeaders(converter).get(head.getPriority())],
-                    fields[model.getCSVHeaders(converter).get(head.getStatus())], 
-                    new Planning(fields[model.getCSVHeaders(converter).get(head.getLatestFinishDate())],
-                            fields[model.getCSVHeaders(converter).get(head.getEarliestStartDate())],
-                            fields[model.getCSVHeaders(converter).get(head.getLatestStartDate())], 
-                           fields[model.getCSVHeaders(converter).get(head.getEstimatedTime())]));
-            cobjectList.add(aaa);
-        }
-        return cobjectList;
+                latestFinishDateField.getText(),
+                earliestStartDateField.getText(),
+                latestStartDateField.getText(),
+                estimatedTimeField.getText());
     }
 }

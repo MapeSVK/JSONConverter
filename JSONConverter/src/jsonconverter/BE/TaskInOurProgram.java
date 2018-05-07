@@ -1,18 +1,14 @@
 package jsonconverter.BE;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import jsonconverter.DAL.readAndSave.IConverter;
-import jsonconverter.GUI.controller.ConfigFXMLController;
+import jsonconverter.DAL.readFilesAndWriteJson.IConverter;
 
 
 public class TaskInOurProgram extends Task<Void> {
-    
+
     private String extensionOfTheFile;
     private String nameOfTheFile;
     private String configName;
@@ -30,11 +26,9 @@ public class TaskInOurProgram extends Task<Void> {
         closeTask.setImage(closeImage);
         this.pauseTask = new ImageView();
         pauseTask.setImage(pauseImage);
-       
-        
+
     }
- 
-    
+
     @Override
     protected Void call() throws Exception {
       this.updateProgress(ProgressIndicator.INDETERMINATE_PROGRESS, 1);

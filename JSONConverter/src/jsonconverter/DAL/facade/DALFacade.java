@@ -7,7 +7,10 @@ package jsonconverter.DAL.facade;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import jsonconverter.DAL.readAndSave.IConverter;
+import java.util.List;
+import jsonconverter.BE.JSONObject;
+import jsonconverter.DAL.readFilesAndWriteJson.IConverter;
+import jsonconverter.DAL.readFilesAndWriteJson.WriteJSON;
 
 /**
  *
@@ -15,13 +18,26 @@ import jsonconverter.DAL.readAndSave.IConverter;
  */
 public class DALFacade {
 
-    public HashMap<String, Integer> getCSVHeaders(IConverter converter)
-    {
-        return converter.getCSVHeaders();
+    private WriteJSON createJson = new WriteJSON();
+
+    /* returns hashMap of headers from file (Headers are keys and numbers are values) */
+    public HashMap<String, Integer> getFileHeaders(IConverter converter) {
+        return converter.getFileHeaders();
+    }
+
+    /* returns values from the selected file */
+    public ArrayList<String> getFileValues(IConverter converter) {
+        return converter.getFileValues();
+    }
+
+    /* creates json file from JSONObject list */
+    public void createJsonFile(String fileName, String filePath, List<JSONObject> jsonList) {
+        createJson.createJsonFile(fileName, filePath, jsonList);
     }
     
-    public ArrayList<String> getCSVValues(IConverter converter)
+    /*returns list of Headers from the file */
+    public List<String> getOnlyFileHeaders(IConverter converter)
     {
-        return converter.getCSVValues();
+        return converter.getOnlyFileHeaders();
     }
 }
