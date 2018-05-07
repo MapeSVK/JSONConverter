@@ -65,14 +65,12 @@ public class MainFXMLController implements Initializable {
     private String newFileName = "Test";//Name needs to be indicate! It's just an example
     private final String newFileExtension = ".json";
     private String newFileInfo = newFileName + newFileExtension;
-<<<<<<< HEAD
+
     private String folderDirectoryForSavingJSON;
     Model model = new Model();
-=======
     
-    private Model model = new Model();
->>>>>>> cb0bb22775d2bb7c87c6380bafc2d26e2bc7e103
-
+   
+    
     @FXML
     private TableColumn<String, String> extensionColumn;
     @FXML
@@ -221,22 +219,18 @@ public class MainFXMLController implements Initializable {
      */
     @FXML
     private void chooseDirectoryButtonClick(ActionEvent event) {
-<<<<<<< HEAD
-       
-=======
->>>>>>> cb0bb22775d2bb7c87c6380bafc2d26e2bc7e103
         DirectoryChooser directoryChooser = new DirectoryChooser();
         File selectedDirectory = directoryChooser.showDialog(buttonChooseDirectory.getScene().getWindow());
         directoryChooser.setTitle("Select a directory");
         if (selectedDirectory == null) {
             Alert("Directory problem", "You did not select any directory. Try again!");
         } else {
-<<<<<<< HEAD
+
             folderDirectoryForSavingJSON = selectedDirectory.getAbsolutePath();
-=======
+
             System.out.println("Selected directory: " + selectedDirectory.getAbsolutePath());
             directoryPath = selectedDirectory.getAbsoluteFile();
->>>>>>> cb0bb22775d2bb7c87c6380bafc2d26e2bc7e103
+
         }
     }
 
