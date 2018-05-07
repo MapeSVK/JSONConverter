@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import jsonconverter.BE.Config;
 import jsonconverter.BE.JSONObject;
 import jsonconverter.BE.TaskInOurProgram;
 import jsonconverter.BLL.BLLManager;
@@ -18,17 +19,7 @@ public class Model {
     private ObservableList<String> configChoiceBoxItems = FXCollections.observableArrayList();
     /* contains every task in tableview */
     private ObservableList<TaskInOurProgram> tasksInTheTableView = FXCollections.observableArrayList();
-
-    /* importing configs from the database and then adding them to the configChoiceBoxItems ObservableArrayList */
-    public void addConfigsToConfigChoiceBox() {
-        configChoiceBoxItems.addAll("First", "Second", "Third"); // !temporary
-    }
-
-    /* calling the method which is responsible for adding items to observableArrayList and then getting this observableArrayList*/
-    public ObservableList<String> getConfigChoiceBoxItems() {
-        addConfigsToConfigChoiceBox();
-        return configChoiceBoxItems;
-    }
+ 
 
     /* returns hashMap of headers from file (Headers are keys and numbers are values) */
     public HashMap<String, Integer> getFileHeaders(IConverter converter) {
@@ -59,5 +50,21 @@ public class Model {
     public List<String> getOnlyFileHeaders(IConverter converter)
     {
         return manager.getOnlyFileHeaders(converter);
+    }
+    
+      //----------------------------------------------------------------SUPERFAKE DB------------------------------------------------------------------------------------------------
+    public List<Config> getFakeConfigDatabase() {
+        return manager.getFakeConfigDatabase();
+    }
+    
+    public void addToFakeConfigDatabase(Config config) {
+         manager.addToFakeConfigDatabase(config);
+         fakeConfig.add(config);
+    }
+    private ObservableList<Config> fakeConfig = FXCollections.observableArrayList();
+    
+    public ObservableList<Config> getFakeConfig()
+    {
+        return fakeConfig;
     }
 }

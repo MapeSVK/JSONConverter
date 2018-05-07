@@ -8,6 +8,7 @@ package jsonconverter.BLL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import jsonconverter.BE.Config;
 import jsonconverter.BE.JSONObject;
 import jsonconverter.DAL.facade.DALFacade;
 import jsonconverter.DAL.readFilesAndWriteJson.IConverter;
@@ -39,5 +40,14 @@ public class BLLManager {
     public List<String> getOnlyFileHeaders(IConverter converter)
     {
         return manager.getOnlyFileHeaders(converter);
+    }
+    
+     //----------------------------------------------------------------SUPERFAKE DB------------------------------------------------------------------------------------------------
+    public List<Config> getFakeConfigDatabase() {
+        return manager.getFakeConfigDatabase();
+    }
+    
+    public void addToFakeConfigDatabase(Config config) {
+        manager.addToFakeConfigDatabase(config);
     }
 }

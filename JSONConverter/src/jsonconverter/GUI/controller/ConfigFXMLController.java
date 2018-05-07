@@ -23,7 +23,7 @@ import org.controlsfx.control.textfield.TextFields;
  */
 public class ConfigFXMLController implements Initializable {
 
-    private Model model = new Model();
+    private Model model;
     private IConverter converter;
 
     @FXML
@@ -34,7 +34,6 @@ public class ConfigFXMLController implements Initializable {
     private JFXTextField typeField;
     @FXML
     private JFXTextField externalWorkOrderIdField;
-    private JFXTextField systemStatus;
     @FXML
     private JFXTextField userStatusField;
     @FXML
@@ -47,10 +46,6 @@ public class ConfigFXMLController implements Initializable {
     private JFXTextField priorityField;
     @FXML
     private JFXTextField statusField;
-    private JFXTextField latestFinishDate;
-    private JFXTextField earliestStartDate;
-    private JFXTextField latestStartDate;
-    private JFXTextField estimatedTime;
     @FXML
     private JFXTextField systemStatusField;
     @FXML
@@ -73,8 +68,9 @@ public class ConfigFXMLController implements Initializable {
     }
 
     /* gets converter of imported file */
-    public void getConverter(IConverter converter) {
+    public void getConverterandModel(IConverter converter,Model model) {
         this.converter = converter;
+        this.model=model;
         addAutoCompletionToFields();
     }
 
@@ -118,6 +114,9 @@ public class ConfigFXMLController implements Initializable {
                 latestFinishDateField.getText(),
                 earliestStartDateField.getText(),
                 latestStartDateField.getText(),
-                estimatedTimeField.getText());
+                estimatedTimeField.getText(),
+        headerNameField.getText());
+        
+        model.addToFakeConfigDatabase(newConfig); //<---------------------------FAKE CONFIG
     }
 }

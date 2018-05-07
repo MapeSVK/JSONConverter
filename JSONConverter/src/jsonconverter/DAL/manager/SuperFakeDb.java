@@ -14,7 +14,7 @@ import jsonconverter.BE.Config;
  * @author Samuel
  */
 public class SuperFakeDb {
-    
+    //SUPER FAKE DB
     private List<Config> fakeConfigDatabase = new ArrayList();
 
     public List<Config> getFakeConfigDatabase() {
@@ -22,7 +22,7 @@ public class SuperFakeDb {
     }
     
     public void addToFakeConfigDatabase(Config config) {
-        this.fakeConfigDatabase.add(config);
+        fakeConfigDatabase.add(config);
     }
 
 }

@@ -26,6 +26,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import jsonconverter.BE.Config;
 
 import jsonconverter.BE.TaskInOurProgram;
 import jsonconverter.DAL.readFilesAndWriteJson.ReadCSV;
@@ -47,7 +48,7 @@ public class MainFXMLController implements Initializable {
     @FXML
     private TableColumn<TaskInOurProgram, Double> progressCircleColumn;
     @FXML
-    private ChoiceBox<String> configChoiceBox;
+    private ChoiceBox<Config> configChoiceBox;
     @FXML
     private TableView<TaskInOurProgram> tasksTableView;
 
@@ -105,7 +106,7 @@ public class MainFXMLController implements Initializable {
 
     /* getting data from the model and setting this data in the choiceBox */
     public void setConfigChoiceBoxItems() {
-        configChoiceBox.setItems(model.getConfigChoiceBoxItems());
+        configChoiceBox.setItems(model.getFakeConfig()); // <---------------------------------------FAKE DB
     }
 
     @FXML
@@ -173,7 +174,7 @@ public class MainFXMLController implements Initializable {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/jsonconverter/GUI/view/ConfigFXML.fxml"));
         root = loader.load();
         ConfigFXMLController controller = loader.getController();
-        controller.getConverter(converter);
+        controller.getConverterandModel(converter,model);
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.setScene(new Scene(root));
         stage.showAndWait();
@@ -203,7 +204,7 @@ public class MainFXMLController implements Initializable {
         System.out.println(nameOfImportedFile);
 
         if (isRightNameOfTheFile == true && isConfigSet == true && isRightExtension == true) {
-            TaskInOurProgram task = new TaskInOurProgram(nameOfImportedFile, configChoiceBox.getSelectionModel().getSelectedItem(),
+            TaskInOurProgram task = new TaskInOurProgram(nameOfImportedFile, configChoiceBox.getSelectionModel().getSelectedItem().getConfigName(),
                     labelFileExtension.getText());
             model.addTask(task);
         }
@@ -263,7 +264,6 @@ public class MainFXMLController implements Initializable {
 
     @FXML
     private void pauseTasksButtonClick(ActionEvent event) {
- 
     }
 
     @FXML

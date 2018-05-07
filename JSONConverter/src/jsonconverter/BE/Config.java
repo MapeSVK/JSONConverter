@@ -29,7 +29,7 @@ public class Config {
     private String estimatedTime;
     private String configName;
 
-    public Config(int cinfig_id, String siteName, String assetSerialNumber, String type, String externalWorkOrderId, String systemStatus, String userStatus, String createdOn, String createdBy, String name, String priority, String status, String latestFinishDate, String earliestStartDate, String latestStartDate, String estimatedTime) {
+    public Config(int cinfig_id, String siteName, String assetSerialNumber, String type, String externalWorkOrderId, String systemStatus, String userStatus, String createdOn, String createdBy, String name, String priority, String status, String latestFinishDate, String earliestStartDate, String latestStartDate, String estimatedTime, String configName) {
         this.cinfig_id = cinfig_id;
         this.siteName = siteName;
         this.assetSerialNumber = assetSerialNumber;
@@ -46,6 +46,7 @@ public class Config {
         this.earliestStartDate = earliestStartDate;
         this.latestStartDate = latestStartDate;
         this.estimatedTime = estimatedTime;
+        this.configName = configName;
     }
 
     public String getConfigName() {
@@ -188,4 +189,5 @@ public class Config {
     public String toString() {
         return configName;
     }
+    
 }
