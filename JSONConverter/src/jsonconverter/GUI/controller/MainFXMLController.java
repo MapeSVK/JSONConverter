@@ -59,14 +59,12 @@ public class MainFXMLController implements Initializable {
     private String fileType;
     private String nameOfImportedFile;
     private FileChooser fileChooser;
-    private JFileChooser jfileChooser;
     private File file;
-    private File directoryPath;
     private String newFileName = "Test";//Name needs to be indicate! It's just an example
     private final String newFileExtension = ".json";
     private String newFileInfo = newFileName + newFileExtension;
 
-    private String folderDirectoryForSavingJSON;
+    private String directoryPathForSavingJSON;
     Model model = new Model();
     
    
@@ -226,10 +224,8 @@ public class MainFXMLController implements Initializable {
             Alert("Directory problem", "You did not select any directory. Try again!");
         } else {
 
-            folderDirectoryForSavingJSON = selectedDirectory.getAbsolutePath();
+            directoryPathForSavingJSON = selectedDirectory.getAbsolutePath();
 
-            System.out.println("Selected directory: " + selectedDirectory.getAbsolutePath());
-            directoryPath = selectedDirectory.getAbsoluteFile();
 
         }
     }
