@@ -13,6 +13,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javax.swing.JFileChooser;
 import javafx.scene.control.Label;
@@ -23,6 +24,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.ProgressBarTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.DirectoryChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import jdk.nashorn.tools.Shell;
@@ -62,13 +64,18 @@ public class MainFXMLController implements Initializable {
     private String newFileName = "Test";//Name needs to be indicate! It's just an example
     private final String newFileExtension = ".json";
     private String newFileInfo = newFileName + newFileExtension;
-    
-    private Model model = new Model();
 
+    private String folderDirectoryForSavingJSON;
+    Model model = new Model();
+    
+   
+    
     @FXML
     private TableColumn<String, String> extensionColumn;
     @FXML
     private Label nameOfImportedFileLabel;
+    @FXML
+    private Button buttonChooseDirectory;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -104,6 +111,7 @@ public class MainFXMLController implements Initializable {
     /* getting data from the model and setting this data in the choiceBox */
     public void setConfigChoiceBoxItems() {
         configChoiceBox.setItems(model.getConfigChoiceBoxItems());
+        configChoiceBox.setValue("Choose Configuration");
     }
 
     @FXML
@@ -214,18 +222,19 @@ public class MainFXMLController implements Initializable {
      */
     @FXML
     private void chooseDirectoryButtonClick(ActionEvent event) {
-//        jfileChooser = new JFileChooser();
-//        jfileChooser.setCurrentDirectory(new java.io.File(".")); //It will set as directory the current folder project
-//        jfileChooser.setDialogTitle("Select a directory");
-//        jfileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-//        jfileChooser.setAcceptAllFileFilterUsed(false);
-//        if (jfileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
-//            directoryPath = jfileChooser.getSelectedFile().getAbsoluteFile();
-//            System.out.println("Get current directory: " + directoryPath);
-//        } else {
-//            System.out.println("No Selection ");
-//        }
-        
+        DirectoryChooser directoryChooser = new DirectoryChooser();
+        File selectedDirectory = directoryChooser.showDialog(buttonChooseDirectory.getScene().getWindow());
+        directoryChooser.setTitle("Select a directory");
+        if (selectedDirectory == null) {
+            Alert("Directory problem", "You did not select any directory. Try again!");
+        } else {
+
+            folderDirectoryForSavingJSON = selectedDirectory.getAbsolutePath();
+
+            System.out.println("Selected directory: " + selectedDirectory.getAbsolutePath());
+            directoryPath = selectedDirectory.getAbsoluteFile();
+
+        }
     }
 
     @FXML
@@ -277,5 +286,15 @@ public class MainFXMLController implements Initializable {
     @FXML
     private void historyPageButtonClick(MouseEvent event) {
     }
+    
+    
+    private void Alert(String title,String text)
+    {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setContentText(text);
+        alert.showAndWait();
+    }
+    
 
 }
