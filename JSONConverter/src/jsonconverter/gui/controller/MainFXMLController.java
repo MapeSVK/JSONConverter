@@ -23,16 +23,19 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.ProgressBarTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.DirectoryChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+<<<<<<< HEAD
 import jdk.nashorn.tools.Shell;
 import jsonconverter.BE.JSONObject;
 import jsonconverter.BE.Planning;
+=======
+>>>>>>> 39a32db47f0841dec414a28726d961837d179f6d
 import jsonconverter.BE.TaskInOurProgram;
 import jsonconverter.DAL.readFilesAndWriteJson.ReadCSV;
 import jsonconverter.DAL.readFilesAndWriteJson.IConverter;
 import jsonconverter.GUI.model.Model;
-
 
 public class MainFXMLController implements Initializable {
 
@@ -52,7 +55,12 @@ public class MainFXMLController implements Initializable {
     private ChoiceBox<String> configChoiceBox;
     @FXML
     private TableView<TaskInOurProgram> tasksTableView;
+<<<<<<< HEAD
 
+=======
+    @FXML
+    private Button buttonChooseDirectory;
+>>>>>>> 39a32db47f0841dec414a28726d961837d179f6d
     private IConverter converter;
     private String filePath;
     private String fileType;
@@ -78,6 +86,10 @@ public class MainFXMLController implements Initializable {
         setConfigChoiceBoxItems();
 
         tasksTableView.setItems(model.getTasksInTheTableView());
+<<<<<<< HEAD
+=======
+
+>>>>>>> 39a32db47f0841dec414a28726d961837d179f6d
     }
 
     /* set tableView columns */
@@ -173,7 +185,11 @@ public class MainFXMLController implements Initializable {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/jsonconverter/GUI/view/ConfigFXML.fxml"));
         root = loader.load();
         ConfigFXMLController controller = loader.getController();
+<<<<<<< HEAD
         controller.getConverter(converter);
+=======
+        controller.setFileTypeAndConverter(fileType, converter);
+>>>>>>> 39a32db47f0841dec414a28726d961837d179f6d
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.setScene(new Scene(root));
         stage.showAndWait();
@@ -209,25 +225,25 @@ public class MainFXMLController implements Initializable {
         }
 
     }
+<<<<<<< HEAD
     File newfile = new File(directoryPath, newFileInfo);
+=======
+>>>>>>> 39a32db47f0841dec414a28726d961837d179f6d
 
     /*
     *   This method contains mainly the directory chooser interface.
      */
     @FXML
     private void chooseDirectoryButtonClick(ActionEvent event) {
-//        jfileChooser = new JFileChooser();
-//        jfileChooser.setCurrentDirectory(new java.io.File(".")); //It will set as directory the current folder project
-//        jfileChooser.setDialogTitle("Select a directory");
-//        jfileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-//        jfileChooser.setAcceptAllFileFilterUsed(false);
-//        if (jfileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
-//            directoryPath = jfileChooser.getSelectedFile().getAbsoluteFile();
-//            System.out.println("Get current directory: " + directoryPath);
-//        } else {
-//            System.out.println("No Selection ");
-//        }
-        
+        DirectoryChooser directoryChooser = new DirectoryChooser();
+        File selectedDirectory = directoryChooser.showDialog(buttonChooseDirectory.getScene().getWindow());
+        directoryChooser.setTitle("Select a directory");
+        if (selectedDirectory == null) {
+            System.out.println("Nothing selected");
+        } else {
+            System.out.println("Selected directory: " + selectedDirectory.getAbsolutePath());
+            directoryPath = selectedDirectory.getAbsoluteFile();
+        }
     }
 
     @FXML
@@ -273,7 +289,13 @@ public class MainFXMLController implements Initializable {
 
     @FXML
     private void deleteTasksButtonClick(ActionEvent event) {
+<<<<<<< HEAD
 
+=======
+        for (String line : model.getCSVValues(converter)) {
+            System.out.println(line);
+        }
+>>>>>>> 39a32db47f0841dec414a28726d961837d179f6d
     }
 
     @FXML

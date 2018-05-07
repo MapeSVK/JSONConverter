@@ -40,23 +40,6 @@ public class HostName {
         System.out.println("Host name: " + hostname);
         System.out.println("User name: " + userName);
         System.out.println("Time: " + sdf.format(new Date()));
-        try {
-            changeLookAndFeel();
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(HostName.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-
-    private void changeLookAndFeel() throws ClassNotFoundException {
-        String LNF = UIManager.getSystemLookAndFeelClassName();
-        try {
-            UIManager.setLookAndFeel(LNF);
-        } catch (InstantiationException ex) {
-            Logger.getLogger(HostName.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            Logger.getLogger(HostName.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (UnsupportedLookAndFeelException ex) {
-            Logger.getLogger(HostName.class.getName()).log(Level.SEVERE, null, ex);
-        }
+       
     }
 }
