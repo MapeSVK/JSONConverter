@@ -7,6 +7,7 @@ package jsonconverter.DAL.readFilesAndWriteJson;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  *
@@ -19,4 +20,7 @@ public interface IConverter {
 
     /* returns values from the file as a lines except for the first line */
     ArrayList<String> getFileValues();
+
+    /*returns list of Headers from the file */
+    List<String> getOnlyFileHeaders();
 }

@@ -26,11 +26,11 @@
                         <TableView fx:id="tasksTableView" layoutX="202.0" layoutY="39.0" prefHeight="459.0" prefWidth="705.0">
                           <columns>
                               <TableColumn fx:id="extensionColumn" prefWidth="44.0" />
-                            <TableColumn fx:id="nameOfTheFileColumn" prefWidth="223.0" text="NAME" />
-                            <TableColumn fx:id="configNameColumn" prefWidth="245.0" text="CONGIF NAME" />
-                              <TableColumn fx:id="progressCircleColumn" maxWidth="335.0" minWidth="0.0" prefWidth="59.0" />
-                              <TableColumn fx:id="stopButtonColumn" prefWidth="68.0" />
-                              <TableColumn fx:id="pauseButtonColumn" prefWidth="65.0" />
+                            <TableColumn fx:id="nameOfTheFileColumn" prefWidth="211.0" text="NAME" />
+                            <TableColumn fx:id="configNameColumn" prefWidth="212.0" text="CONGIF NAME" />
+                              <TableColumn fx:id="progressCircleColumn" maxWidth="335.0" minWidth="0.0" prefWidth="128.0" />
+                              <TableColumn fx:id="stopButtonColumn" prefWidth="57.0" />
+                              <TableColumn fx:id="pauseButtonColumn" prefWidth="52.0" />
                           </columns>
                         </TableView>
                         <Button layoutX="227.0" layoutY="513.0" mnemonicParsing="false" onAction="#chooseDirectoryButtonClick" text="Choose Directory" />

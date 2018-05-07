@@ -71,4 +71,26 @@ public class ReadCSV implements IConverter {
         return CSVValuesList;
     }
 
+    /*returns list of Headers from the file */
+    @Override
+    public List<String> getOnlyFileHeaders() {
+        List<String> headers = new ArrayList();
+        headers.clear();
+        String[] headersString = getAllLinesAsString().get(0).split(";");
+        for (int i = 0; i < headersString.length; i++) {
+            if (headers.contains(headersString[i])) {
+                String keyString = headersString[i];
+                int orderNumber = 1;
+                while (headers.contains(keyString)) {
+                    keyString = headersString[i];
+                    orderNumber++;
+                    keyString = keyString + orderNumber;
+                }
+                headers.add(keyString);
+            } else {
+                headers.add(headersString[i]);
+            }
+    }
+return headers;
+}
 }

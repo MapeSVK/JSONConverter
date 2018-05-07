@@ -34,4 +34,10 @@ public class BLLManager {
     public void createJsonFile(String fileName, String filePath, List<JSONObject> jsonList) {
         manager.createJsonFile(fileName, filePath, jsonList);
     }
+    
+    /*returns list of Headers from the file */
+    public List<String> getOnlyFileHeaders(IConverter converter)
+    {
+        return manager.getOnlyFileHeaders(converter);
+    }
 }

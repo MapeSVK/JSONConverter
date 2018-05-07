@@ -26,8 +26,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import jdk.nashorn.tools.Shell;
-import jsonconverter.BE.JSONObject;
-import jsonconverter.BE.Planning;
 import jsonconverter.BE.TaskInOurProgram;
 import jsonconverter.DAL.readFilesAndWriteJson.ReadCSV;
 import jsonconverter.DAL.readFilesAndWriteJson.IConverter;
@@ -172,8 +170,8 @@ public class MainFXMLController implements Initializable {
         Stage stage = new Stage();
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/jsonconverter/GUI/view/ConfigFXML.fxml"));
         root = loader.load();
-        ConfigFXMLController controller = loader.getController();
-        controller.getConverter(converter);
+  //      ConfigFXMLController controller = loader.getController();
+       // controller.setFileTypeAndConverter(fileType, converter, file);
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.setScene(new Scene(root));
         stage.showAndWait();
@@ -268,7 +266,7 @@ public class MainFXMLController implements Initializable {
 
     @FXML
     private void pauseTasksButtonClick(ActionEvent event) {
- 
+
     }
 
     @FXML

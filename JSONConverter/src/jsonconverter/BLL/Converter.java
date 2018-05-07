@@ -5,10 +5,14 @@
  */
 package jsonconverter.BLL;
 
+
+
 /**
  *
  * @author Samuel
  */
 public class Converter {
+    private BLLManager manager = new BLLManager();
+    private Integer[] lineNumbers = new Integer[16];
     
 }

@@ -9,6 +9,6 @@ package jsonconverter.DAL.manager;
  *
  * @author Samuel
  */
-public class ConectionManager {
+public class SuperFakeDb {
     
 }

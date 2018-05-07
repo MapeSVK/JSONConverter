@@ -34,4 +34,10 @@ public class DALFacade {
     public void createJsonFile(String fileName, String filePath, List<JSONObject> jsonList) {
         createJson.createJsonFile(fileName, filePath, jsonList);
     }
+    
+    /*returns list of Headers from the file */
+    public List<String> getOnlyFileHeaders(IConverter converter)
+    {
+        return converter.getOnlyFileHeaders();
+    }
 }
