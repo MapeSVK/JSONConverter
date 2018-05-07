@@ -62,10 +62,10 @@ public class MainFXMLController implements Initializable {
     private String newFileName = "Test";//Name needs to be indicate! It's just an example
     private final String newFileExtension = ".json";
     private String newFileInfo = newFileName + newFileExtension;
-
     private String directoryPathForSavingJSON;
     Model model = new Model();
     
+   
    
     
     @FXML
@@ -213,7 +213,7 @@ public class MainFXMLController implements Initializable {
         }
 
     }
-    File newfile = new File(directoryPath, newFileInfo);
+    
 
     /*
     *   This method contains mainly the directory chooser interface.
