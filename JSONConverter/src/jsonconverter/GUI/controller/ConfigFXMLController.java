@@ -89,17 +89,17 @@ public class ConfigFXMLController implements Initializable {
         TextFields.bindAutoCompletion(assetSerialNumberField, model.getOnlyFileHeaders(converter));
         TextFields.bindAutoCompletion(typeField, model.getOnlyFileHeaders(converter));
         TextFields.bindAutoCompletion(externalWorkOrderIdField, model.getOnlyFileHeaders(converter));
-        TextFields.bindAutoCompletion(systemStatus, model.getOnlyFileHeaders(converter));
+        TextFields.bindAutoCompletion(systemStatusField, model.getOnlyFileHeaders(converter));
         TextFields.bindAutoCompletion(userStatusField, model.getOnlyFileHeaders(converter));
         TextFields.bindAutoCompletion(createdOnField, model.getOnlyFileHeaders(converter));
         TextFields.bindAutoCompletion(createdByField, model.getOnlyFileHeaders(converter));
         TextFields.bindAutoCompletion(nameField, model.getOnlyFileHeaders(converter));
         TextFields.bindAutoCompletion(priorityField, model.getOnlyFileHeaders(converter));
         TextFields.bindAutoCompletion(statusField, model.getOnlyFileHeaders(converter));
-        TextFields.bindAutoCompletion(latestFinishDate, model.getOnlyFileHeaders(converter));
-        TextFields.bindAutoCompletion(earliestStartDate, model.getOnlyFileHeaders(converter));
-        TextFields.bindAutoCompletion(latestStartDate, model.getOnlyFileHeaders(converter));
-        TextFields.bindAutoCompletion(estimatedTime, model.getOnlyFileHeaders(converter));
+        TextFields.bindAutoCompletion(latestFinishDateField, model.getOnlyFileHeaders(converter));
+        TextFields.bindAutoCompletion(earliestStartDateField, model.getOnlyFileHeaders(converter));
+        TextFields.bindAutoCompletion(latestStartDateField, model.getOnlyFileHeaders(converter));
+        TextFields.bindAutoCompletion(estimatedTimeField, model.getOnlyFileHeaders(converter));
     }
 
     /* creates config based on users texFields and saves it in the database */

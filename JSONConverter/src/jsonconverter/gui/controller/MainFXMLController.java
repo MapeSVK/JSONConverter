@@ -26,12 +26,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-<<<<<<< HEAD
-import jdk.nashorn.tools.Shell;
-import jsonconverter.BE.JSONObject;
-import jsonconverter.BE.Planning;
-=======
->>>>>>> 39a32db47f0841dec414a28726d961837d179f6d
+
 import jsonconverter.BE.TaskInOurProgram;
 import jsonconverter.DAL.readFilesAndWriteJson.ReadCSV;
 import jsonconverter.DAL.readFilesAndWriteJson.IConverter;
@@ -55,12 +50,9 @@ public class MainFXMLController implements Initializable {
     private ChoiceBox<String> configChoiceBox;
     @FXML
     private TableView<TaskInOurProgram> tasksTableView;
-<<<<<<< HEAD
 
-=======
     @FXML
     private Button buttonChooseDirectory;
->>>>>>> 39a32db47f0841dec414a28726d961837d179f6d
     private IConverter converter;
     private String filePath;
     private String fileType;
@@ -86,10 +78,6 @@ public class MainFXMLController implements Initializable {
         setConfigChoiceBoxItems();
 
         tasksTableView.setItems(model.getTasksInTheTableView());
-<<<<<<< HEAD
-=======
-
->>>>>>> 39a32db47f0841dec414a28726d961837d179f6d
     }
 
     /* set tableView columns */
@@ -185,11 +173,7 @@ public class MainFXMLController implements Initializable {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/jsonconverter/GUI/view/ConfigFXML.fxml"));
         root = loader.load();
         ConfigFXMLController controller = loader.getController();
-<<<<<<< HEAD
         controller.getConverter(converter);
-=======
-        controller.setFileTypeAndConverter(fileType, converter);
->>>>>>> 39a32db47f0841dec414a28726d961837d179f6d
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.setScene(new Scene(root));
         stage.showAndWait();
@@ -225,11 +209,6 @@ public class MainFXMLController implements Initializable {
         }
 
     }
-<<<<<<< HEAD
-    File newfile = new File(directoryPath, newFileInfo);
-=======
->>>>>>> 39a32db47f0841dec414a28726d961837d179f6d
-
     /*
     *   This method contains mainly the directory chooser interface.
      */
@@ -289,13 +268,6 @@ public class MainFXMLController implements Initializable {
 
     @FXML
     private void deleteTasksButtonClick(ActionEvent event) {
-<<<<<<< HEAD
-
-=======
-        for (String line : model.getCSVValues(converter)) {
-            System.out.println(line);
-        }
->>>>>>> 39a32db47f0841dec414a28726d961837d179f6d
     }
 
     @FXML
