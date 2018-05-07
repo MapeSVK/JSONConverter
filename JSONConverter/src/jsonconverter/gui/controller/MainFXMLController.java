@@ -248,32 +248,6 @@ public class MainFXMLController implements Initializable {
             executor.execute(task);
         }
 
-     
-service = new Service() {
-            @Override
-            protected Task createTask() {
-                return new Task() {
-                    @Override
-                    protected Object call() throws Exception {
-                       for (TaskInOurProgram task : tasksTableView.getItems()) {
-                           if(task.isDone())
-        {
-            System.out.println("done");
-        }
-                           else
-        {
-      
-        
-     TimeUnit.SECONDS.sleep(3);
-        }
-     
-    }    
-                       return null;
-                    }
-                };
-            }
-        };
-service.start();
 //        Thread t;
 //        t = new Thread(() -> {
 //            try {

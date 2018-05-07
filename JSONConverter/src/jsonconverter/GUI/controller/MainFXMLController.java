@@ -7,6 +7,9 @@ import java.util.ResourceBundle;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.TimeUnit;
+import javafx.concurrent.Service;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -23,14 +26,15 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.ProgressBarTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.DirectoryChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import jdk.nashorn.tools.Shell;
+import jsonconverter.BE.Config;
+
 import jsonconverter.BE.TaskInOurProgram;
 import jsonconverter.DAL.readFilesAndWriteJson.ReadCSV;
 import jsonconverter.DAL.readFilesAndWriteJson.IConverter;
 import jsonconverter.GUI.model.Model;
-
 
 public class MainFXMLController implements Initializable {
 
@@ -47,10 +51,12 @@ public class MainFXMLController implements Initializable {
     @FXML
     private TableColumn<TaskInOurProgram, Double> progressCircleColumn;
     @FXML
-    private ChoiceBox<String> configChoiceBox;
+    private ChoiceBox<Config> configChoiceBox;
     @FXML
     private TableView<TaskInOurProgram> tasksTableView;
 
+    @FXML
+    private Button buttonChooseDirectory;
     private IConverter converter;
     private String filePath;
     private String fileType;
@@ -62,8 +68,8 @@ public class MainFXMLController implements Initializable {
     private String newFileName = "Test";//Name needs to be indicate! It's just an example
     private final String newFileExtension = ".json";
     private String newFileInfo = newFileName + newFileExtension;
-    
     private Model model = new Model();
+    private Service service;
 
     @FXML
     private TableColumn<String, String> extensionColumn;
@@ -103,7 +109,7 @@ public class MainFXMLController implements Initializable {
 
     /* getting data from the model and setting this data in the choiceBox */
     public void setConfigChoiceBoxItems() {
-        configChoiceBox.setItems(model.getConfigChoiceBoxItems());
+        configChoiceBox.setItems(model.getFakeConfig()); // <---------------------------------------FAKE DB
     }
 
     @FXML
@@ -170,8 +176,8 @@ public class MainFXMLController implements Initializable {
         Stage stage = new Stage();
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/jsonconverter/GUI/view/ConfigFXML.fxml"));
         root = loader.load();
-  //      ConfigFXMLController controller = loader.getController();
-       // controller.setFileTypeAndConverter(fileType, converter, file);
+        ConfigFXMLController controller = loader.getController();
+        controller.getConverterandModel(converter,model);
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.setScene(new Scene(root));
         stage.showAndWait();
@@ -201,31 +207,28 @@ public class MainFXMLController implements Initializable {
         System.out.println(nameOfImportedFile);
 
         if (isRightNameOfTheFile == true && isConfigSet == true && isRightExtension == true) {
-            TaskInOurProgram task = new TaskInOurProgram(nameOfImportedFile, configChoiceBox.getSelectionModel().getSelectedItem(),
+            TaskInOurProgram task = new TaskInOurProgram(nameOfImportedFile, configChoiceBox.getSelectionModel().getSelectedItem().getConfigName(),
                     labelFileExtension.getText());
+            task.setConverter(converter);
+            task.setConfig(configChoiceBox.getValue());
             model.addTask(task);
         }
 
     }
-    File newfile = new File(directoryPath, newFileInfo);
-
     /*
     *   This method contains mainly the directory chooser interface.
      */
     @FXML
     private void chooseDirectoryButtonClick(ActionEvent event) {
-//        jfileChooser = new JFileChooser();
-//        jfileChooser.setCurrentDirectory(new java.io.File(".")); //It will set as directory the current folder project
-//        jfileChooser.setDialogTitle("Select a directory");
-//        jfileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-//        jfileChooser.setAcceptAllFileFilterUsed(false);
-//        if (jfileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
-//            directoryPath = jfileChooser.getSelectedFile().getAbsoluteFile();
-//            System.out.println("Get current directory: " + directoryPath);
-//        } else {
-//            System.out.println("No Selection ");
-//        }
-        
+        DirectoryChooser directoryChooser = new DirectoryChooser();
+        File selectedDirectory = directoryChooser.showDialog(buttonChooseDirectory.getScene().getWindow());
+        directoryChooser.setTitle("Select a directory");
+        if (selectedDirectory == null) {
+            System.out.println("Nothing selected");
+        } else {
+            System.out.println("Selected directory: " + selectedDirectory.getAbsolutePath());
+            directoryPath = selectedDirectory.getAbsoluteFile();
+        }
     }
 
     @FXML
@@ -266,12 +269,10 @@ public class MainFXMLController implements Initializable {
 
     @FXML
     private void pauseTasksButtonClick(ActionEvent event) {
-
     }
 
     @FXML
     private void deleteTasksButtonClick(ActionEvent event) {
-
     }
 
     @FXML
