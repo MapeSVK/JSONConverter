@@ -67,14 +67,14 @@ public class ConfigFXMLController implements Initializable {
     ArrayList<JFXTextField> arrayListWithTextFields = new ArrayList<JFXTextField>();
     boolean isValid;
     @FXML
-    private JFXButton acceptButton;
+    private JFXButton saveConfigButton;
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-
+        
     }
 
     /* gets converter of imported file */
@@ -156,7 +156,7 @@ public class ConfigFXMLController implements Initializable {
         arrayListWithTextFields.add(earliestStartDateField);
         arrayListWithTextFields.add(latestStartDateField);
         arrayListWithTextFields.add(estimatedTimeField);
-        arrayListWithTextFields.add(headerNameField);
+        
     }
 
     /* VALIDATION */
