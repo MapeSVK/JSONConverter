@@ -58,12 +58,9 @@ public class MainFXMLController implements Initializable {
     private TableColumn<String, String> extensionColumn;
     @FXML
     private Label nameOfImportedFileLabel;
-
-    ExecutorService executor;
-    
-    
-    @FXML
+  @FXML
     private Button buttonChooseDirectory; //Do not remove it
+  
     private IConverter converter;
     private String filePath;
     private String fileType;
@@ -76,9 +73,8 @@ public class MainFXMLController implements Initializable {
     private final String newFileExtension = ".json";
     private String newFileInfo = newFileName + newFileExtension;
     private Model model = new Model();
-    private ExecutorService executor = Executors.newFixedThreadPool(4);
     private TaskInOurProgram task;
-       
+    private ExecutorService executor = Executors.newFixedThreadPool(4);
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         setTasksTableViewItems();
