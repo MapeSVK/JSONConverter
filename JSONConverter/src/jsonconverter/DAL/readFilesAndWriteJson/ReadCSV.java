@@ -90,7 +90,7 @@ public class ReadCSV implements IConverter {
             } else {
                 headers.add(headersString[i]);
             }
+        }
+        return headers;
     }
-return headers;
-}
 }

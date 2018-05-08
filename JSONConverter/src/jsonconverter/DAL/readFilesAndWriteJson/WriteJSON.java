@@ -19,12 +19,12 @@ import jsonconverter.BE.JSONObject;
  * @author Pepe15224
  */
 public class WriteJSON {
-    
+
     /* creates json file from JSONObject list */
-    public void createJsonFile(String fileName,String filePath,List<JSONObject> jsonList)
-    {
+    public void createJsonFile(String fileName, File filePath, List<JSONObject> jsonList) {
         try {
-            File fii = new File("filePath", fileName+".json");
+            System.out.println("kuuurwa");
+            File fii = new File(filePath, fileName + ".json");
             ObjectMapper mapper = new ObjectMapper();
             mapper.enable(SerializationFeature.INDENT_OUTPUT);
             mapper.writeValue(fii, jsonList);

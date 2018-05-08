@@ -63,7 +63,7 @@ public class ConfigFXMLController implements Initializable {
     private JFXTextField estimatedTimeField;
     @FXML
     private JFXTextField headerNameField;
-    
+
     ArrayList<JFXTextField> arrayListWithTextFields = new ArrayList<JFXTextField>();
     boolean isValid;
     @FXML
@@ -78,24 +78,24 @@ public class ConfigFXMLController implements Initializable {
     }
 
     /* gets converter of imported file */
-    public void getConverterandModel(IConverter converter,Model model) {
+    public void getConverterandModel(IConverter converter, Model model) {
         this.converter = converter;
-        this.model=model;
+        this.model = model;
         addAutoCompletionToFields();
     }
 
     @FXML
     private void convert(ActionEvent event) {
-        //arrayCreation();
-       // validation();
-       // if (isValid == true) {
-            createAndSaveConfig();
-            Stage stage = (Stage) saveConfigButton.getScene().getWindow();
-            stage.close();
-        //}
-//        else {
-//            Alert("Error", "Text imputs are not good! Check each text and then try it again!");
-//        }
+        if(model.checkIfConfigExists(createAnd()))
+        {
+             model.addToFakeConfigDatabase(createAnd()); //<---------------------------FAKE CONFIG
+             closeWindow();
+        }
+        else
+        {
+            Alert("Config already exists", "Config with this name already exists!");
+        }
+        
     }
 
     /* binds textfields with autocompletion */
@@ -116,10 +116,10 @@ public class ConfigFXMLController implements Initializable {
         TextFields.bindAutoCompletion(latestStartDateField, model.getOnlyFileHeaders(converter));
         TextFields.bindAutoCompletion(estimatedTimeField, model.getOnlyFileHeaders(converter));
     }
-  
+
 
     /* creates config based on users texFields and saves it in the database */
-    private void createAndSaveConfig() {
+    private Config createAnd() {
         Config newConfig = new Config(-1, siteNameField.getText(),
                 assetSerialNumberField.getText(),
                 typeField.getText(),
@@ -135,11 +135,11 @@ public class ConfigFXMLController implements Initializable {
                 earliestStartDateField.getText(),
                 latestStartDateField.getText(),
                 estimatedTimeField.getText(),
-        headerNameField.getText());
-        
-        model.addToFakeConfigDatabase(newConfig); //<---------------------------FAKE CONFIG
+                headerNameField.getText());
+
+        return newConfig;
     }
-    
+
     private void arrayCreation() {
         arrayListWithTextFields.add(siteNameField);
         arrayListWithTextFields.add(assetSerialNumberField);
@@ -158,30 +158,30 @@ public class ConfigFXMLController implements Initializable {
         arrayListWithTextFields.add(estimatedTimeField);
         
     }
-    
-    
-//    /* VALIDATION */
-//    private void validation() {
-//        for (String header : model.getOnlyFileHeaders(converter)) {
-//            for (JFXTextField textField : arrayListWithTextFields) {
-//                if (textField.getText().equals(header)) {
-//                    isValid = true;
-//                    
-//                }
-//                
-//                
-//            }
-//        }
-//    }
-    
-    private void Alert(String title,String text)
-    {
+
+    /* VALIDATION */
+    private void validation() {
+        for (String header : model.getOnlyFileHeaders(converter)) {
+            for (JFXTextField textField : arrayListWithTextFields) {
+                if (textField.getText().equals(header)) {
+                    isValid = true;
+                } else {
+                    Alert("Error", "Text imputs are not good! Check each text and then try it again!");
+                }
+            }
+        }
+    }
+
+    private void Alert(String title, String text) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(title);
         alert.setContentText(text);
         alert.showAndWait();
     }
-    
-    
-    
+
+    private void closeWindow()
+    {
+        Stage stage = (Stage) acceptButton.getScene().getWindow();
+        stage.close();
+    }
 }

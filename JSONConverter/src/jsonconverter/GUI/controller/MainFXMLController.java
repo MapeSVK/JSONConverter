@@ -4,8 +4,13 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.Set;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.concurrent.Service;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -50,9 +55,16 @@ public class MainFXMLController implements Initializable {
     private ChoiceBox<Config> configChoiceBox;
     @FXML
     private TableView<TaskInOurProgram> tasksTableView;
-
+      @FXML
+    private TableColumn<String, String> extensionColumn;
     @FXML
-    private Button buttonChooseDirectory;
+    private Label nameOfImportedFileLabel;
+
+    ExecutorService executor;
+    
+    
+    @FXML
+    private Button buttonChooseDirectory; //Do not remove it
     private IConverter converter;
     private String filePath;
     private String fileType;
@@ -173,7 +185,7 @@ public class MainFXMLController implements Initializable {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/jsonconverter/GUI/view/ConfigFXML.fxml"));
         root = loader.load();
         ConfigFXMLController controller = loader.getController();
-        controller.getConverterandModel(converter,model);
+        controller.getConverterandModel(converter, model);
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.setScene(new Scene(root));
         stage.showAndWait();
@@ -207,11 +219,12 @@ public class MainFXMLController implements Initializable {
                     labelFileExtension.getText());
             task.setConverter(converter);
             task.setConfig(configChoiceBox.getValue());
+            task.setFilePath(directoryPath);
+            task.setFileName(nameOfImportedFile);
             model.addTask(task);
         }
 
     }
-
 
     /*
     *   This method contains mainly the directory chooser interface.
@@ -232,49 +245,35 @@ public class MainFXMLController implements Initializable {
 
     @FXML
     private void convertTasksButtonClick(ActionEvent event) throws IOException {
-
-//        ExecutorService executor = Executors.newFixedThreadPool(tasksTableView.getItems().size(), new ThreadFactory() {
+         TaskInOurProgram task = tasksTableView.getSelectionModel().getSelectedItem();
+//        service = new Service() {
 //            @Override
-//            public Thread newThread(Runnable r) {
-//                Thread t = new Thread(r);
-//                t.setDaemon(true);
-//                return t;
+//            protected Task createTask() {
+//                return task;
 //            }
-//
-//        });
-//
-//        for (TaskInOurProgram task : tasksTableView.getItems()) {
-//            executor.execute(task);
-//        }
-        if (directoryPathHasBeenSelected == false) {
-            Alert("Directory problem", "You did not select any directory.");
-        } else {
-            Thread testThread;
-            testThread = new Thread(() -> {
-                try {
-                    System.out.println("Go 2 Sleep!");
-                    System.out.println("Try to use the program now! You have less than 6s!!");
-                    Thread.sleep(6000);
-                    System.out.println("Hello, I am a thread and your file has been created");
-                    File newFileToCreate = new File(directoryPath, newFileInfo);
-                    newFileToCreate.createNewFile();
-
-                } catch (InterruptedException ex) {
-                    Logger.getLogger(MainFXMLController.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (IOException ex) {
-                    Logger.getLogger(MainFXMLController.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            });
-            testThread.start();
-        }
+//        };
+//        service.start();
+executor = Executors.newFixedThreadPool(1);
+        executor.submit(task);
+        executor.shutdown();
     }
-
+ boolean akurwa=false;
     @FXML
-    private void pauseTasksButtonClick(ActionEvent event) {
+    private void pauseTasksButtonClick(ActionEvent event) throws InterruptedException {
+
     }
 
     @FXML
     private void deleteTasksButtonClick(ActionEvent event) {
+        System.out.println("----------Start-------------");
+ Set<Thread> threadSet = Thread.getAllStackTraces().keySet();
+ Thread[] threadArray = threadSet.toArray(new Thread[threadSet.size()]);
+        for (int i = 0; i < threadArray.length; i++) {
+            System.out.println(threadArray[i].getName());
+            
+            
+        }
+        System.out.println("---------Koniec-----------");
     }
 
     @FXML

@@ -17,7 +17,11 @@
       <JFXTextField fx:id="statusField" layoutX="180.0" layoutY="244.0" />
       <JFXTextField fx:id="latestFinishDateField" layoutX="180.0" layoutY="307.0" />
       <JFXTextField fx:id="earliestStartDateField" layoutX="340.0" layoutY="26.0" />
+<<<<<<< HEAD
+      <JFXButton fx:id="acceptButton" layoutX="533.0" layoutY="343.0" onAction="#convert" text="Accept" />
+=======
       <JFXButton fx:id="saveConfigButton" layoutX="533.0" layoutY="343.0" onAction="#convert" text="Accept" />
+>>>>>>> 76f232351753f0fd1ada6dc538edd53748cd2ef6
       <JFXNodesList layoutX="93.0" layoutY="26.0" prefHeight="25.0" prefWidth="31.0" />
       <JFXTextField fx:id="createdByField" layoutX="180.0" layoutY="77.0" />
       <JFXTextField fx:id="nameField" layoutX="180.0" layoutY="132.0" />
