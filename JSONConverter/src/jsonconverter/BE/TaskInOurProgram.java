@@ -56,6 +56,11 @@ public class TaskInOurProgram extends Task<Void> {
       return null;
     }
 
+    public ImageView getPauseTask() {
+        return pauseTask;
+    }
+    
+    
     public String getExtensionOfTheFile() {
         return extensionOfTheFile;
     }

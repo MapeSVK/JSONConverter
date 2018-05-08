@@ -159,18 +159,18 @@ public class ConfigFXMLController implements Initializable {
         
     }
 
-    /* VALIDATION */
-    private void validation() {
-        for (String header : model.getOnlyFileHeaders(converter)) {
-            for (JFXTextField textField : arrayListWithTextFields) {
-                if (textField.getText().equals(header)) {
-                    isValid = true;
-                } else {
-                    Alert("Error", "Text imputs are not good! Check each text and then try it again!");
-                }
-            }
-        }
-    }
+//    /* VALIDATION */
+//    private void validation() {
+//        for (String header : model.getOnlyFileHeaders(converter)) {
+//            for (JFXTextField textField : arrayListWithTextFields) {
+//                if (textField.getText().equals(header)) {
+//                    isValid = true;
+//                } else {
+//                    Alert("Error", "Text imputs are not good! Check each text and then try it again!");
+//                }
+//            }
+//        }
+//    }
 
     private void Alert(String title, String text) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -181,7 +181,7 @@ public class ConfigFXMLController implements Initializable {
 
     private void closeWindow()
     {
-        Stage stage = (Stage) acceptButton.getScene().getWindow();
+        Stage stage = (Stage) saveConfigButton.getScene().getWindow();
         stage.close();
     }
 }

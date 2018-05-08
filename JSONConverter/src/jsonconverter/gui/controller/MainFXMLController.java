@@ -77,12 +77,9 @@ public class MainFXMLController implements Initializable {
     private final String newFileExtension = ".json";
     private String newFileInfo = newFileName + newFileExtension;
     private Model model = new Model();
+    private boolean isTaskConverting;
 
     
-    @FXML
-    private TableColumn<String, String> extensionColumn;
-    @FXML
-    private Label nameOfImportedFileLabel;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -90,6 +87,7 @@ public class MainFXMLController implements Initializable {
         setConfigChoiceBoxItems();
 
         tasksTableView.setItems(model.getTasksInTheTableView());
+        playPauseButtonActionInTableView();
     }
 
     /* set tableView columns */
@@ -190,6 +188,8 @@ public class MainFXMLController implements Initializable {
         stage.setScene(new Scene(root));
         stage.showAndWait();
     }
+    
+    
 
     @FXML
     private void addTaskButtonClick(ActionEvent event) {
@@ -262,7 +262,26 @@ executor = Executors.newFixedThreadPool(1);
     private void pauseTasksButtonClick(ActionEvent event) throws InterruptedException {
 
     }
+    
+    public void playPauseButtonActionInTableView() {
+        for (TaskInOurProgram task : model.getTasksInTheTableView()) {
+            
+                task.getPauseTask().clipProperty().addListener((observable) -> {
 
+                    if (isTaskConverting == false) {
+                        System.out.println("I am paused");
+                        isTaskConverting = true;
+                    } else {
+                        System.out.println("I am converting");
+                        isTaskConverting = false;
+                    }
+                    
+                });
+            
+        }
+    }
+
+    
     @FXML
     private void deleteTasksButtonClick(ActionEvent event) {
         System.out.println("----------Start-------------");
