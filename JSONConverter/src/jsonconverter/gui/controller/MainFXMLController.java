@@ -4,9 +4,19 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.ReentrantLock;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.concurrent.ScheduledService;
+import javafx.concurrent.Service;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -21,11 +31,13 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.ProgressBarTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import jsonconverter.BE.Config;
+import jsonconverter.BE.NewTask;
 
 import jsonconverter.BE.TaskInOurProgram;
 import jsonconverter.DAL.readFilesAndWriteJson.ReadCSV;
@@ -50,6 +62,10 @@ public class MainFXMLController implements Initializable {
     private ChoiceBox<Config> configChoiceBox;
     @FXML
     private TableView<TaskInOurProgram> tasksTableView;
+      @FXML
+    private TableColumn<String, String> extensionColumn;
+    @FXML
+    private Label nameOfImportedFileLabel;
 
     @FXML
     private Button buttonChooseDirectory;
@@ -65,18 +81,13 @@ public class MainFXMLController implements Initializable {
     private final String newFileExtension = ".json";
     private String newFileInfo = newFileName + newFileExtension;
     private Model model = new Model();
+    private Service service;
 
-    
-    @FXML
-    private TableColumn<String, String> extensionColumn;
-    @FXML
-    private Label nameOfImportedFileLabel;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         setTasksTableViewItems();
         setConfigChoiceBoxItems();
-
         tasksTableView.setItems(model.getTasksInTheTableView());
     }
 
@@ -173,7 +184,7 @@ public class MainFXMLController implements Initializable {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/jsonconverter/GUI/view/ConfigFXML.fxml"));
         root = loader.load();
         ConfigFXMLController controller = loader.getController();
-        controller.getConverterandModel(converter,model);
+        controller.getConverterandModel(converter, model);
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.setScene(new Scene(root));
         stage.showAndWait();
@@ -207,11 +218,12 @@ public class MainFXMLController implements Initializable {
                     labelFileExtension.getText());
             task.setConverter(converter);
             task.setConfig(configChoiceBox.getValue());
+            task.setFilePath(directoryPath);
+            task.setFileName(nameOfImportedFile);
             model.addTask(task);
         }
 
     }
-
 
     /*
     *   This method contains mainly the directory chooser interface.
@@ -233,48 +245,26 @@ public class MainFXMLController implements Initializable {
     @FXML
     private void convertTasksButtonClick(ActionEvent event) throws IOException {
 
-//        ExecutorService executor = Executors.newFixedThreadPool(tasksTableView.getItems().size(), new ThreadFactory() {
-//            @Override
-//            public Thread newThread(Runnable r) {
-//                Thread t = new Thread(r);
-//                t.setDaemon(true);
-//                return t;
-//            }
-//
-//        });
-//
-//        for (TaskInOurProgram task : tasksTableView.getItems()) {
-//            executor.execute(task);
-//        }
-        if (directoryPathHasBeenSelected == false) {
-            Alert("Directory problem", "You did not select any directory.");
-        } else {
-            Thread testThread;
-            testThread = new Thread(() -> {
-                try {
-                    System.out.println("Go 2 Sleep!");
-                    System.out.println("Try to use the program now! You have less than 6s!!");
-                    Thread.sleep(6000);
-                    System.out.println("Hello, I am a thread and your file has been created");
-                    File newFileToCreate = new File(directoryPath, newFileInfo);
-                    newFileToCreate.createNewFile();
-
-                } catch (InterruptedException ex) {
-                    Logger.getLogger(MainFXMLController.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (IOException ex) {
-                    Logger.getLogger(MainFXMLController.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            });
-            testThread.start();
-        }
+        TaskInOurProgram task = tasksTableView.getSelectionModel().getSelectedItem();
+        service = new Service() {
+            @Override
+            protected Task createTask() {
+                return task;
+            }
+        };
+        service.start();
     }
 
     @FXML
-    private void pauseTasksButtonClick(ActionEvent event) {
+    private void pauseTasksButtonClick(ActionEvent event) throws InterruptedException {
+        TaskInOurProgram task = tasksTableView.getSelectionModel().getSelectedItem();
+        task.pauseThis();
     }
 
     @FXML
     private void deleteTasksButtonClick(ActionEvent event) {
+        TaskInOurProgram task = tasksTableView.getSelectionModel().getSelectedItem();
+        task.continueThis();
     }
 
     @FXML
@@ -287,5 +277,4 @@ public class MainFXMLController implements Initializable {
         alert.setContentText(text);
         alert.showAndWait();
     }
-
 }

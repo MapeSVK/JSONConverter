@@ -1,5 +1,6 @@
 package jsonconverter.GUI.model;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -19,7 +20,7 @@ public class Model {
     private ObservableList<String> configChoiceBoxItems = FXCollections.observableArrayList();
     /* contains every task in tableview */
     private ObservableList<TaskInOurProgram> tasksInTheTableView = FXCollections.observableArrayList();
- 
+
 
     /* returns hashMap of headers from file (Headers are keys and numbers are values) */
     public HashMap<String, Integer> getFileHeaders(IConverter converter) {
@@ -40,31 +41,35 @@ public class Model {
     public ArrayList<String> getFileValues(IConverter converter) {
         return manager.getFileValues(converter);
     }
-    
-     /* creates json file from JSONObject list */
-    public void createJsonFile(String fileName, String filePath, List<JSONObject> jsonList) {
-        manager.createJsonFile(fileName, filePath, jsonList);
+
+    /* creates json file from JSONObject list */
+    public void createJsonFile(String fileName, File filePath, IConverter converter, Config config) {
+        manager.createJsonFile(fileName, filePath, converter, config);
+        System.out.println("chuuuj Manager");
     }
-    
-     /*returns list of Headers from the file */
-    public List<String> getOnlyFileHeaders(IConverter converter)
-    {
+
+    /*returns list of Headers from the file */
+    public List<String> getOnlyFileHeaders(IConverter converter) {
         return manager.getOnlyFileHeaders(converter);
     }
-    
-      //----------------------------------------------------------------SUPERFAKE DB------------------------------------------------------------------------------------------------
+
+    //----------------------------------------------------------------SUPERFAKE DB------------------------------------------------------------------------------------------------
     public List<Config> getFakeConfigDatabase() {
         return manager.getFakeConfigDatabase();
     }
-    
+
     public void addToFakeConfigDatabase(Config config) {
-         manager.addToFakeConfigDatabase(config);
-         fakeConfig.add(config);
+        manager.addToFakeConfigDatabase(config);
+        fakeConfig.add(config);
     }
     private ObservableList<Config> fakeConfig = FXCollections.observableArrayList();
-    
-    public ObservableList<Config> getFakeConfig()
-    {
+
+    public ObservableList<Config> getFakeConfig() {
         return fakeConfig;
+    }
+    
+    public boolean checkIfConfigExists(Config config)
+    {
+        return manager.checkIfConfigExists(config);
     }
 }

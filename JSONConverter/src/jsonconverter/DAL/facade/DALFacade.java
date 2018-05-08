@@ -5,6 +5,7 @@
  */
 package jsonconverter.DAL.facade;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -34,20 +35,21 @@ public class DALFacade {
     }
 
     /* creates json file from JSONObject list */
-    public void createJsonFile(String fileName, String filePath, List<JSONObject> jsonList) {
+    public void createJsonFile(String fileName, File filePath, List<JSONObject> jsonList) {
         createJson.createJsonFile(fileName, filePath, jsonList);
+        System.out.println("chuuuj4");
     }
 
     /*returns list of Headers from the file */
     public List<String> getOnlyFileHeaders(IConverter converter) {
         return converter.getOnlyFileHeaders();
     }
-    
+
     //----------------------------------------------------------------SUPERFAKE DB------------------------------------------------------------------------------------------------
     public List<Config> getFakeConfigDatabase() {
         return fake.getFakeConfigDatabase();
     }
-    
+
     public void addToFakeConfigDatabase(Config config) {
         fake.addToFakeConfigDatabase(config);
     }

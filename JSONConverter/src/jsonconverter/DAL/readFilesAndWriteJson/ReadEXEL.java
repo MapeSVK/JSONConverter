@@ -10,5 +10,5 @@ package jsonconverter.DAL.readFilesAndWriteJson;
  * @author Pepe15224
  */
 public class ReadEXEL {
-    
+
 }

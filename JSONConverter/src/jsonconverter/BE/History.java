@@ -10,5 +10,5 @@ package jsonconverter.BE;
  * @author Samuel
  */
 public class History {
-    
+
 }
