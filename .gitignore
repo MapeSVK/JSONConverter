@@ -117,19 +117,3 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
-
-
-# End of https://www.gitignore.io/api/java,windows,netbeans,intellij
-/JSONConverter/nbproject/private/
-JSONConverter/src/out/production/JSONConverter/jsonconverter/MainFXML.fxml
-JSONConverter/src/out/production/JSONConverter/JSONConverter.iml
-JSONConverter/src/out/production/JSONConverter/.idea/workspace.xml
-JSONConverter/src/out/production/JSONConverter/.idea/modules.xml
-JSONConverter/src/out/production/JSONConverter/.idea/misc.xml
-JSONConverter/src/out/production/JSONConverter/.idea/libraries/jfoenix_8_0_1.xml
-JSONConverter/src/JSONConverter.iml
-JSONConverter/src/.idea/workspace.xml
-JSONConverter/src/.idea/modules.xml
-JSONConverter/src/.idea/misc.xml
-JSONConverter/src/.idea/libraries/jfoenix_8_0_1.xml
-*.jar

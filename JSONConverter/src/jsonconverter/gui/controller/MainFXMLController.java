@@ -231,7 +231,7 @@ public class MainFXMLController implements Initializable {
             directoryPath = selectedDirectory.getAbsoluteFile();
             directoryPathHasBeenSelected = true;
         }
-    }
+     }
    
     @FXML
     private void convertTasksButtonClick(ActionEvent event) throws IOException {
