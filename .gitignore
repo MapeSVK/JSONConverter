@@ -79,6 +79,7 @@ fabric.properties
 .mtj.tmp/
 
 # Package Files #
+*.jar
 *.war
 *.ear
 *.zip
@@ -117,7 +118,6 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
-<<<<<<< HEAD
 
-=======
->>>>>>> b9518550e262ce9fa4a56059029ab332f4d66bbf
+
+# End of https://www.gitignore.io/api/java,windows,netbeans,intellij
