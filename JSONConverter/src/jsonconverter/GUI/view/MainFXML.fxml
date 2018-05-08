@@ -42,7 +42,7 @@
                               <Font size="14.0" />
                            </font></Label>
                         <Label fx:id="labelFileExtension" layoutX="136.0" layoutY="35.0" text=".XXX" />
-                        <Button layoutX="207.0" layoutY="512.0" mnemonicParsing="false" onAction="#chooseDirectoryButtonClick" text="Choose Directory" />
+                        <Button fx:id="buttonChooseDirectory" layoutX="207.0" layoutY="512.0" mnemonicParsing="false" onAction="#chooseDirectoryButtonClick" text="Choose Directory" />
                      </children>
                   </AnchorPane>
                </content>

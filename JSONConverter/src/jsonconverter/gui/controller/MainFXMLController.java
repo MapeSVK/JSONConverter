@@ -52,7 +52,7 @@ public class MainFXMLController implements Initializable {
     private TableView<TaskInOurProgram> tasksTableView;
 
     @FXML
-    private Button buttonChooseDirectory;
+    private Button buttonChooseDirectory; //Do not remove it
     private IConverter converter;
     private String filePath;
     private String fileType;
