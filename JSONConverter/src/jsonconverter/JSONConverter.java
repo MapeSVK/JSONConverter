@@ -10,6 +10,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import jsonconverter.GUI.controller.MainFXMLController;
 import jsonconverter.GUI.util.HostName;
 
 /**
@@ -22,13 +23,15 @@ public class JSONConverter extends Application {
     public void start(Stage stage) throws Exception {
         HostName HN = new HostName();
         HN.takeUserInfo();
-        Parent root = FXMLLoader.load(getClass().getResource("GUI/view/MainFXML.fxml"));
-
+         FXMLLoader loader = new FXMLLoader(getClass().getResource("GUI/view/MainFXML.fxml"));
+         Parent root = loader.load();
+         MainFXMLController controller = loader.getController();
+         controller.getStage(stage);
         Scene scene = new Scene(root);
-
         stage.setScene(scene);
         stage.show();
 
+       
     }
 
     /**
@@ -37,5 +40,4 @@ public class JSONConverter extends Application {
     public static void main(String[] args) {
         launch(args);
     }
-
 }

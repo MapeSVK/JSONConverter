@@ -63,7 +63,7 @@
                            <font>
                               <Font name="Arial" size="12.0" />
                            </font></Label>
-<<<<<<< HEAD
+
                         <Button layoutX="207.0" layoutY="512.0" mnemonicParsing="false" onAction="#chooseDirectoryButtonClick" text="CHOOSE DIRECTORY">
                            <font>
                               <Font name="Arial Bold" size="13.0" />
@@ -108,10 +108,8 @@
                               <Font name="Arial Bold" size="17.0" />
                            </font>
                         </Label>
-=======
-                        <Label fx:id="labelFileExtension" layoutX="136.0" layoutY="35.0" text=".XXX" />
                         <Button fx:id="buttonChooseDirectory" layoutX="207.0" layoutY="512.0" mnemonicParsing="false" onAction="#chooseDirectoryButtonClick" text="Choose Directory" />
->>>>>>> 755c79e468a4d0940744e30e46e3c7bbdd7157a1
+
                      </children>
                   </AnchorPane>
                </content>

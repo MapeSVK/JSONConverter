@@ -14,7 +14,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
-import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import jsonconverter.BE.Config;
 import jsonconverter.DAL.readFilesAndWriteJson.IConverter;
@@ -68,6 +67,8 @@ public class ConfigFXMLController implements Initializable {
     boolean isValid;
     @FXML
     private JFXButton saveConfigButton;
+    @FXML
+    private JFXButton acceptButton;
 
     /**
      * Initializes the controller class.
@@ -181,7 +182,7 @@ public class ConfigFXMLController implements Initializable {
 
     private void closeWindow()
     {
-        Stage stage = (Stage) acceptButton.getScene().getWindow();
+        Stage stage = (Stage) saveConfigButton.getScene().getWindow();
         stage.close();
     }
 }
