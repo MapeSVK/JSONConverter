@@ -1,16 +1,13 @@
 package jsonconverter.BE;
 
-import static impl.org.controlsfx.spreadsheet.RectangleSelection.SelectionRange.key;
 import java.io.File;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.concurrent.Task;
-import javafx.scene.control.Button;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyEvent;
 import jsonconverter.DAL.readFilesAndWriteJson.IConverter;
 import jsonconverter.GUI.model.Model;
 
