@@ -7,6 +7,10 @@ import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javafx.concurrent.Service;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -53,10 +57,13 @@ public class MainFXMLController implements Initializable {
       @FXML
     private TableColumn<String, String> extensionColumn;
     @FXML
-    private Label nameOfImportedFileLabel;  
+    private Label nameOfImportedFileLabel;
+
+    ExecutorService executor;
+    
+    
     @FXML
     private Button buttonChooseDirectory; //Do not remove it
-    
     private IConverter converter;
     private String filePath;
     private String fileType;

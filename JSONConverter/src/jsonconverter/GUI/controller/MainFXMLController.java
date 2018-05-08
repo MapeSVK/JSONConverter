@@ -31,7 +31,6 @@ import javafx.stage.DirectoryChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import jsonconverter.BE.Config;
-
 import jsonconverter.BE.TaskInOurProgram;
 import jsonconverter.DAL.readFilesAndWriteJson.ReadCSV;
 import jsonconverter.DAL.readFilesAndWriteJson.IConverter;
@@ -77,18 +76,13 @@ public class MainFXMLController implements Initializable {
     private final String newFileExtension = ".json";
     private String newFileInfo = newFileName + newFileExtension;
     private Model model = new Model();
-
-    
-    @FXML
-    private TableColumn<String, String> extensionColumn;
-    @FXML
-    private Label nameOfImportedFileLabel;
-
+    private ExecutorService executor = Executors.newFixedThreadPool(4);
+    private TaskInOurProgram task;
+       
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         setTasksTableViewItems();
         setConfigChoiceBoxItems();
-
         tasksTableView.setItems(model.getTasksInTheTableView());
     }
 
@@ -181,14 +175,14 @@ public class MainFXMLController implements Initializable {
     @FXML
     private void createNewConfigButtonClick(ActionEvent event) throws IOException {
         Parent root;
-        Stage stage = new Stage();
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/jsonconverter/GUI/view/ConfigFXML.fxml"));
-        root = loader.load();
-        ConfigFXMLController controller = loader.getController();
-        controller.getConverterandModel(converter, model);
-        stage.initModality(Modality.APPLICATION_MODAL);
-        stage.setScene(new Scene(root));
-        stage.showAndWait();
+            Stage stage = new Stage();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/jsonconverter/GUI/view/ConfigFXML.fxml"));
+            root = loader.load();
+            ConfigFXMLController controller = loader.getController();
+            controller.getConverterandModel(converter, model);
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setScene(new Scene(root));
+            stage.showAndWait();
     }
 
     @FXML
@@ -242,25 +236,18 @@ public class MainFXMLController implements Initializable {
             directoryPathHasBeenSelected = true;
         }
     }
-
+   
     @FXML
     private void convertTasksButtonClick(ActionEvent event) throws IOException {
-         TaskInOurProgram task = tasksTableView.getSelectionModel().getSelectedItem();
-//        service = new Service() {
-//            @Override
-//            protected Task createTask() {
-//                return task;
-//            }
-//        };
-//        service.start();
-executor = Executors.newFixedThreadPool(1);
+         if(tasksTableView.getSelectionModel().getSelectedItem()!=null)
+    {
+        task = tasksTableView.getSelectionModel().getSelectedItem();
         executor.submit(task);
-        executor.shutdown();
     }
- boolean akurwa=false;
+    }
     @FXML
     private void pauseTasksButtonClick(ActionEvent event) throws InterruptedException {
-
+executor.shutdownNow();
     }
 
     @FXML
@@ -270,8 +257,6 @@ executor = Executors.newFixedThreadPool(1);
  Thread[] threadArray = threadSet.toArray(new Thread[threadSet.size()]);
         for (int i = 0; i < threadArray.length; i++) {
             System.out.println(threadArray[i].getName());
-            
-            
         }
         System.out.println("---------Koniec-----------");
     }
@@ -285,6 +270,19 @@ executor = Executors.newFixedThreadPool(1);
         alert.setTitle(title);
         alert.setContentText(text);
         alert.showAndWait();
+        
     }
-
+    
+ public void getStage(Stage stage)
+    {
+        stage.showingProperty().addListener(e->{
+            if(stage.isShowing()==false)
+            {
+                if(executor!=null)
+                {
+                    executor.shutdownNow();
+                }
+            }
+        });
+    }
 }
