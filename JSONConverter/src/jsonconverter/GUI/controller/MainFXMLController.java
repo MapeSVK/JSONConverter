@@ -12,6 +12,7 @@ import java.util.logging.Logger;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -26,6 +27,8 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.ProgressBarTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Modality;
@@ -58,9 +61,7 @@ public class MainFXMLController implements Initializable {
     private TableColumn<String, String> extensionColumn;
     @FXML
     private Label nameOfImportedFileLabel;
-  @FXML
-    private Button buttonChooseDirectory; //Do not remove it
-  
+
     private IConverter converter;
     private String filePath;
     private String fileType;
@@ -75,6 +76,14 @@ public class MainFXMLController implements Initializable {
     private Model model = new Model();
     private TaskInOurProgram task;
     private ExecutorService executor = Executors.newFixedThreadPool(4);
+    @FXML
+    private Button chooseDirectoryButton;
+    private String convertingOrPauseOrPlay;
+    private final Image pauseImage = new Image("file:images/pauseImage.png");
+    private final Image closeImage = new Image("file:images/close.png");
+    private final Image playImage = new Image("file:images/playImage.png");
+    
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         setTasksTableViewItems();
@@ -88,7 +97,7 @@ public class MainFXMLController implements Initializable {
         nameOfTheFileColumn.setCellValueFactory(new PropertyValueFactory("nameOfTheFile"));
         configNameColumn.setCellValueFactory(new PropertyValueFactory("configName"));
 
-        stopButtonColumn.setCellValueFactory(new PropertyValueFactory("stopTask"));
+        stopButtonColumn.setCellValueFactory(new PropertyValueFactory("pauseTask"));
         pauseButtonColumn.setCellValueFactory(new PropertyValueFactory("closeTask"));
 
         TableColumn<TaskInOurProgram, String> statusCol = new TableColumn("Status");
@@ -213,7 +222,59 @@ public class MainFXMLController implements Initializable {
             task.setFileName(nameOfImportedFile);
             model.addTask(task);
         }
+        
+        
+        pauseConvertingClick();
 
+    }
+
+    public void pauseConvertingClick() {
+        
+        
+        for (TaskInOurProgram task : model.getTasksInTheTableView()) {
+            task.getPauseTask().setGraphic(new ImageView(playImage));
+            convertingOrPauseOrPlay = "firstStage";
+            //task.pauseThis();
+            
+            task.getPauseTask().setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent event) {  
+                    if (convertingOrPauseOrPlay.equals("firstStage")) {
+                        
+                       
+                        
+                        executor.submit(task);
+                        convertingOrPauseOrPlay = "secondStage";
+                        task.getPauseTask().setGraphic(new ImageView(pauseImage));
+
+                    }
+                    
+                    else if (convertingOrPauseOrPlay.equals("secondStage")) {
+                        task.pauseThis();
+                        convertingOrPauseOrPlay = "thirdStage";
+                        task.getPauseTask().setGraphic(new ImageView(playImage));
+                    }
+                    
+                    else if (convertingOrPauseOrPlay.equals("thirdStage")) {
+                        task.continueThis();
+                        task.getPauseTask().setGraphic(new ImageView(pauseImage));
+                        convertingOrPauseOrPlay = "firstStage";
+                    }
+                    
+//                    else if (convertingOrPauseOrPlay.equals("fourthStage")){
+//                        task.getPauseTask().setGraphic(new ImageView(playImage));
+//                        
+//                        if (task.isIsConvertingDone() == true) {
+//                            convertingOrPauseOrPlay = "firstStage";
+//                        }
+//                        
+//                        else if (task.isIsConvertingDone() == false) {
+//                            convertingOrPauseOrPlay = "secondStage";
+//                        }
+//                    }
+                }
+            });
+        }
     }
 
     /*
@@ -222,7 +283,7 @@ public class MainFXMLController implements Initializable {
     @FXML
     private void chooseDirectoryButtonClick(ActionEvent event) {
         DirectoryChooser directoryChooser = new DirectoryChooser();
-        File selectedDirectory = directoryChooser.showDialog(buttonChooseDirectory.getScene().getWindow());
+        File selectedDirectory = directoryChooser.showDialog(chooseDirectoryButton.getScene().getWindow());
         directoryChooser.setTitle("Select a directory");
         if (selectedDirectory == null) {
             Alert("Directory problem", "You did not select any directory. Try again!");
@@ -232,14 +293,10 @@ public class MainFXMLController implements Initializable {
             directoryPathHasBeenSelected = true;
         }
      }
-   
+
     @FXML
     private void convertTasksButtonClick(ActionEvent event) throws IOException {
-         if(tasksTableView.getSelectionModel().getSelectedItem()!=null)
-    {
-        task = tasksTableView.getSelectionModel().getSelectedItem();
-        executor.submit(task);
-    }
+         
     }
     @FXML
     private void pauseTasksButtonClick(ActionEvent event) throws InterruptedException {
@@ -266,9 +323,9 @@ executor.shutdownNow();
         alert.setTitle(title);
         alert.setContentText(text);
         alert.showAndWait();
-        
+
     }
-    
+
  public void getStage(Stage stage)
     {
         stage.showingProperty().addListener(e->{

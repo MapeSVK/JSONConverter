@@ -65,11 +65,18 @@ public class Model {
     private ObservableList<Config> fakeConfig = FXCollections.observableArrayList();
 
     public ObservableList<Config> getFakeConfig() {
+        addFake();
         return fakeConfig;
     }
     
     public boolean checkIfConfigExists(Config config)
     {
         return manager.checkIfConfigExists(config);
+    }
+    
+    public void addFake() {
+    fakeConfig.add(new Config(1, "Actual start", "Actual start", "Order Type", "Order", "System status", "User status", 
+            "Created on", "Actual start", "Opr. short text","Priority", "Actual start", "Lat.finish date", "Earl.start date", "Latest start", 
+            "Normal duration", "test config"));
     }
 }

@@ -67,8 +67,6 @@ public class ConfigFXMLController implements Initializable {
     boolean isValid;
     @FXML
     private JFXButton saveConfigButton;
-    @FXML
-    private JFXButton acceptButton;
 
     /**
      * Initializes the controller class.

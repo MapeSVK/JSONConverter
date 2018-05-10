@@ -6,6 +6,8 @@ import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.concurrent.Task;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.image.Image;
@@ -26,19 +28,21 @@ public class TaskInOurProgram extends Task<Void> {
     private boolean pause = false;
     private String fileName;
     private File filePath;
-    private ImageView closeTask;
-    private ImageView pauseTask;
-    private final Image pauseImage = new Image("file:images/pause.png");
-    private final Image closeImage = new Image("file:images/close.png");
+    private boolean isConvertingDone = false;
+    private Button pauseTask;
+    private Button closeTask;
             
     public TaskInOurProgram(String name, String configName, String extensionOfTheFile) {
         this.nameOfTheFile = name;
         this.configName = configName;
         this.extensionOfTheFile = extensionOfTheFile;
-        this.closeTask = new ImageView();
-        closeTask.setImage(closeImage);
-        this.pauseTask = new ImageView();
-        pauseTask.setImage(pauseImage);       
+        this.pauseTask = new Button("");
+ //       this.closeTask = new Button("");       this needs to be added in second sprint
+        
+ 
+        this.pauseTask.getStyleClass().clear();
+        this.pauseTask.getStyleClass().add("pauseButtons");
+        
     }
 
     @Override
@@ -53,8 +57,36 @@ public class TaskInOurProgram extends Task<Void> {
         pauseThread();
         model.createJsonFile(fileName, filePath, converter, config);
         updateProgress(3, 3);
+        isConvertingDone = true;
+        System.out.println(isConvertingDone);
       return null;
     }
+
+    public boolean isIsConvertingDone() {
+        return isConvertingDone;
+    }
+
+    public void setIsConvertingDone(boolean isConvertingDone) {
+        this.isConvertingDone = isConvertingDone;
+    }
+    
+    public Button getPauseTask() {
+        return pauseTask;
+    }
+
+    public void setPauseTask(Button pauseTask) {
+        this.pauseTask = pauseTask;
+    }
+
+    public Button getCloseTask() {
+        return closeTask;
+    }
+
+    public void setCloseTask(Button closeTask) {
+        this.closeTask = closeTask;
+    }
+    
+    
 
     public String getExtensionOfTheFile() {
         return extensionOfTheFile;
@@ -80,20 +112,6 @@ public class TaskInOurProgram extends Task<Void> {
         this.nameOfTheFile = nameOfTheFile;
     }
 
-    public ImageView getCloseTask() {
-        return closeTask;
-    }
-
-    public void setCloseTask(ImageView closeTask) {
-        this.closeTask = closeTask;
-    }
-
-    public ImageView getStopTask() {
-        return pauseTask;
-    }
-    public void setStopTask(ImageView stopTask) {
-        this.pauseTask = pauseTask;
-    }
 
     public Config getConfig() {
         return config;
