@@ -5,7 +5,7 @@
             <url>src/jsonconverter/GUI/controller/MainFXMLController.java</url>
             <bookmark id="1">
                 <name/>
-                <line>66</line>
+                <line>68</line>
                 <key/>
             </bookmark>
         </file>
@@ -20,10 +20,11 @@
     </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/Users/Mape/GitClonePath/JSONConverter/JSONConverter/src/jsonconverter/GUI/controller/ConfigFXMLController.java</file>
-            <file>file:/Users/Mape/GitClonePath/JSONConverter/JSONConverter/src/jsonconverter/GUI/styles/CSS.css</file>
+            <file>file:/Users/Mape/GitClonePath/JSONConverter/JSONConverter/src/jsonconverter/BE/History.java</file>
+            <file>file:/Users/Mape/GitClonePath/JSONConverter/JSONConverter/src/jsonconverter/DAL/manager/DALHistory.java</file>
+            <file>file:/Users/Mape/GitClonePath/JSONConverter/JSONConverter/src/jsonconverter/DAL/manager/JDBCConnectionPool.java</file>
+            <file>file:/Users/Mape/GitClonePath/JSONConverter/JSONConverter/src/jsonconverter/DAL/manager/ConnectionManager.java</file>
             <file>file:/Users/Mape/GitClonePath/JSONConverter/JSONConverter/src/jsonconverter/GUI/controller/MainFXMLController.java</file>
-            <file>file:/Users/Mape/GitClonePath/JSONConverter/JSONConverter/src/jsonconverter/BE/TaskInOurProgram.java</file>
         </group>
     </open-files>
 </project-private>
