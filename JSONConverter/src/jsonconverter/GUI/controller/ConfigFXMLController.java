@@ -14,6 +14,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
+import javafx.scene.control.CheckBox;
 import javafx.stage.Stage;
 import jsonconverter.BE.Config;
 import jsonconverter.DAL.readFilesAndWriteJson.IConverter;
@@ -61,19 +62,21 @@ public class ConfigFXMLController implements Initializable {
     @FXML
     private JFXTextField estimatedTimeField;
     @FXML
-    private JFXTextField headerNameField;
-
+    private JFXTextField usernameField;
+    private String username = "Uknown";
     ArrayList<JFXTextField> arrayListWithTextFields = new ArrayList<JFXTextField>();
     boolean isValid;
     @FXML
     private JFXButton saveConfigButton;
+    @FXML
+    private CheckBox checkBoxPrivacy;
+    private boolean privacyBoolean = false;
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        
     }
 
     /* gets converter of imported file */
@@ -84,7 +87,7 @@ public class ConfigFXMLController implements Initializable {
     }
 
     @FXML
-    private void convert(ActionEvent event) {
+    private void saveButtonOnAction(ActionEvent event) {
         if(model.checkIfConfigExists(createAnd()))
         {
              model.addToFakeConfigDatabase(createAnd()); //<---------------------------FAKE CONFIG
@@ -94,7 +97,7 @@ public class ConfigFXMLController implements Initializable {
         {
             Alert("Config already exists", "Config with this name already exists!");
         }
-        
+        username = usernameField.getText();
     }
 
     /* binds textfields with autocompletion */
@@ -134,7 +137,7 @@ public class ConfigFXMLController implements Initializable {
                 earliestStartDateField.getText(),
                 latestStartDateField.getText(),
                 estimatedTimeField.getText(),
-                headerNameField.getText());
+                usernameField.getText());
 
         return newConfig;
     }
@@ -182,5 +185,16 @@ public class ConfigFXMLController implements Initializable {
     {
         Stage stage = (Stage) saveConfigButton.getScene().getWindow();
         stage.close();
+    }
+
+    @FXML
+    private void checkBoxPrivacyOnAction(ActionEvent event) {
+        if (checkBoxPrivacy.isSelected()) {
+            privacyBoolean = true;
+            System.out.println(privacyBoolean);
+        }else{
+            privacyBoolean = false;
+            System.out.println(privacyBoolean);
+        }
     }
 }

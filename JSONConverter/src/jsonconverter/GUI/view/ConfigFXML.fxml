@@ -3,6 +3,7 @@
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXNodesList?>
 <?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.layout.AnchorPane?>
 
 <AnchorPane id="AnchorPane" prefHeight="382.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jsonconverter.GUI.controller.ConfigFXMLController">
@@ -17,13 +18,14 @@
       <JFXTextField fx:id="statusField" layoutX="180.0" layoutY="244.0" promptText="status" />
       <JFXTextField fx:id="latestFinishDateField" layoutX="180.0" layoutY="307.0" promptText="latestFinishDate" />
       <JFXTextField fx:id="earliestStartDateField" layoutX="340.0" layoutY="26.0" promptText="earliestStartDate" />
-      <JFXButton fx:id="saveConfigButton" layoutX="524.0" layoutY="341.0" onAction="#convert" text="SAVE" />
+      <JFXButton fx:id="saveConfigButton" layoutX="524.0" layoutY="342.0" onAction="#saveButtonOnAction" text="SAVE" />
       <JFXNodesList layoutX="93.0" layoutY="26.0" prefHeight="25.0" prefWidth="31.0" />
       <JFXTextField fx:id="createdByField" layoutX="180.0" layoutY="77.0" promptText="createdBy" />
       <JFXTextField fx:id="nameField" layoutX="180.0" layoutY="132.0" promptText="name" />
       <JFXTextField fx:id="priorityField" layoutX="180.0" layoutY="188.0" promptText="priority" />
       <JFXTextField fx:id="latestStartDateField" layoutX="340.0" layoutY="77.0" promptText="latestStartDate" />
       <JFXTextField fx:id="estimatedTimeField" layoutX="340.0" layoutY="132.0" promptText="estimatedTime" />
-      <JFXTextField fx:id="headerNameField" layoutX="437.0" layoutY="307.0" />
+      <JFXTextField fx:id="headerNameField" layoutX="437.0" layoutY="307.0" promptText="Username" />
+      <CheckBox fx:id="checkBoxPrivacy" layoutX="437.0" layoutY="345.0" mnemonicParsing="false" onAction="#checkBoxPrivacyOnAction" text="Private" />
    </children>
 </AnchorPane>
