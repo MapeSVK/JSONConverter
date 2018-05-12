@@ -1,8 +1,10 @@
 package jsonconverter.GUI.controller;
 
+import com.jfoenix.controls.JFXDatePicker;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Date;
 import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
@@ -34,6 +36,7 @@ import javafx.stage.DirectoryChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import jsonconverter.BE.Config;
+import jsonconverter.BE.History;
 import jsonconverter.BE.TaskInOurProgram;
 import jsonconverter.DAL.readFilesAndWriteJson.ReadCSV;
 import jsonconverter.DAL.readFilesAndWriteJson.IConverter;
@@ -82,17 +85,39 @@ public class MainFXMLController implements Initializable {
     private final Image pauseImage = new Image("file:images/pauseImage.png");
     private final Image closeImage = new Image("file:images/close.png");
     private final Image playImage = new Image("file:images/playImage.png");
+    @FXML
+    private JFXDatePicker startDateDatePicker;
+    @FXML
+    private JFXDatePicker endDateDatePicker;
+    @FXML
+    private TableColumn<History, Date> dateAndTimeColumn;
+    @FXML
+    private TableColumn<History, String> taskNameColumn;
+    @FXML
+    private TableColumn<History, String> userNameColumn;
+    @FXML
+    private TableColumn<History, Button> errorColumn;
+    @FXML
+    private TableView<History> historyTableView;
     
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        setTasksTableViewItems();
+        setTasksTableViewColumns();
+        setHistoryTableViewColumns();
         setConfigChoiceBoxItems();
         tasksTableView.setItems(model.getTasksInTheTableView());
+        
+        tasksTableView.setSelectionModel(null);
+        historyTableView.setSelectionModel(null);
+        
+        /* set history tableView */
+        model.loadHistoryFromDatabase();
+        historyTableView.setItems(model.getAllHistoryObservableArrayList());
     }
 
     /* set tableView columns */
-    public void setTasksTableViewItems() {
+    public void setTasksTableViewColumns() {
         extensionColumn.setCellValueFactory(new PropertyValueFactory("extensionOfTheFile"));
         nameOfTheFileColumn.setCellValueFactory(new PropertyValueFactory("nameOfTheFile"));
         configNameColumn.setCellValueFactory(new PropertyValueFactory("configName"));
@@ -338,4 +363,48 @@ executor.shutdownNow();
             }
         });
     }
+ 
+ 
+    /* HISTORY TAB */
+ 
+ 
+ public void setHistoryTableViewColumns() {
+     dateAndTimeColumn.setCellValueFactory(new PropertyValueFactory("dateAndTime"));
+     taskNameColumn.setCellValueFactory(new PropertyValueFactory("fileName"));
+     userNameColumn.setCellValueFactory(new PropertyValueFactory("username"));
+     errorColumn.setCellValueFactory(new PropertyValueFactory("errorButton"));
+ }
+ 
+ 
+//    public void openErrorMessageAfterClickOnTheButtonInHistoryTableView() {
+//        for (History history : model.getHistoryFromDatabase) {
+//            if (history.isHasError() == true) {
+//                history.getErrorButton().setGraphic(new ImageView());
+//            } else {
+//                history.getErrorButton().setText("NO ERROR");
+//            }
+//
+//            history.getErrorButton().setOnAction(new EventHandler<ActionEvent>() {
+//                @Override
+//                public void handle(ActionEvent event) {
+//                    Parent root = null;
+//                    Stage stage = new Stage();
+//                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/jsonconverter/GUI/view/ErrorMessageFXML.fxml"));
+//                    try {
+//                        root = loader.load();
+//                    } catch (IOException ex) {
+//                        Alert("Window opening error", "Window with error message could not been opened!");
+//                    }
+//                    ErrorMessageFXMLController controller = loader.getController();
+//                    controller.getModel(model);
+//                    stage.initModality(Modality.APPLICATION_MODAL);
+//                    stage.setScene(new Scene(root));
+//                    stage.showAndWait();
+//                }
+//            });
+//
+//        }
+//    }
+     
+             
 }

@@ -10,7 +10,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import jsonconverter.BE.Config;
+import jsonconverter.BE.History;
 import jsonconverter.BE.JSONObject;
+import jsonconverter.DAL.manager.DALHistory;
 import jsonconverter.DAL.manager.SuperFakeDb;
 import jsonconverter.DAL.readFilesAndWriteJson.IConverter;
 import jsonconverter.DAL.readFilesAndWriteJson.WriteJSON;
@@ -23,6 +25,7 @@ public class DALFacade {
 
     private WriteJSON createJson = new WriteJSON();
     private SuperFakeDb fake = new SuperFakeDb();  // <-------------SUPER FAKE DB
+    private DALHistory history = new DALHistory();
 
     /* returns hashMap of headers from file (Headers are keys and numbers are values) */
     public HashMap<String, Integer> getFileHeaders(IConverter converter) {
@@ -52,5 +55,13 @@ public class DALFacade {
 
     public void addToFakeConfigDatabase(Config config) {
         fake.addToFakeConfigDatabase(config);
+    }
+    
+    
+    /* getting HISTORY */
+    
+    public List<History> getAllHistory() {
+        
+        return history.getAllHistory();
     }
 }

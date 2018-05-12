@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import jsonconverter.BE.Config;
+import jsonconverter.BE.History;
 import jsonconverter.DAL.facade.DALFacade;
 import jsonconverter.DAL.readFilesAndWriteJson.IConverter;
 
@@ -57,5 +58,11 @@ public class BLLManager {
     public boolean checkIfConfigExists(Config config)
     {
         return configValidations.checkIfConfigExists(config,getFakeConfigDatabase());
+    }
+    
+    /* HISTORY */
+    
+    public List<History> getAllHistory() {
+        return manager.getAllHistory();
     }
 }
