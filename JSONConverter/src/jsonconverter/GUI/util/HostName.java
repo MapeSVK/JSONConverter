@@ -21,8 +21,8 @@ import javax.swing.UnsupportedLookAndFeelException;
  */
 public class HostName {
 
-    String hostname = "Unknown";
-    String userName = System.getProperty("user.name");
+    private String hostname;
+    public String userName = System.getProperty("user.name");
 
     public void takeUserInfo() {
         TimeZone tz = TimeZone.getTimeZone("Europe/Copenhagen");

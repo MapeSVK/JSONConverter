@@ -48,6 +48,15 @@ public class DALFacade {
         return converter.getOnlyFileHeaders();
     }
 
+    /* getting HISTORY */
+    public List<History> getAllHistory() {
+
+        return history.getAllHistory();
+    }
+
+    public void saveConfigToDatabase(Config config){
+        history.saveConfigToDatabase(config);
+    }
     //----------------------------------------------------------------SUPERFAKE DB------------------------------------------------------------------------------------------------
     public List<Config> getFakeConfigDatabase() {
         return fake.getFakeConfigDatabase();
@@ -56,12 +65,5 @@ public class DALFacade {
     public void addToFakeConfigDatabase(Config config) {
         fake.addToFakeConfigDatabase(config);
     }
-    
-    
-    /* getting HISTORY */
-    
-    public List<History> getAllHistory() {
-        
-        return history.getAllHistory();
-    }
+
 }

@@ -73,7 +73,7 @@ public class MainFXMLController implements Initializable {
     private File fileChoosedByImport;
     private File directoryPath;
     private boolean directoryPathHasBeenSelected = false;
-    private String newFileName = "Test";//Name needs to be indicate! It's just an example
+    private String newFileName = nameOfImportedFile;//Name needs to be indicate! It's just an example
     private final String newFileExtension = ".json";
     private String newFileInfo = newFileName + newFileExtension;
     private Model model = new Model();

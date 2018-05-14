@@ -28,8 +28,14 @@ public class Config {
     private String latestStartDate;
     private String estimatedTime;
     private String configName;
+    private boolean privacy;
+    private String creatorName;
 
-    public Config(int cinfig_id, String siteName, String assetSerialNumber, String type, String externalWorkOrderId, String systemStatus, String userStatus, String createdOn, String createdBy, String name, String priority, String status, String latestFinishDate, String earliestStartDate, String latestStartDate, String estimatedTime, String configName) {
+    public Config(int cinfig_id, String siteName, String assetSerialNumber, String type, 
+                  String externalWorkOrderId, String systemStatus, String userStatus, String createdOn, 
+                  String createdBy, String name, String priority, String status, String latestFinishDate, 
+                  String earliestStartDate, String latestStartDate, String estimatedTime, String configName,
+                  boolean privacy, String creatorName) {
         this.cinfig_id = cinfig_id;
         this.siteName = siteName;
         this.assetSerialNumber = assetSerialNumber;
@@ -47,8 +53,26 @@ public class Config {
         this.latestStartDate = latestStartDate;
         this.estimatedTime = estimatedTime;
         this.configName = configName;
+        this.privacy = privacy;
+        this.creatorName = creatorName;
     }
 
+    public boolean isPrivacy() {
+        return privacy;
+    }
+
+    public void setPrivacy(boolean privacy) {
+        this.privacy = privacy;
+    }
+
+    public String getCreatorName() {
+        return creatorName;
+    }
+
+    public void setCreatorName(String creatorName) {
+        this.creatorName = creatorName;
+    }
+    
     public String getConfigName() {
         return configName;
     }

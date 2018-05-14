@@ -45,7 +45,9 @@ public class BLLManager {
         return manager.getOnlyFileHeaders(converter);
     }
     
-
+    public void saveConfigToDatabase(Config config){
+        manager.saveConfigToDatabase(config);
+    }
     //----------------------------------------------------------------SUPERFAKE DB------------------------------------------------------------------------------------------------
     public List<Config> getFakeConfigDatabase() {
         return manager.getFakeConfigDatabase();

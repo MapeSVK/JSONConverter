@@ -19,6 +19,7 @@ import javafx.stage.Stage;
 import jsonconverter.BE.Config;
 import jsonconverter.DAL.readFilesAndWriteJson.IConverter;
 import jsonconverter.GUI.model.Model;
+import jsonconverter.GUI.util.HostName;
 import org.controlsfx.control.textfield.TextFields;
 
 /**
@@ -61,16 +62,17 @@ public class ConfigFXMLController implements Initializable {
     private JFXTextField latestStartDateField;
     @FXML
     private JFXTextField estimatedTimeField;
-    @FXML
-    private JFXTextField usernameField;
-    private String username = "Uknown";
+    private String username;
+    private HostName hostNameClass;
     ArrayList<JFXTextField> arrayListWithTextFields = new ArrayList<JFXTextField>();
     boolean isValid;
     @FXML
     private JFXButton saveConfigButton;
     @FXML
     private CheckBox checkBoxPrivacy;
-    private boolean privacyBoolean = false;
+    private boolean privacyBoolean;
+    @FXML
+    private JFXTextField headerNameField;
 
     /**
      * Initializes the controller class.
@@ -88,16 +90,19 @@ public class ConfigFXMLController implements Initializable {
 
     @FXML
     private void saveButtonOnAction(ActionEvent event) {
-        if(model.checkIfConfigExists(createAnd()))
-        {
-             model.addToFakeConfigDatabase(createAnd()); //<---------------------------FAKE CONFIG
-             closeWindow();
+        if (privacyBoolean) {
+            hostNameClass = new HostName();
+            username = hostNameClass.userName;
+        } else {
+            username = "Unkown";
         }
-        else
-        {
+        if (model.checkIfConfigExists(createAnd())) {
+            //model.addToFakeConfigDatabase(createAnd()); //<---------------------------FAKE CONFIG
+            model.saveConfigToDatabase(createAnd());
+            closeWindow();
+        } else {
             Alert("Config already exists", "Config with this name already exists!");
         }
-        username = usernameField.getText();
     }
 
     /* binds textfields with autocompletion */
@@ -117,12 +122,15 @@ public class ConfigFXMLController implements Initializable {
         TextFields.bindAutoCompletion(earliestStartDateField, model.getOnlyFileHeaders(converter));
         TextFields.bindAutoCompletion(latestStartDateField, model.getOnlyFileHeaders(converter));
         TextFields.bindAutoCompletion(estimatedTimeField, model.getOnlyFileHeaders(converter));
+        
     }
 
 
     /* creates config based on users texFields and saves it in the database */
     private Config createAnd() {
-        Config newConfig = new Config(-1, siteNameField.getText(),
+        Config newConfig = new Config(
+                1,
+                siteNameField.getText(),
                 assetSerialNumberField.getText(),
                 typeField.getText(),
                 externalWorkOrderIdField.getText(),
@@ -137,7 +145,9 @@ public class ConfigFXMLController implements Initializable {
                 earliestStartDateField.getText(),
                 latestStartDateField.getText(),
                 estimatedTimeField.getText(),
-                usernameField.getText());
+                headerNameField.getText(),
+                privacyBoolean,
+                username);
 
         return newConfig;
     }
@@ -158,7 +168,7 @@ public class ConfigFXMLController implements Initializable {
         arrayListWithTextFields.add(earliestStartDateField);
         arrayListWithTextFields.add(latestStartDateField);
         arrayListWithTextFields.add(estimatedTimeField);
-        
+
     }
 
     /* VALIDATION */
@@ -170,7 +180,7 @@ public class ConfigFXMLController implements Initializable {
                 } else {
                     Alert("Error", "Text imputs are not good! Check each text and then try it again!");
                 }
-            }
+            }   
         }
     }
 
@@ -181,20 +191,13 @@ public class ConfigFXMLController implements Initializable {
         alert.showAndWait();
     }
 
-    private void closeWindow()
-    {
+    private void closeWindow() {
         Stage stage = (Stage) saveConfigButton.getScene().getWindow();
         stage.close();
     }
 
     @FXML
     private void checkBoxPrivacyOnAction(ActionEvent event) {
-        if (checkBoxPrivacy.isSelected()) {
-            privacyBoolean = true;
-            System.out.println(privacyBoolean);
-        }else{
-            privacyBoolean = false;
-            System.out.println(privacyBoolean);
-        }
+        privacyBoolean = checkBoxPrivacy.isSelected();
     }
 }

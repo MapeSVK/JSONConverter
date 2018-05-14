@@ -55,6 +55,9 @@ public class Model {
         return manager.getOnlyFileHeaders(converter);
     }
 
+    public void saveConfigToDatabase(Config config){
+        manager.saveConfigToDatabase(config);
+    }
     //----------------------------------------------------------------SUPERFAKE DB------------------------------------------------------------------------------------------------
     public List<Config> getFakeConfigDatabase() {
         return manager.getFakeConfigDatabase();
@@ -79,7 +82,7 @@ public class Model {
     public void addFake() {
     fakeConfig.add(new Config(1, "Actual start", "Actual start", "Order Type", "Order", "System status", "User status", 
             "Created on", "Actual start", "Opr. short text","Priority", "Actual start", "Lat.finish date", "Earl.start date", "Latest start", 
-            "Normal duration", "test config"));
+            "Normal duration", "test config",false, "creator name"));
     }
     
     /* HISTORY */
