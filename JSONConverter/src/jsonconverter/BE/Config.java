@@ -5,57 +5,66 @@
  */
 package jsonconverter.BE;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author Samuel
  */
 public class Config {
 
-    private int cinfig_id;
-    private String siteName;
-    private String assetSerialNumber;
+    private Date currentDate = new Date();
+    private SimpleDateFormat dateTimeFormatter = new SimpleDateFormat("dd/MM/yyyy HH:mm");  
+    
+    private int cinfig_id=-1;
+    private String siteName="";
+    private String assetSerialNumber="asset._id";
     private String type;
     private String externalWorkOrderId;
     private String systemStatus;
     private String userStatus;
-    private String createdOn;
-    private String createdBy;
+    private String createdOn=dateTimeFormatter.format(currentDate);
+    private String createdBy="SAP";
     private String name;
     private String priority;
-    private String status;
+    private String status="NEW";
     private String latestFinishDate;
     private String earliestStartDate;
     private String latestStartDate;
-    private String estimatedTime;
+    private String estimatedTime="";
     private String configName;
     private boolean privacy;
     private String creatorName;
 
-    public Config(int cinfig_id, String siteName, String assetSerialNumber, String type, 
-                  String externalWorkOrderId, String systemStatus, String userStatus, String createdOn, 
-                  String createdBy, String name, String priority, String status, String latestFinishDate, 
-                  String earliestStartDate, String latestStartDate, String estimatedTime, String configName,
-                  boolean privacy, String creatorName) {
-        this.cinfig_id = cinfig_id;
-        this.siteName = siteName;
-        this.assetSerialNumber = assetSerialNumber;
-        this.type = type;
-        this.externalWorkOrderId = externalWorkOrderId;
-        this.systemStatus = systemStatus;
-        this.userStatus = userStatus;
-        this.createdOn = createdOn;
-        this.createdBy = createdBy;
-        this.name = name;
-        this.priority = priority;
-        this.status = status;
-        this.latestFinishDate = latestFinishDate;
-        this.earliestStartDate = earliestStartDate;
-        this.latestStartDate = latestStartDate;
-        this.estimatedTime = estimatedTime;
-        this.configName = configName;
-        this.privacy = privacy;
-        this.creatorName = creatorName;
-    }
+//    public Config(int cinfig_id, String siteName, String assetSerialNumber, String type, 
+//                  String externalWorkOrderId, String systemStatus, String userStatus, String createdOn, 
+//                  String createdBy, String name, String priority, String status, String latestFinishDate, 
+//                  String earliestStartDate, String latestStartDate, String estimatedTime, String configName,
+//                  boolean privacy, String creatorName) {
+//        this.cinfig_id = cinfig_id;
+//        this.siteName = siteName;
+//        this.assetSerialNumber = assetSerialNumber;
+//        this.type = type;
+//        this.externalWorkOrderId = externalWorkOrderId;
+//        this.systemStatus = systemStatus;
+//        this.userStatus = userStatus;
+//        this.createdOn = createdOn;
+//        this.createdBy = createdBy;
+//        this.name = name;
+//        this.priority = priority;
+//        this.status = status;
+//        this.latestFinishDate = latestFinishDate;
+//        this.earliestStartDate = earliestStartDate;
+//        this.latestStartDate = latestStartDate;
+//        this.estimatedTime = estimatedTime;
+//        this.configName = configName;
+//        this.privacy = privacy;
+//        this.creatorName = creatorName;
+//    }
 
     public boolean isPrivacy() {
         return privacy;
@@ -93,24 +102,27 @@ public class Config {
         return latestStartDate;
     }
 
-    public void setLatestStartDate(String latestStartDate) {
-        this.latestStartDate = latestStartDate;
+    public void setLatestStartDate(String latestStartDate)  {
+      
+            this.latestStartDate = latestStartDate;
     }
 
     public String getEarliestStartDate() {
         return earliestStartDate;
     }
 
-    public void setEarliestStartDate(String earliestStartDate) {
-        this.earliestStartDate = earliestStartDate;
+    public void setEarliestStartDate(String earliestStartDate)  {
+     
+            this.earliestStartDate = earliestStartDate;
+ 
     }
 
     public String getLatestFinishDate() {
         return latestFinishDate;
     }
 
-    public void setLatestFinishDate(String latestFinishDate) {
-        this.latestFinishDate = latestFinishDate;
+    public void setLatestFinishDate(String latestFinishDate)  {
+       this.latestFinishDate = latestFinishDate;
     }
 
     public String getStatus() {

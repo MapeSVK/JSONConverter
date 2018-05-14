@@ -1,18 +1,11 @@
 package jsonconverter.BE;
 
-import static impl.org.controlsfx.spreadsheet.RectangleSelection.SelectionRange.key;
 import java.io.File;
-import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.concurrent.Task;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.control.ProgressIndicator;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyEvent;
 import jsonconverter.DAL.readFilesAndWriteJson.IConverter;
 import jsonconverter.GUI.model.Model;
 
@@ -47,16 +40,8 @@ public class TaskInOurProgram extends Task<Void> {
 
     @Override
     public Void call() throws Exception {
-
         this.updateProgress(ProgressIndicator.INDETERMINATE_PROGRESS, 1);
-        updateProgress(1, 3);
-        TimeUnit.SECONDS.sleep(3);
-        pauseThread();
-        updateProgress(2, 3);
-        TimeUnit.SECONDS.sleep(3);
-        pauseThread();
-        model.createJsonFile(fileName, filePath, converter, config);
-        updateProgress(3, 3);
+        model.createJsonFile(fileName, filePath, this);      
         isConvertingDone = true;
         System.out.println(isConvertingDone);
       return null;
@@ -148,7 +133,7 @@ public class TaskInOurProgram extends Task<Void> {
         }
     }
 
-    private void pauseThread() {
+    public void pauseThread() {
         synchronized (lock) {
             if (pause) {
                 try {
@@ -175,4 +160,8 @@ public class TaskInOurProgram extends Task<Void> {
     public void setFilePath(File filePath) {
         this.filePath = filePath;
     }
+    public void update(double update)
+{
+    updateProgress(update, converter.getFileValues().size());
+}
 }

@@ -5,12 +5,14 @@
  */
 package jsonconverter.BLL;
 
-import java.util.ArrayList;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.List;
-import jsonconverter.BE.Config;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import jsonconverter.BE.JSONObject;
 import jsonconverter.BE.Planning;
-import jsonconverter.DAL.readFilesAndWriteJson.IConverter;
+import jsonconverter.BE.TaskInOurProgram;
 
 /**
  *
@@ -18,48 +20,83 @@ import jsonconverter.DAL.readFilesAndWriteJson.IConverter;
  */
 public class Converter {
 
-    public List<JSONObject> getJasonObject(IConverter converter, Config config) {
-        Integer[] numbersOfHeaders = new Integer[15];
-        numbersOfHeaders[0] = converter.getFileHeaders().get(config.getSiteName());
-        numbersOfHeaders[1] = converter.getFileHeaders().get(config.getAssetSerialNumber());
-        numbersOfHeaders[2] = converter.getFileHeaders().get(config.getType());
-        numbersOfHeaders[3] = converter.getFileHeaders().get(config.getExternalWorkOrderId());
-        numbersOfHeaders[4] = converter.getFileHeaders().get(config.getSystemStatus());
-        numbersOfHeaders[5] = converter.getFileHeaders().get(config.getUserStatus());
-        numbersOfHeaders[6] = converter.getFileHeaders().get(config.getCreatedOn());
-        numbersOfHeaders[7] = converter.getFileHeaders().get(config.getCreatedBy());
-        numbersOfHeaders[8] = converter.getFileHeaders().get(config.getName());
-        numbersOfHeaders[9] = converter.getFileHeaders().get(config.getPriority());
-        numbersOfHeaders[10] = converter.getFileHeaders().get(config.getStatus());
-        numbersOfHeaders[11] = converter.getFileHeaders().get(config.getLatestFinishDate());
-        numbersOfHeaders[12] = converter.getFileHeaders().get(config.getEarliestStartDate());
-        numbersOfHeaders[13] = converter.getFileHeaders().get(config.getLatestStartDate());
-        numbersOfHeaders[14] = converter.getFileHeaders().get(config.getEstimatedTime());
+   private SimpleDateFormat dateTimeFormatter = new SimpleDateFormat("dd/MM/yyyy HH:mm");  
+    private SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM/yyyy"); 
 
-        return returnJasonObjects(numbersOfHeaders, converter);
-    }
-
-    private List<JSONObject> returnJasonObjects(Integer[] numbersOfHeaders, IConverter converter) {
-        List<JSONObject> jasonList = new ArrayList();
+    public List<JSONObject> returnJasonObjects(TaskInOurProgram task) throws InterruptedException {
+        ObservableList<JSONObject> jasonList = FXCollections.observableArrayList();
+        double objectCounter=0;
         jasonList.clear();
-        for (String line : converter.getFileValues()) {
+        for (String line : task.getConverter().getFileValues()) {
             String[] fields = line.split(";");
-            JSONObject newJson = new JSONObject(fields[numbersOfHeaders[0]],
-                    fields[numbersOfHeaders[1]],
-                    fields[numbersOfHeaders[2]],
-                    fields[numbersOfHeaders[3]],
-                    fields[numbersOfHeaders[4]],
-                    fields[numbersOfHeaders[5]],
-                    fields[numbersOfHeaders[6]],
-                    fields[numbersOfHeaders[7]],
-                    fields[numbersOfHeaders[8]],
-                    fields[numbersOfHeaders[9]],
-                    fields[numbersOfHeaders[10]], new Planning(fields[numbersOfHeaders[11]],
-                            fields[numbersOfHeaders[12]],
-                            fields[numbersOfHeaders[13]],
-                            fields[numbersOfHeaders[14]]));
+            
+            JSONObject newJson = new JSONObject(
+                    checkConfig(fields, task.getConfig().getSiteName(), task),
+                    checkConfig(fields, task.getConfig().getAssetSerialNumber(), task),
+                    checkConfig(fields, task.getConfig().getType(), task),
+                    checkConfig(fields, task.getConfig().getExternalWorkOrderId(), task),
+                    checkConfig(fields, task.getConfig().getSystemStatus(), task),
+                    checkConfig(fields, task.getConfig().getUserStatus(), task),
+                    checkConfig(fields, task.getConfig().getCreatedOn(), task),
+                    checkConfig(fields, task.getConfig().getCreatedBy(), task),
+                    checkConfig(fields, task.getConfig().getName(), task),
+                    checkConfig(fields, task.getConfig().getPriority(), task),
+                    checkConfig(fields, task.getConfig().getStatus(), task),
+                    getPlanning(task, fields));
+                            
             jasonList.add(newJson);
+            objectCounter++;
+            task.update(objectCounter);
+            task.pauseThread();
         }
         return jasonList;
+    }
+    private Planning getPlanning(TaskInOurProgram task,String[] fields)
+    {
+        Planning planning = new Planning();
+       try {
+           planning.setLatestFinishDate(dateTimeFormatter.format(dateFormatter.parse(checkConfig(fields, task.getConfig().getLatestFinishDate(), task))));
+       } catch (ParseException ex) {
+          planning.setLatestFinishDate(checkConfig(fields, task.getConfig().getLatestFinishDate(), task));
+       }
+        try {
+           planning.setEarliestStartDate(dateTimeFormatter.format(dateFormatter.parse(checkConfig(fields, task.getConfig().getEarliestStartDate(), task))));
+       } catch (ParseException ex) {
+          planning.setEarliestStartDate(checkConfig(fields, task.getConfig().getEarliestStartDate(), task));
+       }
+        try {
+           planning.setLatestStartDate(dateTimeFormatter.format(dateFormatter.parse(checkConfig(fields, task.getConfig().getLatestStartDate(), task))));
+       } catch (ParseException ex) {
+          planning.setLatestStartDate(checkConfig(fields, task.getConfig().getLatestStartDate(), task));
+       }
+        planning.setEstimatedTime(checkConfig(fields, task.getConfig().getEstimatedTime(), task));
+        return planning;
+    }
+    
+    private String checkConfig(String[] jason,String config,TaskInOurProgram task)
+    {
+        if(config.contains("&&"))
+        {
+            
+            String[] ifEmpty = config.split("&&");          
+            
+            if(jason[task.getConverter().getFileHeaders().get(ifEmpty[0])].equals(""))
+            {
+                return jason[task.getConverter().getFileHeaders().get(ifEmpty[1])];
+            }
+            else
+            {
+                return jason[task.getConverter().getFileHeaders().get(ifEmpty[0])];
+            }
+            
+        }
+        else if(task.getConverter().getOnlyFileHeaders().contains(config))
+        {
+            return jason[task.getConverter().getFileHeaders().get(config)];
+        }
+        else
+        {
+            return config;
+        }
     }
 }

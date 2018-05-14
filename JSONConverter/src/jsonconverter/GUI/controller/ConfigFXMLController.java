@@ -7,14 +7,18 @@ package jsonconverter.GUI.controller;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
+import impl.org.controlsfx.autocompletion.SuggestionProvider;
 import java.net.URL;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.CheckBox;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import jsonconverter.BE.Config;
 import jsonconverter.DAL.readFilesAndWriteJson.IConverter;
@@ -64,7 +68,7 @@ public class ConfigFXMLController implements Initializable {
     private JFXTextField estimatedTimeField;
     private String username;
     private HostName hostNameClass;
-    ArrayList<JFXTextField> arrayListWithTextFields = new ArrayList<JFXTextField>();
+    
     boolean isValid;
     @FXML
     private JFXButton saveConfigButton;
@@ -73,7 +77,11 @@ public class ConfigFXMLController implements Initializable {
     private boolean privacyBoolean;
     @FXML
     private JFXTextField headerNameField;
-
+    @FXML
+    private AnchorPane configFieldsPane;
+private SuggestionProvider<String> suggest;
+private ArrayList<String> headersList = new ArrayList<>();
+private int fieldsCounter=0;
     /**
      * Initializes the controller class.
      */
@@ -82,23 +90,25 @@ public class ConfigFXMLController implements Initializable {
     }
 
     /* gets converter of imported file */
-    public void getConverterandModel(IConverter converter, Model model) {
-        this.converter = converter;
+    public void getModel(Model model) {
         this.model = model;
+        headersList.addAll(model.getOnlyFileHeaders());
+        suggest = SuggestionProvider.create(headersList);
         addAutoCompletionToFields();
+        checkTextProperty();
     }
 
     @FXML
-    private void saveButtonOnAction(ActionEvent event) {
+    private void saveButtonOnAction(ActionEvent event) throws ParseException {
         if (privacyBoolean) {
             hostNameClass = new HostName();
             username = hostNameClass.userName;
         } else {
             username = "Unkown";
         }
-        if (model.checkIfConfigExists(createAnd())) {
-            //model.addToFakeConfigDatabase(createAnd()); //<---------------------------FAKE CONFIG
-            model.saveConfigToDatabase(createAnd());
+        if (model.checkIfConfigExists(createConfig())) {
+            model.addToFakeConfigDatabase(createConfig()); //<---------------------------FAKE CONFIG
+           
             closeWindow();
         } else {
             Alert("Config already exists", "Config with this name already exists!");
@@ -107,81 +117,57 @@ public class ConfigFXMLController implements Initializable {
 
     /* binds textfields with autocompletion */
     private void addAutoCompletionToFields() {
-        TextFields.bindAutoCompletion(siteNameField, model.getOnlyFileHeaders(converter));
-        TextFields.bindAutoCompletion(assetSerialNumberField, model.getOnlyFileHeaders(converter));
-        TextFields.bindAutoCompletion(typeField, model.getOnlyFileHeaders(converter));
-        TextFields.bindAutoCompletion(externalWorkOrderIdField, model.getOnlyFileHeaders(converter));
-        TextFields.bindAutoCompletion(systemStatusField, model.getOnlyFileHeaders(converter));
-        TextFields.bindAutoCompletion(userStatusField, model.getOnlyFileHeaders(converter));
-        TextFields.bindAutoCompletion(createdOnField, model.getOnlyFileHeaders(converter));
-        TextFields.bindAutoCompletion(createdByField, model.getOnlyFileHeaders(converter));
-        TextFields.bindAutoCompletion(nameField, model.getOnlyFileHeaders(converter));
-        TextFields.bindAutoCompletion(priorityField, model.getOnlyFileHeaders(converter));
-        TextFields.bindAutoCompletion(statusField, model.getOnlyFileHeaders(converter));
-        TextFields.bindAutoCompletion(latestFinishDateField, model.getOnlyFileHeaders(converter));
-        TextFields.bindAutoCompletion(earliestStartDateField, model.getOnlyFileHeaders(converter));
-        TextFields.bindAutoCompletion(latestStartDateField, model.getOnlyFileHeaders(converter));
-        TextFields.bindAutoCompletion(estimatedTimeField, model.getOnlyFileHeaders(converter));
-        
+        for (Node node : configFieldsPane.getChildren()) {
+    if (node instanceof JFXTextField) {
+        // clear
+      
+            TextFields.bindAutoCompletion(  ((JFXTextField)node), suggest);
+    }
+}  
     }
 
 
     /* creates config based on users texFields and saves it in the database */
-    private Config createAnd() {
-        Config newConfig = new Config(
-                1,
-                siteNameField.getText(),
-                assetSerialNumberField.getText(),
-                typeField.getText(),
-                externalWorkOrderIdField.getText(),
-                systemStatusField.getText(),
-                userStatusField.getText(),
-                createdOnField.getText(),
-                createdByField.getText(),
-                nameField.getText(),
-                priorityField.getText(),
-                statusField.getText(),
-                latestFinishDateField.getText(),
-                earliestStartDateField.getText(),
-                latestStartDateField.getText(),
-                estimatedTimeField.getText(),
-                headerNameField.getText(),
-                privacyBoolean,
-                username);
-
+    private Config createConfig() throws ParseException {
+        Config newConfig = new Config();
+        
+        if(!siteNameField.getText().isEmpty())
+        {
+            newConfig.setSiteName(siteNameField.getText());
+        }       
+        if(!assetSerialNumberField.getText().isEmpty())
+        {
+            newConfig.setAssetSerialNumber(assetSerialNumberField.getText());
+        }  
+        if(!createdOnField.getText().isEmpty())
+        {
+            newConfig.setCreatedOn(createdOnField.getText());
+        }   
+        if(!createdByField.getText().isEmpty())
+        {
+            newConfig.setCreatedBy(createdByField.getText());
+        }   
+        if(!statusField.getText().isEmpty())
+        {
+            newConfig.setStatus(statusField.getText());
+        }   
+        if(!estimatedTimeField.getText().isEmpty())
+        {
+            newConfig.setEstimatedTime(estimatedTimeField.getText());
+        }  
+        newConfig.setType(typeField.getText());
+        newConfig.setExternalWorkOrderId(externalWorkOrderIdField.getText());
+        newConfig.setSystemStatus(systemStatusField.getText());
+        newConfig.setUserStatus(userStatusField.getText());
+        newConfig.setName(nameField.getText());
+        newConfig.setPriority(priorityField.getText());
+        newConfig.setLatestFinishDate(latestFinishDateField.getText());
+        newConfig.setEarliestStartDate(earliestStartDateField.getText());
+        newConfig.setLatestStartDate(latestStartDateField.getText());
+        newConfig.setConfigName(headerNameField.getText());
+        newConfig.setPrivacy(privacyBoolean);
+        newConfig.setCreatorName(username);
         return newConfig;
-    }
-
-    private void arrayCreation() {
-        arrayListWithTextFields.add(siteNameField);
-        arrayListWithTextFields.add(assetSerialNumberField);
-        arrayListWithTextFields.add(typeField);
-        arrayListWithTextFields.add(externalWorkOrderIdField);
-        arrayListWithTextFields.add(userStatusField);
-        arrayListWithTextFields.add(createdOnField);
-        arrayListWithTextFields.add(createdByField);
-        arrayListWithTextFields.add(nameField);
-        arrayListWithTextFields.add(priorityField);
-        arrayListWithTextFields.add(statusField);
-        arrayListWithTextFields.add(systemStatusField);
-        arrayListWithTextFields.add(latestFinishDateField);
-        arrayListWithTextFields.add(earliestStartDateField);
-        arrayListWithTextFields.add(latestStartDateField);
-        arrayListWithTextFields.add(estimatedTimeField);
-
-    }
-
-    /* VALIDATION */
-    private void validation() {
-        for (String header : model.getOnlyFileHeaders(converter)) {
-            for (JFXTextField textField : arrayListWithTextFields) {
-                if (textField.getText().equals(header)) {
-                    isValid = true;
-                } else {
-                    Alert("Error", "Text imputs are not good! Check each text and then try it again!");
-                }
-            }   
-        }
     }
 
     private void Alert(String title, String text) {
@@ -200,4 +186,47 @@ public class ConfigFXMLController implements Initializable {
     private void checkBoxPrivacyOnAction(ActionEvent event) {
         privacyBoolean = checkBoxPrivacy.isSelected();
     }
+    
+    private void checkTextProperty()
+    {
+         for (Node node : configFieldsPane.getChildren()) {
+    if (node instanceof JFXTextField) {
+        ((JFXTextField)node).textProperty().addListener(e->{
+addAndRemoveHeadersFromBinding();
+        });
+    }
+}
+    }
+    
+    private void addAndRemoveHeadersFromBinding()
+{
+   
+    for(String string : model.getOnlyFileHeaders())
+    {
+       fieldsCounter=0;
+        for (Node node : configFieldsPane.getChildren()) {
+    if (node instanceof JFXTextField) {
+ if( ((JFXTextField)node).getText().equals(string))
+ {
+    headersList.remove(string);
+    suggest.clearSuggestions();
+    suggest.addPossibleSuggestions(headersList);
+ }
+ 
+ else if(! ((JFXTextField)node).getText().equals(string) && !headersList.contains(string))
+ {
+     fieldsCounter++;
+     if(fieldsCounter==15)
+     {
+         fieldsCounter=0;
+         headersList.add(string);
+         suggest.clearSuggestions();
+    suggest.addPossibleSuggestions(headersList);
+     }
+ }
+  
+    }
+}
+    }
+}
 }

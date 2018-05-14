@@ -12,9 +12,12 @@ import java.util.List;
 import jsonconverter.BE.Config;
 import jsonconverter.BE.History;
 import jsonconverter.BE.JSONObject;
+import jsonconverter.BE.TaskInOurProgram;
 import jsonconverter.DAL.manager.DALHistory;
 import jsonconverter.DAL.manager.SuperFakeDb;
 import jsonconverter.DAL.readFilesAndWriteJson.IConverter;
+import jsonconverter.DAL.readFilesAndWriteJson.ReadCSV;
+import jsonconverter.DAL.readFilesAndWriteJson.ReadEXEL;
 import jsonconverter.DAL.readFilesAndWriteJson.WriteJSON;
 
 /**
@@ -23,31 +26,46 @@ import jsonconverter.DAL.readFilesAndWriteJson.WriteJSON;
  */
 public class DALFacade {
 
+    private IConverter converter;
     private WriteJSON createJson = new WriteJSON();
     private SuperFakeDb fake = new SuperFakeDb();  // <-------------SUPER FAKE DB
     private DALHistory history = new DALHistory();
 
     /* returns hashMap of headers from file (Headers are keys and numbers are values) */
-    public HashMap<String, Integer> getFileHeaders(IConverter converter) {
+    public HashMap<String, Integer> getFileHeaders() {
         return converter.getFileHeaders();
     }
 
     /* returns values from the selected file */
-    public ArrayList<String> getFileValues(IConverter converter) {
+    public ArrayList<String> getFileValues() {
         return converter.getFileValues();
     }
 
     /* creates json file from JSONObject list */
     public void createJsonFile(String fileName, File filePath, List<JSONObject> jsonList) {
         createJson.createJsonFile(fileName, filePath, jsonList);
-        System.out.println("chuuuj4");
     }
 
     /*returns list of Headers from the file */
-    public List<String> getOnlyFileHeaders(IConverter converter) {
+    public List<String> getOnlyFileHeaders() {
         return converter.getOnlyFileHeaders();
     }
 
+     public void getConverter(TaskInOurProgram currentTask) {
+         currentTask.setConverter(converter);
+    }
+
+    public void setConverter(String fileType,String filePath) {
+        if( fileType.equals(".csv"))
+        {
+            converter = new ReadCSV(filePath);
+        }
+        else if(fileType.equals(".xlsx"))
+                {
+                converter = new ReadEXEL(filePath);
+                }
+    }
+    
     /* getting HISTORY */
     public List<History> getAllHistory() {
 
