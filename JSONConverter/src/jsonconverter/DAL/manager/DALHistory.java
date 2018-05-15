@@ -18,6 +18,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import jsonconverter.BE.Config;
 import jsonconverter.BE.History;
+import jsonconverter.GUI.util.HostName;
 import org.apache.commons.dbcp.BasicDataSource;
 
 /**
@@ -26,6 +27,8 @@ import org.apache.commons.dbcp.BasicDataSource;
  */
 public class DALHistory {
 
+    HostName HN = new HostName();
+    String username = HN.userName;
     /* OBJECT POOL */
     // Create the ConnectionPool:
     JDBCConnectionPool pool = new JDBCConnectionPool(
@@ -60,10 +63,48 @@ public class DALHistory {
         return history;
     }
 
-    public void saveConfigToDatabase(Config config) {
-        
+    public List<Config> getAllConfig() {
+        List<Config> configList = new ArrayList();
+
         try (Connection con = pool.checkOut()) {
-            String sql ="INSERT INTO Config "
+            PreparedStatement pstmt = con.prepareCall("SELECT * FROM Config WHERE creator_name = '"+username+"'");
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                Config cnfg = new Config(
+                        rs.getInt("config_id"),
+                        rs.getString("siteName"),
+                        rs.getString("assetSerialNumber"),
+                        rs.getString("type"),
+                        rs.getString("externalWorkOrderId"),
+                        rs.getString("systemStatus"),
+                        rs.getString("userStatus"),
+                        rs.getString("createdOn"),
+                        rs.getString("createdBy"),
+                        rs.getString("name"),
+                        rs.getString("priority"),
+                        rs.getString("status"),
+                        rs.getString("latestFinishDate"),
+                        rs.getString("earliestStartDate"),
+                        rs.getString("latestStartDate"),
+                        rs.getString("estimatedTime"),
+                        rs.getString("config_name"),
+                        rs.getBoolean("privacy"),
+                        rs.getString("creator_name"));
+                configList.add(cnfg);
+            }
+
+            pool.checkIn(con);
+        } catch (SQLException ex) {
+            Logger.getLogger(DALHistory.class.getName()).log(
+                    Level.SEVERE, null, ex);
+        }
+        return configList;
+    }
+
+    public void saveConfigToDatabase(Config config) {
+
+        try (Connection con = pool.checkOut()) {
+            String sql = "INSERT INTO Config "
                     + "(siteName, assetSerialNumber, type, externalWorkOrderId, systemStatus, "
                     + "userStatus, createdOn, createdBy, name, priority, status, latestFinishDate, earliestStartDate, "
                     + "latestStartDate, estimatedTime, config_name, privacy, creator_name) "
@@ -91,6 +132,8 @@ public class DALHistory {
             int affected = pstmt.executeUpdate();
             if (affected < 1) {
                 throw new SQLException("Config could not be added");
+            }else{
+                System.out.println("Config saved correctly");
             }
             pool.checkIn(con);
         } catch (SQLException ex) {

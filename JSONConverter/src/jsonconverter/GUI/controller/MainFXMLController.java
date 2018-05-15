@@ -60,7 +60,7 @@ public class MainFXMLController implements Initializable {
     private ChoiceBox<Config> configChoiceBox;
     @FXML
     private TableView<TaskInOurProgram> tasksTableView;
-      @FXML
+    @FXML
     private TableColumn<String, String> extensionColumn;
     @FXML
     private Label nameOfImportedFileLabel;
@@ -99,21 +99,23 @@ public class MainFXMLController implements Initializable {
     private TableColumn<History, Button> errorColumn;
     @FXML
     private TableView<History> historyTableView;
-    
-    
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         setTasksTableViewColumns();
         setHistoryTableViewColumns();
         setConfigChoiceBoxItems();
         tasksTableView.setItems(model.getTasksInTheTableView());
-        
+
         tasksTableView.setSelectionModel(null);
         historyTableView.setSelectionModel(null);
-        
+
+        model.loadConfigFromDatabase();
         /* set history tableView */
         model.loadHistoryFromDatabase();
         historyTableView.setItems(model.getAllHistoryObservableArrayList());
+        gettingThePrivateConfigs();
+
     }
 
     /* set tableView columns */
@@ -205,14 +207,14 @@ public class MainFXMLController implements Initializable {
     @FXML
     private void createNewConfigButtonClick(ActionEvent event) throws IOException {
         Parent root;
-            Stage stage = new Stage();
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/jsonconverter/GUI/view/ConfigFXML.fxml"));
-            root = loader.load();
-            ConfigFXMLController controller = loader.getController();
-            controller.getConverterandModel(converter, model);
-            stage.initModality(Modality.APPLICATION_MODAL);
-            stage.setScene(new Scene(root));
-            stage.showAndWait();
+        Stage stage = new Stage();
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/jsonconverter/GUI/view/ConfigFXML.fxml"));
+        root = loader.load();
+        ConfigFXMLController controller = loader.getController();
+        controller.getConverterandModel(converter, model);
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.setScene(new Scene(root));
+        stage.showAndWait();
     }
 
     @FXML
@@ -247,45 +249,37 @@ public class MainFXMLController implements Initializable {
             task.setFileName(nameOfImportedFile);
             model.addTask(task);
         }
-        
-        
+
         pauseConvertingClick();
 
     }
 
     public void pauseConvertingClick() {
-        
-        
+
         for (TaskInOurProgram task : model.getTasksInTheTableView()) {
             task.getPauseTask().setGraphic(new ImageView(playImage));
             convertingOrPauseOrPlay = "firstStage";
             //task.pauseThis();
-            
+
             task.getPauseTask().setOnAction(new EventHandler<ActionEvent>() {
                 @Override
-                public void handle(ActionEvent event) {  
+                public void handle(ActionEvent event) {
                     if (convertingOrPauseOrPlay.equals("firstStage")) {
-                        
-                       
-                        
+
                         executor.submit(task);
                         convertingOrPauseOrPlay = "secondStage";
                         task.getPauseTask().setGraphic(new ImageView(pauseImage));
 
-                    }
-                    
-                    else if (convertingOrPauseOrPlay.equals("secondStage")) {
+                    } else if (convertingOrPauseOrPlay.equals("secondStage")) {
                         task.pauseThis();
                         convertingOrPauseOrPlay = "thirdStage";
                         task.getPauseTask().setGraphic(new ImageView(playImage));
-                    }
-                    
-                    else if (convertingOrPauseOrPlay.equals("thirdStage")) {
+                    } else if (convertingOrPauseOrPlay.equals("thirdStage")) {
                         task.continueThis();
                         task.getPauseTask().setGraphic(new ImageView(pauseImage));
                         convertingOrPauseOrPlay = "firstStage";
                     }
-                    
+
 //                    else if (convertingOrPauseOrPlay.equals("fourthStage")){
 //                        task.getPauseTask().setGraphic(new ImageView(playImage));
 //                        
@@ -317,22 +311,23 @@ public class MainFXMLController implements Initializable {
             directoryPath = selectedDirectory.getAbsoluteFile();
             directoryPathHasBeenSelected = true;
         }
-     }
+    }
 
     @FXML
     private void convertTasksButtonClick(ActionEvent event) throws IOException {
-         
+
     }
+
     @FXML
     private void pauseTasksButtonClick(ActionEvent event) throws InterruptedException {
-executor.shutdownNow();
+        executor.shutdownNow();
     }
 
     @FXML
     private void deleteTasksButtonClick(ActionEvent event) {
         System.out.println("----------Start-------------");
- Set<Thread> threadSet = Thread.getAllStackTraces().keySet();
- Thread[] threadArray = threadSet.toArray(new Thread[threadSet.size()]);
+        Set<Thread> threadSet = Thread.getAllStackTraces().keySet();
+        Thread[] threadArray = threadSet.toArray(new Thread[threadSet.size()]);
         for (int i = 0; i < threadArray.length; i++) {
             System.out.println(threadArray[i].getName());
         }
@@ -351,31 +346,24 @@ executor.shutdownNow();
 
     }
 
- public void getStage(Stage stage)
-    {
-        stage.showingProperty().addListener(e->{
-            if(stage.isShowing()==false)
-            {
-                if(executor!=null)
-                {
+    public void getStage(Stage stage) {
+        stage.showingProperty().addListener(e -> {
+            if (stage.isShowing() == false) {
+                if (executor != null) {
                     executor.shutdownNow();
                 }
             }
         });
     }
- 
- 
+
     /* HISTORY TAB */
- 
- 
- public void setHistoryTableViewColumns() {
-     dateAndTimeColumn.setCellValueFactory(new PropertyValueFactory("dateAndTime"));
-     taskNameColumn.setCellValueFactory(new PropertyValueFactory("fileName"));
-     userNameColumn.setCellValueFactory(new PropertyValueFactory("username"));
-     errorColumn.setCellValueFactory(new PropertyValueFactory("errorButton"));
- }
- 
- 
+    public void setHistoryTableViewColumns() {
+        dateAndTimeColumn.setCellValueFactory(new PropertyValueFactory("dateAndTime"));
+        taskNameColumn.setCellValueFactory(new PropertyValueFactory("fileName"));
+        userNameColumn.setCellValueFactory(new PropertyValueFactory("username"));
+        errorColumn.setCellValueFactory(new PropertyValueFactory("errorButton"));
+    }
+
 //    public void openErrorMessageAfterClickOnTheButtonInHistoryTableView() {
 //        for (History history : model.getHistoryFromDatabase) {
 //            if (history.isHasError() == true) {
@@ -405,6 +393,13 @@ executor.shutdownNow();
 //
 //        }
 //    }
-     
-             
+    private void gettingThePrivateConfigs() {
+
+        System.out.println("awesome list " + model.getAllConfigObservableArrayList());
+        if (model.getAllConfigObservableArrayList().isEmpty()) {
+            System.out.println("HALLO");
+        }else{
+            System.out.println("not empty");
+        }
+    }
 }

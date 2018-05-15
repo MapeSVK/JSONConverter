@@ -48,6 +48,9 @@ public class BLLManager {
     public void saveConfigToDatabase(Config config){
         manager.saveConfigToDatabase(config);
     }
+    public List<Config> getAllConfig(){
+        return manager.getAllConfig();
+    }
     //----------------------------------------------------------------SUPERFAKE DB------------------------------------------------------------------------------------------------
     public List<Config> getFakeConfigDatabase() {
         return manager.getFakeConfigDatabase();

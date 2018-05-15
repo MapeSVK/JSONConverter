@@ -20,8 +20,9 @@ public class Model {
     /* contains configs from the database which can be chosen in the choiceBox */
     private ObservableList<String> configChoiceBoxItems = FXCollections.observableArrayList();
     /* contains every task in tableview */
-    private ObservableList<TaskInOurProgram> tasksInTheTableView = FXCollections.observableArrayList();    
+    private ObservableList<TaskInOurProgram> tasksInTheTableView = FXCollections.observableArrayList();
     private ObservableList<History> allHistoryObservableArrayList = FXCollections.observableArrayList();
+    private ObservableList<Config> allConfigObservableArrayList = FXCollections.observableArrayList();
 
 
     /* returns hashMap of headers from file (Headers are keys and numbers are values) */
@@ -55,9 +56,10 @@ public class Model {
         return manager.getOnlyFileHeaders(converter);
     }
 
-    public void saveConfigToDatabase(Config config){
+    public void saveConfigToDatabase(Config config) {
         manager.saveConfigToDatabase(config);
     }
+
     //----------------------------------------------------------------SUPERFAKE DB------------------------------------------------------------------------------------------------
     public List<Config> getFakeConfigDatabase() {
         return manager.getFakeConfigDatabase();
@@ -73,22 +75,29 @@ public class Model {
         addFake();
         return fakeConfig;
     }
-    
-    public boolean checkIfConfigExists(Config config)
-    {
+
+    public boolean checkIfConfigExists(Config config) {
         return manager.checkIfConfigExists(config);
     }
-    
+
     public void addFake() {
-    fakeConfig.add(new Config(1, "Actual start", "Actual start", "Order Type", "Order", "System status", "User status", 
-            "Created on", "Actual start", "Opr. short text","Priority", "Actual start", "Lat.finish date", "Earl.start date", "Latest start", 
-            "Normal duration", "test config",false, "creator name"));
+        fakeConfig.add(new Config(1, "Actual start", "Actual start", "Order Type", "Order", "System status", "User status",
+                "Created on", "Actual start", "Opr. short text", "Priority", "Actual start", "Lat.finish date", "Earl.start date", "Latest start",
+                "Normal duration", "test config", false, "creator name"));
     }
-    
+
+    public void loadConfigFromDatabase() {
+        allConfigObservableArrayList.clear();
+        allConfigObservableArrayList.addAll(manager.getAllConfig());
+    }
+
+    public ObservableList<Config> getAllConfigObservableArrayList() {
+        return allConfigObservableArrayList;
+    }
+
     /* HISTORY */
-     
-    
-    /* add history to a database after some action is done */
+
+ /* add history to a database after some action is done */
     public void addHistoryToTheDatabase(History history) {
         allHistoryObservableArrayList.add(history);
         //manager.addNewHistoryToDatabase(history);
@@ -102,7 +111,5 @@ public class Model {
         allHistoryObservableArrayList.clear();
         allHistoryObservableArrayList.addAll(manager.getAllHistory());
     }
-   
-  
-   
+
 }
