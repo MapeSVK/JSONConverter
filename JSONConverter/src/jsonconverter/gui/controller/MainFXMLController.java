@@ -9,10 +9,6 @@ import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javafx.concurrent.Service;
-import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -38,8 +34,6 @@ import javafx.stage.Stage;
 import jsonconverter.BE.Config;
 import jsonconverter.BE.History;
 import jsonconverter.BE.TaskInOurProgram;
-import jsonconverter.DAL.readFilesAndWriteJson.ReadCSV;
-import jsonconverter.DAL.readFilesAndWriteJson.IConverter;
 import jsonconverter.GUI.model.Model;
 
 public class MainFXMLController implements Initializable {
@@ -65,7 +59,6 @@ public class MainFXMLController implements Initializable {
     @FXML
     private Label nameOfImportedFileLabel;
 
-    private IConverter converter;
     private String filePath;
     private String fileType;
     private String nameOfImportedFile;
@@ -78,7 +71,7 @@ public class MainFXMLController implements Initializable {
     private String newFileInfo = newFileName + newFileExtension;
     private Model model = new Model();
     private TaskInOurProgram task;
-    private ExecutorService executor = Executors.newFixedThreadPool(4);
+    private ExecutorService executor = Executors.newFixedThreadPool(3);
     @FXML
     private Button chooseDirectoryButton;
     private String convertingOrPauseOrPlay;
@@ -183,10 +176,11 @@ public class MainFXMLController implements Initializable {
         if (filePath.endsWith(".csv")) {
             fileType = ".csv";
             labelFileExtension.setText("csv");
-            converter = new ReadCSV(filePath);
+            model.setConverter(fileType, filePath);
         } else if (filePath.endsWith(".xlsx")) {
             fileType = ".xlsx";
             labelFileExtension.setText("xlsx");
+            model.setConverter(fileType, filePath);
         } else {
             nameOfImportedFileLabel.setText(nameOfImportedFile + ".???");
         }
@@ -207,14 +201,14 @@ public class MainFXMLController implements Initializable {
     @FXML
     private void createNewConfigButtonClick(ActionEvent event) throws IOException {
         Parent root;
-        Stage stage = new Stage();
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/jsonconverter/GUI/view/ConfigFXML.fxml"));
-        root = loader.load();
-        ConfigFXMLController controller = loader.getController();
-        controller.getConverterandModel(converter, model);
-        stage.initModality(Modality.APPLICATION_MODAL);
-        stage.setScene(new Scene(root));
-        stage.showAndWait();
+            Stage stage = new Stage();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/jsonconverter/GUI/view/ConfigFXML.fxml"));
+            root = loader.load();
+            ConfigFXMLController controller = loader.getController();
+            controller.getModel(model);
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setScene(new Scene(root));
+            stage.showAndWait();
     }
 
     @FXML
@@ -243,7 +237,7 @@ public class MainFXMLController implements Initializable {
         if (isRightNameOfTheFile == true && isConfigSet == true && isRightExtension == true) {
             TaskInOurProgram task = new TaskInOurProgram(nameOfImportedFile, configChoiceBox.getSelectionModel().getSelectedItem().getConfigName(),
                     labelFileExtension.getText());
-            task.setConverter(converter);
+           model.getConverter(task);
             task.setConfig(configChoiceBox.getValue());
             task.setFilePath(directoryPath);
             task.setFileName(nameOfImportedFile);
@@ -351,6 +345,7 @@ public class MainFXMLController implements Initializable {
             if (stage.isShowing() == false) {
                 if (executor != null) {
                     executor.shutdownNow();
+                    System.exit(0);
                 }
             }
         });

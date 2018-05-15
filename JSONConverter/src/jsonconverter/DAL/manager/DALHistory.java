@@ -70,26 +70,26 @@ public class DALHistory {
             PreparedStatement pstmt = con.prepareCall("SELECT * FROM Config WHERE creator_name = '"+username+"'");
             ResultSet rs = pstmt.executeQuery();
             while (rs.next()) {
-                Config cnfg = new Config(
-                        rs.getInt("config_id"),
-                        rs.getString("siteName"),
-                        rs.getString("assetSerialNumber"),
-                        rs.getString("type"),
-                        rs.getString("externalWorkOrderId"),
-                        rs.getString("systemStatus"),
-                        rs.getString("userStatus"),
-                        rs.getString("createdOn"),
-                        rs.getString("createdBy"),
-                        rs.getString("name"),
-                        rs.getString("priority"),
-                        rs.getString("status"),
-                        rs.getString("latestFinishDate"),
-                        rs.getString("earliestStartDate"),
-                        rs.getString("latestStartDate"),
-                        rs.getString("estimatedTime"),
-                        rs.getString("config_name"),
-                        rs.getBoolean("privacy"),
-                        rs.getString("creator_name"));
+                Config cnfg = new Config();
+                        cnfg.setCinfig_id(rs.getInt("config_id"));
+                        cnfg.setSiteName(rs.getString("siteName"));
+                        cnfg.setAssetSerialNumber(rs.getString("assetSerialNumber"));
+                        cnfg.setType(rs.getString("type"));
+                        cnfg.setExternalWorkOrderId(rs.getString("externalWorkOrderId"));
+                        cnfg.setSystemStatus(rs.getString("systemStatus"));
+                        cnfg.setUserStatus(rs.getString("userStatus"));
+                        cnfg.setCreatedOn(rs.getString("createdOn"));
+                        cnfg.setCreatedBy(rs.getString("createdBy"));
+                        cnfg.setName(rs.getString("name"));
+                        cnfg.setPriority(rs.getString("priority"));
+                        cnfg.setStatus(rs.getString("status"));
+                        cnfg.setLatestFinishDate(rs.getString("latestFinishDate"));
+                        cnfg.setEarliestStartDate(rs.getString("earliestStartDate"));
+                        cnfg.setLatestStartDate(rs.getString("latestStartDate"));
+                        cnfg.setEstimatedTime(rs.getString("estimatedTime"));
+                        cnfg.setConfigName(rs.getString("config_name"));
+                        cnfg.setPrivacy(rs.getBoolean("privacy"));
+                        cnfg.setCreatorName(rs.getString("creator_name"));
                 configList.add(cnfg);
             }
 
