@@ -68,7 +68,7 @@ public class ConfigFXMLController implements Initializable {
     private JFXTextField estimatedTimeField;
     private String username;
     private HostName hostNameClass;
-    
+
     boolean isValid;
     @FXML
     private JFXButton saveConfigButton;
@@ -79,9 +79,12 @@ public class ConfigFXMLController implements Initializable {
     private JFXTextField headerNameField;
     @FXML
     private AnchorPane configFieldsPane;
-private SuggestionProvider<String> suggest;
-private ArrayList<String> headersList = new ArrayList<>();
-private int fieldsCounter=0;
+    private SuggestionProvider<String> suggest;
+    private ArrayList<String> headersList = new ArrayList<>();
+    private int fieldsCounter = 0;
+    @FXML
+    private JFXButton removeonfigButton;
+
     /**
      * Initializes the controller class.
      */
@@ -108,7 +111,7 @@ private int fieldsCounter=0;
         }
         if (model.checkIfConfigExists(createConfig())) {
             model.addToFakeConfigDatabase(createConfig()); //<---------------------------FAKE CONFIG
-           
+            model.saveConfigToDatabase(createConfig());
             closeWindow();
         } else {
             Alert("Config already exists", "Config with this name already exists!");
@@ -118,43 +121,37 @@ private int fieldsCounter=0;
     /* binds textfields with autocompletion */
     private void addAutoCompletionToFields() {
         for (Node node : configFieldsPane.getChildren()) {
-    if (node instanceof JFXTextField) {
-        // clear
-      
-            TextFields.bindAutoCompletion(  ((JFXTextField)node), suggest);
-    }
-}  
+            if (node instanceof JFXTextField) {
+                // clear
+
+                TextFields.bindAutoCompletion(((JFXTextField) node), suggest);
+            }
+        }
     }
 
 
     /* creates config based on users texFields and saves it in the database */
     private Config createConfig() throws ParseException {
         Config newConfig = new Config();
-        
-        if(!siteNameField.getText().isEmpty())
-        {
+
+        if (!siteNameField.getText().isEmpty()) {
             newConfig.setSiteName(siteNameField.getText());
-        }       
-        if(!assetSerialNumberField.getText().isEmpty())
-        {
+        }
+        if (!assetSerialNumberField.getText().isEmpty()) {
             newConfig.setAssetSerialNumber(assetSerialNumberField.getText());
-        }  
-        if(!createdOnField.getText().isEmpty())
-        {
+        }
+        if (!createdOnField.getText().isEmpty()) {
             newConfig.setCreatedOn(createdOnField.getText());
-        }   
-        if(!createdByField.getText().isEmpty())
-        {
+        }
+        if (!createdByField.getText().isEmpty()) {
             newConfig.setCreatedBy(createdByField.getText());
-        }   
-        if(!statusField.getText().isEmpty())
-        {
+        }
+        if (!statusField.getText().isEmpty()) {
             newConfig.setStatus(statusField.getText());
-        }   
-        if(!estimatedTimeField.getText().isEmpty())
-        {
+        }
+        if (!estimatedTimeField.getText().isEmpty()) {
             newConfig.setEstimatedTime(estimatedTimeField.getText());
-        }  
+        }
         newConfig.setType(typeField.getText());
         newConfig.setExternalWorkOrderId(externalWorkOrderIdField.getText());
         newConfig.setSystemStatus(systemStatusField.getText());
@@ -186,47 +183,43 @@ private int fieldsCounter=0;
     private void checkBoxPrivacyOnAction(ActionEvent event) {
         privacyBoolean = checkBoxPrivacy.isSelected();
     }
-    
-    private void checkTextProperty()
-    {
-         for (Node node : configFieldsPane.getChildren()) {
-    if (node instanceof JFXTextField) {
-        ((JFXTextField)node).textProperty().addListener(e->{
-addAndRemoveHeadersFromBinding();
-        });
-    }
-}
-    }
-    
-    private void addAndRemoveHeadersFromBinding()
-{
-   
-    for(String string : model.getOnlyFileHeaders())
-    {
-       fieldsCounter=0;
+
+    private void checkTextProperty() {
         for (Node node : configFieldsPane.getChildren()) {
-    if (node instanceof JFXTextField) {
- if( ((JFXTextField)node).getText().equals(string))
- {
-    headersList.remove(string);
-    suggest.clearSuggestions();
-    suggest.addPossibleSuggestions(headersList);
- }
- 
- else if(! ((JFXTextField)node).getText().equals(string) && !headersList.contains(string))
- {
-     fieldsCounter++;
-     if(fieldsCounter==15)
-     {
-         fieldsCounter=0;
-         headersList.add(string);
-         suggest.clearSuggestions();
-    suggest.addPossibleSuggestions(headersList);
-     }
- }
-  
+            if (node instanceof JFXTextField) {
+                ((JFXTextField) node).textProperty().addListener(e -> {
+                    addAndRemoveHeadersFromBinding();
+                });
+            }
+        }
     }
-}
+
+    private void addAndRemoveHeadersFromBinding() {
+
+        for (String string : model.getOnlyFileHeaders()) {
+            fieldsCounter = 0;
+            for (Node node : configFieldsPane.getChildren()) {
+                if (node instanceof JFXTextField) {
+                    if (((JFXTextField) node).getText().equals(string)) {
+                        headersList.remove(string);
+                        suggest.clearSuggestions();
+                        suggest.addPossibleSuggestions(headersList);
+                    } else if (!((JFXTextField) node).getText().equals(string) && !headersList.contains(string)) {
+                        fieldsCounter++;
+                        if (fieldsCounter == 15) {
+                            fieldsCounter = 0;
+                            headersList.add(string);
+                            suggest.clearSuggestions();
+                            suggest.addPossibleSuggestions(headersList);
+                        }
+                    }
+
+                }
+            }
+        }
     }
-}
+
+    @FXML
+    private void removeButtonOnAction(ActionEvent event) {
+    }
 }
