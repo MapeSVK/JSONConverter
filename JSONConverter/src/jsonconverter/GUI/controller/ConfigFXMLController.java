@@ -12,6 +12,8 @@ import java.net.URL;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -82,23 +84,16 @@ public class ConfigFXMLController implements Initializable {
     private SuggestionProvider<String> suggest;
     private ArrayList<String> headersList = new ArrayList<>();
     private int fieldsCounter = 0;
+    private boolean isEditMode;
     @FXML
-    private JFXButton removeonfigButton;
+    private JFXButton removeconfigButton;
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-    }
-
-    /* gets converter of imported file */
-    public void getModel(Model model) {
-        this.model = model;
-        headersList.addAll(model.getOnlyFileHeaders());
-        suggest = SuggestionProvider.create(headersList);
-        addAutoCompletionToFields();
-        checkTextProperty();
+        
     }
 
     @FXML
@@ -129,6 +124,35 @@ public class ConfigFXMLController implements Initializable {
         }
     }
 
+    /* gets converter of imported file */
+    public void getModel(Model model) {
+        this.model = model;
+        headersList.addAll(model.getOnlyFileHeaders());
+        suggest = SuggestionProvider.create(headersList);
+        addAutoCompletionToFields();
+        checkTextProperty();
+    }
+
+    public void setConfig(Config choosenConfig) throws ParseException {
+        siteNameField.setText(choosenConfig.getSiteName());
+        assetSerialNumberField.setText(choosenConfig.getAssetSerialNumber());
+        createdOnField.setText(choosenConfig.getCreatedOn());
+        createdByField.setText(choosenConfig.getCreatedBy());
+        statusField.setText(choosenConfig.getStatus());
+        estimatedTimeField.setText(choosenConfig.getEstimatedTime());
+        typeField.setText(choosenConfig.getType());
+        externalWorkOrderIdField.setText(choosenConfig.getExternalWorkOrderId());
+        systemStatusField.setText(choosenConfig.getSystemStatus());
+        userStatusField.setText(choosenConfig.getUserStatus());
+        nameField.setText(choosenConfig.getName());
+        priorityField.setText(choosenConfig.getPriority());
+        latestFinishDateField.setText(choosenConfig.getLatestFinishDate());
+        earliestStartDateField.setText(choosenConfig.getEarliestStartDate());
+        latestStartDateField.setText(choosenConfig.getLatestStartDate());
+        headerNameField.setText(choosenConfig.getConfigName());
+        checkBoxPrivacy.setSelected(choosenConfig.isPrivacy());
+
+    }
 
     /* creates config based on users texFields and saves it in the database */
     private Config createConfig() throws ParseException {
@@ -162,7 +186,7 @@ public class ConfigFXMLController implements Initializable {
         newConfig.setEarliestStartDate(earliestStartDateField.getText());
         newConfig.setLatestStartDate(latestStartDateField.getText());
         newConfig.setConfigName(headerNameField.getText());
-        newConfig.setPrivacy(privacyBoolean);
+        newConfig.setPrivacy(checkBoxPrivacy.isSelected());
         newConfig.setCreatorName(username);
         return newConfig;
     }
@@ -177,11 +201,6 @@ public class ConfigFXMLController implements Initializable {
     private void closeWindow() {
         Stage stage = (Stage) saveConfigButton.getScene().getWindow();
         stage.close();
-    }
-
-    @FXML
-    private void checkBoxPrivacyOnAction(ActionEvent event) {
-        privacyBoolean = checkBoxPrivacy.isSelected();
     }
 
     private void checkTextProperty() {

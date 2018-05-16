@@ -4,6 +4,7 @@ import com.jfoenix.controls.JFXDatePicker;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.text.ParseException;
 import java.util.Date;
 import java.util.ResourceBundle;
 import java.util.Set;
@@ -401,13 +402,13 @@ public class MainFXMLController implements Initializable {
     }
 
     @FXML
-    private void editConfigButtonClick(ActionEvent event) throws IOException {
+    private void editConfigButtonClick(ActionEvent event) throws IOException, ParseException {
         Parent root;
         Stage stage = new Stage();
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/jsonconverter/GUI/view/ConfigFXML.fxml"));
         root = loader.load();
-        //ConfigFXMLController controller = loader.getController();
-        //controller.getModel(model);
+        ConfigFXMLController controller = loader.getController();
+        controller.setConfig(configChoiceBox.getValue());
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.setScene(new Scene(root));
         stage.showAndWait();
