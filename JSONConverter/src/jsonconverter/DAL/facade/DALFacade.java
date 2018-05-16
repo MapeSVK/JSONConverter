@@ -81,8 +81,8 @@ public class DALFacade {
         history.saveConfigToDatabase(config);
     }
     
-    public List<Config> getAllConfig(){
-        return history.getAllConfig();
+    public List<Config> getAllConfigs(){
+        return history.getAllConfigs();
     }
     //----------------------------------------------------------------SUPERFAKE DB------------------------------------------------------------------------------------------------
     public List<Config> getFakeConfigDatabase() {

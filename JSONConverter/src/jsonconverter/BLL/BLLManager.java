@@ -57,8 +57,8 @@ public void getConverter(TaskInOurProgram currentTask) {
     public void saveConfigToDatabase(Config config){
         manager.saveConfigToDatabase(config);
     }
-    public List<Config> getAllConfig(){
-        return manager.getAllConfig();
+    public List<Config> getAllConfigs(){
+        return manager.getAllConfigs();
     }
     //----------------------------------------------------------------SUPERFAKE DB------------------------------------------------------------------------------------------------
     public List<Config> getFakeConfigDatabase() {

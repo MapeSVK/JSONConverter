@@ -86,7 +86,7 @@ public class Model {
 
     public void loadConfigFromDatabase() {
         allConfigObservableArrayList.clear();
-        allConfigObservableArrayList.addAll(manager.getAllConfig());
+        allConfigObservableArrayList.addAll(manager.getAllConfigs());
     }
 
     public ObservableList<Config> getAllConfigObservableArrayList() {

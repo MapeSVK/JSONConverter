@@ -4,11 +4,15 @@ import com.jfoenix.controls.JFXDatePicker;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.text.ParseException;
 import java.util.Date;
 import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableArray;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -58,7 +62,7 @@ public class MainFXMLController implements Initializable {
     private TableColumn<String, String> extensionColumn;
     @FXML
     private Label nameOfImportedFileLabel;
-
+    private ObservableList<Config> allConfigsSavedInDatabase = FXCollections.observableArrayList();
     private String filePath;
     private String fileType;
     private String nameOfImportedFile;
@@ -92,6 +96,8 @@ public class MainFXMLController implements Initializable {
     private TableColumn<History, Button> errorColumn;
     @FXML
     private TableView<History> historyTableView;
+    @FXML
+    private Button editButton;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -136,7 +142,8 @@ public class MainFXMLController implements Initializable {
 
     /* getting data from the model and setting this data in the choiceBox */
     public void setConfigChoiceBoxItems() {
-        configChoiceBox.setItems(model.getFakeConfig()); // <---------------------------------------FAKE DB
+        //configChoiceBox.setItems(model.getFakeConfig()); // <---------------------------------------FAKE DB
+        configChoiceBox.setItems(model.getAllConfigObservableArrayList());
     }
 
     @FXML
@@ -204,14 +211,14 @@ public class MainFXMLController implements Initializable {
     @FXML
     private void createNewConfigButtonClick(ActionEvent event) throws IOException {
         Parent root;
-            Stage stage = new Stage();
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/jsonconverter/GUI/view/ConfigFXML.fxml"));
-            root = loader.load();
-            ConfigFXMLController controller = loader.getController();
-            controller.getModel(model);
-            stage.initModality(Modality.APPLICATION_MODAL);
-            stage.setScene(new Scene(root));
-            stage.showAndWait();
+        Stage stage = new Stage();
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/jsonconverter/GUI/view/ConfigFXML.fxml"));
+        root = loader.load();
+        ConfigFXMLController controller = loader.getController();
+        controller.getModel(model);
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.setScene(new Scene(root));
+        stage.showAndWait();
     }
 
     @FXML
@@ -240,7 +247,7 @@ public class MainFXMLController implements Initializable {
         if (isRightNameOfTheFile == true && isConfigSet == true && isRightExtension == true) {
             TaskInOurProgram task = new TaskInOurProgram(nameOfImportedFile, configChoiceBox.getSelectionModel().getSelectedItem().getConfigName(),
                     labelFileExtension.getText());
-           model.getConverter(task);
+            model.getConverter(task);
             task.setConfig(configChoiceBox.getValue());
             task.setFilePath(directoryPath);
             task.setFileName(nameOfImportedFile);
@@ -392,12 +399,21 @@ public class MainFXMLController implements Initializable {
 //        }
 //    }
     private void gettingThePrivateConfigs() {
-
-        System.out.println("awesome list " + model.getAllConfigObservableArrayList());
-        if (model.getAllConfigObservableArrayList().isEmpty()) {
-            System.out.println("HALLO");
-        }else{
-            System.out.println("not empty");
+        for (Config config : model.getAllConfigObservableArrayList()) {
+            allConfigsSavedInDatabase.add(config);
         }
+    }
+
+    @FXML
+    private void editConfigButtonClick(ActionEvent event) throws IOException, ParseException {
+        Parent root;
+        Stage stage = new Stage();
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/jsonconverter/GUI/view/ConfigFXML.fxml"));
+        root = loader.load();
+        ConfigFXMLController controller = loader.getController();
+        controller.setConfig(configChoiceBox.getValue());
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.setScene(new Scene(root));
+        stage.showAndWait();
     }
 }

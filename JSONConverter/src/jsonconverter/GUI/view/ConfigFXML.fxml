@@ -6,11 +6,11 @@
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane id="AnchorPane" prefHeight="369.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jsonconverter.GUI.controller.ConfigFXMLController">
+<AnchorPane id="AnchorPane" prefHeight="371.0" prefWidth="481.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jsonconverter.GUI.controller.ConfigFXMLController">
    <children>
-      <JFXButton fx:id="saveConfigButton" layoutX="528.0" layoutY="333.0" onAction="#saveButtonOnAction" text="SAVE" />
+      <JFXButton fx:id="saveConfigButton" buttonType="RAISED" layoutX="464.0" layoutY="322.0" onAction="#saveButtonOnAction" ripplerFill="#fcfafa" text="SAVE" />
       <JFXNodesList layoutX="93.0" layoutY="26.0" prefHeight="25.0" prefWidth="31.0" />
-      <AnchorPane fx:id="configFieldsPane" layoutY="2.0" prefHeight="369.0" prefWidth="481.0">
+      <AnchorPane fx:id="configFieldsPane" layoutY="2.0" prefHeight="369.0" prefWidth="318.0">
          <children>
             <JFXTextField fx:id="siteNameField" layoutX="14.0" layoutY="22.0" promptText="siteName default: &quot;NEW&quot;" />
             <JFXTextField fx:id="assetSerialNumberField" layoutX="14.0" layoutY="60.0" promptText="assetSerialNumber" />
@@ -29,7 +29,8 @@
             <JFXTextField fx:id="estimatedTimeField" layoutX="173.0" layoutY="252.0" promptText="estimatedTime" />
          </children>
       </AnchorPane>
-      <CheckBox fx:id="checkBoxPrivacy" layoutX="437.0" layoutY="337.0" mnemonicParsing="false" onAction="#checkBoxPrivacyOnAction" text="Private" />
-      <JFXTextField fx:id="headerNameField" layoutX="437.0" layoutY="297.0" promptText="Config Name" />
+      <JFXTextField fx:id="headerNameField" layoutX="380.0" layoutY="254.0" promptText="Config Name" />
+      <JFXButton fx:id="removeconfigButton" buttonType="RAISED" layoutX="456.0" layoutY="293.0" onAction="#removeButtonOnAction" text="Remove" />
+      <CheckBox fx:id="checkBoxPrivacy" layoutX="380.0" layoutY="297.0" mnemonicParsing="false" text="Private" />
    </children>
 </AnchorPane>

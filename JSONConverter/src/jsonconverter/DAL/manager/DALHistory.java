@@ -59,33 +59,33 @@ public class DALHistory {
         return history;
     }
 
-    public List<Config> getAllConfig() {
+    public List<Config> getAllConfigs() {
         List<Config> configList = new ArrayList();
 
         try (Connection con = pool.checkOut()) {
-            PreparedStatement pstmt = con.prepareCall("SELECT * FROM Config WHERE creator_name = '"+username+"'");
+            PreparedStatement pstmt = con.prepareCall("SELECT * FROM Config WHERE creator_name = '" + username + "' or creator_name = 'Unknown'");
             ResultSet rs = pstmt.executeQuery();
             while (rs.next()) {
                 Config cnfg = new Config();
-                        cnfg.setCinfig_id(rs.getInt("config_id"));
-                        cnfg.setSiteName(rs.getString("siteName"));
-                        cnfg.setAssetSerialNumber(rs.getString("assetSerialNumber"));
-                        cnfg.setType(rs.getString("type"));
-                        cnfg.setExternalWorkOrderId(rs.getString("externalWorkOrderId"));
-                        cnfg.setSystemStatus(rs.getString("systemStatus"));
-                        cnfg.setUserStatus(rs.getString("userStatus"));
-                        cnfg.setCreatedOn(rs.getString("createdOn"));
-                        cnfg.setCreatedBy(rs.getString("createdBy"));
-                        cnfg.setName(rs.getString("name"));
-                        cnfg.setPriority(rs.getString("priority"));
-                        cnfg.setStatus(rs.getString("status"));
-                        cnfg.setLatestFinishDate(rs.getString("latestFinishDate"));
-                        cnfg.setEarliestStartDate(rs.getString("earliestStartDate"));
-                        cnfg.setLatestStartDate(rs.getString("latestStartDate"));
-                        cnfg.setEstimatedTime(rs.getString("estimatedTime"));
-                        cnfg.setConfigName(rs.getString("config_name"));
-                        cnfg.setPrivacy(rs.getBoolean("privacy"));
-                        cnfg.setCreatorName(rs.getString("creator_name"));
+                cnfg.setCinfig_id(rs.getInt("config_id"));
+                cnfg.setSiteName(rs.getString("siteName"));
+                cnfg.setAssetSerialNumber(rs.getString("assetSerialNumber"));
+                cnfg.setType(rs.getString("type"));
+                cnfg.setExternalWorkOrderId(rs.getString("externalWorkOrderId"));
+                cnfg.setSystemStatus(rs.getString("systemStatus"));
+                cnfg.setUserStatus(rs.getString("userStatus"));
+                cnfg.setCreatedOn(rs.getString("createdOn"));
+                cnfg.setCreatedBy(rs.getString("createdBy"));
+                cnfg.setName(rs.getString("name"));
+                cnfg.setPriority(rs.getString("priority"));
+                cnfg.setStatus(rs.getString("status"));
+                cnfg.setLatestFinishDate(rs.getString("latestFinishDate"));
+                cnfg.setEarliestStartDate(rs.getString("earliestStartDate"));
+                cnfg.setLatestStartDate(rs.getString("latestStartDate"));
+                cnfg.setEstimatedTime(rs.getString("estimatedTime"));
+                cnfg.setConfigName(rs.getString("config_name"));
+                cnfg.setPrivacy(rs.getBoolean("privacy"));
+                cnfg.setCreatorName(rs.getString("creator_name"));
                 configList.add(cnfg);
             }
 
@@ -128,7 +128,7 @@ public class DALHistory {
             int affected = pstmt.executeUpdate();
             if (affected < 1) {
                 throw new SQLException("Config could not be added");
-            }else{
+            } else {
                 System.out.println("Config saved correctly");
             }
             pool.checkIn(con);
