@@ -18,6 +18,7 @@ import jsonconverter.DAL.manager.SuperFakeDb;
 import jsonconverter.DAL.readFilesAndWriteJson.IConverter;
 import jsonconverter.DAL.readFilesAndWriteJson.ReadCSV;
 import jsonconverter.DAL.readFilesAndWriteJson.ReadEXEL;
+import jsonconverter.DAL.readFilesAndWriteJson.ReadXML;
 import jsonconverter.DAL.readFilesAndWriteJson.WriteJSON;
 
 /**
@@ -64,6 +65,10 @@ public class DALFacade {
                 {
                 converter = new ReadEXEL(filePath);
                 }
+        else if(fileType.equals(".xml"))
+        {
+            converter = new ReadXML(filePath);
+        }
     }
     
     /* getting HISTORY */
