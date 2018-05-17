@@ -14,12 +14,14 @@ import jsonconverter.BE.Config;
 import jsonconverter.BE.History;
 import jsonconverter.BE.JSONObject;
 import jsonconverter.BE.TaskInOurProgram;
-import jsonconverter.DAL.manager.DALHistory;
-import jsonconverter.DAL.manager.SuperFakeDb;
+import jsonconverter.DAL.connection.DALConfig;
+import jsonconverter.DAL.connection.DALHistory;
 import jsonconverter.DAL.readFilesAndWriteJson.IConverter;
 import jsonconverter.DAL.readFilesAndWriteJson.ReadCSV;
 import jsonconverter.DAL.readFilesAndWriteJson.ReadEXEL;
+import jsonconverter.DAL.readFilesAndWriteJson.ReadXML;
 import jsonconverter.DAL.readFilesAndWriteJson.WriteJSON;
+import jsonconverter.DAL.util.HostName;
 
 /**
  *
@@ -29,8 +31,9 @@ public class DALFacade {
 
     private IConverter converter;
     private WriteJSON createJson = new WriteJSON();
-    private SuperFakeDb fake = new SuperFakeDb();  // <-------------SUPER FAKE DB
     private DALHistory history = new DALHistory();
+    private DALConfig config = new DALConfig();
+    private HostName hostName = new HostName();
 
     /* returns hashMap of headers from file (Headers are keys and numbers are values) */
     public HashMap<String, Integer> getFileHeaders() {
@@ -52,8 +55,8 @@ public class DALFacade {
         return converter.getOnlyFileHeaders();
     }
 
-    public void removeConfigFromDatabase(Config config) {
-        history.removeConfigFromDatabase(config);
+    public void removeConfigFromDatabase(Config removeConfig) {
+        config.removeConfigFromDatabase(removeConfig);
     }
 
     public void getConverter(TaskInOurProgram currentTask) {
@@ -65,6 +68,8 @@ public class DALFacade {
             converter = new ReadCSV(filePath);
         } else if (fileType.equals(".xlsx")) {
             converter = new ReadEXEL(filePath);
+        } else if (fileType.equals(".xml")) {
+            converter = new ReadXML(filePath);
         }
     }
 
@@ -74,21 +79,19 @@ public class DALFacade {
         return history.getAllHistory();
     }
 
-    public void saveConfigToDatabase(Config config) {
-        history.saveConfigToDatabase(config);
+    public void saveConfigToDatabase(Config newConfig) {
+        config.saveConfigToDatabase(newConfig);
     }
 
     public List<Config> getAllConfigs() {
-        return history.getAllConfigs();
+        return config.getAllConfigs(hostName.getUserName());
     }
 
-    //----------------------------------------------------------------SUPERFAKE DB------------------------------------------------------------------------------------------------
-    public List<Config> getFakeConfigDatabase() {
-        return fake.getFakeConfigDatabase();
+    public String getHostname() {
+        return hostName.getHostname();
     }
 
-    public void addToFakeConfigDatabase(Config config) {
-        fake.addToFakeConfigDatabase(config);
+    public String getUserName() {
+        return hostName.getUserName();
     }
-
 }

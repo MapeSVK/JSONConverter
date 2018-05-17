@@ -169,10 +169,11 @@ public class MainFXMLController implements Initializable {
      * file extensions It is possible to choose specific extensions
      */
     private void fileChooserSettings() {
-        FileChooser.ExtensionFilter ALL = new FileChooser.ExtensionFilter("Import *.XXX", "*.csv", "*.xlsx");
+        FileChooser.ExtensionFilter ALL = new FileChooser.ExtensionFilter("Import *.XXX", "*.csv", "*.xlsx","*.xml");
         FileChooser.ExtensionFilter CSV = new FileChooser.ExtensionFilter("Import csv", "*.csv");
         FileChooser.ExtensionFilter XLSX = new FileChooser.ExtensionFilter("Import xlsx", "*.xlsx");
-        fileChooser.getExtensionFilters().addAll(ALL, CSV, XLSX);
+        FileChooser.ExtensionFilter XML = new FileChooser.ExtensionFilter("Import xml", "*.xml");
+        fileChooser.getExtensionFilters().addAll(ALL, CSV, XLSX,XML);
 
     }
 
@@ -188,8 +189,10 @@ public class MainFXMLController implements Initializable {
             fileType = ".xlsx";
             labelFileExtension.setText("xlsx");
             model.setConverter(fileType, filePath);
-        } else {
-            nameOfImportedFileLabel.setText(nameOfImportedFile + ".???");
+        } else if(filePath.endsWith(".xml")){
+                fileType = ".xml";
+            labelFileExtension.setText("xml");
+            model.setConverter(fileType, filePath);
         }
     }
 

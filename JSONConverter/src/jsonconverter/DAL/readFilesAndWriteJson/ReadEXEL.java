@@ -34,7 +34,7 @@ public class ReadEXEL implements IConverter{
     private String exelRow="";
 
     private SimpleDateFormat dateExelFormatterTimeFormatter = new SimpleDateFormat("dd-MMM-yyyy");  
-    private SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM/yyyy"); 
+    private SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM/yyyy HH:mm"); 
     public ReadEXEL(String filepath) {
         this.filepath = filepath;
         allLinesAsStrings.clear();
@@ -139,7 +139,6 @@ private void echoAsCSV(Sheet sheet) {
                 }
                            
             }
-            System.out.println(exelRow);
             allLinesAsStrings.add(exelRow);
         }
     }
