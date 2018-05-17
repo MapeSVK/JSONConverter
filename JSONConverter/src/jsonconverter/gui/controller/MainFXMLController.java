@@ -409,6 +409,7 @@ public class MainFXMLController implements Initializable {
         root = loader.load();
         ConfigFXMLController controller = loader.getController();
         controller.setConfig(configChoiceBox.getValue());
+        controller.getActualConfig(configChoiceBox.getValue());
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.setScene(new Scene(root));
         stage.showAndWait();

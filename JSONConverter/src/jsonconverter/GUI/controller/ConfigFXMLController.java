@@ -9,6 +9,7 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 import impl.org.controlsfx.autocompletion.SuggestionProvider;
 import java.net.URL;
+import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -85,6 +86,8 @@ public class ConfigFXMLController implements Initializable {
     private ArrayList<String> headersList = new ArrayList<>();
     private int fieldsCounter = 0;
     private boolean isEditMode;
+    private Config choosenConfig;
+
     @FXML
     private JFXButton removeconfigButton;
 
@@ -93,7 +96,7 @@ public class ConfigFXMLController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        
+
     }
 
     @FXML
@@ -113,6 +116,16 @@ public class ConfigFXMLController implements Initializable {
         }
     }
 
+    protected Config getActualConfig(Config config) {
+        choosenConfig = config;
+        return config;
+    }
+        
+    @FXML
+    private void removeButtonOnAction(ActionEvent event) {
+        model.removeConfigToDatabase(getActualConfig(choosenConfig));
+    }
+
     /* binds textfields with autocompletion */
     private void addAutoCompletionToFields() {
         for (Node node : configFieldsPane.getChildren()) {
@@ -125,7 +138,7 @@ public class ConfigFXMLController implements Initializable {
     }
 
     /* gets converter of imported file */
-    public void getModel(Model model) {
+    protected void getModel(Model model) {
         this.model = model;
         headersList.addAll(model.getOnlyFileHeaders());
         suggest = SuggestionProvider.create(headersList);
@@ -133,7 +146,7 @@ public class ConfigFXMLController implements Initializable {
         checkTextProperty();
     }
 
-    public void setConfig(Config choosenConfig) throws ParseException {
+    protected void setConfig(Config choosenConfig) throws ParseException {
         siteNameField.setText(choosenConfig.getSiteName());
         assetSerialNumberField.setText(choosenConfig.getAssetSerialNumber());
         createdOnField.setText(choosenConfig.getCreatedOn());
@@ -151,7 +164,7 @@ public class ConfigFXMLController implements Initializable {
         latestStartDateField.setText(choosenConfig.getLatestStartDate());
         headerNameField.setText(choosenConfig.getConfigName());
         checkBoxPrivacy.setSelected(choosenConfig.isPrivacy());
-
+        username = choosenConfig.getCreatorName();
     }
 
     /* creates config based on users texFields and saves it in the database */
@@ -236,9 +249,5 @@ public class ConfigFXMLController implements Initializable {
                 }
             }
         }
-    }
-
-    @FXML
-    private void removeButtonOnAction(ActionEvent event) {
     }
 }

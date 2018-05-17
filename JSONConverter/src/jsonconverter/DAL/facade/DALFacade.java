@@ -6,6 +6,7 @@
 package jsonconverter.DAL.facade;
 
 import java.io.File;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -51,34 +52,36 @@ public class DALFacade {
         return converter.getOnlyFileHeaders();
     }
 
-     public void getConverter(TaskInOurProgram currentTask) {
-         currentTask.setConverter(converter);
+    public void removeConfigFromDatabase(Config config) {
+        history.removeConfigFromDatabase(config);
     }
 
-    public void setConverter(String fileType,String filePath) {
-        if( fileType.equals(".csv"))
-        {
-            converter = new ReadCSV(filePath);
-        }
-        else if(fileType.equals(".xlsx"))
-                {
-                converter = new ReadEXEL(filePath);
-                }
+    public void getConverter(TaskInOurProgram currentTask) {
+        currentTask.setConverter(converter);
     }
-    
+
+    public void setConverter(String fileType, String filePath) {
+        if (fileType.equals(".csv")) {
+            converter = new ReadCSV(filePath);
+        } else if (fileType.equals(".xlsx")) {
+            converter = new ReadEXEL(filePath);
+        }
+    }
+
     /* getting HISTORY */
     public List<History> getAllHistory() {
 
         return history.getAllHistory();
     }
 
-    public void saveConfigToDatabase(Config config){
+    public void saveConfigToDatabase(Config config) {
         history.saveConfigToDatabase(config);
     }
-    
-    public List<Config> getAllConfigs(){
+
+    public List<Config> getAllConfigs() {
         return history.getAllConfigs();
     }
+
     //----------------------------------------------------------------SUPERFAKE DB------------------------------------------------------------------------------------------------
     public List<Config> getFakeConfigDatabase() {
         return fake.getFakeConfigDatabase();

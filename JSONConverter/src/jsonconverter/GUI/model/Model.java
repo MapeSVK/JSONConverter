@@ -1,6 +1,7 @@
 package jsonconverter.GUI.model;
 
 import java.io.File;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -59,6 +60,10 @@ public class Model {
 
     public void setConverter(String fileType, String filePath) {
         manager.setConverter(fileType, filePath);
+    }
+
+    public void removeConfigToDatabase(Config config) {
+        manager.removeConfigFromDatabase(config);
     }
 
     public void saveConfigToDatabase(Config config) {
