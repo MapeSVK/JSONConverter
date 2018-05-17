@@ -63,25 +63,7 @@ public class Model {
 
     public void saveConfigToDatabase(Config config) {
         manager.saveConfigToDatabase(config);
-    }
-
-    //----------------------------------------------------------------SUPERFAKE DB------------------------------------------------------------------------------------------------
-    public List<Config> getFakeConfigDatabase() {
-        return manager.getFakeConfigDatabase();
-    }
-
-    public void addToFakeConfigDatabase(Config config) {
-        configChoiceBoxItems.add(config);
-    }
-    private ObservableList<Config> fakeConfig = FXCollections.observableArrayList();
-
-    public ObservableList<Config> getFakeConfig() {
-
-        return configChoiceBoxItems;
-    }
-
-    public boolean checkIfConfigExists(Config config) {
-        return manager.checkIfConfigExists(config);
+        allConfigObservableArrayList.add(config);
     }
 
     public void loadConfigFromDatabase() {
@@ -109,5 +91,11 @@ public class Model {
         allHistoryObservableArrayList.clear();
         allHistoryObservableArrayList.addAll(manager.getAllHistory());
     }
+  public String getHostname() {
+        return manager.getHostname();
+    }
 
+    public String getUserName() {
+        return manager.getUserName();
+    }
 }

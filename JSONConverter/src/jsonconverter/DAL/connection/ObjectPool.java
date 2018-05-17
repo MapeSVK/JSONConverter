@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package jsonconverter.DAL.manager;
+package jsonconverter.DAL.connection;
 
 import java.util.Enumeration;
 import java.util.Hashtable;

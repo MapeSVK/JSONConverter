@@ -12,8 +12,6 @@ import java.net.URL;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -23,9 +21,7 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import jsonconverter.BE.Config;
-import jsonconverter.DAL.readFilesAndWriteJson.IConverter;
 import jsonconverter.GUI.model.Model;
-import jsonconverter.GUI.util.HostName;
 import org.controlsfx.control.textfield.TextFields;
 
 /**
@@ -36,7 +32,6 @@ import org.controlsfx.control.textfield.TextFields;
 public class ConfigFXMLController implements Initializable {
 
     private Model model;
-    private IConverter converter;
 
     @FXML
     private JFXTextField siteNameField;
@@ -69,8 +64,6 @@ public class ConfigFXMLController implements Initializable {
     @FXML
     private JFXTextField estimatedTimeField;
     private String username;
-    private HostName hostNameClass;
-
     boolean isValid;
     @FXML
     private JFXButton saveConfigButton;
@@ -99,18 +92,16 @@ public class ConfigFXMLController implements Initializable {
     @FXML
     private void saveButtonOnAction(ActionEvent event) throws ParseException {
         if (privacyBoolean) {
-            hostNameClass = new HostName();
-            username = hostNameClass.userName;
+            username = model.getUserName();
         } else {
             username = "Unkown";
         }
-        if (model.checkIfConfigExists(createConfig())) {
-            model.addToFakeConfigDatabase(createConfig()); //<---------------------------FAKE CONFIG
+     //   if (model.checkIfConfigExists(createConfig())) {
             model.saveConfigToDatabase(createConfig());
             closeWindow();
-        } else {
-            Alert("Config already exists", "Config with this name already exists!");
-        }
+     //   } else {
+      //      Alert("Config already exists", "Config with this name already exists!");
+    //    }
     }
 
     /* binds textfields with autocompletion */

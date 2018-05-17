@@ -60,20 +60,14 @@ public void getConverter(TaskInOurProgram currentTask) {
     public List<Config> getAllConfigs(){
         return manager.getAllConfigs();
     }
-    //----------------------------------------------------------------SUPERFAKE DB------------------------------------------------------------------------------------------------
-    public List<Config> getFakeConfigDatabase() {
-        return manager.getFakeConfigDatabase();
+    
+    public String getHostname() {
+        return manager.getHostname();
     }
 
-    public void addToFakeConfigDatabase(Config config) {
-        manager.addToFakeConfigDatabase(config);
+    public String getUserName() {
+        return manager.getUserName();
     }
-    
-    public boolean checkIfConfigExists(Config config)
-    {
-        return configValidations.checkIfConfigExists(config,getFakeConfigDatabase());
-    }
-    
     /* HISTORY */
     
     public List<History> getAllHistory() {

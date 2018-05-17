@@ -11,7 +11,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import jsonconverter.GUI.controller.MainFXMLController;
-import jsonconverter.GUI.util.HostName;
+
 
 /**
  *
@@ -21,8 +21,6 @@ public class JSONConverter extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        HostName HN = new HostName();
-        HN.takeUserInfo();
          FXMLLoader loader = new FXMLLoader(getClass().getResource("GUI/view/MainFXML.fxml"));
          Parent root = loader.load();
          MainFXMLController controller = loader.getController();

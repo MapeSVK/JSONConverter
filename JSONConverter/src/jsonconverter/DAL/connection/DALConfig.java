@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package jsonconverter.DAL.manager;
+package jsonconverter.DAL.connection;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -14,56 +14,25 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import jsonconverter.BE.Config;
-import jsonconverter.BE.History;
-import jsonconverter.GUI.util.HostName;
 
 /**
  *
- * @author Mape
+ * @author Pepe15224
  */
-public class DALHistory {
-
-    HostName HN = new HostName();
-    String username = HN.userName;
-    /* OBJECT POOL */
-    // Create the ConnectionPool:
-    JDBCConnectionPool pool = new JDBCConnectionPool(
+public class DALConfig {
+    
+    private JDBCConnectionPool pool = new JDBCConnectionPool(
             "com.microsoft.sqlserver.jdbc.SQLServerDriver", "jdbc:sqlserver://10.176.111.31;databaseName=JSONConverter",
             "CS2017B_27_java", "javajava");
-
-    /* GET ALL HISTORY */
-    public List<History> getAllHistory() {
-        List<History> history = new ArrayList();
-
-        try (Connection con = pool.checkOut()) {
-
-            PreparedStatement pstmt = con.prepareCall("SELECT * FROM History");
-            ResultSet rs = pstmt.executeQuery();
-            while (rs.next()) {
-                History h = new History(rs.getDate("history_date_time"),
-                        rs.getInt("history_id"),
-                        rs.getString("local_username"),
-                        rs.getString("action_message"),
-                        rs.getBoolean("has_error"),
-                        rs.getString("error_message"));
-
-                history.add(h);
-                System.out.println(history);
-            }
-
-            pool.checkIn(con);
-        } catch (SQLException ex) {
-            Logger.getLogger(DALHistory.class.getName()).log(
-                    Level.SEVERE, null, ex);
-        }
-        return history;
-    }
-
-    public List<Config> getAllConfigs() {
+    
+    public List<Config> getAllConfigs(String username) {
         List<Config> configList = new ArrayList();
 
         try (Connection con = pool.checkOut()) {
-            PreparedStatement pstmt = con.prepareCall("SELECT * FROM Config WHERE creator_name = '" + username + "' or creator_name = 'Unknown'");
+            PreparedStatement pstmt = con.prepareCall("SELECT * FROM Config Where privacy=? AND creator_name=? OR privacy=?");
+            pstmt.setString(1, "True");
+            pstmt.setString(2, username);
+            pstmt.setString(3, "False");
             ResultSet rs = pstmt.executeQuery();
             while (rs.next()) {
                 Config cnfg = new Config();
@@ -96,7 +65,7 @@ public class DALHistory {
         }
         return configList;
     }
-
+    
     public void saveConfigToDatabase(Config config) {
 
         try (Connection con = pool.checkOut()) {
