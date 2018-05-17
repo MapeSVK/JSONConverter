@@ -22,6 +22,7 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import jsonconverter.BE.Config;
+import jsonconverter.DAL.util.HostName;
 import jsonconverter.GUI.model.Model;
 import org.controlsfx.control.textfield.TextFields;
 
@@ -70,7 +71,6 @@ public class ConfigFXMLController implements Initializable {
     private JFXButton saveConfigButton;
     @FXML
     private CheckBox checkBoxPrivacy;
-    private boolean privacyBoolean;
     @FXML
     private JFXTextField headerNameField;
     @FXML
@@ -80,6 +80,7 @@ public class ConfigFXMLController implements Initializable {
     private int fieldsCounter = 0;
     private boolean isEditMode;
     private Config choosenConfig;
+    private HostName HN = new HostName();
 
     @FXML
     private JFXButton removeconfigButton;
@@ -94,10 +95,10 @@ public class ConfigFXMLController implements Initializable {
 
     @FXML
     private void saveButtonOnAction(ActionEvent event) throws ParseException {
-        if (privacyBoolean) {
-            username = model.getUserName();
+        if (checkBoxPrivacy.isSelected()) {
+            username = HN.userName;
         } else {
-            username = "Unkown";
+            username = "Unknown";
         }
      //   if (model.checkIfConfigExists(createConfig())) {
             model.saveConfigToDatabase(createConfig());
