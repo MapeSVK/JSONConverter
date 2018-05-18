@@ -21,6 +21,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.CheckBox;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import javax.swing.JOptionPane;
 import jsonconverter.BE.Config;
 import jsonconverter.DAL.util.HostName;
 import jsonconverter.GUI.model.Model;
@@ -34,7 +35,6 @@ import org.controlsfx.control.textfield.TextFields;
 public class ConfigFXMLController implements Initializable {
 
     private Model model;
-
     @FXML
     private JFXTextField siteNameField;
     @FXML
@@ -78,19 +78,18 @@ public class ConfigFXMLController implements Initializable {
     private SuggestionProvider<String> suggest;
     private ArrayList<String> headersList = new ArrayList<>();
     private int fieldsCounter = 0;
-    private boolean isEditMode;
     private Config choosenConfig;
     private HostName HN = new HostName();
 
     @FXML
-    private JFXButton removeconfigButton;
+    protected JFXButton removeconfigButton;
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-
+        getActualConfig(choosenConfig);
     }
 
     @FXML
@@ -100,22 +99,39 @@ public class ConfigFXMLController implements Initializable {
         } else {
             username = "Unknown";
         }
-     //   if (model.checkIfConfigExists(createConfig())) {
+        if (headerNameField.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Please, insert a valid name");
+        } else {
+            //   if (model.checkIfConfigExists(createConfig())) {
             model.saveConfigToDatabase(createConfig());
             closeWindow();
-     //   } else {
-      //      Alert("Config already exists", "Config with this name already exists!");
-    //    }
+        }
+        //   } else {
+        //      Alert("Config already exists", "Config with this name already exists!");
+        //    }
     }
 
     protected Config getActualConfig(Config config) {
         choosenConfig = config;
         return config;
     }
-        
+
     @FXML
     private void removeButtonOnAction(ActionEvent event) {
-        model.removeConfigToDatabase(getActualConfig(choosenConfig));
+        if (removeconfigButton.getOpacity() == 0) {
+
+        } else {
+            int selectedOption = JOptionPane.showConfirmDialog(null,
+                    "It will be removed permanently. Are you sure?",
+                    "Are you sure?",
+                    JOptionPane.YES_NO_OPTION);
+            if (selectedOption == JOptionPane.YES_OPTION) {
+                model = new Model();
+                model.removeConfigToDatabase(choosenConfig);
+                closeWindow();
+            } else {
+            }
+        }
     }
 
     /* binds textfields with autocompletion */
@@ -123,7 +139,6 @@ public class ConfigFXMLController implements Initializable {
         for (Node node : configFieldsPane.getChildren()) {
             if (node instanceof JFXTextField) {
                 // clear
-
                 TextFields.bindAutoCompletion(((JFXTextField) node), suggest);
             }
         }

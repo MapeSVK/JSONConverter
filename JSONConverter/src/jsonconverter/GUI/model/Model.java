@@ -62,8 +62,8 @@ public class Model {
         manager.setConverter(fileType, filePath);
     }
 
-    public void removeConfigToDatabase(Config config) {
-        manager.removeConfigFromDatabase(config);
+    public void removeConfigToDatabase(Config removeConfig) {
+        manager.removeConfigFromDatabase(removeConfig);
     }
 
     public void saveConfigToDatabase(Config config) {

@@ -35,6 +35,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javax.swing.JOptionPane;
 import jsonconverter.BE.Config;
 import jsonconverter.BE.History;
 import jsonconverter.BE.TaskInOurProgram;
@@ -63,9 +64,9 @@ public class MainFXMLController implements Initializable {
     @FXML
     private Label nameOfImportedFileLabel;
     private ObservableList<Config> allConfigsSavedInDatabase = FXCollections.observableArrayList();
-    private String filePath;
+    private String filePath = "";
     private String fileType;
-    private String nameOfImportedFile;
+    private String nameOfImportedFile = "";
     private FileChooser fileChooser;
     private File fileChoosedByImport;
     private File directoryPath;
@@ -169,10 +170,10 @@ public class MainFXMLController implements Initializable {
      * file extensions It is possible to choose specific extensions
      */
     private void fileChooserSettings() {
-        FileChooser.ExtensionFilter ALL = new FileChooser.ExtensionFilter("Import *.XXX", "*.csv", "*.xlsx","*.xml");
-        FileChooser.ExtensionFilter CSV = new FileChooser.ExtensionFilter("Import csv", "*.csv");
-        FileChooser.ExtensionFilter XLSX = new FileChooser.ExtensionFilter("Import xlsx", "*.xlsx");
-        FileChooser.ExtensionFilter XML = new FileChooser.ExtensionFilter("Import xml", "*.xml");
+        FileChooser.ExtensionFilter ALL = new FileChooser.ExtensionFilter("All (*.*)", "*.csv", "*.xlsx","*.xml");
+        FileChooser.ExtensionFilter CSV = new FileChooser.ExtensionFilter("CSV", "*.csv");
+        FileChooser.ExtensionFilter XLSX = new FileChooser.ExtensionFilter("XLSX", "*.xlsx");
+        FileChooser.ExtensionFilter XML = new FileChooser.ExtensionFilter("XML", "*.xml");
         fileChooser.getExtensionFilters().addAll(ALL, CSV, XLSX,XML);
 
     }
@@ -189,8 +190,8 @@ public class MainFXMLController implements Initializable {
             fileType = ".xlsx";
             labelFileExtension.setText("xlsx");
             model.setConverter(fileType, filePath);
-        } else if(filePath.endsWith(".xml")){
-                fileType = ".xml";
+        } else if (filePath.endsWith(".xml")) {
+            fileType = ".xml";
             labelFileExtension.setText("xml");
             model.setConverter(fileType, filePath);
         }
@@ -210,15 +211,19 @@ public class MainFXMLController implements Initializable {
 
     @FXML
     private void createNewConfigButtonClick(ActionEvent event) throws IOException {
-        Parent root;
-        Stage stage = new Stage();
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/jsonconverter/GUI/view/ConfigFXML.fxml"));
-        root = loader.load();
-        ConfigFXMLController controller = loader.getController();
-        controller.getModel(model);
-        stage.initModality(Modality.APPLICATION_MODAL);
-        stage.setScene(new Scene(root));
-        stage.showAndWait();
+        if (filePath.equals("") || nameOfImportedFile.equals("")) {
+            JOptionPane.showMessageDialog(null, "No file imported. Please, import one previously");
+        } else {
+            Parent root;
+            Stage stage = new Stage();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/jsonconverter/GUI/view/ConfigFXML.fxml"));
+            root = loader.load();
+            ConfigFXMLController controller = loader.getController();
+            controller.getModel(model);
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setScene(new Scene(root));
+            stage.showAndWait();
+        }
     }
 
     @FXML
@@ -309,7 +314,7 @@ public class MainFXMLController implements Initializable {
         File selectedDirectory = directoryChooser.showDialog(chooseDirectoryButton.getScene().getWindow());
         directoryChooser.setTitle("Select a directory");
         if (selectedDirectory == null) {
-            Alert("Directory problem", "You did not select any directory. Try again!");
+            JOptionPane.showMessageDialog(null, "You did not select any directory. Try again!");
         } else {
             System.out.println("Selected directory: " + selectedDirectory.getAbsolutePath());
             directoryPath = selectedDirectory.getAbsoluteFile();
@@ -406,15 +411,20 @@ public class MainFXMLController implements Initializable {
 
     @FXML
     private void editConfigButtonClick(ActionEvent event) throws IOException, ParseException {
-        Parent root;
-        Stage stage = new Stage();
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/jsonconverter/GUI/view/ConfigFXML.fxml"));
-        root = loader.load();
-        ConfigFXMLController controller = loader.getController();
-        controller.setConfig(configChoiceBox.getValue());
-        controller.getActualConfig(configChoiceBox.getValue());
-        stage.initModality(Modality.APPLICATION_MODAL);
-        stage.setScene(new Scene(root));
-        stage.showAndWait();
+        if (configChoiceBox.getSelectionModel().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Please, choose a valid configuration");
+        } else {
+            Parent root;
+            Stage stage = new Stage();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/jsonconverter/GUI/view/ConfigFXML.fxml"));
+            root = loader.load();
+            ConfigFXMLController controller = loader.getController();
+            controller.setConfig(configChoiceBox.getValue());
+            controller.getActualConfig(configChoiceBox.getValue());
+            controller.removeconfigButton.setOpacity(1);
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setScene(new Scene(root));
+            stage.showAndWait();
+        }
     }
 }

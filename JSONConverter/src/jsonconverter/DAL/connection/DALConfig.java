@@ -13,6 +13,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.scene.control.Alert;
+import javax.swing.JOptionPane;
 import jsonconverter.BE.Config;
 
 /**
@@ -20,11 +22,11 @@ import jsonconverter.BE.Config;
  * @author Pepe15224
  */
 public class DALConfig {
-    
+
     private JDBCConnectionPool pool = new JDBCConnectionPool(
             "com.microsoft.sqlserver.jdbc.SQLServerDriver", "jdbc:sqlserver://10.176.111.31;databaseName=JSONConverter",
             "CS2017B_27_java", "javajava");
-    
+
     public List<Config> getAllConfigs(String username) {
         List<Config> configList = new ArrayList();
 
@@ -65,19 +67,30 @@ public class DALConfig {
         }
         return configList;
     }
-    public void removeConfigFromDatabase(Config config) {
+
+    public void removeConfigFromDatabase(Config removeConfig) {
 
         try (Connection con = pool.checkOut()) {
             String sql = "DELETE FROM Config WHERE config_id=?";
             PreparedStatement pstmt = con.prepareStatement(sql);
-            pstmt.setInt(1, config.getCinfig_id());
-            pstmt.execute();
+            pstmt.setInt(1, removeConfig.getCinfig_id());
+            int affected = pstmt.executeUpdate();
+            if (affected < 1) {
+                throw new SQLException("Config could not be removed");
+            } else {
+                System.out.println("Config removed correctly");
+
+            }
             pool.checkIn(con);
         } catch (SQLException ex) {
-            Logger.getLogger(DALHistory.class.getName()).log(
-                    Level.SEVERE, null, ex);
+            Logger.getLogger(DALHistory.class
+                    .getName()).log(
+                            Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Config could not be removed");
+
         }
     }
+
     public void saveConfigToDatabase(Config config) {
 
         try (Connection con = pool.checkOut()) {
@@ -108,9 +121,9 @@ public class DALConfig {
             pstmt.setString(18, config.getCreatorName());
             int affected = pstmt.executeUpdate();
             if (affected < 1) {
-                throw new SQLException("Config could not be removed");
+                throw new SQLException("Config could not be saved");
             } else {
-                System.out.println("Config removed correctly");
+                System.out.println("Config saved correctly");
             }
             pool.checkIn(con);
 
@@ -118,6 +131,8 @@ public class DALConfig {
             Logger.getLogger(DALHistory.class
                     .getName()).log(
                             Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Config could not be saved");
+
         }
     }
 }

@@ -15,7 +15,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import jsonconverter.BE.History;
 
-
 /**
  *
  * @author Mape

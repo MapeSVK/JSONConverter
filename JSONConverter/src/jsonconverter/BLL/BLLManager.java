@@ -50,8 +50,8 @@ public class BLLManager {
 
     }
 
-    public void removeConfigFromDatabase(Config config) {
-        manager.removeConfigFromDatabase(config);
+    public void removeConfigFromDatabase(Config removeConfig) {
+        manager.removeConfigFromDatabase(removeConfig);
     }
 
     public void setConverter(String fileType, String filePath) {

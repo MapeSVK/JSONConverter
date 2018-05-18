@@ -30,7 +30,7 @@
          </children>
       </AnchorPane>
       <JFXTextField fx:id="headerNameField" layoutX="380.0" layoutY="254.0" promptText="Config Name" />
-      <JFXButton fx:id="removeconfigButton" buttonType="RAISED" layoutX="456.0" layoutY="293.0" onAction="#removeButtonOnAction" text="Remove" />
+      <JFXButton fx:id="removeconfigButton" buttonType="RAISED" layoutX="456.0" layoutY="293.0" onAction="#removeButtonOnAction" opacity="0.0" text="Remove" />
       <CheckBox fx:id="checkBoxPrivacy" layoutX="380.0" layoutY="297.0" mnemonicParsing="false" text="Private" />
    </children>
 </AnchorPane>
