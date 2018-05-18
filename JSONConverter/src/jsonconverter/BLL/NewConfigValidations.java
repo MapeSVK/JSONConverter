@@ -5,6 +5,7 @@
  */
 package jsonconverter.BLL;
 
+import static java.nio.file.Files.list;
 import java.util.List;
 import jsonconverter.BE.Config;
 import jsonconverter.BE.TaskInOurProgram;
@@ -29,10 +30,6 @@ public class NewConfigValidations {
     
     private void checkIfYouCanUseConfig(TaskInOurProgram currentTask,List<Config> configList)
     {
-        String[] configHeaders;
-        for(Config config : configList)
-        {
-          
-        }
+      
     }
 }

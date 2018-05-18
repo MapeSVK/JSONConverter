@@ -20,7 +20,6 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.CheckBox;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-import javax.swing.JOptionPane;
 import jsonconverter.BE.Config;
 import jsonconverter.DAL.util.HostName;
 import jsonconverter.GUI.model.Model;
@@ -34,6 +33,7 @@ import org.controlsfx.control.textfield.TextFields;
 public class ConfigFXMLController implements Initializable {
 
     private Model model;
+
     @FXML
     private JFXTextField siteNameField;
     @FXML
@@ -77,11 +77,12 @@ public class ConfigFXMLController implements Initializable {
     private SuggestionProvider<String> suggest;
     private ArrayList<String> headersList = new ArrayList<>();
     private int fieldsCounter = 0;
+    private boolean isEditMode;
     private Config choosenConfig;
     private HostName HN = new HostName();
 
     @FXML
-    protected JFXButton removeconfigButton;
+    private JFXButton removeconfigButton;
     @FXML
     private JFXTextField siteNameFieldEmpty;
     @FXML
@@ -112,15 +113,13 @@ public class ConfigFXMLController implements Initializable {
     private JFXTextField latestStartDateFieldEmpty;
     @FXML
     private JFXTextField estimatedTimeFieldEmpty;
-    @FXML
-    private AnchorPane ifEmptyPane;
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        getActualConfig(choosenConfig);
+
     }
 
     @FXML
@@ -130,40 +129,18 @@ public class ConfigFXMLController implements Initializable {
         } else {
             username = "Unknown";
         }
-        if (headerNameField.getText().isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Please, insert a valid name");
-        } else {
-            //   if (model.checkIfConfigExists(createConfig())) {
-            model.saveConfigToDatabase(createConfig());
-            closeWindow();
-        }
-        //   if (model.checkIfConfigExists(createConfig())) {
+         // if (model.checkIfConfigExists(createConfig())) {
+       model.saveConfigToDatabase(createConfig());        
+        closeWindow();
         //   } else {
         //      Alert("Config already exists", "Config with this name already exists!");
         //    }
     }
 
-    protected Config getActualConfig(Config config) {
-        choosenConfig = config;
-        return config;
-    }
-
     @FXML
     private void removeButtonOnAction(ActionEvent event) {
-        if (removeconfigButton.getOpacity() == 0) {
-
-        } else {
-            int selectedOption = JOptionPane.showConfirmDialog(null,
-                    "It will be removed permanently. Are you sure?",
-                    "Are you sure?",
-                    JOptionPane.YES_NO_OPTION);
-            if (selectedOption == JOptionPane.YES_OPTION) {
-                model = new Model();
-                model.removeConfigToDatabase(choosenConfig);
-                closeWindow();
-            } else {
-            }
-        }
+        model.removeConfigToDatabase(choosenConfig);
+        closeWindow();
     }
 
     /* binds textfields with autocompletion */
@@ -185,52 +162,115 @@ public class ConfigFXMLController implements Initializable {
     }
 
     protected Config setConfig(Config choosenConfig) throws ParseException {
-        siteNameField.setText(choosenConfig.getSiteName());
-        assetSerialNumberField.setText(choosenConfig.getAssetSerialNumber());
-        createdOnField.setText(choosenConfig.getCreatedOn());
-        createdByField.setText(choosenConfig.getCreatedBy());
-        statusField.setText(choosenConfig.getStatus());
-        estimatedTimeField.setText(choosenConfig.getEstimatedTime());
-        typeField.setText(choosenConfig.getType());
-        externalWorkOrderIdField.setText(choosenConfig.getExternalWorkOrderId());
-        systemStatusField.setText(choosenConfig.getSystemStatus());
-        userStatusField.setText(choosenConfig.getUserStatus());
-        nameField.setText(choosenConfig.getName());
-        priorityField.setText(choosenConfig.getPriority());
-        latestFinishDateField.setText(choosenConfig.getLatestFinishDate());
-        earliestStartDateField.setText(choosenConfig.getEarliestStartDate());
-        latestStartDateField.setText(choosenConfig.getLatestStartDate());
-        headerNameField.setText(choosenConfig.getConfigName());
-        checkBoxPrivacy.setSelected(choosenConfig.isPrivacy());
-        username = choosenConfig.getCreatorName();
+//        siteNameField.setText(choosenConfig.getSiteName());
+//        assetSerialNumberField.setText(choosenConfig.getAssetSerialNumber());
+//        createdOnField.setText(choosenConfig.getCreatedOn());
+//        createdByField.setText(choosenConfig.getCreatedBy());
+//        statusField.setText(choosenConfig.getStatus());
+//        estimatedTimeField.setText(choosenConfig.getEstimatedTime());
+//        typeField.setText(choosenConfig.getType());
+//        externalWorkOrderIdField.setText(choosenConfig.getExternalWorkOrderId());
+//        systemStatusField.setText(choosenConfig.getSystemStatus());
+//        userStatusField.setText(choosenConfig.getUserStatus());
+//        nameField.setText(choosenConfig.getName());
+//        priorityField.setText(choosenConfig.getPriority());
+//        latestFinishDateField.setText(choosenConfig.getLatestFinishDate());
+//        earliestStartDateField.setText(choosenConfig.getEarliestStartDate());
+//        latestStartDateField.setText(choosenConfig.getLatestStartDate());
+      headerNameField.setText(choosenConfig.getConfigName());
+      checkBoxPrivacy.setSelected(choosenConfig.isPrivacy());
+       username = choosenConfig.getCreatorName();
 
+        fillIfEmptyEdit(choosenConfig);
+         
+        removeconfigButton.setDisable(false);
         this.choosenConfig = choosenConfig;
-        return choosenConfig;
+        return choosenConfig;          
     }
 
     /* creates config based on users texFields and saves it in the database */
-    private Config createConfig() throws ParseException {
+    private Config createConfig() {
         Config newConfig = new Config();
 
-        newConfig.setSiteName(siteNameField.getText());
-        newConfig.setAssetSerialNumber(assetSerialNumberField.getText());
-        newConfig.setCreatedOn(createdOnField.getText());
-        newConfig.setCreatedBy(createdByField.getText());
-        newConfig.setStatus(statusField.getText());
-        newConfig.setEstimatedTime(estimatedTimeField.getText());
-        newConfig.setType(typeField.getText());
-        newConfig.setExternalWorkOrderId(externalWorkOrderIdField.getText());
+        if(!siteNameField.getText().isEmpty() && siteNameFieldEmpty.isDisable()==false && !siteNameFieldEmpty.getText().isEmpty())
+            newConfig.setSiteName(siteNameField.getText()+"&&"+siteNameFieldEmpty.getText());
+        else if(siteNameFieldEmpty.isDisable()==true)
+         newConfig.setSiteName(siteNameField.getText());
+        
+        if(!assetSerialNumberField.getText().isEmpty() && assetSerialNumberFieldEmpty.isDisable()==false && !assetSerialNumberFieldEmpty.getText().isEmpty())
+            newConfig.setAssetSerialNumber(siteNameField.getText()+"&&"+assetSerialNumberFieldEmpty.getText());
+        else if(assetSerialNumberFieldEmpty.isDisable()==true)
+         newConfig.setAssetSerialNumber(assetSerialNumberField.getText());
+        
+        if(!createdOnField.getText().isEmpty() && createdOnFieldEmpty.isDisable()==false && !createdOnFieldEmpty.getText().isEmpty())
+            newConfig.setCreatedOn(createdOnField.getText()+"&&"+createdOnFieldEmpty.getText());
+        else if(createdOnFieldEmpty.isDisable()==true)
+         newConfig.setCreatedOn(createdOnField.getText());
+        
+        if(!createdByField.getText().isEmpty() && createdByFieldEmpty.isDisable()==false && !createdByFieldEmpty.getText().isEmpty())
+            newConfig.setCreatedBy(createdByField.getText()+"&&"+createdByFieldEmpty.getText());
+        else if(createdByFieldEmpty.isDisable()==true)
+         newConfig.setCreatedBy(createdByField.getText());
+        
+        if(!statusField.getText().isEmpty() && statusFieldEmpty.isDisable()==false && !statusFieldEmpty.getText().isEmpty())
+            newConfig.setStatus(statusField.getText()+"&&"+statusFieldEmpty.getText());
+        else if(statusFieldEmpty.isDisable()==true)
+         newConfig.setStatus(statusField.getText());
+        
+        if(!estimatedTimeField.getText().isEmpty() && estimatedTimeFieldEmpty.isDisable()==false && !estimatedTimeFieldEmpty.getText().isEmpty())
+            newConfig.setEstimatedTime(estimatedTimeField.getText()+"&&"+estimatedTimeFieldEmpty.getText());
+        else if(statusFieldEmpty.isDisable()==true)
+         newConfig.setEstimatedTime(estimatedTimeField.getText());
+        
+        if(!typeField.getText().isEmpty() && typeFieldEmpty.isDisable()==false && !typeFieldEmpty.getText().isEmpty())
+            newConfig.setType(typeField.getText()+"&&"+typeFieldEmpty.getText());
+        else if(typeFieldEmpty.isDisable()==true)
+         newConfig.setType(typeField.getText());
+        
+        if(!externalWorkOrderIdField.getText().isEmpty() && externalWorkOrderIdFieldEmpty.isDisable()==false && !externalWorkOrderIdFieldEmpty.getText().isEmpty())
+            newConfig.setExternalWorkOrderId(externalWorkOrderIdField.getText()+"&&"+externalWorkOrderIdFieldEmpty.getText());
+        else if(externalWorkOrderIdFieldEmpty.isDisable()==true)
+         newConfig.setExternalWorkOrderId(externalWorkOrderIdField.getText());
+        
+        if(!systemStatusField.getText().isEmpty() && systemStatusFieldEmpty.isDisable()==false && !systemStatusFieldEmpty.getText().isEmpty())
+            newConfig.setSystemStatus(systemStatusField.getText()+"&&"+systemStatusFieldEmpty.getText());
+        else if(systemStatusFieldEmpty.isDisable()==true)
         newConfig.setSystemStatus(systemStatusField.getText());
+        
+        if(!userStatusField.getText().isEmpty() && userStatusFieldEmpty.isDisable()==false && !userStatusFieldEmpty.getText().isEmpty())
+            newConfig.setUserStatus(userStatusField.getText()+"&&"+userStatusFieldEmpty.getText());
+        else if(userStatusFieldEmpty.isDisable()==true)
         newConfig.setUserStatus(userStatusField.getText());
+        
+        if(!nameField.getText().isEmpty() && nameFieldEmpty.isDisable()==false && !nameFieldEmpty.getText().isEmpty())
+            newConfig.setName(nameField.getText()+"&&"+nameFieldEmpty.getText());
+        else if(nameFieldEmpty.isDisable()==true)
         newConfig.setName(nameField.getText());
-        newConfig.setPriority(priorityField.getText());
-        newConfig.setLatestFinishDate(latestFinishDateField.getText());
-        newConfig.setEarliestStartDate(earliestStartDateField.getText());
+        
+        if(!priorityField.getText().isEmpty() && priorityFieldEmpty.isDisable()==false && !priorityFieldEmpty.getText().isEmpty())
+            newConfig.setPriority(priorityField.getText()+"&&"+priorityFieldEmpty.getText());
+        else if(priorityFieldEmpty.isDisable()==true)
+      newConfig.setPriority(priorityField.getText());
+        
+         if(!latestFinishDateField.getText().isEmpty() && latestFinishDateFieldEmpty.isDisable()==false && !latestFinishDateFieldEmpty.getText().isEmpty())
+            newConfig.setLatestFinishDate(latestFinishDateField.getText()+"&&"+latestFinishDateFieldEmpty.getText());
+        else if(latestFinishDateFieldEmpty.isDisable()==true)
+       newConfig.setLatestFinishDate(latestFinishDateField.getText());
+         
+          if(!earliestStartDateField.getText().isEmpty() && earliestStartDateFieldEmpty.isDisable()==false && !earliestStartDateFieldEmpty.getText().isEmpty())
+            newConfig.setEarliestStartDate(earliestStartDateField.getText()+"&&"+earliestStartDateFieldEmpty.getText());
+        else if(earliestStartDateFieldEmpty.isDisable()==true)
+      newConfig.setEarliestStartDate(earliestStartDateField.getText());
+          
+           if(!latestStartDateField.getText().isEmpty() && latestStartDateFieldEmpty.isDisable()==false && !latestStartDateFieldEmpty.getText().isEmpty())
+            newConfig.setLatestStartDate(latestStartDateField.getText()+"&&"+latestStartDateFieldEmpty.getText());
+        else if(latestStartDateFieldEmpty.isDisable()==true)
         newConfig.setLatestStartDate(latestStartDateField.getText());
+
         newConfig.setConfigName(headerNameField.getText());
         newConfig.setPrivacy(checkBoxPrivacy.isSelected());
         newConfig.setCreatorName(username);
-
+        
         return newConfig;
     }
 
@@ -290,6 +330,34 @@ public class ConfigFXMLController implements Initializable {
                     ((JFXTextField) node).setDisable(disable);
                 }
 
+            }
+        }
+    }
+    private void fillIfEmptyEdit(Config choosenConfig)
+    {
+        int di=0;
+          for (Node node : configFieldsPane.getChildren()) {
+            if (node instanceof JFXTextField) {
+
+                if(di<15)
+                {
+                JFXTextField mainField = (JFXTextField)configFieldsPane.getChildren().get(di);
+                JFXTextField secondaryField = (JFXTextField)configFieldsPane.getChildren().get(di+15);
+                
+                  if(choosenConfig.getAllGetters(di).contains("&&"))
+                  {
+                     String[] splited = choosenConfig.getAllGetters(di).split("&&");
+               
+                     mainField.setText(splited[0]);
+                    secondaryField.setDisable(false);
+                     secondaryField.setText(splited[1]);                  
+                  }
+                  if(!choosenConfig.getAllGetters(di).contains("&&"))
+                  {
+                      mainField.setText(choosenConfig.getAllGetters(di));
+                  }
+                  di++;    
+                }
             }
         }
     }

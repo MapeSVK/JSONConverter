@@ -6,7 +6,6 @@
 package jsonconverter.BLL;
 
 import java.io.File;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;

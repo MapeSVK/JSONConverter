@@ -216,4 +216,25 @@ public class Config {
         return configName;
     }
 
+    public String getAllGetters(int i)
+    {
+       String[] allGetters = new String[15];
+       allGetters[0]=getSiteName();
+        allGetters[1]=getAssetSerialNumber();
+         allGetters[2]=getType();
+          allGetters[3]=getExternalWorkOrderId();
+           allGetters[4]=getSystemStatus();
+            allGetters[5]=getUserStatus();
+             allGetters[6]=getCreatedOn();
+              allGetters[7]=getCreatedBy();
+               allGetters[8]=getName();
+                allGetters[9]=getPriority();
+                 allGetters[10]=getStatus();
+                  allGetters[11]=getLatestFinishDate();
+                   allGetters[12]=getEarliestStartDate();
+                    allGetters[13]=getLatestStartDate();
+                     allGetters[14]=getEstimatedTime();
+                     
+                     return allGetters[i];
+    }
 }

@@ -33,7 +33,7 @@ if(onlyOnce==-1)
             InetAddress addr;
             addr = InetAddress.getLocalHost();
             hostname = addr.getHostName();
-            onlyOnce=-1;
+            onlyOnce=1;
             System.out.println("DOtarlem");
         } catch (UnknownHostException ex) {
             System.out.println("Hostname can not be resolved");

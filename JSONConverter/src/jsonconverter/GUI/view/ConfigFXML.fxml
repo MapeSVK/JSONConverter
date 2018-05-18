@@ -34,8 +34,8 @@
                   <JFXTextField fx:id="userStatusFieldEmpty" disable="true" layoutX="163.0" layoutY="61.0" promptText="If empty" />
                   <JFXTextField fx:id="createdOnFieldEmpty" disable="true" layoutX="163.0" layoutY="140.0" promptText="If empty" />
                   <JFXTextField fx:id="createdByFieldEmpty" disable="true" layoutX="163.0" layoutY="217.0" promptText="If empty" />
-                  <JFXTextField fx:id="priorityFieldEmpty" disable="true" layoutX="163.0" layoutY="295.0" promptText="If empty" />
                   <JFXTextField fx:id="nameFieldEmpty" disable="true" layoutX="163.0" layoutY="371.0" promptText="If empty" />
+                  <JFXTextField fx:id="priorityFieldEmpty" disable="true" layoutX="163.0" layoutY="295.0" promptText="If empty" />
                   <JFXTextField fx:id="statusFieldEmpty" disable="true" layoutX="310.0" layoutY="61.0" promptText="If empty" />
                   <JFXTextField fx:id="latestFinishDateFieldEmpty" disable="true" layoutX="310.0" layoutY="140.0" promptText="If empty" />
                   <JFXTextField fx:id="earliestStartDateFieldEmpty" disable="true" layoutX="310.0" layoutY="217.0" promptText="If empty" />
@@ -46,8 +46,8 @@
          </children>
       </AnchorPane>
       <JFXTextField fx:id="headerNameField" accessibleRole="IMAGE_VIEW" layoutX="477.0" layoutY="337.0" promptText="Config Name" />
-      <JFXButton fx:id="removeconfigButton" buttonType="RAISED" layoutX="528.0" layoutY="396.0" onAction="#removeButtonOnAction" opacity="0.0" text="Remove" />
       <JFXButton fx:id="saveConfigButton" buttonType="RAISED" layoutX="587.0" layoutY="396.0" onAction="#saveButtonOnAction" ripplerFill="#fcfafa" text="SAVE" />
       <CheckBox fx:id="checkBoxPrivacy" layoutX="471.0" layoutY="379.0" mnemonicParsing="false" text="Private" />
+      <JFXButton fx:id="removeconfigButton" disable="true" layoutX="521.0" layoutY="396.0" onAction="#removeButtonOnAction" text="Remove" />
    </children>
 </AnchorPane>
