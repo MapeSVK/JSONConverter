@@ -17,7 +17,9 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.Tooltip;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import jsonconverter.BE.Config;
@@ -114,12 +116,32 @@ public class ConfigFXMLController implements Initializable {
     @FXML
     private JFXTextField estimatedTimeFieldEmpty;
 
+    private Tooltip tooltip;
+
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        setToolTips();
+    }
 
+    private void setToolTips() {
+        siteNameField.setTooltip(new Tooltip("Site Name"));
+        assetSerialNumberField.setTooltip(new Tooltip("Asset Serial Number"));
+        typeField.setTooltip(new Tooltip("Type"));
+        externalWorkOrderIdField.setTooltip(new Tooltip("External Work Order ID"));
+        systemStatusField.setTooltip(new Tooltip("System Status"));
+        userStatusField.setTooltip(new Tooltip("User Status"));
+        createdOnField.setTooltip(new Tooltip("Created on"));
+        createdByField.setTooltip(new Tooltip("Created by"));
+        priorityField.setTooltip(new Tooltip("Priority"));
+        nameField.setTooltip(new Tooltip("Name"));
+        statusField.setTooltip(new Tooltip("Status"));
+        latestFinishDateField.setTooltip(new Tooltip("Latest Finish Date"));
+        earliestStartDateField.setTooltip(new Tooltip("Earliest Start Date"));
+        latestStartDateField.setTooltip(new Tooltip("Latest Start Date"));
+        estimatedTimeField.setTooltip(new Tooltip("Estimated Time"));
     }
 
     @FXML
@@ -162,21 +184,6 @@ public class ConfigFXMLController implements Initializable {
     }
 
     protected Config setConfig(Config choosenConfig) throws ParseException {
-//        siteNameField.setText(choosenConfig.getSiteName());
-//        assetSerialNumberField.setText(choosenConfig.getAssetSerialNumber());
-//        createdOnField.setText(choosenConfig.getCreatedOn());
-//        createdByField.setText(choosenConfig.getCreatedBy());
-//        statusField.setText(choosenConfig.getStatus());
-//        estimatedTimeField.setText(choosenConfig.getEstimatedTime());
-//        typeField.setText(choosenConfig.getType());
-//        externalWorkOrderIdField.setText(choosenConfig.getExternalWorkOrderId());
-//        systemStatusField.setText(choosenConfig.getSystemStatus());
-//        userStatusField.setText(choosenConfig.getUserStatus());
-//        nameField.setText(choosenConfig.getName());
-//        priorityField.setText(choosenConfig.getPriority());
-//        latestFinishDateField.setText(choosenConfig.getLatestFinishDate());
-//        earliestStartDateField.setText(choosenConfig.getEarliestStartDate());
-//        latestStartDateField.setText(choosenConfig.getLatestStartDate());
       headerNameField.setText(choosenConfig.getConfigName());
       checkBoxPrivacy.setSelected(choosenConfig.isPrivacy());
        username = choosenConfig.getCreatorName();
