@@ -68,6 +68,21 @@ public class DALConfig {
         return configList;
     }
 
+    /* removes config from the database */
+    public void removeConfigFromDatabase(Config config) {
+
+        try (Connection con = pool.checkOut()) {
+            String sql = "DELETE FROM Config WHERE config_id=?";
+            PreparedStatement pstmt = con.prepareStatement(sql);
+            pstmt.setInt(1, config.getCinfig_id());
+            pstmt.execute();
+            pool.checkIn(con);
+        } catch (SQLException ex) {
+            Logger.getLogger(DALHistory.class.getName()).log(
+                    Level.SEVERE, null, ex);
+        }
+    }
+
     /* adds config to the database */
     public void saveConfigToDatabase(Config config) {
 
@@ -99,14 +114,16 @@ public class DALConfig {
             pstmt.setString(18, config.getCreatorName());
             int affected = pstmt.executeUpdate();
             if (affected < 1) {
-                throw new SQLException("Config could not be added");
+                throw new SQLException("Config could not be removed");
             } else {
-                System.out.println("Config saved correctly");
+                System.out.println("Config removed correctly");
             }
             pool.checkIn(con);
+
         } catch (SQLException ex) {
-            Logger.getLogger(DALHistory.class.getName()).log(
-                    Level.SEVERE, null, ex);
+            Logger.getLogger(DALHistory.class
+                    .getName()).log(
+                            Level.SEVERE, null, ex);
         }
     }
 }

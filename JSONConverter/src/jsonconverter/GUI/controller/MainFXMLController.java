@@ -227,17 +227,19 @@ public class MainFXMLController implements Initializable {
 
     @FXML
     private void editConfigButtonClick(ActionEvent event) throws IOException, ParseException {
-        Parent root;
+       Parent root;
         Stage stage = new Stage();
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/jsonconverter/GUI/view/ConfigFXML.fxml"));
         root = loader.load();
         ConfigFXMLController controller = loader.getController();
         controller.setConfig(configChoiceBox.getValue());
+        controller.getModel(model);
+       // controller.getActualConfig(configChoiceBox.getValue());
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.setScene(new Scene(root));
         stage.showAndWait();
     }
-    
+  
     /* set tableView columns */
     public void setTasksTableViewColumns() {
         extensionColumn.setCellValueFactory(new PropertyValueFactory("extensionOfTheFile"));
@@ -414,4 +416,5 @@ public class MainFXMLController implements Initializable {
             allConfigsSavedInDatabase.add(config);
         }
     }
+
 }

@@ -7,13 +7,9 @@
 
 <AnchorPane id="AnchorPane" prefHeight="433.0" prefWidth="645.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jsonconverter.GUI.controller.ConfigFXMLController">
    <children>
-      <JFXButton fx:id="saveConfigButton" buttonType="RAISED" layoutX="587.0" layoutY="396.0" onAction="#saveButtonOnAction" ripplerFill="#fcfafa" text="SAVE" />
-      <JFXTextField fx:id="headerNameField" accessibleRole="IMAGE_VIEW" layoutX="477.0" layoutY="337.0" promptText="Config Name" />
-      <JFXButton fx:id="removeconfigButton" buttonType="RAISED" layoutX="564.0" layoutY="362.0" onAction="#removeButtonOnAction" text="Remove" />
-      <CheckBox fx:id="checkBoxPrivacy" layoutX="487.0" layoutY="400.0" mnemonicParsing="false" text="Private" />
       <AnchorPane layoutY="-2.0" prefHeight="435.0" prefWidth="475.0">
          <children>
-            <AnchorPane fx:id="configFieldsPane" prefHeight="433.0" prefWidth="553.0">
+            <AnchorPane fx:id="configFieldsPane" prefHeight="416.0" prefWidth="467.0">
                <children>
                   <JFXTextField fx:id="siteNameField" layoutX="14.0" layoutY="22.0" promptText="siteName default: &quot;NEW&quot;" />
                   <JFXTextField fx:id="assetSerialNumberField" layoutX="14.0" layoutY="96.0" promptText="assetSerialNumber" />
@@ -49,5 +45,9 @@
             </AnchorPane>
          </children>
       </AnchorPane>
+      <JFXTextField fx:id="headerNameField" accessibleRole="IMAGE_VIEW" layoutX="477.0" layoutY="337.0" promptText="Config Name" />
+      <JFXButton fx:id="removeconfigButton" buttonType="RAISED" disable="true" layoutX="528.0" layoutY="396.0" onAction="#removeButtonOnAction" text="Remove" />
+      <JFXButton fx:id="saveConfigButton" buttonType="RAISED" layoutX="587.0" layoutY="396.0" onAction="#saveButtonOnAction" ripplerFill="#fcfafa" text="SAVE" />
+      <CheckBox fx:id="checkBoxPrivacy" layoutX="471.0" layoutY="379.0" mnemonicParsing="false" text="Private" />
    </children>
 </AnchorPane>

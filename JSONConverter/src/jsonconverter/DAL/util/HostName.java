@@ -14,14 +14,14 @@ import java.net.UnknownHostException;
  */
 public class HostName {
 
-    
     private String hostname;
-    private String userName = System.getProperty("user.name");
-    private int onlyOnce=-1;
+    public String userName = System.getProperty("user.name");
+    private int onlyOnce = -1;
 
     public HostName() {
         takeUserInfo();
     }
+    
     /* gets information about localHost */
     private void takeUserInfo() {
       //  TimeZone tz = TimeZone.getTimeZone("Europe/Copenhagen");
@@ -33,20 +33,22 @@ if(onlyOnce==-1)
             InetAddress addr;
             addr = InetAddress.getLocalHost();
             hostname = addr.getHostName();
-            onlyOnce=0;
+            onlyOnce=-1;
             System.out.println("DOtarlem");
         } catch (UnknownHostException ex) {
             System.out.println("Hostname can not be resolved");
         }
     }
     }
-
-    public String getHostname() {
+  
+    public String getHostname()
+    {
         return hostname;
     }
 
     public String getUserName() {
         return userName;
     }
-    
+
 }
+

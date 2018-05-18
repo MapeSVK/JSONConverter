@@ -7,6 +7,7 @@ package jsonconverter.BLL;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -22,12 +23,14 @@ public class Converter {
 
     private SimpleDateFormat dateTimeFormatter = new SimpleDateFormat("dd/MM/yyyy HH:mm");
     private SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM/yyyy");
+    private Date currentDate = new Date();
 
     /* converts values from imported file into JSON list basen on config */
     public List<JSONObject> returnJasonObjects(TaskInOurProgram task) throws InterruptedException {
         ObservableList<JSONObject> jasonList = FXCollections.observableArrayList();
         double objectCounter = 0;
         jasonList.clear();
+        checkDefaultValues(task);
         for (String line : task.getConverter().getFileValues()) {
             String[] fields = line.split(";");
 
@@ -91,6 +94,34 @@ public class Converter {
             return jason[task.getConverter().getFileHeaders().get(config)];
         } else {
             return config;
+        }
+    }
+    private void checkDefaultValues(TaskInOurProgram task)
+    {
+        
+        if(task.getConfig().getSiteName().equals(""))
+        {
+           task.getConfig().setSiteName("");
+        }
+        if(task.getConfig().getAssetSerialNumber().equals(""))
+        {
+            task.getConfig().setAssetSerialNumber("asset._id");
+        }
+        if(task.getConfig().getCreatedOn().equals(""))
+        {
+            task.getConfig().setCreatedOn(dateTimeFormatter.format(currentDate));
+        }
+        if(task.getConfig().getCreatedBy().equals(""))
+        {
+            task.getConfig().setCreatedBy("SAP");
+        }
+        if(task.getConfig().getStatus().equals(""))
+        {
+            task.getConfig().setStatus("NEW");
+        }
+        if(task.getConfig().getEstimatedTime().equals(""))
+        {
+            task.getConfig().setEstimatedTime("");
         }
     }
 }

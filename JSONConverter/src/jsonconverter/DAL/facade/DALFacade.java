@@ -6,6 +6,7 @@
 package jsonconverter.DAL.facade;
 
 import java.io.File;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -34,7 +35,7 @@ public class DALFacade {
     private DALConfig config = new DALConfig();
     private HostName hostName = new HostName();
 
-     //- - - - - - - - - - - - - - - - - - - - CREATE JASON - - - - - - - - - - - - - - - - - - - -
+    //- - - - - - - - - - - - - - - - - - - - CREATE JASON - - - - - - - - - - - - - - - - - - - -
     /* creates json file from JSONObject list */
     public void createJsonFile(String fileName, File filePath, List<JSONObject> jsonList) {
         createJson.createJsonFile(fileName, filePath, jsonList);
@@ -88,6 +89,11 @@ public class DALFacade {
     /* gets all available configs for current user */
     public List<Config> getAllConfigs() {
         return config.getAllConfigs(hostName.getUserName());
+    }
+
+    /* removes config from the database */
+    public void removeConfigFromDatabase(Config removeConfig) {
+        config.removeConfigFromDatabase(removeConfig);
     }
 
     //- - - - - - - - - - - - - - - - - - - - HOSTNAME - - - - - - - - - - - - - - - - - - - -

@@ -6,6 +6,7 @@
 package jsonconverter.BLL;
 
 import java.io.File;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -41,18 +42,16 @@ public class BLLManager {
         return manager.getFileValues();
     }
 
-    /* returns list of Headers from the file */
+    /*returns list of Headers from the file */
     public List<String> getOnlyFileHeaders() {
         return manager.getOnlyFileHeaders();
     }
-
-    /* gets proper converter for current task */
+ /* gets proper converter for current task */
     public void getConverter(TaskInOurProgram currentTask) {
         manager.getConverter(currentTask);
 
     }
-
-    /* sets proper converter for current task */
+/* sets proper converter for current task */
     public void setConverter(String fileType, String filePath) {
         manager.setConverter(fileType, filePath);
     }
@@ -61,6 +60,11 @@ public class BLLManager {
 /* saves config to the database */
     public void saveConfigToDatabase(Config config) {
         manager.saveConfigToDatabase(config);
+    }
+    
+    /* removes config from the database */
+     public void removeConfigFromDatabase(Config config) {
+        manager.removeConfigFromDatabase(config);
     }
 
     /* gets all available configs for current user */
