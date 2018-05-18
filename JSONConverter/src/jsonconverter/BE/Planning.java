@@ -22,7 +22,6 @@ public class Planning {
 //        this.latestStartDate = latestStartDate;
 //        this.estimatedTime = estimatedTime;
 //    }
-
     public String getEstimatedTime() {
         return estimatedTime;
     }

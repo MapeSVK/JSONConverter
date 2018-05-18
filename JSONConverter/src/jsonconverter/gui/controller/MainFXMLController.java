@@ -11,7 +11,6 @@ import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableArray;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -62,26 +61,8 @@ public class MainFXMLController implements Initializable {
     private TableColumn<String, String> extensionColumn;
     @FXML
     private Label nameOfImportedFileLabel;
-    private ObservableList<Config> allConfigsSavedInDatabase = FXCollections.observableArrayList();
-    private String filePath;
-    private String fileType;
-    private String nameOfImportedFile;
-    private FileChooser fileChooser;
-    private File fileChoosedByImport;
-    private File directoryPath;
-    private boolean directoryPathHasBeenSelected = false;
-    private String newFileName = nameOfImportedFile;//Name needs to be indicate! It's just an example
-    private final String newFileExtension = ".json";
-    private String newFileInfo = newFileName + newFileExtension;
-    private Model model = new Model();
-    private TaskInOurProgram task;
-    private ExecutorService executor = Executors.newFixedThreadPool(3);
     @FXML
     private Button chooseDirectoryButton;
-    private String convertingOrPauseOrPlay;
-    private final Image pauseImage = new Image("file:images/pauseImage.png");
-    private final Image closeImage = new Image("file:images/close.png");
-    private final Image playImage = new Image("file:images/playImage.png");
     @FXML
     private JFXDatePicker startDateDatePicker;
     @FXML
@@ -99,6 +80,25 @@ public class MainFXMLController implements Initializable {
     @FXML
     private Button editButton;
 
+    private String convertingOrPauseOrPlay;
+    private final Image pauseImage = new Image("file:images/pauseImage.png");
+    private final Image closeImage = new Image("file:images/close.png");
+    private final Image playImage = new Image("file:images/playImage.png");
+    private ObservableList<Config> allConfigsSavedInDatabase = FXCollections.observableArrayList();
+    private String filePath;
+    private String fileType;
+    private String nameOfImportedFile;
+    private FileChooser fileChooser;
+    private File fileChoosedByImport;
+    private File directoryPath;
+    private boolean directoryPathHasBeenSelected = false;
+    private String newFileName = nameOfImportedFile;//Name needs to be indicate! It's just an example
+    private final String newFileExtension = ".json";
+    private String newFileInfo = newFileName + newFileExtension;
+    private Model model = new Model();
+    private TaskInOurProgram task;
+    private ExecutorService executor = Executors.newFixedThreadPool(3);
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         setTasksTableViewColumns();
@@ -117,35 +117,6 @@ public class MainFXMLController implements Initializable {
 
     }
 
-    /* set tableView columns */
-    public void setTasksTableViewColumns() {
-        extensionColumn.setCellValueFactory(new PropertyValueFactory("extensionOfTheFile"));
-        nameOfTheFileColumn.setCellValueFactory(new PropertyValueFactory("nameOfTheFile"));
-        configNameColumn.setCellValueFactory(new PropertyValueFactory("configName"));
-
-        stopButtonColumn.setCellValueFactory(new PropertyValueFactory("pauseTask"));
-        pauseButtonColumn.setCellValueFactory(new PropertyValueFactory("closeTask"));
-
-        TableColumn<TaskInOurProgram, String> statusCol = new TableColumn("Status");
-        statusCol.setCellValueFactory(new PropertyValueFactory<TaskInOurProgram, String>(
-                "message"));
-        statusCol.setPrefWidth(75);
-
-        progressCircleColumn.setCellValueFactory(new PropertyValueFactory<TaskInOurProgram, Double>(
-                "progress"));
-        progressCircleColumn
-                .setCellFactory(ProgressBarTableCell.<TaskInOurProgram>forTableColumn());
-
-        tasksTableView.getColumns().addAll(statusCol);
-
-    }
-
-    /* getting data from the model and setting this data in the choiceBox */
-    public void setConfigChoiceBoxItems() {
-        //configChoiceBox.setItems(model.getFakeConfig()); // <---------------------------------------FAKE DB
-        configChoiceBox.setItems(model.getAllConfigObservableArrayList());
-    }
-
     @FXML
     private void importFileButtonClick(ActionEvent event) {
         fileChooser = new FileChooser();
@@ -162,50 +133,6 @@ public class MainFXMLController implements Initializable {
             System.out.println("ERROR: File could not be imported.");
         }
 
-    }
-
-    /**
-     * This method manages the file chooser. "ALL" contains all the possibles
-     * file extensions It is possible to choose specific extensions
-     */
-    private void fileChooserSettings() {
-        FileChooser.ExtensionFilter ALL = new FileChooser.ExtensionFilter("Import *.XXX", "*.csv", "*.xlsx","*.xml");
-        FileChooser.ExtensionFilter CSV = new FileChooser.ExtensionFilter("Import csv", "*.csv");
-        FileChooser.ExtensionFilter XLSX = new FileChooser.ExtensionFilter("Import xlsx", "*.xlsx");
-        FileChooser.ExtensionFilter XML = new FileChooser.ExtensionFilter("Import xml", "*.xml");
-        fileChooser.getExtensionFilters().addAll(ALL, CSV, XLSX,XML);
-
-    }
-
-    /**
-     * Setting text of the label depending on the file extension
-     */
-    private void fileExtendionIdentifier() {
-        if (filePath.endsWith(".csv")) {
-            fileType = ".csv";
-            labelFileExtension.setText("csv");
-            model.setConverter(fileType, filePath);
-        } else if (filePath.endsWith(".xlsx")) {
-            fileType = ".xlsx";
-            labelFileExtension.setText("xlsx");
-            model.setConverter(fileType, filePath);
-        } else if(filePath.endsWith(".xml")){
-                fileType = ".xml";
-            labelFileExtension.setText("xml");
-            model.setConverter(fileType, filePath);
-        }
-    }
-
-    /**
-     * getting the name of the file from the path
-     */
-    public String gettingTheFileNameFromThePath(File file) {
-        String nameOfTheFile = file.getName();
-        int pos = nameOfTheFile.lastIndexOf(".");
-        if (pos > 0) {
-            nameOfTheFile = nameOfTheFile.substring(0, pos);
-        }
-        return nameOfTheFile;
     }
 
     @FXML
@@ -257,7 +184,133 @@ public class MainFXMLController implements Initializable {
         pauseConvertingClick();
 
     }
+    
+    /*   This method contains mainly the directory chooser interface */
+    @FXML
+    private void chooseDirectoryButtonClick(ActionEvent event) {
+        DirectoryChooser directoryChooser = new DirectoryChooser();
+        File selectedDirectory = directoryChooser.showDialog(chooseDirectoryButton.getScene().getWindow());
+        directoryChooser.setTitle("Select a directory");
+        if (selectedDirectory == null) {
+            Alert("Directory problem", "You did not select any directory. Try again!");
+        } else {
+            System.out.println("Selected directory: " + selectedDirectory.getAbsolutePath());
+            directoryPath = selectedDirectory.getAbsoluteFile();
+            directoryPathHasBeenSelected = true;
+        }
+    }
 
+    @FXML
+    private void convertTasksButtonClick(ActionEvent event) throws IOException {
+
+    }
+
+    @FXML
+    private void pauseTasksButtonClick(ActionEvent event) throws InterruptedException {
+        executor.shutdownNow();
+    }
+
+    @FXML
+    private void deleteTasksButtonClick(ActionEvent event) {
+        System.out.println("----------Start-------------");
+        Set<Thread> threadSet = Thread.getAllStackTraces().keySet();
+        Thread[] threadArray = threadSet.toArray(new Thread[threadSet.size()]);
+        for (int i = 0; i < threadArray.length; i++) {
+            System.out.println(threadArray[i].getName());
+        }
+        System.out.println("---------Koniec-----------");
+    }
+
+    @FXML
+    private void historyPageButtonClick(MouseEvent event) {
+    }
+
+    @FXML
+    private void editConfigButtonClick(ActionEvent event) throws IOException, ParseException {
+        Parent root;
+        Stage stage = new Stage();
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/jsonconverter/GUI/view/ConfigFXML.fxml"));
+        root = loader.load();
+        ConfigFXMLController controller = loader.getController();
+        controller.setConfig(configChoiceBox.getValue());
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.setScene(new Scene(root));
+        stage.showAndWait();
+    }
+    
+    /* set tableView columns */
+    public void setTasksTableViewColumns() {
+        extensionColumn.setCellValueFactory(new PropertyValueFactory("extensionOfTheFile"));
+        nameOfTheFileColumn.setCellValueFactory(new PropertyValueFactory("nameOfTheFile"));
+        configNameColumn.setCellValueFactory(new PropertyValueFactory("configName"));
+
+        stopButtonColumn.setCellValueFactory(new PropertyValueFactory("pauseTask"));
+        pauseButtonColumn.setCellValueFactory(new PropertyValueFactory("closeTask"));
+
+        TableColumn<TaskInOurProgram, String> statusCol = new TableColumn("Status");
+        statusCol.setCellValueFactory(new PropertyValueFactory<TaskInOurProgram, String>(
+                "message"));
+        statusCol.setPrefWidth(75);
+
+        progressCircleColumn.setCellValueFactory(new PropertyValueFactory<TaskInOurProgram, Double>(
+                "progress"));
+        progressCircleColumn
+                .setCellFactory(ProgressBarTableCell.<TaskInOurProgram>forTableColumn());
+
+        tasksTableView.getColumns().addAll(statusCol);
+
+    }
+
+    /* getting data from the model and setting this data in the choiceBox */
+    public void setConfigChoiceBoxItems() {
+        //configChoiceBox.setItems(model.getFakeConfig()); // <---------------------------------------FAKE DB
+        configChoiceBox.setItems(model.getAllConfigObservableArrayList());
+    }
+
+    /**
+     * This method manages the file chooser. "ALL" contains all the possibles
+     * file extensions It is possible to choose specific extensions
+     */
+    private void fileChooserSettings() {
+        FileChooser.ExtensionFilter ALL = new FileChooser.ExtensionFilter("Import *.XXX", "*.csv", "*.xlsx","*.xml");
+        FileChooser.ExtensionFilter CSV = new FileChooser.ExtensionFilter("Import csv", "*.csv");
+        FileChooser.ExtensionFilter XLSX = new FileChooser.ExtensionFilter("Import xlsx", "*.xlsx");
+        FileChooser.ExtensionFilter XML = new FileChooser.ExtensionFilter("Import xml", "*.xml");
+        fileChooser.getExtensionFilters().addAll(ALL, CSV, XLSX,XML);
+
+    }
+
+    /**
+     * Setting text of the label depending on the file extension
+     */
+    private void fileExtendionIdentifier() {
+        if (filePath.endsWith(".csv")) {
+            fileType = ".csv";
+            labelFileExtension.setText("csv");
+            model.setConverter(fileType, filePath);
+        } else if (filePath.endsWith(".xlsx")) {
+            fileType = ".xlsx";
+            labelFileExtension.setText("xlsx");
+            model.setConverter(fileType, filePath);
+        } else if(filePath.endsWith(".xml")){
+                fileType = ".xml";
+            labelFileExtension.setText("xml");
+            model.setConverter(fileType, filePath);
+        }
+    }
+
+    /**
+     * getting the name of the file from the path
+     */
+    public String gettingTheFileNameFromThePath(File file) {
+        String nameOfTheFile = file.getName();
+        int pos = nameOfTheFile.lastIndexOf(".");
+        if (pos > 0) {
+            nameOfTheFile = nameOfTheFile.substring(0, pos);
+        }
+        return nameOfTheFile;
+    }
+    
     public void pauseConvertingClick() {
 
         for (TaskInOurProgram task : model.getTasksInTheTableView()) {
@@ -299,49 +352,7 @@ public class MainFXMLController implements Initializable {
             });
         }
     }
-
-    /*
-    *   This method contains mainly the directory chooser interface.
-     */
-    @FXML
-    private void chooseDirectoryButtonClick(ActionEvent event) {
-        DirectoryChooser directoryChooser = new DirectoryChooser();
-        File selectedDirectory = directoryChooser.showDialog(chooseDirectoryButton.getScene().getWindow());
-        directoryChooser.setTitle("Select a directory");
-        if (selectedDirectory == null) {
-            Alert("Directory problem", "You did not select any directory. Try again!");
-        } else {
-            System.out.println("Selected directory: " + selectedDirectory.getAbsolutePath());
-            directoryPath = selectedDirectory.getAbsoluteFile();
-            directoryPathHasBeenSelected = true;
-        }
-    }
-
-    @FXML
-    private void convertTasksButtonClick(ActionEvent event) throws IOException {
-
-    }
-
-    @FXML
-    private void pauseTasksButtonClick(ActionEvent event) throws InterruptedException {
-        executor.shutdownNow();
-    }
-
-    @FXML
-    private void deleteTasksButtonClick(ActionEvent event) {
-        System.out.println("----------Start-------------");
-        Set<Thread> threadSet = Thread.getAllStackTraces().keySet();
-        Thread[] threadArray = threadSet.toArray(new Thread[threadSet.size()]);
-        for (int i = 0; i < threadArray.length; i++) {
-            System.out.println(threadArray[i].getName());
-        }
-        System.out.println("---------Koniec-----------");
-    }
-
-    @FXML
-    private void historyPageButtonClick(MouseEvent event) {
-    }
-
+    
     private void Alert(String title, String text) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(title);
@@ -402,18 +413,5 @@ public class MainFXMLController implements Initializable {
         for (Config config : model.getAllConfigObservableArrayList()) {
             allConfigsSavedInDatabase.add(config);
         }
-    }
-
-    @FXML
-    private void editConfigButtonClick(ActionEvent event) throws IOException, ParseException {
-        Parent root;
-        Stage stage = new Stage();
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/jsonconverter/GUI/view/ConfigFXML.fxml"));
-        root = loader.load();
-        ConfigFXMLController controller = loader.getController();
-        controller.setConfig(configChoiceBox.getValue());
-        stage.initModality(Modality.APPLICATION_MODAL);
-        stage.setScene(new Scene(root));
-        stage.showAndWait();
     }
 }

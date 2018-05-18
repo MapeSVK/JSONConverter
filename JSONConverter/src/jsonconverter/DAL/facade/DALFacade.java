@@ -34,6 +34,13 @@ public class DALFacade {
     private DALConfig config = new DALConfig();
     private HostName hostName = new HostName();
 
+     //- - - - - - - - - - - - - - - - - - - - CREATE JASON - - - - - - - - - - - - - - - - - - - -
+    /* creates json file from JSONObject list */
+    public void createJsonFile(String fileName, File filePath, List<JSONObject> jsonList) {
+        createJson.createJsonFile(fileName, filePath, jsonList);
+    }
+
+    //- - - - - - - - - - - - - - - - - - - - CONVERTER - - - - - - - - - - - - - - - - - - - -
     /* returns hashMap of headers from file (Headers are keys and numbers are values) */
     public HashMap<String, Integer> getFileHeaders() {
         return converter.getFileHeaders();
@@ -44,52 +51,52 @@ public class DALFacade {
         return converter.getFileValues();
     }
 
-    /* creates json file from JSONObject list */
-    public void createJsonFile(String fileName, File filePath, List<JSONObject> jsonList) {
-        createJson.createJsonFile(fileName, filePath, jsonList);
-    }
-
     /*returns list of Headers from the file */
     public List<String> getOnlyFileHeaders() {
         return converter.getOnlyFileHeaders();
     }
 
-     public void getConverter(TaskInOurProgram currentTask) {
-         currentTask.setConverter(converter);
+    /* gets proper converter for current task */
+    public void getConverter(TaskInOurProgram currentTask) {
+        currentTask.setConverter(converter);
     }
 
-    public void setConverter(String fileType,String filePath) {
-        if( fileType.equals(".csv"))
-        {
+    /* sets proper converter for current task */
+    public void setConverter(String fileType, String filePath) {
+        if (fileType.equals(".csv")) {
             converter = new ReadCSV(filePath);
-        }
-        else if(fileType.equals(".xlsx"))
-                {
-                converter = new ReadEXEL(filePath);
-                }
-        else if(fileType.equals(".xml"))
-        {
+        } else if (fileType.equals(".xlsx")) {
+            converter = new ReadEXEL(filePath);
+        } else if (fileType.equals(".xml")) {
             converter = new ReadXML(filePath);
         }
     }
-    
+
+    //- - - - - - - - - - - - - - - - - - - - HISTORY - - - - - - - - - - - - - - - - - - - -
     /* getting HISTORY */
     public List<History> getAllHistory() {
 
         return history.getAllHistory();
     }
 
-    public void saveConfigToDatabase(Config newconfig){
+    //- - - - - - - - - - - - - - - - - - - - CONFIG - - - - - - - - - - - - - - - - - - - -
+    /* saves config to the database */
+    public void saveConfigToDatabase(Config newconfig) {
         config.saveConfigToDatabase(newconfig);
     }
-    
-    public List<Config> getAllConfigs(){
+
+    /* gets all available configs for current user */
+    public List<Config> getAllConfigs() {
         return config.getAllConfigs(hostName.getUserName());
     }
-     public String getHostname() {
+
+    //- - - - - - - - - - - - - - - - - - - - HOSTNAME - - - - - - - - - - - - - - - - - - - -
+    /* returns local Hostname */
+    public String getHostname() {
         return hostName.getHostname();
     }
 
+    /* returns local Username */
     public String getUserName() {
         return hostName.getUserName();
     }

@@ -80,6 +80,38 @@ public class ConfigFXMLController implements Initializable {
     private boolean isEditMode;
     @FXML
     private JFXButton removeconfigButton;
+    @FXML
+    private JFXTextField siteNameFieldEmpty;
+    @FXML
+    private JFXTextField assetSerialNumberFieldEmpty;
+    @FXML
+    private JFXTextField typeFieldEmpty;
+    @FXML
+    private JFXTextField externalWorkOrderIdFieldEmpty;
+    @FXML
+    private JFXTextField systemStatusFieldEmpty;
+    @FXML
+    private JFXTextField userStatusFieldEmpty;
+    @FXML
+    private JFXTextField createdOnFieldEmpty;
+    @FXML
+    private JFXTextField createdByFieldEmpty;
+    @FXML
+    private JFXTextField priorityFieldEmpty;
+    @FXML
+    private JFXTextField nameFieldEmpty;
+    @FXML
+    private JFXTextField statusFieldEmpty;
+    @FXML
+    private JFXTextField latestFinishDateFieldEmpty;
+    @FXML
+    private JFXTextField earliestStartDateFieldEmpty;
+    @FXML
+    private JFXTextField latestStartDateFieldEmpty;
+    @FXML
+    private JFXTextField estimatedTimeFieldEmpty;
+    @FXML
+    private AnchorPane ifEmptyPane;
 
     /**
      * Initializes the controller class.
@@ -108,8 +140,6 @@ public class ConfigFXMLController implements Initializable {
     private void addAutoCompletionToFields() {
         for (Node node : configFieldsPane.getChildren()) {
             if (node instanceof JFXTextField) {
-                // clear
-
                 TextFields.bindAutoCompletion(((JFXTextField) node), suggest);
             }
         }
@@ -211,19 +241,23 @@ public class ConfigFXMLController implements Initializable {
             for (Node node : configFieldsPane.getChildren()) {
                 if (node instanceof JFXTextField) {
                     if (((JFXTextField) node).getText().equals(string)) {
+                        ifEmpyField(((JFXTextField) node).getId(), false);
                         headersList.remove(string);
                         suggest.clearSuggestions();
                         suggest.addPossibleSuggestions(headersList);
-                    } else if (!((JFXTextField) node).getText().equals(string) && !headersList.contains(string)) {
+                    } else if (! ((JFXTextField) node).getText().equals(string) && !headersList.contains(string)) {
                         fieldsCounter++;
-                        if (fieldsCounter == 15) {
+                        if (fieldsCounter == 30) {
                             fieldsCounter = 0;
                             headersList.add(string);
                             suggest.clearSuggestions();
                             suggest.addPossibleSuggestions(headersList);
                         }
                     }
-
+                    else if(!model.getOnlyFileHeaders().contains(((JFXTextField) node).getText()))
+                    {
+                        ifEmpyField(((JFXTextField) node).getId(), true);
+                    }
                 }
             }
         }
@@ -231,5 +265,18 @@ public class ConfigFXMLController implements Initializable {
 
     @FXML
     private void removeButtonOnAction(ActionEvent event) {
+    }
+    
+    private void ifEmpyField(String originalField,boolean disable)
+    {
+        for (Node node : configFieldsPane.getChildren()) {
+            if (node instanceof JFXTextField) {
+                if(((JFXTextField) node).getId().equals(originalField+"Empty"))
+                {
+                    ((JFXTextField) node).setDisable(disable);   
+                }
+               
+            }
+        }
     }
 }

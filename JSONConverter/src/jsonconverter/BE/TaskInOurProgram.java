@@ -24,27 +24,24 @@ public class TaskInOurProgram extends Task<Void> {
     private boolean isConvertingDone = false;
     private Button pauseTask;
     private Button closeTask;
-            
+
     public TaskInOurProgram(String name, String configName, String extensionOfTheFile) {
         this.nameOfTheFile = name;
         this.configName = configName;
         this.extensionOfTheFile = extensionOfTheFile;
         this.pauseTask = new Button("");
- //       this.closeTask = new Button("");       this needs to be added in second sprint
-        
- 
+        //       this.closeTask = new Button("");       this needs to be added in second sprint
         this.pauseTask.getStyleClass().clear();
         this.pauseTask.getStyleClass().add("pauseButtons");
-        
     }
 
     @Override
     public Void call() throws Exception {
         this.updateProgress(ProgressIndicator.INDETERMINATE_PROGRESS, 1);
-        model.createJsonFile(fileName, filePath, this);      
+        model.createJsonFile(fileName, filePath, this);
         isConvertingDone = true;
         System.out.println(isConvertingDone);
-      return null;
+        return null;
     }
 
     public boolean isIsConvertingDone() {
@@ -54,7 +51,7 @@ public class TaskInOurProgram extends Task<Void> {
     public void setIsConvertingDone(boolean isConvertingDone) {
         this.isConvertingDone = isConvertingDone;
     }
-    
+
     public Button getPauseTask() {
         return pauseTask;
     }
@@ -70,8 +67,6 @@ public class TaskInOurProgram extends Task<Void> {
     public void setCloseTask(Button closeTask) {
         this.closeTask = closeTask;
     }
-    
-    
 
     public String getExtensionOfTheFile() {
         return extensionOfTheFile;
@@ -97,7 +92,6 @@ public class TaskInOurProgram extends Task<Void> {
         this.nameOfTheFile = nameOfTheFile;
     }
 
-
     public Config getConfig() {
         return config;
     }
@@ -122,6 +116,26 @@ public class TaskInOurProgram extends Task<Void> {
         this.model = model;
     }
 
+    public String getFileName() {
+        return fileName;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+    }
+
+    public File getFilePath() {
+        return filePath;
+    }
+
+    public void setFilePath(File filePath) {
+        this.filePath = filePath;
+    }
+
+    public void update(double update) {
+        updateProgress(update, converter.getFileValues().size());
+    }
+
     public void pauseThis() {
         pause = true;
     }
@@ -144,24 +158,4 @@ public class TaskInOurProgram extends Task<Void> {
             }
         }
     }
-
-    public String getFileName() {
-        return fileName;
-    }
-
-    public void setFileName(String fileName) {
-        this.fileName = fileName;
-    }
-
-    public File getFilePath() {
-        return filePath;
-    }
-
-    public void setFilePath(File filePath) {
-        this.filePath = filePath;
-    }
-    public void update(double update)
-{
-    updateProgress(update, converter.getFileValues().size());
-}
 }

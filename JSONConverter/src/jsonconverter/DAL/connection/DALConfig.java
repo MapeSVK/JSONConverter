@@ -20,11 +20,13 @@ import jsonconverter.BE.Config;
  * @author Pepe15224
  */
 public class DALConfig {
-    
+
+    /* creates the connectionPool*/
     private JDBCConnectionPool pool = new JDBCConnectionPool(
             "com.microsoft.sqlserver.jdbc.SQLServerDriver", "jdbc:sqlserver://10.176.111.31;databaseName=JSONConverter",
             "CS2017B_27_java", "javajava");
-    
+
+    /* gets all available configs for current user */
     public List<Config> getAllConfigs(String username) {
         List<Config> configList = new ArrayList();
 
@@ -65,7 +67,8 @@ public class DALConfig {
         }
         return configList;
     }
-    
+
+    /* adds config to the database */
     public void saveConfigToDatabase(Config config) {
 
         try (Connection con = pool.checkOut()) {

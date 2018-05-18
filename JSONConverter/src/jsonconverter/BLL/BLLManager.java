@@ -22,9 +22,16 @@ public class BLLManager {
 
     private DALFacade manager = new DALFacade();
     private Converter convertJason = new Converter();
-    private NewConfigValidations configValidations= new NewConfigValidations();
+    private NewConfigValidations configValidations = new NewConfigValidations();
 
-     /* returns hashMap of headers from file (Headers are keys and numbers are values) */
+    //- - - - - - - - - - - - - - - - - - - - CREATE JASON - - - - - - - - - - - - - - - - - - - -
+    /* creates json file from JSONObject list */
+    public void createJsonFile(String fileName, File filePath, TaskInOurProgram currentTask) throws InterruptedException {
+        manager.createJsonFile(fileName, filePath, convertJason.returnJasonObjects(currentTask));
+    }
+
+    //- - - - - - - - - - - - - - - - - - - - CONVERTER - - - - - - - - - - - - - - - - - - - -
+    /* returns hashMap of headers from file (Headers are keys and numbers are values) */
     public HashMap<String, Integer> getFileHeaders() {
         return manager.getFileHeaders();
     }
@@ -34,42 +41,46 @@ public class BLLManager {
         return manager.getFileValues();
     }
 
-    /* creates json file from JSONObject list */
-    public void createJsonFile(String fileName, File filePath, TaskInOurProgram currentTask) throws InterruptedException {    
-      manager.createJsonFile(fileName, filePath, convertJason.returnJasonObjects(currentTask));
-    }
-
-    /*returns list of Headers from the file */
+    /* returns list of Headers from the file */
     public List<String> getOnlyFileHeaders() {
         return manager.getOnlyFileHeaders();
     }
-    
-public void getConverter(TaskInOurProgram currentTask) {
-         manager.getConverter(currentTask);
-         
+
+    /* gets proper converter for current task */
+    public void getConverter(TaskInOurProgram currentTask) {
+        manager.getConverter(currentTask);
+
     }
 
-    public void setConverter(String fileType,String filePath) {
+    /* sets proper converter for current task */
+    public void setConverter(String fileType, String filePath) {
         manager.setConverter(fileType, filePath);
     }
-    
-    
-    public void saveConfigToDatabase(Config config){
+
+    //- - - - - - - - - - - - - - - - - - - - CONFIG - - - - - - - - - - - - - - - - - - - -
+/* saves config to the database */
+    public void saveConfigToDatabase(Config config) {
         manager.saveConfigToDatabase(config);
     }
-    public List<Config> getAllConfigs(){
+
+    /* gets all available configs for current user */
+    public List<Config> getAllConfigs() {
         return manager.getAllConfigs();
     }
-    
+
+    //- - - - - - - - - - - - - - - - - - - - HOSTNAME - - - - - - - - - - - - - - - - - - - -
+    /* returns local Hostname */
     public String getHostname() {
         return manager.getHostname();
     }
 
+    /* returns local Username */
     public String getUserName() {
         return manager.getUserName();
     }
-    /* HISTORY */
-    
+
+    //- - - - - - - - - - - - - - - - - - - - HISTORY - - - - - - - - - - - - - - - - - - - -
+    /* getting HISTORY */
     public List<History> getAllHistory() {
         return manager.getAllHistory();
     }
