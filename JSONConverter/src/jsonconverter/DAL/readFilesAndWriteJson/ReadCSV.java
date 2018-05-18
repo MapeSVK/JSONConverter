@@ -20,8 +20,8 @@ import java.util.logging.Logger;
  */
 public class ReadCSV implements IConverter {
 
-    String path;
-    List<String> allLinesAsString;
+    private String path;
+    private List<String> allLinesAsString;
 
     public ReadCSV(String path) {
         this.path = path;
@@ -62,7 +62,7 @@ public class ReadCSV implements IConverter {
         return headersMap;
     }
 
-    /* returns lines vith values from ReadCSV value except for the first line */
+    /* returns lines with values from ReadCSV value except for the first line */
     @Override
     public ArrayList<String> getFileValues() {
         ArrayList<String> CSVValuesList = new ArrayList();

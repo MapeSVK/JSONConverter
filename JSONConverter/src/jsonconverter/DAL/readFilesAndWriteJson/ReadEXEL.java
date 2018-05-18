@@ -27,25 +27,24 @@ import org.apache.poi.ss.usermodel.WorkbookFactory;
  *
  * @author Pepe15224
  */
-public class ReadEXEL implements IConverter{
+public class ReadEXEL implements IConverter {
 
     private List<String> allLinesAsStrings = new ArrayList<>();
     private String filepath;
-    private String exelRow="";
+    private String exelRow = "";
+    private SimpleDateFormat dateExelFormatterTimeFormatter = new SimpleDateFormat("dd-MMM-yyyy");
+    private SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 
-    private SimpleDateFormat dateExelFormatterTimeFormatter = new SimpleDateFormat("dd-MMM-yyyy");  
-    private SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM/yyyy HH:mm"); 
     public ReadEXEL(String filepath) {
         this.filepath = filepath;
         allLinesAsStrings.clear();
         readExelFile(filepath);
     }
-    
-    
-    
+
+    /* splits the first line from the list file and then saves this line as a headers inside of the hashMap */
     @Override
     public HashMap<String, Integer> getFileHeaders() {
-         HashMap<String, Integer> headersMap = new HashMap<>();
+        HashMap<String, Integer> headersMap = new HashMap<>();
         String[] headers = allLinesAsStrings.get(0).split(";");
 
         for (int i = 0; i < headers.length; i++) {
@@ -65,17 +64,19 @@ public class ReadEXEL implements IConverter{
         return headersMap;
     }
 
+    /* returns lines with values from list value except for the first line */
     @Override
     public ArrayList<String> getFileValues() {
-         ArrayList<String> CSVValuesList = new ArrayList();
+        ArrayList<String> CSVValuesList = new ArrayList();
         CSVValuesList.addAll(allLinesAsStrings);
         CSVValuesList.remove(0);
         return CSVValuesList;
     }
 
+    /*returns list of Headers from the file */
     @Override
     public List<String> getOnlyFileHeaders() {
-         List<String> headers = new ArrayList();
+        List<String> headers = new ArrayList();
         headers.clear();
         String[] headersString = allLinesAsStrings.get(0).split(";");
         for (int i = 0; i < headersString.length; i++) {
@@ -94,17 +95,18 @@ public class ReadEXEL implements IConverter{
         }
         return headers;
     }
-private void readExelFile(String filepath) 
-    {
+
+    /*reads EXEL file*/
+    private void readExelFile(String filepath) {
         InputStream inp = null;
         try {
             inp = new FileInputStream(filepath);
             Workbook wb;
             try {
                 wb = WorkbookFactory.create(inp);
-                for(int i=0;i<wb.getNumberOfSheets();i++) {
-                echoAsCSV(wb.getSheetAt(i));
-            }
+                for (int i = 0; i < wb.getNumberOfSheets(); i++) {
+                    echoAsCSV(wb.getSheetAt(i));
+                }
             } catch (org.apache.poi.openxml4j.exceptions.InvalidFormatException ex) {
                 Logger.getLogger(ReadEXEL.class.getName()).log(Level.SEVERE, null, ex);
             } catch (EncryptedDocumentException ex) {
@@ -125,19 +127,20 @@ private void readExelFile(String filepath)
         }
     }
 
-private void echoAsCSV(Sheet sheet) {
+    /*puts pieces of information from EXEL file into the list*/
+    private void echoAsCSV(Sheet sheet) {
         Row row = null;
-        for (int i = 0; i < sheet.getLastRowNum()+1; i++) {
+        for (int i = 0; i < sheet.getLastRowNum() + 1; i++) {
             row = sheet.getRow(i);
-            exelRow="";
+            exelRow = "";
             for (int j = 0; j < row.getLastCellNum(); j++) {
-                try {                  
-                  String goodDate =  dateFormatter.format(dateExelFormatterTimeFormatter.parse(""+row.getCell(j)));
-                  exelRow = exelRow+goodDate+";";
+                try {
+                    String goodDate = dateFormatter.format(dateExelFormatterTimeFormatter.parse("" + row.getCell(j)));
+                    exelRow = exelRow + goodDate + ";";
                 } catch (ParseException ex) {
-                   exelRow= exelRow+row.getCell(j) +";"; 
+                    exelRow = exelRow + row.getCell(j) + ";";
                 }
-                           
+
             }
             allLinesAsStrings.add(exelRow);
         }

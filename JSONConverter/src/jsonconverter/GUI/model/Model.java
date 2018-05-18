@@ -61,9 +61,9 @@ public class Model {
     public void setConverter(String fileType, String filePath) {
         manager.setConverter(fileType, filePath);
     }
-
-    public void removeConfigToDatabase(Config removeConfig) {
-        manager.removeConfigFromDatabase(removeConfig);
+    public void removeConfigToDatabase(Config config) {
+        manager.removeConfigFromDatabase(config);
+        allConfigObservableArrayList.remove(config);
     }
 
     public void saveConfigToDatabase(Config config) {

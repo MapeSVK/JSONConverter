@@ -35,6 +35,13 @@ public class DALFacade {
     private DALConfig config = new DALConfig();
     private HostName hostName = new HostName();
 
+    //- - - - - - - - - - - - - - - - - - - - CREATE JASON - - - - - - - - - - - - - - - - - - - -
+    /* creates json file from JSONObject list */
+    public void createJsonFile(String fileName, File filePath, List<JSONObject> jsonList) {
+        createJson.createJsonFile(fileName, filePath, jsonList);
+    }
+
+    //- - - - - - - - - - - - - - - - - - - - CONVERTER - - - - - - - - - - - - - - - - - - - -
     /* returns hashMap of headers from file (Headers are keys and numbers are values) */
     public HashMap<String, Integer> getFileHeaders() {
         return converter.getFileHeaders();
@@ -45,24 +52,17 @@ public class DALFacade {
         return converter.getFileValues();
     }
 
-    /* creates json file from JSONObject list */
-    public void createJsonFile(String fileName, File filePath, List<JSONObject> jsonList) {
-        createJson.createJsonFile(fileName, filePath, jsonList);
-    }
-
     /*returns list of Headers from the file */
     public List<String> getOnlyFileHeaders() {
         return converter.getOnlyFileHeaders();
     }
 
-    public void removeConfigFromDatabase(Config removeConfig) {
-        config.removeConfigFromDatabase(removeConfig);
-    }
-
+    /* gets proper converter for current task */
     public void getConverter(TaskInOurProgram currentTask) {
         currentTask.setConverter(converter);
     }
 
+    /* sets proper converter for current task */
     public void setConverter(String fileType, String filePath) {
         if (fileType.equals(".csv")) {
             converter = new ReadCSV(filePath);
@@ -73,24 +73,36 @@ public class DALFacade {
         }
     }
 
+    //- - - - - - - - - - - - - - - - - - - - HISTORY - - - - - - - - - - - - - - - - - - - -
     /* getting HISTORY */
     public List<History> getAllHistory() {
 
         return history.getAllHistory();
     }
 
-    public void saveConfigToDatabase(Config newConfig) {
-        config.saveConfigToDatabase(newConfig);
+    //- - - - - - - - - - - - - - - - - - - - CONFIG - - - - - - - - - - - - - - - - - - - -
+    /* saves config to the database */
+    public void saveConfigToDatabase(Config newconfig) {
+        config.saveConfigToDatabase(newconfig);
     }
 
+    /* gets all available configs for current user */
     public List<Config> getAllConfigs() {
         return config.getAllConfigs(hostName.getUserName());
     }
 
+    /* removes config from the database */
+    public void removeConfigFromDatabase(Config removeConfig) {
+        config.removeConfigFromDatabase(removeConfig);
+    }
+
+    //- - - - - - - - - - - - - - - - - - - - HOSTNAME - - - - - - - - - - - - - - - - - - - -
+    /* returns local Hostname */
     public String getHostname() {
         return hostName.getHostname();
     }
 
+    /* returns local Username */
     public String getUserName() {
         return hostName.getUserName();
     }

@@ -21,25 +21,28 @@ public class HostName {
     public HostName() {
         takeUserInfo();
     }
-
-    public void takeUserInfo() {
-        //  TimeZone tz = TimeZone.getTimeZone("Europe/Copenhagen");
-        //   SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        //    sdf.setTimeZone(tz);
-        if (onlyOnce == -1) {
-            try {
-                InetAddress addr;
-                addr = InetAddress.getLocalHost();
-                hostname = addr.getHostName();
-                onlyOnce = 0;
-                System.out.println("DOtarlem");
-            } catch (UnknownHostException ex) {
-                System.out.println("Hostname can not be resolved");
-            }
+    
+    /* gets information about localHost */
+    private void takeUserInfo() {
+      //  TimeZone tz = TimeZone.getTimeZone("Europe/Copenhagen");
+     //   SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    //    sdf.setTimeZone(tz);
+if(onlyOnce==-1)
+{
+        try {
+            InetAddress addr;
+            addr = InetAddress.getLocalHost();
+            hostname = addr.getHostName();
+            onlyOnce=-1;
+            System.out.println("DOtarlem");
+        } catch (UnknownHostException ex) {
+            System.out.println("Hostname can not be resolved");
         }
     }
-
-    public String getHostname() {
+    }
+  
+    public String getHostname()
+    {
         return hostname;
     }
 
@@ -48,3 +51,4 @@ public class HostName {
     }
 
 }
+

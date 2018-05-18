@@ -22,11 +22,12 @@ import jsonconverter.BE.Config;
  * @author Pepe15224
  */
 public class DALConfig {
-
+    /* creates the connectionPool*/
     private JDBCConnectionPool pool = new JDBCConnectionPool(
             "com.microsoft.sqlserver.jdbc.SQLServerDriver", "jdbc:sqlserver://10.176.111.31;databaseName=JSONConverter",
             "CS2017B_27_java", "javajava");
 
+    /* gets all available configs for current user */
     public List<Config> getAllConfigs(String username) {
         List<Config> configList = new ArrayList();
 
@@ -68,12 +69,13 @@ public class DALConfig {
         return configList;
     }
 
-    public void removeConfigFromDatabase(Config removeConfig) {
+    /* removes config from the database */
+    public void removeConfigFromDatabase(Config config) {
 
         try (Connection con = pool.checkOut()) {
             String sql = "DELETE FROM Config WHERE config_id=?";
             PreparedStatement pstmt = con.prepareStatement(sql);
-            pstmt.setInt(1, removeConfig.getCinfig_id());
+            pstmt.setInt(1, config.getCinfig_id());
             int affected = pstmt.executeUpdate();
             if (affected < 1) {
                 throw new SQLException("Config could not be removed");
@@ -91,6 +93,7 @@ public class DALConfig {
         }
     }
 
+    /* adds config to the database */
     public void saveConfigToDatabase(Config config) {
 
         try (Connection con = pool.checkOut()) {

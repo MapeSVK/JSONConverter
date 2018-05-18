@@ -9,7 +9,6 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 import impl.org.controlsfx.autocompletion.SuggestionProvider;
 import java.net.URL;
-import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -83,6 +82,38 @@ public class ConfigFXMLController implements Initializable {
 
     @FXML
     protected JFXButton removeconfigButton;
+    @FXML
+    private JFXTextField siteNameFieldEmpty;
+    @FXML
+    private JFXTextField assetSerialNumberFieldEmpty;
+    @FXML
+    private JFXTextField typeFieldEmpty;
+    @FXML
+    private JFXTextField externalWorkOrderIdFieldEmpty;
+    @FXML
+    private JFXTextField systemStatusFieldEmpty;
+    @FXML
+    private JFXTextField userStatusFieldEmpty;
+    @FXML
+    private JFXTextField createdOnFieldEmpty;
+    @FXML
+    private JFXTextField createdByFieldEmpty;
+    @FXML
+    private JFXTextField priorityFieldEmpty;
+    @FXML
+    private JFXTextField nameFieldEmpty;
+    @FXML
+    private JFXTextField statusFieldEmpty;
+    @FXML
+    private JFXTextField latestFinishDateFieldEmpty;
+    @FXML
+    private JFXTextField earliestStartDateFieldEmpty;
+    @FXML
+    private JFXTextField latestStartDateFieldEmpty;
+    @FXML
+    private JFXTextField estimatedTimeFieldEmpty;
+    @FXML
+    private AnchorPane ifEmptyPane;
 
     /**
      * Initializes the controller class.
@@ -106,6 +137,7 @@ public class ConfigFXMLController implements Initializable {
             model.saveConfigToDatabase(createConfig());
             closeWindow();
         }
+        //   if (model.checkIfConfigExists(createConfig())) {
         //   } else {
         //      Alert("Config already exists", "Config with this name already exists!");
         //    }
@@ -138,7 +170,6 @@ public class ConfigFXMLController implements Initializable {
     private void addAutoCompletionToFields() {
         for (Node node : configFieldsPane.getChildren()) {
             if (node instanceof JFXTextField) {
-                // clear
                 TextFields.bindAutoCompletion(((JFXTextField) node), suggest);
             }
         }
@@ -153,7 +184,7 @@ public class ConfigFXMLController implements Initializable {
         checkTextProperty();
     }
 
-    protected void setConfig(Config choosenConfig) throws ParseException {
+    protected Config setConfig(Config choosenConfig) throws ParseException {
         siteNameField.setText(choosenConfig.getSiteName());
         assetSerialNumberField.setText(choosenConfig.getAssetSerialNumber());
         createdOnField.setText(choosenConfig.getCreatedOn());
@@ -172,30 +203,21 @@ public class ConfigFXMLController implements Initializable {
         headerNameField.setText(choosenConfig.getConfigName());
         checkBoxPrivacy.setSelected(choosenConfig.isPrivacy());
         username = choosenConfig.getCreatorName();
+
+        this.choosenConfig = choosenConfig;
+        return choosenConfig;
     }
 
     /* creates config based on users texFields and saves it in the database */
     private Config createConfig() throws ParseException {
         Config newConfig = new Config();
 
-        if (!siteNameField.getText().isEmpty()) {
-            newConfig.setSiteName(siteNameField.getText());
-        }
-        if (!assetSerialNumberField.getText().isEmpty()) {
-            newConfig.setAssetSerialNumber(assetSerialNumberField.getText());
-        }
-        if (!createdOnField.getText().isEmpty()) {
-            newConfig.setCreatedOn(createdOnField.getText());
-        }
-        if (!createdByField.getText().isEmpty()) {
-            newConfig.setCreatedBy(createdByField.getText());
-        }
-        if (!statusField.getText().isEmpty()) {
-            newConfig.setStatus(statusField.getText());
-        }
-        if (!estimatedTimeField.getText().isEmpty()) {
-            newConfig.setEstimatedTime(estimatedTimeField.getText());
-        }
+        newConfig.setSiteName(siteNameField.getText());
+        newConfig.setAssetSerialNumber(assetSerialNumberField.getText());
+        newConfig.setCreatedOn(createdOnField.getText());
+        newConfig.setCreatedBy(createdByField.getText());
+        newConfig.setStatus(statusField.getText());
+        newConfig.setEstimatedTime(estimatedTimeField.getText());
         newConfig.setType(typeField.getText());
         newConfig.setExternalWorkOrderId(externalWorkOrderIdField.getText());
         newConfig.setSystemStatus(systemStatusField.getText());
@@ -208,6 +230,7 @@ public class ConfigFXMLController implements Initializable {
         newConfig.setConfigName(headerNameField.getText());
         newConfig.setPrivacy(checkBoxPrivacy.isSelected());
         newConfig.setCreatorName(username);
+
         return newConfig;
     }
 
@@ -240,20 +263,33 @@ public class ConfigFXMLController implements Initializable {
             for (Node node : configFieldsPane.getChildren()) {
                 if (node instanceof JFXTextField) {
                     if (((JFXTextField) node).getText().equals(string)) {
+                        ifEmpyField(((JFXTextField) node).getId(), false);
                         headersList.remove(string);
                         suggest.clearSuggestions();
                         suggest.addPossibleSuggestions(headersList);
                     } else if (!((JFXTextField) node).getText().equals(string) && !headersList.contains(string)) {
                         fieldsCounter++;
-                        if (fieldsCounter == 15) {
+                        if (fieldsCounter == 30) {
                             fieldsCounter = 0;
                             headersList.add(string);
                             suggest.clearSuggestions();
                             suggest.addPossibleSuggestions(headersList);
                         }
+                    } else if (!model.getOnlyFileHeaders().contains(((JFXTextField) node).getText())) {
+                        ifEmpyField(((JFXTextField) node).getId(), true);
                     }
-
                 }
+            }
+        }
+    }
+
+    private void ifEmpyField(String originalField, boolean disable) {
+        for (Node node : configFieldsPane.getChildren()) {
+            if (node instanceof JFXTextField) {
+                if (((JFXTextField) node).getId().equals(originalField + "Empty")) {
+                    ((JFXTextField) node).setDisable(disable);
+                }
+
             }
         }
     }

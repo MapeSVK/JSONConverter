@@ -11,7 +11,6 @@ import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableArray;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -79,10 +78,6 @@ public class MainFXMLController implements Initializable {
     private ExecutorService executor = Executors.newFixedThreadPool(3);
     @FXML
     private Button chooseDirectoryButton;
-    private String convertingOrPauseOrPlay;
-    private final Image pauseImage = new Image("file:images/pauseImage.png");
-    private final Image closeImage = new Image("file:images/close.png");
-    private final Image playImage = new Image("file:images/playImage.png");
     @FXML
     private JFXDatePicker startDateDatePicker;
     @FXML
@@ -100,6 +95,11 @@ public class MainFXMLController implements Initializable {
     @FXML
     private Button editButton;
 
+    private String convertingOrPauseOrPlay;
+    private final Image pauseImage = new Image("file:images/pauseImage.png");
+    private final Image closeImage = new Image("file:images/close.png");
+    private final Image playImage = new Image("file:images/playImage.png");
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         setTasksTableViewColumns();
@@ -116,6 +116,86 @@ public class MainFXMLController implements Initializable {
         historyTableView.setItems(model.getAllHistoryObservableArrayList());
         gettingThePrivateConfigs();
 
+    }
+
+    @FXML
+    private void importFileButtonClick(ActionEvent event) {
+        fileChooser = new FileChooser();
+        fileChooserSettings();
+        fileChoosedByImport = fileChooser.showOpenDialog(null);
+
+        if (fileChoosedByImport != null) {
+            filePath = fileChoosedByImport.toString();
+            nameOfImportedFile = gettingTheFileNameFromThePath(fileChoosedByImport);
+            fileExtendionIdentifier();
+            nameOfImportedFileLabel.setText(nameOfImportedFile);
+
+        } else {
+            System.out.println("ERROR: File could not be imported.");
+        }
+
+    }
+
+    @FXML
+    private void addTaskButtonClick(ActionEvent event) {
+        /* CONDITIONS */
+        boolean isRightNameOfTheFile = false;
+        boolean isConfigSet = false;
+        boolean isRightExtension = false;
+
+        if (nameOfImportedFile != null && !nameOfImportedFile.equals("")) {
+            isRightNameOfTheFile = true;
+        }
+
+        if (!configChoiceBox.getSelectionModel().getSelectedItem().equals("")
+                && configChoiceBox.getSelectionModel().getSelectedItem() != null) {
+            isConfigSet = true;
+        }
+
+        if (!labelFileExtension.getText().equals("") && labelFileExtension.getText() != null) {
+            isRightExtension = true;
+        }
+
+        /* ADDING */
+        System.out.println(nameOfImportedFile);
+
+        if (isRightNameOfTheFile == true && isConfigSet == true && isRightExtension == true) {
+            TaskInOurProgram task = new TaskInOurProgram(nameOfImportedFile, configChoiceBox.getSelectionModel().getSelectedItem().getConfigName(),
+                    labelFileExtension.getText());
+            model.getConverter(task);
+            task.setConfig(configChoiceBox.getValue());
+            task.setFilePath(directoryPath);
+            task.setFileName(nameOfImportedFile);
+            model.addTask(task);
+        }
+
+        pauseConvertingClick();
+
+    }
+
+    @FXML
+    private void convertTasksButtonClick(ActionEvent event) throws IOException {
+
+    }
+
+    @FXML
+    private void pauseTasksButtonClick(ActionEvent event) throws InterruptedException {
+        executor.shutdownNow();
+    }
+
+    @FXML
+    private void deleteTasksButtonClick(ActionEvent event) {
+        System.out.println("----------Start-------------");
+        Set<Thread> threadSet = Thread.getAllStackTraces().keySet();
+        Thread[] threadArray = threadSet.toArray(new Thread[threadSet.size()]);
+        for (int i = 0; i < threadArray.length; i++) {
+            System.out.println(threadArray[i].getName());
+        }
+        System.out.println("---------Koniec-----------");
+    }
+
+    @FXML
+    private void historyPageButtonClick(MouseEvent event) {
     }
 
     /* set tableView columns */
@@ -147,34 +227,16 @@ public class MainFXMLController implements Initializable {
         configChoiceBox.setItems(model.getAllConfigObservableArrayList());
     }
 
-    @FXML
-    private void importFileButtonClick(ActionEvent event) {
-        fileChooser = new FileChooser();
-        fileChooserSettings();
-        fileChoosedByImport = fileChooser.showOpenDialog(null);
-
-        if (fileChoosedByImport != null) {
-            filePath = fileChoosedByImport.toString();
-            nameOfImportedFile = gettingTheFileNameFromThePath(fileChoosedByImport);
-            fileExtendionIdentifier();
-            nameOfImportedFileLabel.setText(nameOfImportedFile);
-
-        } else {
-            System.out.println("ERROR: File could not be imported.");
-        }
-
-    }
-
     /**
      * This method manages the file chooser. "ALL" contains all the possibles
      * file extensions It is possible to choose specific extensions
      */
     private void fileChooserSettings() {
-        FileChooser.ExtensionFilter ALL = new FileChooser.ExtensionFilter("All (*.*)", "*.csv", "*.xlsx","*.xml");
+        FileChooser.ExtensionFilter ALL = new FileChooser.ExtensionFilter("All (*.*)", "*.csv", "*.xlsx", "*.xml");
         FileChooser.ExtensionFilter CSV = new FileChooser.ExtensionFilter("CSV", "*.csv");
         FileChooser.ExtensionFilter XLSX = new FileChooser.ExtensionFilter("XLSX", "*.xlsx");
         FileChooser.ExtensionFilter XML = new FileChooser.ExtensionFilter("XML", "*.xml");
-        fileChooser.getExtensionFilters().addAll(ALL, CSV, XLSX,XML);
+        fileChooser.getExtensionFilters().addAll(ALL, CSV, XLSX, XML);
 
     }
 
@@ -224,43 +286,6 @@ public class MainFXMLController implements Initializable {
             stage.setScene(new Scene(root));
             stage.showAndWait();
         }
-    }
-
-    @FXML
-    private void addTaskButtonClick(ActionEvent event) {
-        /* CONDITIONS */
-        boolean isRightNameOfTheFile = false;
-        boolean isConfigSet = false;
-        boolean isRightExtension = false;
-
-        if (nameOfImportedFile != null && !nameOfImportedFile.equals("")) {
-            isRightNameOfTheFile = true;
-        }
-
-        if (!configChoiceBox.getSelectionModel().getSelectedItem().equals("")
-                && configChoiceBox.getSelectionModel().getSelectedItem() != null) {
-            isConfigSet = true;
-        }
-
-        if (!labelFileExtension.getText().equals("") && labelFileExtension.getText() != null) {
-            isRightExtension = true;
-        }
-
-        /* ADDING */
-        System.out.println(nameOfImportedFile);
-
-        if (isRightNameOfTheFile == true && isConfigSet == true && isRightExtension == true) {
-            TaskInOurProgram task = new TaskInOurProgram(nameOfImportedFile, configChoiceBox.getSelectionModel().getSelectedItem().getConfigName(),
-                    labelFileExtension.getText());
-            model.getConverter(task);
-            task.setConfig(configChoiceBox.getValue());
-            task.setFilePath(directoryPath);
-            task.setFileName(nameOfImportedFile);
-            model.addTask(task);
-        }
-
-        pauseConvertingClick();
-
     }
 
     public void pauseConvertingClick() {
@@ -320,31 +345,6 @@ public class MainFXMLController implements Initializable {
             directoryPath = selectedDirectory.getAbsoluteFile();
             directoryPathHasBeenSelected = true;
         }
-    }
-
-    @FXML
-    private void convertTasksButtonClick(ActionEvent event) throws IOException {
-
-    }
-
-    @FXML
-    private void pauseTasksButtonClick(ActionEvent event) throws InterruptedException {
-        executor.shutdownNow();
-    }
-
-    @FXML
-    private void deleteTasksButtonClick(ActionEvent event) {
-        System.out.println("----------Start-------------");
-        Set<Thread> threadSet = Thread.getAllStackTraces().keySet();
-        Thread[] threadArray = threadSet.toArray(new Thread[threadSet.size()]);
-        for (int i = 0; i < threadArray.length; i++) {
-            System.out.println(threadArray[i].getName());
-        }
-        System.out.println("---------Koniec-----------");
-    }
-
-    @FXML
-    private void historyPageButtonClick(MouseEvent event) {
     }
 
     private void Alert(String title, String text) {

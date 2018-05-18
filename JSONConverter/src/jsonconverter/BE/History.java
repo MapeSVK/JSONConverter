@@ -5,9 +5,6 @@
  */
 package jsonconverter.BE;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import javafx.scene.control.Button;
 
@@ -17,21 +14,17 @@ import javafx.scene.control.Button;
  */
 public class History {
 
-    
     private int id;
     private String username;
     private String fileName;
     private boolean hasError;
     private String errorMessage;
     private Button errorButton;
-    
     private Date dateAndTime;
 //    private DateFormat df = new SimpleDateFormat("dd.MM.yyyy'  'HH:mm");
 //    private String dateAndTimeString = df.format(dateAndTime);
-    
-    
 
-    public History(Date dateAndTime, int id, String username, String fileName, boolean hasError, String errorMessage){
+    public History(Date dateAndTime, int id, String username, String fileName, boolean hasError, String errorMessage) {
         this.dateAndTime = dateAndTime;
         this.id = id;
         this.username = username;
@@ -39,7 +32,6 @@ public class History {
         this.hasError = hasError;
         this.errorMessage = errorMessage;
         this.errorButton = new Button("");
-        
     }
 
     public Button getErrorButton() {
@@ -49,7 +41,6 @@ public class History {
     public void setErrorButton(Button errorButton) {
         this.errorButton = errorButton;
     }
-    
 
     public String getErrorMessage() {
         return errorMessage;
@@ -59,7 +50,6 @@ public class History {
         this.errorMessage = errorMessage;
     }
 
-
     public boolean isHasError() {
         return hasError;
     }
@@ -67,7 +57,6 @@ public class History {
     public void setHasError(boolean hasError) {
         this.hasError = hasError;
     }
-
 
     public String getFileName() {
         return fileName;
@@ -77,7 +66,6 @@ public class History {
         this.fileName = fileName;
     }
 
-
     public String getUsername() {
         return username;
     }
@@ -86,7 +74,6 @@ public class History {
         this.username = username;
     }
 
-
     public int getId() {
         return id;
     }
@@ -94,7 +81,6 @@ public class History {
     public void setId(int id) {
         this.id = id;
     }
-
 
     public Date getDateAndTime() {
         return dateAndTime;
@@ -108,7 +94,5 @@ public class History {
     public String toString() {
         return "History{" + "dateAndTime=" + dateAndTime + ", id=" + id + ", username=" + username + ", fileName=" + fileName + ", hasError=" + hasError + ", errorMessage=" + errorMessage + ", errorButton=" + errorButton + '}';
     }
-    
-    
 
 }

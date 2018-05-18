@@ -5,37 +5,28 @@
  */
 package jsonconverter.BE;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 /**
  *
  * @author Samuel
  */
 public class Config {
 
-    private Date currentDate = new Date();
-    private SimpleDateFormat dateTimeFormatter = new SimpleDateFormat("dd/MM/yyyy HH:mm");  
-    
-    private int cinfig_id=-1;
-    private String siteName="";
-    private String assetSerialNumber="asset._id";
+    private int cinfig_id = -1;
+    private String siteName;
+    private String assetSerialNumber;
     private String type;
     private String externalWorkOrderId;
     private String systemStatus;
     private String userStatus;
-    private String createdOn=dateTimeFormatter.format(currentDate);
-    private String createdBy="SAP";
+    private String createdOn ;
+    private String createdBy;
     private String name;
     private String priority;
-    private String status="NEW";
+    private String status;
     private String latestFinishDate;
     private String earliestStartDate;
     private String latestStartDate;
-    private String estimatedTime="";
+    private String estimatedTime;
     private String configName;
     private boolean privacy;
     private String creatorName;
@@ -65,7 +56,6 @@ public class Config {
 //        this.privacy = privacy;
 //        this.creatorName = creatorName;
 //    }
-
     public boolean isPrivacy() {
         return privacy;
     }
@@ -81,7 +71,7 @@ public class Config {
     public void setCreatorName(String creatorName) {
         this.creatorName = creatorName;
     }
-    
+
     public String getConfigName() {
         return configName;
     }
@@ -102,27 +92,27 @@ public class Config {
         return latestStartDate;
     }
 
-    public void setLatestStartDate(String latestStartDate)  {
-      
-            this.latestStartDate = latestStartDate;
+    public void setLatestStartDate(String latestStartDate) {
+
+        this.latestStartDate = latestStartDate;
     }
 
     public String getEarliestStartDate() {
         return earliestStartDate;
     }
 
-    public void setEarliestStartDate(String earliestStartDate)  {
-     
-            this.earliestStartDate = earliestStartDate;
- 
+    public void setEarliestStartDate(String earliestStartDate) {
+
+        this.earliestStartDate = earliestStartDate;
+
     }
 
     public String getLatestFinishDate() {
         return latestFinishDate;
     }
 
-    public void setLatestFinishDate(String latestFinishDate)  {
-       this.latestFinishDate = latestFinishDate;
+    public void setLatestFinishDate(String latestFinishDate) {
+        this.latestFinishDate = latestFinishDate;
     }
 
     public String getStatus() {

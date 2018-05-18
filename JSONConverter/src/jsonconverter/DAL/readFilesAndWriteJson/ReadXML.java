@@ -16,7 +16,6 @@ import java.util.logging.Logger;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.Result;
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
@@ -31,8 +30,7 @@ import org.xml.sax.SAXException;
  *
  * @author Pepe15224
  */
-public class ReadXML implements IConverter
-{
+public class ReadXML implements IConverter {
 
     private String filePath;
     private List<String> allLinesAsStrings = new ArrayList<>();
@@ -42,10 +40,11 @@ public class ReadXML implements IConverter
         allLinesAsStrings.clear();
         putAndSplitCSVIntoList(createCSVString(filePath));
     }
-    
+
+    /* splits the first line from the list file and then saves this line as a headers inside of the hashMap */
     @Override
     public HashMap<String, Integer> getFileHeaders() {
-         HashMap<String, Integer> headersMap = new HashMap<>();
+        HashMap<String, Integer> headersMap = new HashMap<>();
         String[] headers = allLinesAsStrings.get(0).split(";");
 
         for (int i = 0; i < headers.length; i++) {
@@ -65,14 +64,16 @@ public class ReadXML implements IConverter
         return headersMap;
     }
 
+    /* returns lines with values from list value except for the first line */
     @Override
     public ArrayList<String> getFileValues() {
-           ArrayList<String> CSVValuesList = new ArrayList();
+        ArrayList<String> CSVValuesList = new ArrayList();
         CSVValuesList.addAll(allLinesAsStrings);
         CSVValuesList.remove(0);
         return CSVValuesList;
     }
 
+    /*returns list of Headers from the file */
     @Override
     public List<String> getOnlyFileHeaders() {
         List<String> headers = new ArrayList();
@@ -94,17 +95,17 @@ public class ReadXML implements IConverter
         }
         return headers;
     }
-    
-    private String createCSVString(String filepath) 
-    {
+
+    /*gets pieses of information from XML file */
+    private String createCSVString(String filepath) {
         try {
             File stylesheet = new File("style1.xsl");
             File xmlSource = new File(filepath);
-            
+
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder = factory.newDocumentBuilder();
             Document document = builder.parse(xmlSource);
-            
+
             StreamSource stylesource = new StreamSource(stylesheet);
             Transformer transformer = TransformerFactory.newInstance()
                     .newTransformer(stylesource);
@@ -117,14 +118,14 @@ public class ReadXML implements IConverter
         }
         return null;
     }
-    
-    private void putAndSplitCSVIntoList(String string)
-    {
-     
+
+    /*puts pieces of information from file into the list */
+    private void putAndSplitCSVIntoList(String string) {
+
         String[] splitedString = string.split("NEXT");
-        
+
         for (int i = 1; i < splitedString.length; i++) {
-          
+
             allLinesAsStrings.add(splitedString[i].substring(0, splitedString[i].length() - 1));
         }
     }
