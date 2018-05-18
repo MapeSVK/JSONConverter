@@ -17,7 +17,9 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.Tooltip;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javax.swing.JOptionPane;
@@ -112,8 +114,8 @@ public class ConfigFXMLController implements Initializable {
     private JFXTextField latestStartDateFieldEmpty;
     @FXML
     private JFXTextField estimatedTimeFieldEmpty;
-    @FXML
-    private AnchorPane ifEmptyPane;
+
+    private Tooltip tooltip;
 
     /**
      * Initializes the controller class.
@@ -121,6 +123,25 @@ public class ConfigFXMLController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         getActualConfig(choosenConfig);
+        setToolTips();
+    }
+
+    private void setToolTips() {
+        siteNameField.setTooltip(new Tooltip("Site Name"));
+        assetSerialNumberField.setTooltip(new Tooltip("Asset Serial Number"));
+        typeField.setTooltip(new Tooltip("Type"));
+        externalWorkOrderIdField.setTooltip(new Tooltip("External Work Order ID"));
+        systemStatusField.setTooltip(new Tooltip("System Status"));
+        userStatusField.setTooltip(new Tooltip("User Status"));
+        createdOnField.setTooltip(new Tooltip("Created on"));
+        createdByField.setTooltip(new Tooltip("Created by"));
+        priorityField.setTooltip(new Tooltip("Priority"));
+        nameField.setTooltip(new Tooltip("Name"));
+        statusField.setTooltip(new Tooltip("Status"));
+        latestFinishDateField.setTooltip(new Tooltip("Latest Finish Date"));
+        earliestStartDateField.setTooltip(new Tooltip("Earliest Start Date"));
+        latestStartDateField.setTooltip(new Tooltip("Latest Start Date"));
+        estimatedTimeField.setTooltip(new Tooltip("Estimated Time"));
     }
 
     @FXML
