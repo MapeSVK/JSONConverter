@@ -9,6 +9,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.collections.FXCollections;
@@ -51,6 +52,7 @@ public class Converter {
                     checkConfig(fields, task.getConfig().getStatus(), task),
                     getPlanning(task, fields));
 
+            TimeUnit.MILLISECONDS.sleep(200);
             jasonList.add(newJson);
             objectCounter++;
             task.update(objectCounter);

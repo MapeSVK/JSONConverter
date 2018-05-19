@@ -65,7 +65,6 @@ public class ConfigFXMLController implements Initializable {
     private JFXTextField latestStartDateField;
     @FXML
     private JFXTextField estimatedTimeField;
-    private String username;
     boolean isValid;
     @FXML
     private JFXButton saveConfigButton;
@@ -195,7 +194,6 @@ public class ConfigFXMLController implements Initializable {
     protected Config setConfig(Config choosenConfig) throws ParseException {
         headerNameField.setText(choosenConfig.getConfigName());
         checkBoxPrivacy.setSelected(choosenConfig.isPrivacy());
-        username = choosenConfig.getCreatorName();
         fillIfEmptyEdit(choosenConfig);
         removeconfigButton.setDisable(false);
         this.choosenConfig = choosenConfig;

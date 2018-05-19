@@ -17,8 +17,13 @@ import java.util.Date;
 import java.util.ResourceBundle;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -426,13 +431,38 @@ public class MainFXMLController implements Initializable {
     @FXML
     private void convertTasksButtonClick(ActionEvent event) throws IOException {
 
+         for (TaskInOurProgram task : model.getTasksInTheTableView()) {
+
+                    if (task.isIsExecutedForFirstTime() == false && task.isPause() == false) {
+                        executor.submit(task);
+                        task.setIsExecutedForFirstTime(true);
+                        task.getPauseTask().setGraphic(new ImageView(pauseImage));  
+                        
+                    } 
+                    else if (task.isIsExecutedForFirstTime() == true && task.isPause() == true && task.isIfWasStarted()==true) {
+                        task.getPauseTask().setGraphic(new ImageView(pauseImage));
+                        task.continueThis();
+
+                    }   
+        }
+        
         createHistoryOfWholeAction();
 
     }
 
     @FXML
     private void pauseTasksButtonClick(ActionEvent event) throws InterruptedException {
-        executor.shutdownNow();
+               for (TaskInOurProgram task : model.getTasksInTheTableView()) {
+
+            //set default image before clicking on the button
+            //task.getPauseTask().setGraphic(new ImageView(playImage));
+
+                     if (task.isIsExecutedForFirstTime() == true && task.isPause() == false && task.isIfWasStarted()==true) {
+                        task.getPauseTask().setGraphic(new ImageView(playImage));
+                        task.pauseThis();
+               } 
+        }
+
     }
     
     @FXML
@@ -444,8 +474,6 @@ public class MainFXMLController implements Initializable {
     private void historyPageButtonClick(MouseEvent event) {
 
     }
-
- 
 
     /* HISTORY TAB */
     public void setHistoryTableViewColumns() {
@@ -558,6 +586,11 @@ public class MainFXMLController implements Initializable {
         stage.showingProperty().addListener(e -> {
             if (stage.isShowing() == false) {
                 if (executor != null) {
+                    try {
+                        convertTasksButtonClick(new ActionEvent());
+                    } catch (IOException ex) {
+                        Logger.getLogger(MainFXMLController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                     executor.shutdownNow();
                 }
             }
