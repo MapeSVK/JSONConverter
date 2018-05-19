@@ -46,7 +46,7 @@
          </children>
       </AnchorPane>
       <JFXTextField fx:id="headerNameField" accessibleRole="IMAGE_VIEW" layoutX="511.0" layoutY="330.0" promptText="Config Name" />
-      <JFXButton fx:id="removeconfigButton" buttonType="RAISED" layoutX="565.0" layoutY="397.0" onAction="#removeButtonOnAction" opacity="0.0" text="Remove" />
+      <JFXButton fx:id="removeconfigButton" buttonType="RAISED" disable="true" layoutX="565.0" layoutY="397.0" onAction="#removeButtonOnAction" opacity="0.0" text="Remove" />
       <JFXButton fx:id="saveConfigButton" buttonType="RAISED" layoutX="624.0" layoutY="397.0" onAction="#saveButtonOnAction" ripplerFill="#fcfafa" text="SAVE" />
       <CheckBox fx:id="checkBoxPrivacy" layoutX="508.0" layoutY="374.0" mnemonicParsing="false" text="Private" />
    </children>

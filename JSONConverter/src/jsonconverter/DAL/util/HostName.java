@@ -24,9 +24,11 @@ public class HostName {
     
     /* gets information about localHost */
     private void takeUserInfo() {
+        
       //  TimeZone tz = TimeZone.getTimeZone("Europe/Copenhagen");
      //   SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     //    sdf.setTimeZone(tz);
+    
 if(onlyOnce==-1)
 {
         try {

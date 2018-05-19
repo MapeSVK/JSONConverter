@@ -62,7 +62,6 @@ public class MainFXMLController implements Initializable {
     private TableColumn<String, String> extensionColumn;
     @FXML
     private Label nameOfImportedFileLabel;
-    private ObservableList<Config> allConfigsSavedInDatabase = FXCollections.observableArrayList();
     private String filePath = "";
     private String fileType;
     private String nameOfImportedFile = "";
@@ -109,11 +108,11 @@ public class MainFXMLController implements Initializable {
 
         tasksTableView.setSelectionModel(null);
         historyTableView.setSelectionModel(null);
-
+        model.loadAvailableConfig();
         /* set history tableView */
         model.loadHistoryFromDatabase();
         historyTableView.setItems(model.getAllHistoryObservableArrayList());
-        gettingThePrivateConfigs();
+       
 
     }
 
@@ -402,11 +401,6 @@ public class MainFXMLController implements Initializable {
 //
 //        }
 //    }
-    private void gettingThePrivateConfigs() {
-        for (Config config : model.getAllConfigObservableArrayList()) {
-            allConfigsSavedInDatabase.add(config);
-        }
-    }
 
     @FXML
     private void editConfigButtonClick(ActionEvent event) throws IOException, ParseException {
@@ -419,7 +413,10 @@ public class MainFXMLController implements Initializable {
             root = loader.load();
             ConfigFXMLController controller = loader.getController();
             controller.setConfig(configChoiceBox.getValue());
-            controller.getModel(model);
+            controller.setToolTips();
+            controller.setEditMode();
+            controller.removeconfigButton.setOpacity(1);
+            controller.removeconfigButton.setDisable(false);
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.setScene(new Scene(root));
             stage.showAndWait();

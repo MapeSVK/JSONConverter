@@ -81,8 +81,8 @@ public class DALFacade {
 
     //- - - - - - - - - - - - - - - - - - - - CONFIG - - - - - - - - - - - - - - - - - - - -
     /* saves config to the database */
-    public void saveConfigToDatabase(Config newconfig) {
-        config.saveConfigToDatabase(newconfig);
+    public void saveConfigToDatabase(Config newconfig, boolean isEditMode) {
+        config.saveConfigToDatabase(newconfig, isEditMode);
     }
 
     /* gets all available configs for current user */
