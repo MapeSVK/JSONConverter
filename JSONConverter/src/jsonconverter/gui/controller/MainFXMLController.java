@@ -420,7 +420,7 @@ public class MainFXMLController implements Initializable {
             root = loader.load();
             ConfigFXMLController controller = loader.getController();
             controller.setConfig(configChoiceBox.getValue());
-//            controller.getModel(model);
+            controller.setToolTips();
             controller.setEditMode();
             controller.removeconfigButton.setOpacity(1);
             controller.removeconfigButton.setDisable(false);

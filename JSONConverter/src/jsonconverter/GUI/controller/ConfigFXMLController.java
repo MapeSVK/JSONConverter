@@ -124,12 +124,9 @@ public class ConfigFXMLController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        if (isEditMode) {
-            setToolTips();
-        }
     }
 
-    private void setToolTips() {
+    protected void setToolTips() {
         siteNameField.setTooltip(new Tooltip("Site Name"));
         assetSerialNumberField.setTooltip(new Tooltip("Asset Serial Number"));
         typeField.setTooltip(new Tooltip("Type"));
