@@ -22,6 +22,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -132,7 +133,7 @@ public class MainFXMLController implements Initializable {
        
         /* set history tableView */
         model.loadHistoryFromDatabase();
-        historyTableView.setItems(model.getAllHistoryObservableArrayList());
+        historyTableView.setItems(model.getSortedAllHistory());
                     
         /* set datePickers in History tab */
         toDate = currentDate;
@@ -141,6 +142,9 @@ public class MainFXMLController implements Initializable {
       
         /* style history tableView and show error as a pop-up */
         openErrorMessageAfterHoveringOverRow();
+        
+        /*reverse order of history rows */
+        
 
     }
 
@@ -302,7 +306,7 @@ public class MainFXMLController implements Initializable {
                     dateFromInLocalDateForm.getDayOfMonth());
             fromDate = c.getTime();
 
-            historyTableView.setItems(model.getHistoryOfChosenPeriod(model.getAllHistoryObservableArrayList(), fromDate, toDate));
+            historyTableView.setItems(model.getHistoryOfChosenPeriod(model.getSortedAllHistory(), fromDate, toDate));
 
         });
 
@@ -313,7 +317,7 @@ public class MainFXMLController implements Initializable {
                     dateEndInLocalDateForm.getDayOfMonth());
             toDate = c.getTime();
 
-            historyTableView.setItems(model.getHistoryOfChosenPeriod(model.getAllHistoryObservableArrayList(), fromDate, toDate));
+            historyTableView.setItems(model.getHistoryOfChosenPeriod(model.getSortedAllHistory(), fromDate, toDate));
         });
     }
 
@@ -490,7 +494,7 @@ public class MainFXMLController implements Initializable {
             row.hoverProperty().addListener((observable) -> {
                 for (History his : model.getAllHistoryObservableArrayList()) {
                     final History historyRow = row.getItem();
-
+                   
                     if (row.isHover() && his == historyRow) {
                         //creation of the popup
                         popup.setX(300);
@@ -503,17 +507,15 @@ public class MainFXMLController implements Initializable {
                         HBox layout = new HBox(10);
                         stage.setScene(new Scene(layout));
 
-                        //stage.show();
+                        stage.show();
                         //popup.show(stage);
                     } else {
-
+                        
+                        stage.close();
                     }
                 }
             });
-            popup.hide();
-            stage.close();
-
-            return row;
+          return row;
         });
     }
 
@@ -527,7 +529,7 @@ public class MainFXMLController implements Initializable {
     public void createHistoryForTask(TaskInOurProgram task) {
         /* create new history after button is presset */
         History history = new History(getFormatedActualDateAndTimeAsString(), 1, hostName.getUserName(),
-                task.getFileName(), true, "Error");
+               task.getFileName(), true, "Error");
         model.addHistoryToTheDatabase(history);
     }
 
