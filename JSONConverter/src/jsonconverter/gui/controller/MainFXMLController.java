@@ -260,6 +260,7 @@ public class MainFXMLController implements Initializable {
     /**
      * getting the name of the file from the path
      */
+    
     public String gettingTheFileNameFromThePath(File file) {
         String nameOfTheFile = file.getName();
         int pos = nameOfTheFile.lastIndexOf(".");
