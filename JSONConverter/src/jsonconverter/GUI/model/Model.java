@@ -10,11 +10,13 @@ import java.time.temporal.ChronoField;
 import static java.time.temporal.ChronoField.MONTH_OF_YEAR;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.SortedList;
 import jsonconverter.BE.Config;
 import jsonconverter.BE.History;
 import jsonconverter.BE.TaskInOurProgram;
@@ -32,9 +34,10 @@ public class Model {
     /* contains each history from database */
     private ObservableList<History> allHistoryObservableArrayList = FXCollections.observableArrayList();
     /* contains history date based on chosen dates */
-    private ObservableList<History> historyDatasBasedOnChosenTimeList = FXCollections.observableArrayList();
-    
-    
+    private ObservableList<History> historyDatasBasedOnChosenTimeList = FXCollections.observableArrayList();    
+    /* sorted lists for all history, so new items will be on the top. This sorted list is used everywhere then */
+    SortedList<History> sortedAllHistory = new SortedList<>(allHistoryObservableArrayList, Comparator.comparing(History::getDateAndTime).reversed());
+    /* Configs*/
     private ObservableList<Config> allConfigObservableArrayList = FXCollections.observableArrayList();
 
 
@@ -47,7 +50,7 @@ public class Model {
 
     /* adding tasks to the observableArrayList */
     public void addTask(TaskInOurProgram task) {
-        tasksInTheTableView.add(task);
+        tasksInTheTableView.add(0, task);
     }
 
     /* getting observableArrayList with the tasks */
@@ -153,6 +156,10 @@ public class Model {
     /* gets all configs for current user */
     public List<Config> getAllConfigs() {
         return manager.getAllConfigs();
+    }
+
+    public SortedList<History> getSortedAllHistory() {
+        return sortedAllHistory;
     }
     
     public void checkIfYouCanUseConfig()
