@@ -66,8 +66,8 @@ public class Model {
         allConfigObservableArrayList.remove(config);
     }
 
-    public void saveConfigToDatabase(Config config) {
-        manager.saveConfigToDatabase(config);
+    public void saveConfigToDatabase(Config config, boolean isEditMode) {
+        manager.saveConfigToDatabase(config, isEditMode);
         allConfigObservableArrayList.add(config);
     }
 

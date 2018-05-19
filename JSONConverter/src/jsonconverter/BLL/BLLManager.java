@@ -57,8 +57,8 @@ public class BLLManager {
 
     //- - - - - - - - - - - - - - - - - - - - CONFIG - - - - - - - - - - - - - - - - - - - -
 /* saves config to the database */
-    public void saveConfigToDatabase(Config config) {
-        manager.saveConfigToDatabase(config);
+    public void saveConfigToDatabase(Config config, boolean isEditMode) {
+        manager.saveConfigToDatabase(config, isEditMode);
     }
     
     /* removes config from the database */

@@ -420,7 +420,10 @@ public class MainFXMLController implements Initializable {
             root = loader.load();
             ConfigFXMLController controller = loader.getController();
             controller.setConfig(configChoiceBox.getValue());
-            controller.getModel(model);
+//            controller.getModel(model);
+            controller.setEditMode();
+            controller.removeconfigButton.setOpacity(1);
+            controller.removeconfigButton.setDisable(false);
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.setScene(new Scene(root));
             stage.showAndWait();

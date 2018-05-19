@@ -22,6 +22,7 @@ import jsonconverter.BE.Config;
  * @author Pepe15224
  */
 public class DALConfig {
+
     /* creates the connectionPool*/
     private JDBCConnectionPool pool = new JDBCConnectionPool(
             "com.microsoft.sqlserver.jdbc.SQLServerDriver", "jdbc:sqlserver://10.176.111.31;databaseName=JSONConverter",
@@ -94,16 +95,28 @@ public class DALConfig {
     }
 
     /* adds config to the database */
-    public void saveConfigToDatabase(Config config) {
+    public void saveConfigToDatabase(Config config, boolean editMode) {
+        String sqlToRun;
+        String editSql = "UPDATE Config "
+                + "SET siteName=?, assetSerialNumber=?, type=?, externalWorkOrderId=?, systemStatus=?, "
+                + "userStatus=?, createdOn=?, createdBy=?, name=?, priority=?, status=?, latestFinishDate=?,"
+                + " earliestStartDate=?, latestStartDate=?, estimatedTime=?, config_name=?, privacy=?, creator_name=? "
+                + "WHERE config_id=? ";
 
+        String saveSQL = "INSERT INTO Config "
+                + "(siteName, assetSerialNumber, type, externalWorkOrderId, systemStatus, "
+                + "userStatus, createdOn, createdBy, name, priority, status, latestFinishDate, earliestStartDate, "
+                + "latestStartDate, estimatedTime, config_name, privacy, creator_name) "
+                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+        if (editMode) {
+            sqlToRun = editSql;
+        } else {
+            sqlToRun = saveSQL;
+        }
         try (Connection con = pool.checkOut()) {
-            String sql = "INSERT INTO Config "
-                    + "(siteName, assetSerialNumber, type, externalWorkOrderId, systemStatus, "
-                    + "userStatus, createdOn, createdBy, name, priority, status, latestFinishDate, earliestStartDate, "
-                    + "latestStartDate, estimatedTime, config_name, privacy, creator_name) "
-                    + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-            PreparedStatement pstmt = con.prepareStatement(sql);
+            PreparedStatement pstmt = con.prepareStatement(sqlToRun);
             pstmt.setString(1, config.getSiteName());
             pstmt.setString(2, config.getAssetSerialNumber());
             pstmt.setString(3, config.getType());
@@ -122,6 +135,9 @@ public class DALConfig {
             pstmt.setString(16, config.getConfigName());
             pstmt.setBoolean(17, config.isPrivacy());
             pstmt.setString(18, config.getCreatorName());
+            if (editMode) {
+                pstmt.setInt(19, config.getCinfig_id());
+            }
             int affected = pstmt.executeUpdate();
             if (affected < 1) {
                 throw new SQLException("Config could not be saved");
