@@ -9,6 +9,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import jsonconverter.BE.JSONObject;
@@ -21,6 +23,7 @@ import jsonconverter.BE.TaskInOurProgram;
  */
 public class Converter {
 
+    private SimpleDateFormat dateXMLFormatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
     private SimpleDateFormat dateTimeFormatter = new SimpleDateFormat("dd/MM/yyyy HH:mm");
     private SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM/yyyy");
     private Date currentDate = new Date();
@@ -60,19 +63,33 @@ public class Converter {
     private Planning getPlanning(TaskInOurProgram task, String[] fields) {
         Planning planning = new Planning();
         try {
-            planning.setLatestFinishDate(dateTimeFormatter.format(dateFormatter.parse(checkConfig(fields, task.getConfig().getLatestFinishDate(), task))));
+           planning.setLatestFinishDate(dateTimeFormatter.format(dateFormatter.parse(checkConfig(fields, task.getConfig().getLatestFinishDate(), task))));     
         } catch (ParseException ex) {
-            planning.setLatestFinishDate(checkConfig(fields, task.getConfig().getLatestFinishDate(), task));
+            try {     
+                planning.setLatestFinishDate(dateTimeFormatter.format(dateXMLFormatter.parse(checkConfig(fields, task.getConfig().getLatestFinishDate(), task))));
+            } catch (ParseException ex1) {
+                planning.setLatestFinishDate(checkConfig(fields, task.getConfig().getLatestFinishDate(), task));
+            }
+            
         }
         try {
-            planning.setEarliestStartDate(dateTimeFormatter.format(dateFormatter.parse(checkConfig(fields, task.getConfig().getEarliestStartDate(), task))));
+           planning.setEarliestStartDate(dateTimeFormatter.format(dateFormatter.parse(checkConfig(fields, task.getConfig().getEarliestStartDate(), task))));          
         } catch (ParseException ex) {
-            planning.setEarliestStartDate(checkConfig(fields, task.getConfig().getEarliestStartDate(), task));
+            try {
+                planning.setEarliestStartDate(dateTimeFormatter.format(dateXMLFormatter.parse(checkConfig(fields, task.getConfig().getEarliestStartDate(), task))));
+            } catch (ParseException ex1) {
+                     planning.setEarliestStartDate(checkConfig(fields, task.getConfig().getEarliestStartDate(), task));
+            }
+       
         }
         try {
-            planning.setLatestStartDate(dateTimeFormatter.format(dateFormatter.parse(checkConfig(fields, task.getConfig().getLatestStartDate(), task))));
+            planning.setLatestStartDate(dateTimeFormatter.format(dateFormatter.parse(checkConfig(fields, task.getConfig().getLatestStartDate(), task))));             
         } catch (ParseException ex) {
-            planning.setLatestStartDate(checkConfig(fields, task.getConfig().getLatestStartDate(), task));
+            try {
+                planning.setLatestStartDate(dateTimeFormatter.format(dateXMLFormatter.parse(checkConfig(fields, task.getConfig().getLatestStartDate(), task))));
+            } catch (ParseException ex1) {
+         planning.setLatestStartDate(checkConfig(fields, task.getConfig().getLatestStartDate(), task));
+            }
         }
         planning.setEstimatedTime(checkConfig(fields, task.getConfig().getEstimatedTime(), task));
         return planning;

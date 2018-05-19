@@ -6,7 +6,6 @@
 package jsonconverter.DAL.facade;
 
 import java.io.File;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -91,8 +90,13 @@ public class DALFacade {
     }
 
     /* gets all available configs for current user */
+    public List<Config> getAllAvailableConfigs() {
+        return config.getAllAvailableConfigs(hostName.getUserName());
+    }
+    
+    /* gets all configs for current user */
     public List<Config> getAllConfigs() {
-        return config.getAllConfigs(hostName.getUserName());
+        return config.getAllConfigs();
     }
 
     /* removes config from the database */

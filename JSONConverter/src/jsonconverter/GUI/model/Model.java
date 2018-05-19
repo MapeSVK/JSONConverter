@@ -82,14 +82,9 @@ public class Model {
         allConfigObservableArrayList.remove(config);
     }
 
-    public void saveConfigToDatabase(Config config, boolean isEditMode) {
+    public void saveConfigToDatabase(Config config,  boolean isEditMode) {
         manager.saveConfigToDatabase(config, isEditMode);
         allConfigObservableArrayList.add(config);
-    }
-
-    public void loadConfigFromDatabase() {
-        allConfigObservableArrayList.clear();
-        allConfigObservableArrayList.addAll(manager.getAllConfigs());
     }
 
     public ObservableList<Config> getAllConfigObservableArrayList() {
@@ -105,6 +100,11 @@ public class Model {
         manager.addNewHistoryToDatabase(history);
     }
 
+    public void loadAvailableConfig()
+    {
+        allConfigObservableArrayList.clear();
+        allConfigObservableArrayList.setAll(getAllAvailableConfigs());
+    }
     public ObservableList<History> getAllHistoryObservableArrayList() {
         return allHistoryObservableArrayList;
     }
@@ -113,6 +113,7 @@ public class Model {
         allHistoryObservableArrayList.clear();
         allHistoryObservableArrayList.addAll(manager.getAllHistory());
     }
+
     
     public ObservableList<History> getHistoryOfChosenPeriod(ObservableList<History> allHistory, Date from, Date to) {
         historyDatasBasedOnChosenTimeList.clear();
@@ -135,5 +136,65 @@ public class Model {
             }
         }
         return historyDatasBasedOnChosenTimeList;
+    }
+    
+  public String getHostname() {
+        return manager.getHostname();
+    }
+
+    public String getUserName() {
+        return manager.getUserName();
+    } 
+     /* gets all available configs for current user */
+    public List<Config> getAllAvailableConfigs() {
+        return manager.getAllAvailableConfigs();
+    }
+    
+    /* gets all configs for current user */
+    public List<Config> getAllConfigs() {
+        return manager.getAllConfigs();
+    }
+    
+    public void checkIfYouCanUseConfig()
+    {
+        int checkForErrors=0;
+      int i=0;
+      for(Config config : getAllAvailableConfigs())
+      {
+          i=0;
+          checkForErrors=0;
+          while(i<15)
+          {
+            String configString = config.getAllGetters(i);
+       
+            if(configString.contains("&&") && !configString.equals(""))
+            {             
+                String[] splitedConfig = configString.split("&&");
+                if(!getOnlyFileHeaders().contains(splitedConfig[0]))
+                {
+                checkForErrors++;
+                }
+                if(!getOnlyFileHeaders().contains(splitedConfig[1]))
+                {                  
+                    checkForErrors++;   
+                }
+            }           
+          else  if(!getOnlyFileHeaders().contains(configString) && !configString.equals(""))
+                {
+                  checkForErrors++;
+                }
+              i++;
+          }
+          if(checkForErrors!=0)
+          {
+              System.out.println(config.getConfigName());
+              allConfigObservableArrayList.remove(config);
+          }
+      }
+    }
+    //- - - - - - - - - - - - - - - - - - - - VALIDATIONS - - - - - - - - - - - - - - - - - - - -
+    public boolean checkIfConfigExists(Config config)
+    {
+        return manager.checkIfConfigExists(config, manager.getAllConfigs());
     }
 }

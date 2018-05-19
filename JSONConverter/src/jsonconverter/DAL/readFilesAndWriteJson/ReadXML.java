@@ -8,6 +8,7 @@ package jsonconverter.DAL.readFilesAndWriteJson;
 import java.io.File;
 import java.io.IOException;
 import java.io.StringWriter;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -125,7 +126,6 @@ public class ReadXML implements IConverter {
         String[] splitedString = string.split("NEXT");
 
         for (int i = 1; i < splitedString.length; i++) {
-
             allLinesAsStrings.add(splitedString[i].substring(0, splitedString[i].length() - 1));
         }
     }

@@ -13,7 +13,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.scene.control.Alert;
 import javax.swing.JOptionPane;
 import jsonconverter.BE.Config;
 
@@ -29,7 +28,7 @@ public class DALConfig {
             "CS2017B_27_java", "javajava");
 
     /* gets all available configs for current user */
-    public List<Config> getAllConfigs(String username) {
+    public List<Config> getAllAvailableConfigs(String username) {
         List<Config> configList = new ArrayList();
 
         try (Connection con = pool.checkOut()) {
@@ -37,6 +36,46 @@ public class DALConfig {
             pstmt.setString(1, "True");
             pstmt.setString(2, username);
             pstmt.setString(3, "False");
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                Config cnfg = new Config();
+                cnfg.setCinfig_id(rs.getInt("config_id"));
+                cnfg.setSiteName(rs.getString("siteName"));
+                cnfg.setAssetSerialNumber(rs.getString("assetSerialNumber"));
+                cnfg.setType(rs.getString("type"));
+                cnfg.setExternalWorkOrderId(rs.getString("externalWorkOrderId"));
+                cnfg.setSystemStatus(rs.getString("systemStatus"));
+                cnfg.setUserStatus(rs.getString("userStatus"));
+                cnfg.setCreatedOn(rs.getString("createdOn"));
+                cnfg.setCreatedBy(rs.getString("createdBy"));
+                cnfg.setName(rs.getString("name"));
+                cnfg.setPriority(rs.getString("priority"));
+                cnfg.setStatus(rs.getString("status"));
+                cnfg.setLatestFinishDate(rs.getString("latestFinishDate"));
+                cnfg.setEarliestStartDate(rs.getString("earliestStartDate"));
+                cnfg.setLatestStartDate(rs.getString("latestStartDate"));
+                cnfg.setEstimatedTime(rs.getString("estimatedTime"));
+                cnfg.setConfigName(rs.getString("config_name"));
+                cnfg.setPrivacy(rs.getBoolean("privacy"));
+                cnfg.setCreatorName(rs.getString("creator_name"));
+                configList.add(cnfg);
+            }
+
+            pool.checkIn(con);
+        } catch (SQLException ex) {
+            Logger.getLogger(DALHistory.class.getName()).log(
+                    Level.SEVERE, null, ex);
+        }
+        return configList;
+    }
+    
+    /* gets all configs for current user */
+    public List<Config> getAllConfigs() {
+        List<Config> configList = new ArrayList();
+
+        try (Connection con = pool.checkOut()) {
+            PreparedStatement pstmt = con.prepareCall("SELECT * FROM Config ");
+            
             ResultSet rs = pstmt.executeQuery();
             while (rs.next()) {
                 Config cnfg = new Config();

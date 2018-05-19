@@ -65,10 +65,15 @@ public class BLLManager {
      public void removeConfigFromDatabase(Config config) {
         manager.removeConfigFromDatabase(config);
     }
-
-    /* gets all available configs for current user */
+     
+     /* gets all configs for current user */
     public List<Config> getAllConfigs() {
         return manager.getAllConfigs();
+    }
+
+    /* gets all available configs for current user */
+    public List<Config> getAllAvailableConfigs() {
+        return manager.getAllAvailableConfigs();
     }
 
     //- - - - - - - - - - - - - - - - - - - - HOSTNAME - - - - - - - - - - - - - - - - - - - -
@@ -88,7 +93,14 @@ public class BLLManager {
         return manager.getAllHistory();
     }
 
+
     public void addNewHistoryToDatabase(History history) {
         manager.addNewHistoryToDatabase(history);
+    }
+    //- - - - - - - - - - - - - - - - - - - - VALIDATIONS - - - - - - - - - - - - - - - - - - - -
+    public boolean checkIfConfigExists(Config config,List<Config> configList)
+    {
+        return configValidations.checkIfConfigExists(config, configList);
+
     }
 }

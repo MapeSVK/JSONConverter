@@ -126,12 +126,45 @@ public class MainFXMLController implements Initializable {
 
         tasksTableView.setSelectionModel(null);
         historyTableView.setSelectionModel(null);
-
-        model.loadConfigFromDatabase();
+        model.loadAvailableConfig();
+       
         /* set history tableView */
         model.loadHistoryFromDatabase();
         historyTableView.setItems(model.getAllHistoryObservableArrayList());
+                    
+        /* set datePickers in History tab */
+        toDate = currentDate;
+        setPromptDateInDatePickerToEuropeanStyle();
+        activeDatePickersInHistoryTab();
+      
+        /* style history tableView and show error as a pop-up */
+        openErrorMessageAfterHoveringOverRow();
+
     }
+
+    @FXML
+    private void importFileButtonClick(ActionEvent event) {
+        fileChooser = new FileChooser();
+        fileChooserSettings();
+        fileChoosedByImport = fileChooser.showOpenDialog(null);
+
+        if (fileChoosedByImport != null) {
+            filePath = fileChoosedByImport.toString();
+            nameOfImportedFile = gettingTheFileNameFromThePath(fileChoosedByImport);
+            fileExtendionIdentifier();
+            model.checkIfYouCanUseConfig();
+            nameOfImportedFileLabel.setText(nameOfImportedFile);
+        } else {
+            System.out.println("ERROR: File could not be imported.");
+        }
+
+    }
+
+    
+   
+
+
+    
 
     /* set tableView columns */
     public void setTasksTableViewColumns() {
@@ -190,7 +223,7 @@ public class MainFXMLController implements Initializable {
             fileType = ".xml";
             labelFileExtension.setText("xml");
             model.setConverter(fileType, filePath);
-        }
+        }              
     }
 
     /**
@@ -339,6 +372,7 @@ public class MainFXMLController implements Initializable {
                         executor.submit(task);
                         task.setIsExecutedForFirstTime(true);
                         task.getPauseTask().setGraphic(new ImageView(pauseImage));
+                        createHistoryForTask(task);
 
                     } else if (task.isIsExecutedForFirstTime() == true && task.isPause() == false) {
                         task.getPauseTask().setGraphic(new ImageView(playImage));
@@ -382,14 +416,18 @@ public class MainFXMLController implements Initializable {
     private void pauseTasksButtonClick(ActionEvent event) throws InterruptedException {
         executor.shutdownNow();
     }
-
+    
     @FXML
     private void deleteTasksButtonClick(ActionEvent event) {
+        
     }
 
     @FXML
     private void historyPageButtonClick(MouseEvent event) {
+
     }
+
+ 
 
     /* HISTORY TAB */
     public void setHistoryTableViewColumns() {
@@ -439,8 +477,8 @@ public class MainFXMLController implements Initializable {
                         HBox layout = new HBox(10);
                         stage.setScene(new Scene(layout));
 
-                        stage.show();
-                        popup.show(stage);
+                        //stage.show();
+                        //popup.show(stage);
                     } else {
 
                     }
@@ -490,6 +528,7 @@ public class MainFXMLController implements Initializable {
                 }
             }
         });
+
 
     }
 

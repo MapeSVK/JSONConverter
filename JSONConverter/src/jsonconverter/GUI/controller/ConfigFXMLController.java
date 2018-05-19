@@ -17,14 +17,12 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javax.swing.JOptionPane;
 import jsonconverter.BE.Config;
-import jsonconverter.DAL.util.HostName;
 import jsonconverter.GUI.model.Model;
 import org.controlsfx.control.textfield.TextFields;
 
@@ -82,7 +80,6 @@ public class ConfigFXMLController implements Initializable {
     private int fieldsCounter = 0;
     private boolean isEditMode;
     private Config choosenConfig;
-    private HostName HN = new HostName();
 
     @FXML
     protected JFXButton removeconfigButton;
@@ -147,7 +144,7 @@ public class ConfigFXMLController implements Initializable {
     @FXML
     private void saveButtonOnAction(ActionEvent event) throws ParseException {
         if (checkBoxPrivacy.isSelected()) {
-            username = HN.userName;
+            username = model.getUserName();
         } else {
             username = "Unknown";
         }
