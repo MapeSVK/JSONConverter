@@ -1,7 +1,16 @@
 package jsonconverter.GUI.model;
 
 import java.io.File;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
+import java.time.temporal.ChronoField;
+import static java.time.temporal.ChronoField.MONTH_OF_YEAR;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import javafx.collections.FXCollections;
@@ -11,14 +20,24 @@ import jsonconverter.BE.History;
 import jsonconverter.BE.TaskInOurProgram;
 import jsonconverter.BLL.BLLManager;
 
+
 public class Model {
 
     private BLLManager manager = new BLLManager();
 
-    /* contains every task in tableview */
-    private ObservableList<TaskInOurProgram> tasksInTheTableView = FXCollections.observableArrayList();
+    /* contains configs from the database which can be chosen in the choiceBox */
+    private ObservableList<String> configChoiceBoxItems = FXCollections.observableArrayList();
+    /* contains each task in tableview */
+    private ObservableList<TaskInOurProgram> tasksInTheTableView = FXCollections.observableArrayList();  
+    /* contains each history from database */
     private ObservableList<History> allHistoryObservableArrayList = FXCollections.observableArrayList();
+    /* contains history date based on chosen dates */
+    private ObservableList<History> historyDatasBasedOnChosenTimeList = FXCollections.observableArrayList();
+    
+    
     private ObservableList<Config> allConfigObservableArrayList = FXCollections.observableArrayList();
+
+
 
 
     /* returns hashMap of headers from file (Headers are keys and numbers are values) */
@@ -73,11 +92,12 @@ public class Model {
     }
 
     /* HISTORY */
-
- /* add history to a database after some action is done */
+     
+    
+    /* add history to a database after some action is done */
     public void addHistoryToTheDatabase(History history) {
         allHistoryObservableArrayList.add(history);
-        //manager.addNewHistoryToDatabase(history);
+        manager.addNewHistoryToDatabase(history);
     }
 
     public void loadAvailableConfig()
@@ -93,6 +113,31 @@ public class Model {
         allHistoryObservableArrayList.clear();
         allHistoryObservableArrayList.addAll(manager.getAllHistory());
     }
+
+    
+    public ObservableList<History> getHistoryOfChosenPeriod(ObservableList<History> allHistory, Date from, Date to) {
+        historyDatasBasedOnChosenTimeList.clear();
+        for (History history : allHistory) {
+
+            DateTimeFormatter f = new DateTimeFormatterBuilder()
+                    .appendPattern("dd.MM.yyyy HH:mm")
+                    .parseDefaulting(MONTH_OF_YEAR, 1)
+                    .toFormatter();
+            
+            LocalDate dateFromLocalDateForm = LocalDate.parse(history.getDateAndTime(), f);
+            LocalDate dateToLocalDateForm = LocalDate.parse(history.getDateAndTime(), f);
+
+            Date dateFrom = Date.from(dateFromLocalDateForm.atStartOfDay(ZoneId.systemDefault()).toInstant());
+            Date dateTo = Date.from(dateToLocalDateForm.atStartOfDay(ZoneId.systemDefault()).toInstant());
+
+            
+            if (!dateFrom.before((java.util.Date) from) && !dateTo.after((java.util.Date) to)) {
+                historyDatasBasedOnChosenTimeList.add(history);
+            }
+        }
+        return historyDatasBasedOnChosenTimeList;
+    }
+    
   public String getHostname() {
         return manager.getHostname();
     }

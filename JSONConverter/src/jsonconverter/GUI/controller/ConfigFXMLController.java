@@ -211,7 +211,9 @@ public class ConfigFXMLController implements Initializable {
         } else {
             newConfig.setSiteName(siteNameField.getText());
         }
+    
 
+    
         if (!assetSerialNumberField.getText().isEmpty() && assetSerialNumberFieldEmpty.isDisable() == false && !assetSerialNumberFieldEmpty.getText().isEmpty()) {
             newConfig.setAssetSerialNumber(siteNameField.getText() + "&&" + assetSerialNumberFieldEmpty.getText());
         } else  {
@@ -302,6 +304,19 @@ public class ConfigFXMLController implements Initializable {
 
         return newConfig;
     }
+    
+//    /* VALIDATION */
+//    private void validation() {
+//        for (String header : model.getOnlyFileHeaders(converter)) {
+//            for (JFXTextField textField : arrayListWithTextFields) {
+//                if (textField.getText().equals(header)) {
+//                    isValid = true;
+//                } else {
+//                    Alert("Error", "Text imputs are not valid! Check each text and then try it again!");
+//                }
+//            }
+//        }
+//    }
 
     private void Alert(String title, String text) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);

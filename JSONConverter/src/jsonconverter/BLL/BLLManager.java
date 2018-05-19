@@ -92,10 +92,15 @@ public class BLLManager {
     public List<History> getAllHistory() {
         return manager.getAllHistory();
     }
-    
+
+
+    public void addNewHistoryToDatabase(History history) {
+        manager.addNewHistoryToDatabase(history);
+    }
     //- - - - - - - - - - - - - - - - - - - - VALIDATIONS - - - - - - - - - - - - - - - - - - - -
     public boolean checkIfConfigExists(Config config,List<Config> configList)
     {
         return configValidations.checkIfConfigExists(config, configList);
+
     }
 }

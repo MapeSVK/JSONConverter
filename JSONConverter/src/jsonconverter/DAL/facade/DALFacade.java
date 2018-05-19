@@ -30,7 +30,7 @@ public class DALFacade {
 
     private IConverter converter;
     private WriteJSON createJson = new WriteJSON();
-    private DALHistory history = new DALHistory();
+    private DALHistory DALhistory = new DALHistory();
     private DALConfig config = new DALConfig();
     private HostName hostName = new HostName();
 
@@ -75,8 +75,12 @@ public class DALFacade {
     //- - - - - - - - - - - - - - - - - - - - HISTORY - - - - - - - - - - - - - - - - - - - -
     /* getting HISTORY */
     public List<History> getAllHistory() {
+        
+        return DALhistory.getAllHistory();
+    }
 
-        return history.getAllHistory();
+    public void addNewHistoryToDatabase(History history) {
+        DALhistory.addHistory(history);
     }
 
     //- - - - - - - - - - - - - - - - - - - - CONFIG - - - - - - - - - - - - - - - - - - - -

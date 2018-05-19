@@ -5,8 +5,13 @@
  */
 package jsonconverter.BE;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import javafx.scene.control.Button;
+import javafx.scene.image.ImageView;
 
 /**
  *
@@ -19,27 +24,27 @@ public class History {
     private String fileName;
     private boolean hasError;
     private String errorMessage;
-    private Button errorButton;
-    private Date dateAndTime;
-//    private DateFormat df = new SimpleDateFormat("dd.MM.yyyy'  'HH:mm");
-//    private String dateAndTimeString = df.format(dateAndTime);
+    private ImageView errorIcon;   
+    private String dateAndTime;
+    
 
-    public History(Date dateAndTime, int id, String username, String fileName, boolean hasError, String errorMessage) {
+    public History(String dateAndTime, int id, String username, String fileName, boolean hasError, String errorMessage){
         this.dateAndTime = dateAndTime;
         this.id = id;
         this.username = username;
         this.fileName = fileName;
         this.hasError = hasError;
         this.errorMessage = errorMessage;
-        this.errorButton = new Button("");
+        this.errorIcon = new ImageView();
+        
     }
 
-    public Button getErrorButton() {
-        return errorButton;
+    public ImageView getErrorIcon() {
+        return errorIcon;
     }
 
-    public void setErrorButton(Button errorButton) {
-        this.errorButton = errorButton;
+    public void setErrorButton(ImageView errorIcon) {
+        this.errorIcon = errorIcon;
     }
 
     public String getErrorMessage() {
@@ -82,17 +87,18 @@ public class History {
         this.id = id;
     }
 
-    public Date getDateAndTime() {
+
+    public String getDateAndTime() {
         return dateAndTime;
     }
 
-    public void setDateAndTime(Date dateAndTime) {
+    public void setDateAndTime(String dateAndTime) {
         this.dateAndTime = dateAndTime;
     }
 
     @Override
     public String toString() {
-        return "History{" + "dateAndTime=" + dateAndTime + ", id=" + id + ", username=" + username + ", fileName=" + fileName + ", hasError=" + hasError + ", errorMessage=" + errorMessage + ", errorButton=" + errorButton + '}';
+        return "History{" + "dateAndTime=" + dateAndTime + ", id=" + id + ", username=" + username + ", fileName=" + fileName + ", hasError=" + hasError + ", errorMessage=" + errorMessage + '}';
     }
 
 }

@@ -22,9 +22,12 @@ public class TaskInOurProgram extends Task<Void> {
     private String fileName;
     private File filePath;
     private boolean isConvertingDone = false;
+    
+    private boolean isExecutedForFirstTime = false;
     private Button pauseTask;
     private Button closeTask;
-
+    
+            
     public TaskInOurProgram(String name, String configName, String extensionOfTheFile) {
         this.nameOfTheFile = name;
         this.configName = configName;
@@ -40,9 +43,21 @@ public class TaskInOurProgram extends Task<Void> {
         this.updateProgress(ProgressIndicator.INDETERMINATE_PROGRESS, 1);
         model.createJsonFile(fileName, filePath, this);
         isConvertingDone = true;
-        System.out.println(isConvertingDone);
-        return null;
+      return null;
     }
+
+    public boolean isIsExecutedForFirstTime() {
+        return isExecutedForFirstTime;
+    }
+
+    public void setIsExecutedForFirstTime(boolean isExecutedForFirstTime) {
+        this.isExecutedForFirstTime = isExecutedForFirstTime;
+    }
+
+    public boolean isPause() {
+        return pause;
+    }
+
 
     public boolean isIsConvertingDone() {
         return isConvertingDone;
