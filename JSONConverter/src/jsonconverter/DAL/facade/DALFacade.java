@@ -25,7 +25,7 @@ public class DALFacade {
 
     private WriteJSON createJson = new WriteJSON();
     private SuperFakeDb fake = new SuperFakeDb();  // <-------------SUPER FAKE DB
-    private DALHistory history = new DALHistory();
+    private DALHistory DALhistory = new DALHistory();
 
     /* returns hashMap of headers from file (Headers are keys and numbers are values) */
     public HashMap<String, Integer> getFileHeaders(IConverter converter) {
@@ -62,6 +62,10 @@ public class DALFacade {
     
     public List<History> getAllHistory() {
         
-        return history.getAllHistory();
+        return DALhistory.getAllHistory();
+    }
+
+    public void addNewHistoryToDatabase(History history) {
+        DALhistory.addHistory(history);
     }
 }

@@ -9,6 +9,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -45,7 +46,7 @@ public class DALHistory {
             PreparedStatement pstmt = con.prepareCall("SELECT * FROM History");
             ResultSet rs = pstmt.executeQuery();
             while (rs.next()) {
-                History h = new History(rs.getDate("history_date_time"),
+                History h = new History(rs.getString("history_date_time"),
                         rs.getInt("history_id"),
                         rs.getString("local_username"),
                         rs.getString("action_message"),
@@ -53,7 +54,6 @@ public class DALHistory {
                         rs.getString("error_message"));
 
                 history.add(h);
-                System.out.println(history);
             }
             
             pool.checkIn(con);
@@ -62,5 +62,42 @@ public class DALHistory {
                     Level.SEVERE, null, ex);
         }
         return history;
+    }
+    
+    
+    /* adding history to a database */
+    public void addHistory(History history) {
+       try (Connection con = pool.checkOut()) {
+            String sql
+                    = "INSERT INTO History"
+                    + "(local_username,action_message,history_date_time,has_error,error_message) "
+                    + "VALUES(?,?,?,?,?)";
+            PreparedStatement pstmt
+                    = con.prepareStatement(
+                            sql, Statement.RETURN_GENERATED_KEYS);
+            
+           
+            pstmt.setString(1, history.getUsername());
+            pstmt.setString(2, history.getFileName());
+            pstmt.setString(3, history.getDateAndTime());
+            pstmt.setBoolean(4, history.isHasError());
+            pstmt.setString(5, history.getErrorMessage());
+            
+            
+
+            int affected = pstmt.executeUpdate();
+            
+            // Get database generated id
+            ResultSet rs = pstmt.getGeneratedKeys();
+            if (rs.next()) {
+                history.setId(rs.getInt(1));
+            }
+            
+             pool.checkIn(con);
+        }
+        catch (SQLException ex) {
+            Logger.getLogger(DALHistory.class.getName()).log(
+                    Level.SEVERE, null, ex);
+        }
     }
 }

@@ -165,7 +165,7 @@ public class ConfigFXMLController implements Initializable {
                 if (textField.getText().equals(header)) {
                     isValid = true;
                 } else {
-                    Alert("Error", "Text imputs are not good! Check each text and then try it again!");
+                    Alert("Error", "Text imputs are not valid! Check each text and then try it again!");
                 }
             }
         }

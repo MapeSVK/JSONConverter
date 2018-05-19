@@ -65,4 +65,8 @@ public class BLLManager {
     public List<History> getAllHistory() {
         return manager.getAllHistory();
     }
+
+    public void addNewHistoryToDatabase(History history) {
+        manager.addNewHistoryToDatabase(history);
+    }
 }
