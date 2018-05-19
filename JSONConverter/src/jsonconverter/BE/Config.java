@@ -11,14 +11,14 @@ package jsonconverter.BE;
  */
 public class Config {
 
-    private int cinfig_id;
+    private int cinfig_id = -1;
     private String siteName;
     private String assetSerialNumber;
     private String type;
     private String externalWorkOrderId;
     private String systemStatus;
     private String userStatus;
-    private String createdOn;
+    private String createdOn ;
     private String createdBy;
     private String name;
     private String priority;
@@ -28,25 +28,48 @@ public class Config {
     private String latestStartDate;
     private String estimatedTime;
     private String configName;
+    private boolean privacy;
+    private String creatorName;
 
-    public Config(int cinfig_id, String siteName, String assetSerialNumber, String type, String externalWorkOrderId, String systemStatus, String userStatus, String createdOn, String createdBy, String name, String priority, String status, String latestFinishDate, String earliestStartDate, String latestStartDate, String estimatedTime, String configName) {
-        this.cinfig_id = cinfig_id;
-        this.siteName = siteName;
-        this.assetSerialNumber = assetSerialNumber;
-        this.type = type;
-        this.externalWorkOrderId = externalWorkOrderId;
-        this.systemStatus = systemStatus;
-        this.userStatus = userStatus;
-        this.createdOn = createdOn;
-        this.createdBy = createdBy;
-        this.name = name;
-        this.priority = priority;
-        this.status = status;
-        this.latestFinishDate = latestFinishDate;
-        this.earliestStartDate = earliestStartDate;
-        this.latestStartDate = latestStartDate;
-        this.estimatedTime = estimatedTime;
-        this.configName = configName;
+//    public Config(int cinfig_id, String siteName, String assetSerialNumber, String type, 
+//                  String externalWorkOrderId, String systemStatus, String userStatus, String createdOn, 
+//                  String createdBy, String name, String priority, String status, String latestFinishDate, 
+//                  String earliestStartDate, String latestStartDate, String estimatedTime, String configName,
+//                  boolean privacy, String creatorName) {
+//        this.cinfig_id = cinfig_id;
+//        this.siteName = siteName;
+//        this.assetSerialNumber = assetSerialNumber;
+//        this.type = type;
+//        this.externalWorkOrderId = externalWorkOrderId;
+//        this.systemStatus = systemStatus;
+//        this.userStatus = userStatus;
+//        this.createdOn = createdOn;
+//        this.createdBy = createdBy;
+//        this.name = name;
+//        this.priority = priority;
+//        this.status = status;
+//        this.latestFinishDate = latestFinishDate;
+//        this.earliestStartDate = earliestStartDate;
+//        this.latestStartDate = latestStartDate;
+//        this.estimatedTime = estimatedTime;
+//        this.configName = configName;
+//        this.privacy = privacy;
+//        this.creatorName = creatorName;
+//    }
+    public boolean isPrivacy() {
+        return privacy;
+    }
+
+    public void setPrivacy(boolean privacy) {
+        this.privacy = privacy;
+    }
+
+    public String getCreatorName() {
+        return creatorName;
+    }
+
+    public void setCreatorName(String creatorName) {
+        this.creatorName = creatorName;
     }
 
     public String getConfigName() {
@@ -70,6 +93,7 @@ public class Config {
     }
 
     public void setLatestStartDate(String latestStartDate) {
+
         this.latestStartDate = latestStartDate;
     }
 
@@ -78,7 +102,9 @@ public class Config {
     }
 
     public void setEarliestStartDate(String earliestStartDate) {
+
         this.earliestStartDate = earliestStartDate;
+
     }
 
     public String getLatestFinishDate() {
@@ -190,4 +216,25 @@ public class Config {
         return configName;
     }
 
+    public String getAllGetters(int i)
+    {
+       String[] allGetters = new String[15];
+       allGetters[0]=getSiteName();
+        allGetters[1]=getAssetSerialNumber();
+         allGetters[2]=getType();
+          allGetters[3]=getExternalWorkOrderId();
+           allGetters[4]=getSystemStatus();
+            allGetters[5]=getUserStatus();
+             allGetters[6]=getCreatedOn();
+              allGetters[7]=getCreatedBy();
+               allGetters[8]=getName();
+                allGetters[9]=getPriority();
+                 allGetters[10]=getStatus();
+                  allGetters[11]=getLatestFinishDate();
+                   allGetters[12]=getEarliestStartDate();
+                    allGetters[13]=getLatestStartDate();
+                     allGetters[14]=getEstimatedTime();
+                     
+                     return allGetters[i];
+    }
 }

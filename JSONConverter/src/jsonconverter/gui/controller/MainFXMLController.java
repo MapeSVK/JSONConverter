@@ -13,15 +13,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.ResourceBundle;
-import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
-import javafx.concurrent.Service;
-import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -49,11 +42,10 @@ import javafx.stage.Modality;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
+import javax.swing.JOptionPane;
 import jsonconverter.BE.Config;
 import jsonconverter.BE.History;
 import jsonconverter.BE.TaskInOurProgram;
-import jsonconverter.DAL.readFilesAndWriteJson.ReadCSV;
-import jsonconverter.DAL.readFilesAndWriteJson.IConverter;
 import jsonconverter.GUI.model.Model;
 import jsonconverter.GUI.util.HostName;
 
@@ -75,29 +67,28 @@ public class MainFXMLController implements Initializable {
     private ChoiceBox<Config> configChoiceBox;
     @FXML
     private TableView<TaskInOurProgram> tasksTableView;
-      @FXML
+    @FXML
     private TableColumn<String, String> extensionColumn;
     @FXML
     private Label nameOfImportedFileLabel;
-
-    private IConverter converter;
-    private String filePath;
+    private String filePath = "";
     private String fileType;
-    private String nameOfImportedFile;
+    private String nameOfImportedFile = "";
     private FileChooser fileChooser;
     private File fileChoosedByImport;
     private File directoryPath;
     private boolean directoryPathHasBeenSelected = false;
-    private String newFileName = "Test";//Name needs to be indicate! It's just an example
+    private String newFileName = nameOfImportedFile;//Name needs to be indicate! It's just an example
     private final String newFileExtension = ".json";
-    
+
     private String newFileInfo = newFileName + newFileExtension;
     private Model model = new Model();
     private HostName hostName = new HostName();
     private TaskInOurProgram task;
-    private ExecutorService executor = Executors.newFixedThreadPool(4);
+    private ExecutorService executor = Executors.newFixedThreadPool(3);
     @FXML
     private Button chooseDirectoryButton;
+
     private Date fromDateInDatePicker;
     private final Image pauseImage = new Image("file:images/pauseImage.png");
     private final Image closeImage = new Image("file:images/close.png");
@@ -119,33 +110,27 @@ public class MainFXMLController implements Initializable {
     private TableView<History> historyTableView;
     Date fromDate;
     Date toDate;
-    
-                    
+
     LocalDateTime nowLocalDateTime = LocalDateTime.now();
     java.sql.Date currentDate = java.sql.Date.valueOf(LocalDate.now());
-    
+
+    @FXML
+    private Button editButton;
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         setTasksTableViewColumns();
         setHistoryTableViewColumns();
         setConfigChoiceBoxItems();
         tasksTableView.setItems(model.getTasksInTheTableView());
-        
+
         tasksTableView.setSelectionModel(null);
         historyTableView.setSelectionModel(null);
-        
+
+        model.loadConfigFromDatabase();
         /* set history tableView */
         model.loadHistoryFromDatabase();
         historyTableView.setItems(model.getAllHistoryObservableArrayList());
-                    
-        /* set datePickers in History tab */
-        toDate = currentDate;
-        setPromptDateInDatePickerToEuropeanStyle();
-        activeDatePickersInHistoryTab();
-      
-        /* style history tableView and show error as a pop-up */
-        openErrorMessageAfterHoveringOverRow();
-        
     }
 
     /* set tableView columns */
@@ -170,28 +155,10 @@ public class MainFXMLController implements Initializable {
         tasksTableView.getColumns().addAll(statusCol);
 
     }
-    
+
     /* getting data from the model and setting this data in the choiceBox */
     public void setConfigChoiceBoxItems() {
-        configChoiceBox.setItems(model.getFakeConfig()); // <---------------------------------------FAKE DB
-    }
-
-    @FXML
-    private void importFileButtonClick(ActionEvent event) {
-        fileChooser = new FileChooser();
-        fileChooserSettings();
-        fileChoosedByImport = fileChooser.showOpenDialog(null);
-
-        if (fileChoosedByImport != null) {
-            filePath = fileChoosedByImport.toString();
-            nameOfImportedFile = gettingTheFileNameFromThePath(fileChoosedByImport);
-            fileExtendionIdentifier();
-            nameOfImportedFileLabel.setText(nameOfImportedFile);
-
-        } else {
-            System.out.println("ERROR: File could not be imported.");
-        }
-
+        configChoiceBox.setItems(model.getAllConfigObservableArrayList());
     }
 
     /**
@@ -199,10 +166,11 @@ public class MainFXMLController implements Initializable {
      * file extensions It is possible to choose specific extensions
      */
     private void fileChooserSettings() {
-        FileChooser.ExtensionFilter ALL = new FileChooser.ExtensionFilter("Import *.XXX", "*.csv", "*.xlsx");
-        FileChooser.ExtensionFilter CSV = new FileChooser.ExtensionFilter("Import csv", "*.csv");
-        FileChooser.ExtensionFilter XLSX = new FileChooser.ExtensionFilter("Import xlsx", "*.xlsx");
-        fileChooser.getExtensionFilters().addAll(ALL, CSV, XLSX);
+        FileChooser.ExtensionFilter ALL = new FileChooser.ExtensionFilter("All (*.*)", "*.csv", "*.xlsx", "*.xml");
+        FileChooser.ExtensionFilter CSV = new FileChooser.ExtensionFilter("CSV", "*.csv");
+        FileChooser.ExtensionFilter XLSX = new FileChooser.ExtensionFilter("XLSX", "*.xlsx");
+        FileChooser.ExtensionFilter XML = new FileChooser.ExtensionFilter("XML", "*.xml");
+        fileChooser.getExtensionFilters().addAll(ALL, CSV, XLSX, XML);
 
     }
 
@@ -213,12 +181,15 @@ public class MainFXMLController implements Initializable {
         if (filePath.endsWith(".csv")) {
             fileType = ".csv";
             labelFileExtension.setText("csv");
-            converter = new ReadCSV(filePath);
+            model.setConverter(fileType, filePath);
         } else if (filePath.endsWith(".xlsx")) {
             fileType = ".xlsx";
             labelFileExtension.setText("xlsx");
-        } else {
-            nameOfImportedFileLabel.setText(nameOfImportedFile + ".???");
+            model.setConverter(fileType, filePath);
+        } else if (filePath.endsWith(".xml")) {
+            fileType = ".xml";
+            labelFileExtension.setText("xml");
+            model.setConverter(fileType, filePath);
         }
     }
 
@@ -236,15 +207,19 @@ public class MainFXMLController implements Initializable {
 
     @FXML
     private void createNewConfigButtonClick(ActionEvent event) throws IOException {
-        Parent root;
+        if (filePath.equals("") || nameOfImportedFile.equals("")) {
+            JOptionPane.showMessageDialog(null, "No file imported. Please, import one previously");
+        } else {
+            Parent root;
             Stage stage = new Stage();
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/jsonconverter/GUI/view/ConfigFXML.fxml"));
             root = loader.load();
             ConfigFXMLController controller = loader.getController();
-            controller.getConverterandModel(converter, model);
+            controller.getModel(model);
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.setScene(new Scene(root));
             stage.showAndWait();
+        }
     }
 
     @FXML
@@ -268,61 +243,53 @@ public class MainFXMLController implements Initializable {
         }
 
         /* ADDING */
-        System.out.println(nameOfImportedFile);
-
         if (isRightNameOfTheFile == true && isConfigSet == true && isRightExtension == true) {
             TaskInOurProgram task = new TaskInOurProgram(nameOfImportedFile, configChoiceBox.getSelectionModel().getSelectedItem().getConfigName(),
                     labelFileExtension.getText());
-            task.setConverter(converter);
+            model.getConverter(task);
             task.setConfig(configChoiceBox.getValue());
             task.setFilePath(directoryPath);
             task.setFileName(nameOfImportedFile);
             model.addTask(task);
         }
-        
-        
+
         pauseConvertingClick();
 
     }
-    
-    
+
     public void activeDatePickersInHistoryTab() {
         startDateDatePicker.valueProperty().addListener(e -> {
-           
+
             LocalDate dateFromInLocalDateForm = startDateDatePicker.getValue(); //putting date from datePicker to local date form           
-            Calendar c =  Calendar.getInstance(); // creating calendar instance as a helper 
-            c.set(dateFromInLocalDateForm.getYear(), dateFromInLocalDateForm.getMonthValue() - 1, 
+            Calendar c = Calendar.getInstance(); // creating calendar instance as a helper 
+            c.set(dateFromInLocalDateForm.getYear(), dateFromInLocalDateForm.getMonthValue() - 1,
                     dateFromInLocalDateForm.getDayOfMonth());
             fromDate = c.getTime();
-            
-            
+
             historyTableView.setItems(model.getHistoryOfChosenPeriod(model.getAllHistoryObservableArrayList(), fromDate, toDate));
-            
-            
-            
+
         });
-        
+
         endDateDatePicker.valueProperty().addListener(e -> {
             LocalDate dateEndInLocalDateForm = endDateDatePicker.getValue(); //putting date from datePicker to local date form
-            Calendar c =  Calendar.getInstance(); // creating calendar instance as a helper 
-            c.set(dateEndInLocalDateForm.getYear(), dateEndInLocalDateForm.getMonthValue() - 1, 
+            Calendar c = Calendar.getInstance(); // creating calendar instance as a helper 
+            c.set(dateEndInLocalDateForm.getYear(), dateEndInLocalDateForm.getMonthValue() - 1,
                     dateEndInLocalDateForm.getDayOfMonth());
             toDate = c.getTime();
-            
-           
-            historyTableView.setItems(model.getHistoryOfChosenPeriod(model.getAllHistoryObservableArrayList(), fromDate, toDate));  
+
+            historyTableView.setItems(model.getHistoryOfChosenPeriod(model.getAllHistoryObservableArrayList(), fromDate, toDate));
         });
     }
-    
+
     /* set promt text in datePickers to European style - first dat, then month and then year
        so it looks better after date is chosen
-    */
+     */
     public void setPromptDateInDatePickerToEuropeanStyle() {
-        
+
         startDateDatePicker.setConverter(new StringConverter<LocalDate>() {
             String pattern = "dd.MM.yyyy";
             DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(pattern);
-            
+
             @Override
             public String toString(LocalDate date) {
                 if (date != null) {
@@ -331,6 +298,7 @@ public class MainFXMLController implements Initializable {
                     return "";
                 }
             }
+
             @Override
             public LocalDate fromString(String string) {
                 return LocalDate.parse(string, dateFormatter);
@@ -339,7 +307,7 @@ public class MainFXMLController implements Initializable {
         endDateDatePicker.setConverter(new StringConverter<LocalDate>() {
             String pattern = "dd.MM.yyyy";
             DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(pattern);
-            
+
             @Override
             public String toString(LocalDate date) {
                 if (date != null) {
@@ -348,50 +316,43 @@ public class MainFXMLController implements Initializable {
                     return "";
                 }
             }
+
             @Override
             public LocalDate fromString(String string) {
                 return LocalDate.parse(string, dateFormatter);
             }
         });
-    } 
+    }
 
     public void pauseConvertingClick() {
-        
-        
+
         for (TaskInOurProgram task : model.getTasksInTheTableView()) {
 
             //set default image before clicking on the button
             task.getPauseTask().setGraphic(new ImageView(playImage));
-            
-            
+
             task.getPauseTask().setOnAction(new EventHandler<ActionEvent>() {
                 @Override
-                public void handle(ActionEvent event) {  
-                    
+                public void handle(ActionEvent event) {
+
                     if (task.isIsExecutedForFirstTime() == false && task.isPause() == false) {
                         executor.submit(task);
                         task.setIsExecutedForFirstTime(true);
                         task.getPauseTask().setGraphic(new ImageView(pauseImage));
-                        
-                    }
-                    
-                    else if (task.isIsExecutedForFirstTime() == true && task.isPause() == false) {
+
+                    } else if (task.isIsExecutedForFirstTime() == true && task.isPause() == false) {
                         task.getPauseTask().setGraphic(new ImageView(playImage));
                         task.pauseThis();
-                        
-                    }
-                      
-                    else if (task.isIsExecutedForFirstTime() == true && task.isPause() == true) {
+
+                    } else if (task.isIsExecutedForFirstTime() == true && task.isPause() == true) {
                         task.getPauseTask().setGraphic(new ImageView(pauseImage));
                         task.continueThis();
-                        
-                    }                        
-                }           
+
+                    }
+                }
             });
         }
     }
-    
-    
 
     /*
     *   This method contains mainly the directory chooser interface.
@@ -402,13 +363,13 @@ public class MainFXMLController implements Initializable {
         File selectedDirectory = directoryChooser.showDialog(chooseDirectoryButton.getScene().getWindow());
         directoryChooser.setTitle("Select a directory");
         if (selectedDirectory == null) {
-            Alert("Directory problem", "You did not select any directory. Try again!");
+            JOptionPane.showMessageDialog(null, "You did not select any directory. Try again!");
         } else {
             System.out.println("Selected directory: " + selectedDirectory.getAbsolutePath());
             directoryPath = selectedDirectory.getAbsoluteFile();
             directoryPathHasBeenSelected = true;
         }
-     }
+    }
 
     @FXML
     private void convertTasksButtonClick(ActionEvent event) throws IOException {
@@ -442,11 +403,11 @@ public class MainFXMLController implements Initializable {
     /* 1. show pop-up window after hovering over the row which has error
        2. change background color to red of rows with errors 
        3. show the image of the error in the end of the row
-    */
+     */
     public void openErrorMessageAfterHoveringOverRow() {
         historyTableView.setRowFactory(tableView -> {
-            final TableRow<History> row = new TableRow<>();            
-            
+            final TableRow<History> row = new TableRow<>();
+
             //for each loop to set image and color only
             for (History history : model.getAllHistoryObservableArrayList()) {
                 if (history.isHasError() == true) {
@@ -458,65 +419,60 @@ public class MainFXMLController implements Initializable {
                     history.getErrorIcon().setImage(errorImage);
                 }
             }
-            
+
             Popup popup = new Popup();
             Stage stage = new Stage();
-                      
+
             row.hoverProperty().addListener((observable) -> {
                 for (History his : model.getAllHistoryObservableArrayList()) {
                     final History historyRow = row.getItem();
-                                              
+
                     if (row.isHover() && his == historyRow) {
-                            //creation of the popup
-                            popup.setX(300);
-                            popup.setY(200);
-                            TextArea ta = new TextArea();
-                            ta.setText(his.getErrorMessage());
-                            popup.getContent().addAll(ta);
-                        
-                            //creation of the stage
-                            HBox layout = new HBox(10);
-                            stage.setScene(new Scene(layout));
-                            
-                            stage.show();
-                            popup.show(stage);                          
+                        //creation of the popup
+                        popup.setX(300);
+                        popup.setY(200);
+                        TextArea ta = new TextArea();
+                        ta.setText(his.getErrorMessage());
+                        popup.getContent().addAll(ta);
+
+                        //creation of the stage
+                        HBox layout = new HBox(10);
+                        stage.setScene(new Scene(layout));
+
+                        stage.show();
+                        popup.show(stage);
                     } else {
-                                               
+
                     }
-                }                           
-            });  
+                }
+            });
             popup.hide();
             stage.close();
-            
+
             return row;
         });
     }
-        
-    
-    
-    
+
     /* HELPER METHODS */
     public String getFormatedActualDateAndTimeAsString() {
         DateTimeFormatter df = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
         String dateAndTimeString = df.format(nowLocalDateTime);
         return dateAndTimeString;
     }
-    
+
     public void createHistoryForTask(TaskInOurProgram task) {
-        /* create new history after button is presset */    
-        History history = new History(getFormatedActualDateAndTimeAsString(),1, hostName.getUserName(),
+        /* create new history after button is presset */
+        History history = new History(getFormatedActualDateAndTimeAsString(), 1, hostName.getUserName(),
                 task.getFileName(), true, "Error");
         model.addHistoryToTheDatabase(history);
     }
-    
+
     public void createHistoryOfWholeAction() {
-        /* create new history after button is presset */    
-        History history = new History(getFormatedActualDateAndTimeAsString(),1, hostName.getUserName(),
-                "Multiple Conversion (" + tasksTableView.getItems().size() + " files)" , true, "Error");
+        /* create new history after button is presset */
+        History history = new History(getFormatedActualDateAndTimeAsString(), 1, hostName.getUserName(),
+                "Multiple Conversion (" + tasksTableView.getItems().size() + " files)", true, "Error");
         model.addHistoryToTheDatabase(history);
     }
-    
-    
 
     private void Alert(String title, String text) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -534,7 +490,28 @@ public class MainFXMLController implements Initializable {
                 }
             }
         });
+
     }
-     
-             
+
+    @FXML
+    private void editConfigButtonClick(ActionEvent event) throws IOException, ParseException {
+        if (configChoiceBox.getSelectionModel().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Please, choose a valid configuration");
+        } else {
+            Parent root;
+            Stage stage = new Stage();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/jsonconverter/GUI/view/ConfigFXML.fxml"));
+            root = loader.load();
+            ConfigFXMLController controller = loader.getController();
+            controller.setConfig(configChoiceBox.getValue());
+            controller.setToolTips();
+            controller.setEditMode();
+            controller.removeconfigButton.setOpacity(1);
+            controller.removeconfigButton.setDisable(false);
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setScene(new Scene(root));
+            stage.showAndWait();
+        }
+    }
+
 }

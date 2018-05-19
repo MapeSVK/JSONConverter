@@ -8,6 +8,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
 import java.time.temporal.ChronoField;
 import static java.time.temporal.ChronoField.MONTH_OF_YEAR;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -16,10 +17,9 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import jsonconverter.BE.Config;
 import jsonconverter.BE.History;
-import jsonconverter.BE.JSONObject;
 import jsonconverter.BE.TaskInOurProgram;
 import jsonconverter.BLL.BLLManager;
-import jsonconverter.DAL.readFilesAndWriteJson.IConverter;
+
 
 public class Model {
 
@@ -34,12 +34,15 @@ public class Model {
     /* contains history date based on chosen dates */
     private ObservableList<History> historyDatasBasedOnChosenTimeList = FXCollections.observableArrayList();
     
+    
+    private ObservableList<Config> allConfigObservableArrayList = FXCollections.observableArrayList();
+
+
 
 
     /* returns hashMap of headers from file (Headers are keys and numbers are values) */
-    public HashMap<String, Integer> getFileHeaders(IConverter converter) {
-        
-        return manager.getFileHeaders(converter);
+    public HashMap<String, Integer> getFileHeaders() {
+        return manager.getFileHeaders();
     }
 
     /* adding tasks to the observableArrayList */
@@ -53,48 +56,46 @@ public class Model {
     }
 
     /* returns values from the selected file */
-    public ArrayList<String> getFileValues(IConverter converter) {
-        return manager.getFileValues(converter);
+    public ArrayList<String> getFileValues() {
+        return manager.getFileValues();
     }
 
     /* creates json file from JSONObject list */
-    public void createJsonFile(String fileName, File filePath, IConverter converter, Config config) {
-        manager.createJsonFile(fileName, filePath, converter, config);
-        System.out.println("chuuuj Manager");
+    public void createJsonFile(String fileName, File filePath, TaskInOurProgram cuttentTask) throws InterruptedException {
+        manager.createJsonFile(fileName, filePath, cuttentTask);
     }
 
     /*returns list of Headers from the file */
-    public List<String> getOnlyFileHeaders(IConverter converter) {
-        return manager.getOnlyFileHeaders(converter);
+    public List<String> getOnlyFileHeaders() {
+        return manager.getOnlyFileHeaders();
     }
 
-    //----------------------------------------------------------------SUPERFAKE DB------------------------------------------------------------------------------------------------
-    public List<Config> getFakeConfigDatabase() {
-        return manager.getFakeConfigDatabase();
+    public void getConverter(TaskInOurProgram currentTask) {
+        manager.getConverter(currentTask);
     }
 
-    public void addToFakeConfigDatabase(Config config) {
-        manager.addToFakeConfigDatabase(config);
-        fakeConfig.add(config);
+    public void setConverter(String fileType, String filePath) {
+        manager.setConverter(fileType, filePath);
     }
-    private ObservableList<Config> fakeConfig = FXCollections.observableArrayList();
+    public void removeConfigToDatabase(Config config) {
+        manager.removeConfigFromDatabase(config);
+        allConfigObservableArrayList.remove(config);
+    }
 
-    public ObservableList<Config> getFakeConfig() {
-        addFake();
-        return fakeConfig;
+    public void saveConfigToDatabase(Config config, boolean isEditMode) {
+        manager.saveConfigToDatabase(config, isEditMode);
+        allConfigObservableArrayList.add(config);
     }
-    
-    public boolean checkIfConfigExists(Config config)
-    {
-        return manager.checkIfConfigExists(config);
+
+    public void loadConfigFromDatabase() {
+        allConfigObservableArrayList.clear();
+        allConfigObservableArrayList.addAll(manager.getAllConfigs());
     }
-    
-    public void addFake() {
-    fakeConfig.add(new Config(1, "Actual start", "Actual start", "Order Type", "Order", "System status", "User status", 
-            "Created on", "Actual start", "Opr. short text","Priority", "Actual start", "Lat.finish date", "Earl.start date", "Latest start", 
-            "Normal duration", "test config"));
+
+    public ObservableList<Config> getAllConfigObservableArrayList() {
+        return allConfigObservableArrayList;
     }
-    
+
     /* HISTORY */
      
     
@@ -135,8 +136,4 @@ public class Model {
         }
         return historyDatasBasedOnChosenTimeList;
     }
-   
-    
-  
-   
 }

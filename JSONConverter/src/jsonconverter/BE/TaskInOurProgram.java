@@ -1,18 +1,11 @@
 package jsonconverter.BE;
 
-import static impl.org.controlsfx.spreadsheet.RectangleSelection.SelectionRange.key;
 import java.io.File;
-import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.concurrent.Task;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.control.ProgressIndicator;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyEvent;
 import jsonconverter.DAL.readFilesAndWriteJson.IConverter;
 import jsonconverter.GUI.model.Model;
 
@@ -40,26 +33,15 @@ public class TaskInOurProgram extends Task<Void> {
         this.configName = configName;
         this.extensionOfTheFile = extensionOfTheFile;
         this.pauseTask = new Button("");
- //       this.closeTask = new Button("");       this needs to be added in second sprint
-        
- 
+        //       this.closeTask = new Button("");       this needs to be added in second sprint
         this.pauseTask.getStyleClass().clear();
         this.pauseTask.getStyleClass().add("pauseButtons");
-        
     }
 
     @Override
     public Void call() throws Exception {
-
         this.updateProgress(ProgressIndicator.INDETERMINATE_PROGRESS, 1);
-        updateProgress(1, 3);
-        TimeUnit.SECONDS.sleep(3);
-        pauseThread();
-        updateProgress(2, 3);
-        TimeUnit.SECONDS.sleep(3);
-        pauseThread();
-        model.createJsonFile(fileName, filePath, converter, config);
-        updateProgress(3, 3);
+        model.createJsonFile(fileName, filePath, this);
         isConvertingDone = true;
       return null;
     }
@@ -84,7 +66,7 @@ public class TaskInOurProgram extends Task<Void> {
     public void setIsConvertingDone(boolean isConvertingDone) {
         this.isConvertingDone = isConvertingDone;
     }
-    
+
     public Button getPauseTask() {
         return pauseTask;
     }
@@ -100,8 +82,6 @@ public class TaskInOurProgram extends Task<Void> {
     public void setCloseTask(Button closeTask) {
         this.closeTask = closeTask;
     }
-    
-    
 
     public String getExtensionOfTheFile() {
         return extensionOfTheFile;
@@ -127,7 +107,6 @@ public class TaskInOurProgram extends Task<Void> {
         this.nameOfTheFile = nameOfTheFile;
     }
 
-
     public Config getConfig() {
         return config;
     }
@@ -152,29 +131,6 @@ public class TaskInOurProgram extends Task<Void> {
         this.model = model;
     }
 
-    public void pauseThis() {
-        pause = true;
-    }
-
-    public void continueThis() {
-        pause = false;
-        synchronized (lock) {
-            lock.notifyAll();
-        }
-    }
-
-    private void pauseThread() {
-        synchronized (lock) {
-            if (pause) {
-                try {
-                    lock.wait();
-                } catch (InterruptedException ex) {
-                    Logger.getLogger(TaskInOurProgram.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        }
-    }
-
     public String getFileName() {
         return fileName;
     }
@@ -189,5 +145,32 @@ public class TaskInOurProgram extends Task<Void> {
 
     public void setFilePath(File filePath) {
         this.filePath = filePath;
+    }
+
+    public void update(double update) {
+        updateProgress(update, converter.getFileValues().size());
+    }
+
+    public void pauseThis() {
+        pause = true;
+    }
+
+    public void continueThis() {
+        pause = false;
+        synchronized (lock) {
+            lock.notifyAll();
+        }
+    }
+
+    public void pauseThread() {
+        synchronized (lock) {
+            if (pause) {
+                try {
+                    lock.wait();
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(TaskInOurProgram.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
     }
 }

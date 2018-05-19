@@ -19,7 +19,6 @@ import javafx.scene.image.ImageView;
  */
 public class History {
 
-    
     private int id;
     private String username;
     private String fileName;
@@ -47,7 +46,6 @@ public class History {
     public void setErrorButton(ImageView errorIcon) {
         this.errorIcon = errorIcon;
     }
-    
 
     public String getErrorMessage() {
         return errorMessage;
@@ -57,7 +55,6 @@ public class History {
         this.errorMessage = errorMessage;
     }
 
-
     public boolean isHasError() {
         return hasError;
     }
@@ -65,7 +62,6 @@ public class History {
     public void setHasError(boolean hasError) {
         this.hasError = hasError;
     }
-
 
     public String getFileName() {
         return fileName;
@@ -75,7 +71,6 @@ public class History {
         this.fileName = fileName;
     }
 
-
     public String getUsername() {
         return username;
     }
@@ -83,7 +78,6 @@ public class History {
     public void setUsername(String username) {
         this.username = username;
     }
-
 
     public int getId() {
         return id;
@@ -106,7 +100,5 @@ public class History {
     public String toString() {
         return "History{" + "dateAndTime=" + dateAndTime + ", id=" + id + ", username=" + username + ", fileName=" + fileName + ", hasError=" + hasError + ", errorMessage=" + errorMessage + '}';
     }
-    
-    
 
 }

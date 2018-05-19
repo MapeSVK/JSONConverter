@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package jsonconverter.DAL.manager;
+package jsonconverter.DAL.connection;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -18,29 +18,23 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import jsonconverter.BE.History;
-import org.apache.commons.dbcp.BasicDataSource;
 
 /**
  *
  * @author Mape
  */
 public class DALHistory {
-    
-    
-    
-/* OBJECT POOL */
+
+    /* OBJECT POOL */
     // Create the ConnectionPool:
-    JDBCConnectionPool pool = new JDBCConnectionPool(
-      "com.microsoft.sqlserver.jdbc.SQLServerDriver", "jdbc:sqlserver://10.176.111.31;databaseName=JSONConverter",
-      "CS2017B_27_java", "javajava");
-    
-    
-  
-  /* GET ALL HISTORY */  
-    
+    private JDBCConnectionPool pool = new JDBCConnectionPool(
+            "com.microsoft.sqlserver.jdbc.SQLServerDriver", "jdbc:sqlserver://10.176.111.31;databaseName=JSONConverter",
+            "CS2017B_27_java", "javajava");
+
+    /* GET ALL HISTORY */
     public List<History> getAllHistory() {
         List<History> history = new ArrayList();
-        
+
         try (Connection con = pool.checkOut()) {
 
             PreparedStatement pstmt = con.prepareCall("SELECT * FROM History");
@@ -55,7 +49,7 @@ public class DALHistory {
 
                 history.add(h);
             }
-            
+
             pool.checkIn(con);
         } catch (SQLException ex) {
             Logger.getLogger(DALHistory.class.getName()).log(

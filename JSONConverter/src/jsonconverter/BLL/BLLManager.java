@@ -11,8 +11,8 @@ import java.util.HashMap;
 import java.util.List;
 import jsonconverter.BE.Config;
 import jsonconverter.BE.History;
+import jsonconverter.BE.TaskInOurProgram;
 import jsonconverter.DAL.facade.DALFacade;
-import jsonconverter.DAL.readFilesAndWriteJson.IConverter;
 
 /**
  *
@@ -22,46 +22,68 @@ public class BLLManager {
 
     private DALFacade manager = new DALFacade();
     private Converter convertJason = new Converter();
-    private NewConfigValidations configValidations= new NewConfigValidations();
+    private NewConfigValidations configValidations = new NewConfigValidations();
 
+    //- - - - - - - - - - - - - - - - - - - - CREATE JASON - - - - - - - - - - - - - - - - - - - -
+    /* creates json file from JSONObject list */
+    public void createJsonFile(String fileName, File filePath, TaskInOurProgram currentTask) throws InterruptedException {
+        manager.createJsonFile(fileName, filePath, convertJason.returnJasonObjects(currentTask));
+    }
+
+    //- - - - - - - - - - - - - - - - - - - - CONVERTER - - - - - - - - - - - - - - - - - - - -
     /* returns hashMap of headers from file (Headers are keys and numbers are values) */
-    public HashMap<String, Integer> getFileHeaders(IConverter converter) {
-        return manager.getFileHeaders(converter);
+    public HashMap<String, Integer> getFileHeaders() {
+        return manager.getFileHeaders();
     }
 
     /* returns values from the selected file */
-    public ArrayList<String> getFileValues(IConverter converter) {
-        return manager.getFileValues(converter);
-    }
-
-    /* creates json file from JSONObject list */
-    public void createJsonFile(String fileName, File filePath, IConverter converter, Config config) {
-        System.out.println("chuuj3");
-        manager.createJsonFile(fileName, filePath, convertJason.getJasonObject(converter, config));
+    public ArrayList<String> getFileValues() {
+        return manager.getFileValues();
     }
 
     /*returns list of Headers from the file */
-    public List<String> getOnlyFileHeaders(IConverter converter) {
-        return manager.getOnlyFileHeaders(converter);
+    public List<String> getOnlyFileHeaders() {
+        return manager.getOnlyFileHeaders();
     }
-    
+ /* gets proper converter for current task */
+    public void getConverter(TaskInOurProgram currentTask) {
+        manager.getConverter(currentTask);
 
-    //----------------------------------------------------------------SUPERFAKE DB------------------------------------------------------------------------------------------------
-    public List<Config> getFakeConfigDatabase() {
-        return manager.getFakeConfigDatabase();
+    }
+/* sets proper converter for current task */
+    public void setConverter(String fileType, String filePath) {
+        manager.setConverter(fileType, filePath);
     }
 
-    public void addToFakeConfigDatabase(Config config) {
-        manager.addToFakeConfigDatabase(config);
+    //- - - - - - - - - - - - - - - - - - - - CONFIG - - - - - - - - - - - - - - - - - - - -
+/* saves config to the database */
+    public void saveConfigToDatabase(Config config, boolean isEditMode) {
+        manager.saveConfigToDatabase(config, isEditMode);
     }
     
-    public boolean checkIfConfigExists(Config config)
-    {
-        return configValidations.checkIfConfigExists(config,getFakeConfigDatabase());
+    /* removes config from the database */
+     public void removeConfigFromDatabase(Config config) {
+        manager.removeConfigFromDatabase(config);
     }
-    
-    /* HISTORY */
-    
+
+    /* gets all available configs for current user */
+    public List<Config> getAllConfigs() {
+        return manager.getAllConfigs();
+    }
+
+    //- - - - - - - - - - - - - - - - - - - - HOSTNAME - - - - - - - - - - - - - - - - - - - -
+    /* returns local Hostname */
+    public String getHostname() {
+        return manager.getHostname();
+    }
+
+    /* returns local Username */
+    public String getUserName() {
+        return manager.getUserName();
+    }
+
+    //- - - - - - - - - - - - - - - - - - - - HISTORY - - - - - - - - - - - - - - - - - - - -
+    /* getting HISTORY */
     public List<History> getAllHistory() {
         return manager.getAllHistory();
     }
