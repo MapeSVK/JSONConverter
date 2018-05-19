@@ -21,7 +21,8 @@ public class TaskInOurProgram extends Task<Void> {
     private boolean pause = false;
     private String fileName;
     private File filePath;
-    private boolean isConvertingDone = false;
+    private boolean isConvertingDone=false;
+    private boolean ifWasStarted=false;
     
     private boolean isExecutedForFirstTime = false;
     private Button pauseTask;
@@ -40,6 +41,7 @@ public class TaskInOurProgram extends Task<Void> {
 
     @Override
     public Void call() throws Exception {
+        ifWasStarted=true;
         this.updateProgress(ProgressIndicator.INDETERMINATE_PROGRESS, 1);
         model.createJsonFile(fileName, filePath, this);
         isConvertingDone = true;
@@ -161,6 +163,12 @@ public class TaskInOurProgram extends Task<Void> {
             lock.notifyAll();
         }
     }
+
+    public boolean isIfWasStarted() {
+        return ifWasStarted;
+    }
+    
+    
 
     public void pauseThread() {
         synchronized (lock) {
