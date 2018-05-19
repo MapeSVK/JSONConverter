@@ -110,7 +110,6 @@ public class MainFXMLController implements Initializable {
         tasksTableView.setSelectionModel(null);
         historyTableView.setSelectionModel(null);
 
-        model.loadConfigFromDatabase();
         /* set history tableView */
         model.loadHistoryFromDatabase();
         historyTableView.setItems(model.getAllHistoryObservableArrayList());
@@ -128,8 +127,8 @@ public class MainFXMLController implements Initializable {
             filePath = fileChoosedByImport.toString();
             nameOfImportedFile = gettingTheFileNameFromThePath(fileChoosedByImport);
             fileExtendionIdentifier();
+            model.checkIfYouCanUseConfig();
             nameOfImportedFileLabel.setText(nameOfImportedFile);
-
         } else {
             System.out.println("ERROR: File could not be imported.");
         }
@@ -256,7 +255,7 @@ public class MainFXMLController implements Initializable {
             fileType = ".xml";
             labelFileExtension.setText("xml");
             model.setConverter(fileType, filePath);
-        }
+        }              
     }
 
     /**

@@ -5,7 +5,6 @@
  */
 package jsonconverter.BLL;
 
-import static java.nio.file.Files.list;
 import java.util.List;
 import jsonconverter.BE.Config;
 import jsonconverter.BE.TaskInOurProgram;
@@ -20,16 +19,15 @@ public class NewConfigValidations {
     {
         for(Config configInList : configList)
         {
+            System.out.println(configInList.getConfigName());
             if(configInList.getConfigName().equals(config.getConfigName()))
             {
-                return false;
+                System.out.println("jest");
+               return false;
+               
             }
         }
         return true;
     }
-    
-    private void checkIfYouCanUseConfig(TaskInOurProgram currentTask,List<Config> configList)
-    {
-      
-    }
+  
 }

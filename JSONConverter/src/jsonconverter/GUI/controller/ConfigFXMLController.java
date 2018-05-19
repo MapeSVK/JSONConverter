@@ -17,7 +17,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.AnchorPane;
@@ -151,12 +150,12 @@ public class ConfigFXMLController implements Initializable {
         } else {
             username = "Unknown";
         }
-         // if (model.checkIfConfigExists(createConfig())) {
+         if (model.checkIfConfigExists(choosenConfig)) {
        model.saveConfigToDatabase(createConfig());        
         closeWindow();
-        //   } else {
-        //      Alert("Config already exists", "Config with this name already exists!");
-        //    }
+           } else {
+             Alert("Config already exists", "Config with this name already exists!");
+           }
     }
 
     @FXML
@@ -276,7 +275,7 @@ public class ConfigFXMLController implements Initializable {
 
         newConfig.setConfigName(headerNameField.getText());
         newConfig.setPrivacy(checkBoxPrivacy.isSelected());
-        newConfig.setCreatorName(username);
+        newConfig.setCreatorName(model.getUserName());
         
         return newConfig;
     }

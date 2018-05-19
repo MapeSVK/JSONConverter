@@ -71,10 +71,10 @@ public class Model {
         allConfigObservableArrayList.add(config);
     }
 
-    public void loadConfigFromDatabase() {
-        allConfigObservableArrayList.clear();
-        allConfigObservableArrayList.addAll(manager.getAllConfigs());
-    }
+//    public void loadConfigFromDatabase() {
+//        allConfigObservableArrayList.clear();
+//        allConfigObservableArrayList.addAll(manager.getAllConfigs());
+//    }
 
     public ObservableList<Config> getAllConfigObservableArrayList() {
         return allConfigObservableArrayList;
@@ -102,5 +102,63 @@ public class Model {
 
     public String getUserName() {
         return manager.getUserName();
+    } 
+     /* gets all available configs for current user */
+    public List<Config> getAllAvailableConfigs() {
+        return manager.getAllAvailableConfigs();
+    }
+    
+    /* gets all configs for current user */
+    public List<Config> getAllConfigs() {
+        return manager.getAllConfigs();
+    }
+    
+    public void checkIfYouCanUseConfig()
+    {
+        allConfigObservableArrayList.clear();
+        int checkForErrors=0;
+      int i=0;
+      for(Config config : getAllAvailableConfigs())
+      {
+          System.out.println(config.getConfigName());
+          i=0;
+          checkForErrors=0;
+          while(i<15)
+          {
+            String configString = config.getAllGetters(i);
+       
+            if(configString.contains("&&") && !configString.equals(""))
+            {     System.out.println(configString);
+            
+                String[] splitedConfig = configString.split("&&");
+                if(!getOnlyFileHeaders().contains(splitedConfig[0]))
+                {
+                    System.out.println(splitedConfig[0]);
+                checkForErrors++;
+                }
+                if(!getOnlyFileHeaders().contains(splitedConfig[1]))
+                {
+                     System.out.println(splitedConfig[1]);
+                    checkForErrors++;   
+                }
+            }           
+          else  if(!getOnlyFileHeaders().contains(configString) && !configString.equals(""))
+                {
+                    System.out.println(configString);
+                  checkForErrors++;
+                }
+              i++;
+          }
+          if(checkForErrors==0)
+          {
+              System.out.println(config.getConfigName());
+              allConfigObservableArrayList.add(config);
+          }
+      }
+    }
+    //- - - - - - - - - - - - - - - - - - - - VALIDATIONS - - - - - - - - - - - - - - - - - - - -
+    public boolean checkIfConfigExists(Config config)
+    {
+        return manager.checkIfConfigExists(config, manager.getAllConfigs());
     }
 }
