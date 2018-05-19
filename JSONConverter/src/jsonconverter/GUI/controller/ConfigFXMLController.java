@@ -143,11 +143,7 @@ public class ConfigFXMLController implements Initializable {
 
     @FXML
     private void saveButtonOnAction(ActionEvent event) throws ParseException {
-        if (checkBoxPrivacy.isSelected()) {
-            username = model.getUserName();
-        } else {
-            username = "Unknown";
-        }
+        
         if (headerNameField.getText().isEmpty()) {
             JOptionPane.showMessageDialog(null, "Please, insert a valid name");
         } else {
@@ -200,9 +196,7 @@ public class ConfigFXMLController implements Initializable {
         headerNameField.setText(choosenConfig.getConfigName());
         checkBoxPrivacy.setSelected(choosenConfig.isPrivacy());
         username = choosenConfig.getCreatorName();
-
         fillIfEmptyEdit(choosenConfig);
-
         removeconfigButton.setDisable(false);
         this.choosenConfig = choosenConfig;
         return choosenConfig;
@@ -214,7 +208,7 @@ public class ConfigFXMLController implements Initializable {
         
         if (!siteNameField.getText().isEmpty() && siteNameFieldEmpty.isDisable() == false && !siteNameFieldEmpty.getText().isEmpty()) {
             newConfig.setSiteName(siteNameField.getText() + "&&" + siteNameFieldEmpty.getText());
-        } else if (siteNameFieldEmpty.isDisable() == true) {
+        } else {
             newConfig.setSiteName(siteNameField.getText());
         }
     
@@ -222,92 +216,91 @@ public class ConfigFXMLController implements Initializable {
     
         if (!assetSerialNumberField.getText().isEmpty() && assetSerialNumberFieldEmpty.isDisable() == false && !assetSerialNumberFieldEmpty.getText().isEmpty()) {
             newConfig.setAssetSerialNumber(siteNameField.getText() + "&&" + assetSerialNumberFieldEmpty.getText());
-        } else if (assetSerialNumberFieldEmpty.isDisable() == true) {
+        } else  {
             newConfig.setAssetSerialNumber(assetSerialNumberField.getText());
         }
 
         if (!createdOnField.getText().isEmpty() && createdOnFieldEmpty.isDisable() == false && !createdOnFieldEmpty.getText().isEmpty()) {
             newConfig.setCreatedOn(createdOnField.getText() + "&&" + createdOnFieldEmpty.getText());
-        } else if (createdOnFieldEmpty.isDisable() == true) {
+        } else  {
             newConfig.setCreatedOn(createdOnField.getText());
         }
 
         if (!createdByField.getText().isEmpty() && createdByFieldEmpty.isDisable() == false && !createdByFieldEmpty.getText().isEmpty()) {
             newConfig.setCreatedBy(createdByField.getText() + "&&" + createdByFieldEmpty.getText());
-        } else if (createdByFieldEmpty.isDisable() == true) {
+        } else {
             newConfig.setCreatedBy(createdByField.getText());
         }
 
-        if (!statusField.getText().isEmpty() && statusFieldEmpty.isDisable() == false && !statusFieldEmpty.getText().isEmpty()) {
+        if (statusFieldEmpty.isDisable() == false && !statusFieldEmpty.getText().isEmpty()) {
             newConfig.setStatus(statusField.getText() + "&&" + statusFieldEmpty.getText());
-        } else if (statusFieldEmpty.isDisable() == true) {
+        } else{
             newConfig.setStatus(statusField.getText());
         }
 
-        if (!estimatedTimeField.getText().isEmpty() && estimatedTimeFieldEmpty.isDisable() == false && !estimatedTimeFieldEmpty.getText().isEmpty()) {
+        if ( estimatedTimeFieldEmpty.isDisable() == false && !estimatedTimeFieldEmpty.getText().isEmpty()) {
             newConfig.setEstimatedTime(estimatedTimeField.getText() + "&&" + estimatedTimeFieldEmpty.getText());
-        } else if (statusFieldEmpty.isDisable() == true) {
+        } else {
             newConfig.setEstimatedTime(estimatedTimeField.getText());
         }
 
-        if (!typeField.getText().isEmpty() && typeFieldEmpty.isDisable() == false && !typeFieldEmpty.getText().isEmpty()) {
+        if (typeFieldEmpty.isDisable() == false && !typeFieldEmpty.getText().isEmpty()) {
             newConfig.setType(typeField.getText() + "&&" + typeFieldEmpty.getText());
-        } else if (typeFieldEmpty.isDisable() == true) {
+        } else if (!typeField.getText().isEmpty()) {
             newConfig.setType(typeField.getText());
         }
 
-        if (!externalWorkOrderIdField.getText().isEmpty() && externalWorkOrderIdFieldEmpty.isDisable() == false && !externalWorkOrderIdFieldEmpty.getText().isEmpty()) {
+        if ( externalWorkOrderIdFieldEmpty.isDisable() == false && !externalWorkOrderIdFieldEmpty.getText().isEmpty()) {
             newConfig.setExternalWorkOrderId(externalWorkOrderIdField.getText() + "&&" + externalWorkOrderIdFieldEmpty.getText());
-        } else if (externalWorkOrderIdFieldEmpty.isDisable() == true) {
+        } else if (!externalWorkOrderIdField.getText().isEmpty()) {
             newConfig.setExternalWorkOrderId(externalWorkOrderIdField.getText());
         }
 
-        if (!systemStatusField.getText().isEmpty() && systemStatusFieldEmpty.isDisable() == false && !systemStatusFieldEmpty.getText().isEmpty()) {
+        if ( systemStatusFieldEmpty.isDisable() == false && !systemStatusFieldEmpty.getText().isEmpty()) {
             newConfig.setSystemStatus(systemStatusField.getText() + "&&" + systemStatusFieldEmpty.getText());
-        } else if (systemStatusFieldEmpty.isDisable() == true) {
+        } else if (!systemStatusField.getText().isEmpty()) {
             newConfig.setSystemStatus(systemStatusField.getText());
         }
 
-        if (!userStatusField.getText().isEmpty() && userStatusFieldEmpty.isDisable() == false && !userStatusFieldEmpty.getText().isEmpty()) {
+        if ( userStatusFieldEmpty.isDisable() == false && !userStatusFieldEmpty.getText().isEmpty()) {
             newConfig.setUserStatus(userStatusField.getText() + "&&" + userStatusFieldEmpty.getText());
-        } else if (userStatusFieldEmpty.isDisable() == true) {
+        } else if (!userStatusField.getText().isEmpty()) {
             newConfig.setUserStatus(userStatusField.getText());
         }
 
-        if (!nameField.getText().isEmpty() && nameFieldEmpty.isDisable() == false && !nameFieldEmpty.getText().isEmpty()) {
+        if ( nameFieldEmpty.isDisable() == false && !nameFieldEmpty.getText().isEmpty()) {
             newConfig.setName(nameField.getText() + "&&" + nameFieldEmpty.getText());
-        } else if (nameFieldEmpty.isDisable() == true) {
+        } else if (!nameField.getText().isEmpty()) {
             newConfig.setName(nameField.getText());
         }
 
-        if (!priorityField.getText().isEmpty() && priorityFieldEmpty.isDisable() == false && !priorityFieldEmpty.getText().isEmpty()) {
+        if ( priorityFieldEmpty.isDisable() == false && !priorityFieldEmpty.getText().isEmpty()) {
             newConfig.setPriority(priorityField.getText() + "&&" + priorityFieldEmpty.getText());
-        } else if (priorityFieldEmpty.isDisable() == true) {
+        } else if (!priorityField.getText().isEmpty()) {
             newConfig.setPriority(priorityField.getText());
         }
 
-        if (!latestFinishDateField.getText().isEmpty() && latestFinishDateFieldEmpty.isDisable() == false && !latestFinishDateFieldEmpty.getText().isEmpty()) {
+        if (latestFinishDateFieldEmpty.isDisable() == false && !latestFinishDateFieldEmpty.getText().isEmpty()) {
             newConfig.setLatestFinishDate(latestFinishDateField.getText() + "&&" + latestFinishDateFieldEmpty.getText());
-        } else if (latestFinishDateFieldEmpty.isDisable() == true) {
+        } else if (!latestFinishDateField.getText().isEmpty() ) {
             newConfig.setLatestFinishDate(latestFinishDateField.getText());
         }
 
-        if (!earliestStartDateField.getText().isEmpty() && earliestStartDateFieldEmpty.isDisable() == false && !earliestStartDateFieldEmpty.getText().isEmpty()) {
+        if (earliestStartDateFieldEmpty.isDisable() == false && !earliestStartDateFieldEmpty.getText().isEmpty()) {
             newConfig.setEarliestStartDate(earliestStartDateField.getText() + "&&" + earliestStartDateFieldEmpty.getText());
-        } else if (earliestStartDateFieldEmpty.isDisable() == true) {
+        } else if (!earliestStartDateField.getText().isEmpty()) {
             newConfig.setEarliestStartDate(earliestStartDateField.getText());
         }
 
-        if (!latestStartDateField.getText().isEmpty() && latestStartDateFieldEmpty.isDisable() == false && !latestStartDateFieldEmpty.getText().isEmpty()) {
+        if ( latestStartDateFieldEmpty.isDisable() == false && !latestStartDateFieldEmpty.getText().isEmpty()) {
             newConfig.setLatestStartDate(latestStartDateField.getText() + "&&" + latestStartDateFieldEmpty.getText());
-        } else if (latestStartDateFieldEmpty.isDisable() == true) {
+        } else if (!latestStartDateField.getText().isEmpty()) {
             newConfig.setLatestStartDate(latestStartDateField.getText());
         }
 
         newConfig.setConfigName(headerNameField.getText());
         newConfig.setPrivacy(checkBoxPrivacy.isSelected());
-        newConfig.setCreatorName(username);
-        newConfig.setCinfig_id(choosenConfig.getCinfig_id());
+        newConfig.setCreatorName(model.getUserName());
 
         return newConfig;
     }
