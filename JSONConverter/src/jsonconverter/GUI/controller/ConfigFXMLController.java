@@ -147,7 +147,6 @@ public class ConfigFXMLController implements Initializable {
             JOptionPane.showMessageDialog(null, "Please, insert a valid name");
         } else {
             //   if (model.checkIfConfigExists(createConfig())) {
-            model = new Model();
             model.saveConfigToDatabase(createConfig(), isEditMode);
             closeWindow();
         }
@@ -167,7 +166,7 @@ public class ConfigFXMLController implements Initializable {
                 "Are you sure?",
                 JOptionPane.YES_NO_OPTION);
         if (selectedOption == JOptionPane.YES_OPTION) {
-            model = new Model();
+            System.out.println("CIPA");
             model.removeConfigToDatabase(choosenConfig);
             closeWindow();
         }

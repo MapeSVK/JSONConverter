@@ -52,7 +52,7 @@ public class Converter {
                     checkConfig(fields, task.getConfig().getStatus(), task),
                     getPlanning(task, fields));
 
-            TimeUnit.MILLISECONDS.sleep(200);
+           TimeUnit.MILLISECONDS.sleep(100);
             jasonList.add(newJson);
             objectCounter++;
             task.update(objectCounter);

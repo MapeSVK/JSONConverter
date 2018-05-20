@@ -4,9 +4,7 @@ import com.jfoenix.controls.JFXDatePicker;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -22,7 +20,6 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -63,8 +60,6 @@ public class MainFXMLController implements Initializable {
     @FXML
     private TableColumn<TaskInOurProgram, Button> stopButtonColumn;
     @FXML
-    private TableColumn<TaskInOurProgram, Button> pauseButtonColumn;
-    @FXML
     private TableColumn<TaskInOurProgram, Double> progressCircleColumn;
     @FXML
     private ChoiceBox<Config> configChoiceBox;
@@ -86,7 +81,6 @@ public class MainFXMLController implements Initializable {
 
     private String newFileInfo = newFileName + newFileExtension;
     private Model model = new Model();
-    private HostName hostName = new HostName();
     private TaskInOurProgram task;
     private ExecutorService executor = Executors.newFixedThreadPool(3);
     @FXML
@@ -119,6 +113,8 @@ public class MainFXMLController implements Initializable {
 
     @FXML
     private Button editButton;
+    @FXML
+    private TableColumn<TaskInOurProgram, Button> closeButtonColumn;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -179,7 +175,7 @@ public class MainFXMLController implements Initializable {
         configNameColumn.setCellValueFactory(new PropertyValueFactory("configName"));
 
         stopButtonColumn.setCellValueFactory(new PropertyValueFactory("pauseTask"));
-        pauseButtonColumn.setCellValueFactory(new PropertyValueFactory("closeTask"));
+        closeButtonColumn.setCellValueFactory(new PropertyValueFactory("closeTask"));
 
         TableColumn<TaskInOurProgram, String> statusCol = new TableColumn("Status");
         statusCol.setCellValueFactory(new PropertyValueFactory<TaskInOurProgram, String>(
@@ -294,7 +290,7 @@ public class MainFXMLController implements Initializable {
         }
 
         pauseConvertingClick();
-
+        closeTaskButtonClick();
     }
 
     public void activeDatePickersInHistoryTab() {
@@ -394,6 +390,26 @@ public class MainFXMLController implements Initializable {
             });
         }
     }
+    
+    public void closeTaskButtonClick() {
+        for (TaskInOurProgram task : model.getTasksInTheTableView()) {
+             task.getCloseTask().setGraphic(new ImageView(closeImage));
+             
+    task.getCloseTask().setOnAction(new EventHandler<ActionEvent>() {
+                 @Override
+                 public void handle(ActionEvent event) {
+                     
+                   if(task.isPause()==true)
+                   {
+                   task.continueThis();           
+                       task.cancel();
+                   }
+                   task.cancel();
+        model.getTasksInTheTableView().remove(task);
+                 }
+             });
+        }
+    }
 
     /*
     *   This method contains mainly the directory chooser interface.
@@ -451,7 +467,13 @@ public class MainFXMLController implements Initializable {
     
     @FXML
     private void deleteTasksButtonClick(ActionEvent event) {
-        
+           for (TaskInOurProgram task : model.getTasksInTheTableView()) {    
+               if(task.isPause())
+                   task.continueThis();
+               
+                task.cancel();      
+        }
+           model.getTasksInTheTableView().clear();
     }
 
     @FXML
@@ -528,14 +550,14 @@ public class MainFXMLController implements Initializable {
 
     public void createHistoryForTask(TaskInOurProgram task) {
         /* create new history after button is presset */
-        History history = new History(getFormatedActualDateAndTimeAsString(), 1, hostName.getUserName(),
+        History history = new History(getFormatedActualDateAndTimeAsString(), 1, model.getUserName(),
                task.getFileName(), true, "Error");
         model.addHistoryToTheDatabase(history);
     }
 
     public void createHistoryOfWholeAction() {
         /* create new history after button is presset */
-        History history = new History(getFormatedActualDateAndTimeAsString(), 1, hostName.getUserName(),
+        History history = new History(getFormatedActualDateAndTimeAsString(), 1, model.getUserName(),
                 "Multiple Conversion (" + tasksTableView.getItems().size() + " files)", true, "Error");
         model.addHistoryToTheDatabase(history);
     }
@@ -576,6 +598,7 @@ public class MainFXMLController implements Initializable {
             root = loader.load();
             ConfigFXMLController controller = loader.getController();
             controller.setConfig(configChoiceBox.getValue());
+            controller.getModel(model);
             controller.setToolTips();
             controller.setEditMode();
             controller.removeconfigButton.setOpacity(1);

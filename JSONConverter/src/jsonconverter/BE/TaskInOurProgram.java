@@ -34,7 +34,7 @@ public class TaskInOurProgram extends Task<Void> {
         this.configName = configName;
         this.extensionOfTheFile = extensionOfTheFile;
         this.pauseTask = new Button("");
-        //       this.closeTask = new Button("");       this needs to be added in second sprint
+        this.closeTask = new Button(""); 
         this.pauseTask.getStyleClass().clear();
         this.pauseTask.getStyleClass().add("pauseButtons");
     }

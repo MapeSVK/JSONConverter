@@ -2,13 +2,10 @@ package jsonconverter.GUI.model;
 
 import java.io.File;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
-import java.time.temporal.ChronoField;
 import static java.time.temporal.ChronoField.MONTH_OF_YEAR;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
@@ -50,7 +47,7 @@ public class Model {
 
     /* adding tasks to the observableArrayList */
     public void addTask(TaskInOurProgram task) {
-        tasksInTheTableView.add(0, task);
+        tasksInTheTableView.add(task);
     }
 
     /* getting observableArrayList with the tasks */
@@ -87,7 +84,8 @@ public class Model {
 
     public void saveConfigToDatabase(Config config,  boolean isEditMode) {
         manager.saveConfigToDatabase(config, isEditMode);
-        allConfigObservableArrayList.add(config);       
+        allConfigObservableArrayList.add(config); 
+        System.out.println("DUPA");
     }
 
     public ObservableList<Config> getAllConfigObservableArrayList() {
@@ -199,6 +197,7 @@ public class Model {
           }
       }
     }
+
     //- - - - - - - - - - - - - - - - - - - - VALIDATIONS - - - - - - - - - - - - - - - - - - - -
     public boolean checkIfConfigExists(Config config)
     {
