@@ -18,7 +18,7 @@
         <tabs>
           <Tab text="CONVERTER">
                <content>
-                  <AnchorPane id="AnchorPane" onDragDetected="#historyPageButtonClick" prefHeight="564.0" prefWidth="908.0">
+                  <AnchorPane id="AnchorPane" prefHeight="564.0" prefWidth="908.0">
                      <children>
                         <Button layoutX="22.0" layoutY="84.0" mnemonicParsing="false" onAction="#importFileButtonClick" prefHeight="27.0" prefWidth="152.0" style="-fx-background-color: #0D5F76; -fx-text-fill: #fff;" text="Import">
                            <font>

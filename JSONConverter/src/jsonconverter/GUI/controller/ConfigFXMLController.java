@@ -23,6 +23,7 @@ import javafx.scene.control.Tooltip;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import jsonconverter.BE.Config;
+import jsonconverter.BE.History;
 import jsonconverter.GUI.model.Model;
 import org.controlsfx.control.textfield.TextFields;
 
@@ -148,21 +149,22 @@ public class ConfigFXMLController implements Initializable {
     private void saveButtonOnAction(ActionEvent event) throws ParseException {
 
         if (headerNameField.getText().isEmpty()) {
-            Alert("Error", "Please, insert a valid name");
+            model.Alert("Error", "Please, insert a valid name");
         } else {
-            if(model.wrongInputValidation(configFieldsPane))
-            {
-                System.out.println("MOZNA ZAPISAC");
-//            if (model.checkIfConfigExists(createConfig())) {
-//                model.saveConfigToDatabase(createConfig(), isEditMode);
-//                closeWindow();
-//            } else {
-//                Alert("Config already exists", "Config with this name already exists!");
-//            }
-            }
-            else
-            {
-                 Alert("Fields filled incorrectly", "Fill fields correctly");
+            if (model.wrongInputValidation(configFieldsPane)) {
+                if (model.checkIfConfigExists(createConfig())) {
+                    model.saveConfigToDatabase(createConfig(), isEditMode);
+                    if (isEditMode) {
+                        createHistoryAfterEditConfig(choosenConfig);
+                    } else {
+                        createHistoryAfterAddingNewConfig(choosenConfig);
+                    }
+                    model.closeWindow(saveConfigButton);
+                } else {
+                    model.Alert("Configuration already exists", "Configuration with this name already exists!");
+                }
+            } else {
+                model.Alert("Fields filled incorrectly", "Fill fields correctly");
             }
         }
     }
@@ -175,8 +177,9 @@ public class ConfigFXMLController implements Initializable {
         alert.setContentText("It will be removed permanently. Are you sure?");
         alert.showAndWait();
         if (alert.getResult() == ButtonType.OK) {
-        model.removeConfigToDatabase(choosenConfig);
-        closeWindow();
+        model.removeConfigToDatabase(choosenConfig);      
+        createHistoryAfterDeletingNewConfig(choosenConfig); //create history row after removing
+        model.closeWindow(saveConfigButton);
         }
     }
 
@@ -313,18 +316,7 @@ public class ConfigFXMLController implements Initializable {
         return newConfig;
     }
 
-    /* creates pop up alert window */
-    private void Alert(String title, String text) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle(title);
-        alert.setContentText(text);
-        alert.showAndWait();
-    }
 
-    private void closeWindow() {
-        Stage stage = (Stage) saveConfigButton.getScene().getWindow();
-        stage.close();
-    }
 
     /* updates helpers */
     private void checkTextProperty() {
@@ -403,4 +395,31 @@ public class ConfigFXMLController implements Initializable {
             }
         }
     }
+    
+    /* ADDING TO THE HISTORY  */
+    
+    /* add config */
+    private void createHistoryAfterAddingNewConfig(Config config) {
+        /* create new history after button is presset */
+        History history = new History(model.getFormatedActualDateAndTimeAsString(), 1, model.getUserName(),
+                config.getConfigName() + "configuration was created", false, "");
+        model.addHistoryToTheDatabase(history);
+    }
+
+    /* edit config */
+    private void createHistoryAfterEditConfig(Config config) {
+        /* create new history after button is presset */
+        History history = new History(model.getFormatedActualDateAndTimeAsString(), 1, model.getUserName(),
+                config.getConfigName() + "configuration was eddited", false, "");
+        model.addHistoryToTheDatabase(history);
+    }
+    
+    /* delete config */
+    private void createHistoryAfterDeletingNewConfig(Config config) {
+        /* create new history after button is presset */
+        History history = new History(model.getFormatedActualDateAndTimeAsString(), 1, model.getUserName(),
+                config.getConfigName() + "configuration was deleted", false, "");
+        model.addHistoryToTheDatabase(history);
+    }
+
 }

@@ -117,10 +117,9 @@ public class MainFXMLController implements Initializable {
     private final Image errorImage = new Image("file:images/errorImage.png");
     private Date fromDate;
     private Date toDate;
-    private LocalDateTime nowLocalDateTime = LocalDateTime.now();
     private java.sql.Date currentDate = java.sql.Date.valueOf(LocalDate.now());
-   
-    /* Stage needed to display error message */   
+
+    /* Stage needed to display error message */
     Stage stage;
 
     @Override
@@ -146,19 +145,18 @@ public class MainFXMLController implements Initializable {
         /* style history tableView and show error as a pop-up */
         openErrorMessageAfterHoveringOverRow();
 
-      
     }
 
     /* imports the file into program */
     @FXML
     private void importFileButtonClick(ActionEvent event) {
         fileChooser = new FileChooser();
-       fileChooserSettings();
+        fileChooserSettings();
         fileChoosedByImport = fileChooser.showOpenDialog(null);
         if (fileChoosedByImport != null) {
             filePath = fileChoosedByImport.toString();
             nameOfImportedFile = gettingTheFileNameFromThePath(fileChoosedByImport);
-           fileExtendionIdentifier();
+            fileExtendionIdentifier();
             model.checkIfYouCanUseConfig();
             nameOfImportedFileLabel.setText(nameOfImportedFile);
         } else {
@@ -173,7 +171,7 @@ public class MainFXMLController implements Initializable {
         File selectedDirectory = directoryChooser.showDialog(chooseDirectoryButton.getScene().getWindow());
         directoryChooser.setTitle("Select a directory");
         if (selectedDirectory == null) {
-            Alert("Is that correct?","You did not select directory");
+            model.Alert("Is that correct?", "You did not select directory");
         } else {
             System.out.println("Selected directory: " + selectedDirectory.getAbsolutePath());
             directoryPath = selectedDirectory.getAbsoluteFile();
@@ -230,16 +228,13 @@ public class MainFXMLController implements Initializable {
         model.getTasksInTheTableView().clear();
     }
 
-    @FXML
-    private void historyPageButtonClick(MouseEvent event) {
-
-    }
+    
 
     /* pops up window where user can create new config */
     @FXML
     private void createNewConfigButtonClick(ActionEvent event) throws IOException {
         if (filePath.equals("") || nameOfImportedFile.equals("")) {
-            Alert("Error", "No file imported. Please, import one previously");
+            model.Alert("Error", "No file imported. Please, import one previously");
         } else {
             Parent root;
             Stage stage = new Stage();
@@ -256,14 +251,7 @@ public class MainFXMLController implements Initializable {
     /* adds task to the taskTable */
     @FXML
     private void addTaskButtonClick(ActionEvent event) {
-        if (filePath.equals("") || nameOfImportedFile.equals("")) {
-            Alert("Error", "No file imported. Please, import one previously");
-
-        } else {
-            if (configChoiceBox.getSelectionModel().isEmpty()) {
-                Alert("Error", "Choose a valid configuration");
-            } else {
-            /* CONDITIONS */
+        /* CONDITIONS */
         boolean isRightNameOfTheFile = false;
         boolean isConfigSet = false;
         boolean isRightExtension = false;
@@ -290,19 +278,22 @@ public class MainFXMLController implements Initializable {
             task.setFilePath(directoryPath);
             task.setFileName(nameOfImportedFile);
             model.addTask(task);
-        }
+            
+            /* if conditions were met then add to the history */
+            createHistoryForTask(task);
+            
+            /* if task is added to the tableView, you can use pause or close */
+            pauseConvertingClick();
+            closeTaskButtonClick();           
+        }        
+    }
 
-        pauseConvertingClick();
-        closeTaskButtonClick();
-    }
-        }
-    }
 
     /* pops up window where user can edit chosen chonfig */
     @FXML
     private void editConfigButtonClick(ActionEvent event) throws IOException, ParseException {
         if (configChoiceBox.getSelectionModel().isEmpty()) {
-                 Alert("Error", "Choose a valid configuration");
+            model.Alert("Error", "Choose a valid configuration");
         } else {
             Parent root;
             Stage stage = new Stage();
@@ -342,8 +333,8 @@ public class MainFXMLController implements Initializable {
 
         tasksTableView.getColumns().addAll(statusCol);
 
-                pauseConvertingClick();
-            }       
+        pauseConvertingClick();
+    }
 
     /* getting data from the model and setting this data in the choiceBox */
     private void setConfigChoiceBoxItems() {
@@ -359,7 +350,7 @@ public class MainFXMLController implements Initializable {
         FileChooser.ExtensionFilter CSV = new FileChooser.ExtensionFilter("CSV", "*.csv");
         FileChooser.ExtensionFilter XLSX = new FileChooser.ExtensionFilter("XLSX", "*.xlsx");
         FileChooser.ExtensionFilter XML = new FileChooser.ExtensionFilter("XML", "*.xml");
-       fileChooser.getExtensionFilters().addAll(ALL, CSV, XLSX, XML);
+        fileChooser.getExtensionFilters().addAll(ALL, CSV, XLSX, XML);
 
     }
 
@@ -513,7 +504,7 @@ public class MainFXMLController implements Initializable {
         }
     }
 
- /* HISTORY TAB */
+    /* HISTORY TAB */
     private void setHistoryTableViewColumns() {
         dateAndTimeColumn.setCellValueFactory(new PropertyValueFactory("dateAndTime"));
         taskNameColumn.setCellValueFactory(new PropertyValueFactory("fileName"));
@@ -526,7 +517,7 @@ public class MainFXMLController implements Initializable {
        3. show the image of the error in the end of the row
      */
     private void openErrorMessageAfterHoveringOverRow() {
-        
+
         historyTableView.setRowFactory(tableView -> {
             final TableRow<History> row = new TableRow<>();
 
@@ -546,7 +537,7 @@ public class MainFXMLController implements Initializable {
 
                 row.hoverProperty().addListener((observable) -> {
                     History historyRow = row.getItem();
-                    
+
                     Point p = MouseInfo.getPointerInfo().getLocation();
                     int x = p.x;
                     int y = p.y;
@@ -555,7 +546,7 @@ public class MainFXMLController implements Initializable {
                     popup.setX(x - 300);
                     popup.setY(y - 200);
                     TextArea ta = new TextArea();
-                    
+
                     AnchorPane layout = new AnchorPane();
                     stageSingleton().setScene(new Scene(layout));
 
@@ -564,20 +555,19 @@ public class MainFXMLController implements Initializable {
                         popup.getContent().addAll(ta);
                         stageSingleton().show();
                         popup.show(stageSingleton());
-                        
+
                     } else if (!row.isHover() && his.equals(historyRow)) {
                         popup.hide();
                         stageSingleton().close();
                     }
-                    
                 });
-            }            
+            }
             return row;
         });
     }
-   
+
     public Stage stageSingleton() {
-        
+
         if (stage == null) {
             stage = new Stage();
             stage.setWidth(1);
@@ -585,38 +575,23 @@ public class MainFXMLController implements Initializable {
         }
         return stage;
     }
-    
-            
-    /* sets right format of the date */
-    private String getFormatedActualDateAndTimeAsString() {
-        DateTimeFormatter df = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
-        String dateAndTimeString = df.format(nowLocalDateTime);
-        return dateAndTimeString;
-    }
 
     /* creates new history for task */
     private void createHistoryForTask(TaskInOurProgram task) {
         /* create new history after button is presset */
-        History history = new History(getFormatedActualDateAndTimeAsString(), 1, model.getUserName(),
-                task.getFileName(), true, "Error");
+        History history = new History(model.getFormatedActualDateAndTimeAsString(), 1, model.getUserName(),
+                "Task" + task.getFileName() + "was converted", true, "Error");
         model.addHistoryToTheDatabase(history);
     }
-
+    
     /* creates history for action */
-    public void createHistoryOfWholeAction() {
+    private void createHistoryOfWholeAction() {
         /* create new history after button is presset */
-        History history = new History(getFormatedActualDateAndTimeAsString(), 1, model.getUserName(),
+        History history = new History(model.getFormatedActualDateAndTimeAsString(), 1, model.getUserName(),
                 "Multiple Conversion (" + tasksTableView.getItems().size() + " files)", true, "Error");
         model.addHistoryToTheDatabase(history);
     }
-
-    /* creates alert pop up window */
-    private void Alert(String title, String text) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle(title);
-        alert.setContentText(text);
-        alert.showAndWait();
-    }
+    
 
     /* ends executor when the main window is closed */
     public void getStage(Stage stage) {
