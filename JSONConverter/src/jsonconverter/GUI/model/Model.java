@@ -14,6 +14,8 @@ import java.util.List;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.SortedList;
+import javafx.scene.Node;
+import javafx.scene.layout.AnchorPane;
 import jsonconverter.BE.Config;
 import jsonconverter.BE.History;
 import jsonconverter.BE.TaskInOurProgram;
@@ -202,5 +204,14 @@ public class Model {
     /* checks if config with this name aleready exists */
     public boolean checkIfConfigExists(Config config) {
         return manager.checkIfConfigExists(config, manager.getAllConfigs());
+    }
+
+          public void changeColorIfWrong(Node node,String fieldText,List<String> headersList)
+     {
+          manager.changeColorIfWrong(node, fieldText, headersList);
+     }
+
+    public boolean wrongInputValidation(AnchorPane pane) {
+        return manager.wrongInputValidation(pane);
     }
 }

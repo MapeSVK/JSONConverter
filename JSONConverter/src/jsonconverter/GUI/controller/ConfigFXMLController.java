@@ -150,11 +150,19 @@ public class ConfigFXMLController implements Initializable {
         if (headerNameField.getText().isEmpty()) {
             Alert("Error", "Please, insert a valid name");
         } else {
-            if (model.checkIfConfigExists(createConfig())) {
-                model.saveConfigToDatabase(createConfig(), isEditMode);
-                closeWindow();
-            } else {
-                Alert("Config already exists", "Config with this name already exists!");
+            if(model.wrongInputValidation(configFieldsPane))
+            {
+                System.out.println("MOZNA ZAPISAC");
+//            if (model.checkIfConfigExists(createConfig())) {
+//                model.saveConfigToDatabase(createConfig(), isEditMode);
+//                closeWindow();
+//            } else {
+//                Alert("Config already exists", "Config with this name already exists!");
+//            }
+            }
+            else
+            {
+                 Alert("Fields filled incorrectly", "Fill fields correctly");
             }
         }
     }
@@ -186,6 +194,7 @@ public class ConfigFXMLController implements Initializable {
         for (Node node : configFieldsPane.getChildren()) {
             if (node instanceof JFXTextField) {
                 TextFields.bindAutoCompletion(((JFXTextField) node), suggest);
+                model.changeColorIfWrong(node,((JFXTextField) node).getText(), model.getOnlyFileHeaders());
             }
         }
     }
@@ -319,6 +328,7 @@ public class ConfigFXMLController implements Initializable {
             if (node instanceof JFXTextField) {
                 ((JFXTextField) node).textProperty().addListener(e -> {
                     addAndRemoveHeadersFromBinding();
+                  model.changeColorIfWrong(node,((JFXTextField) node).getText(), model.getOnlyFileHeaders());
                 });
             }
         }

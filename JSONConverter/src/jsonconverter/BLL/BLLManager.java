@@ -5,10 +5,15 @@
  */
 package jsonconverter.BLL;
 
+import jsonconverter.BLL.Validations.NewConfigValidations;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javafx.scene.Node;
+import javafx.scene.layout.AnchorPane;
 import jsonconverter.BE.Config;
 import jsonconverter.BE.History;
 import jsonconverter.BE.TaskInOurProgram;
@@ -27,7 +32,10 @@ public class BLLManager {
     //- - - - - - - - - - - - - - - - - - - - CREATE JASON - - - - - - - - - - - - - - - - - - - -
     /* creates json file from JSONObject list */
     public void createJsonFile(String fileName, File filePath, TaskInOurProgram currentTask) {
-        manager.createJsonFile(fileName, filePath, convertJason.returnJasonObjects(currentTask));
+        try {
+            manager.createJsonFile(fileName, filePath, convertJason.returnJasonObjects(currentTask));
+        } catch (InterruptedException ex) {
+        }
     }
 
     //- - - - - - - - - - - - - - - - - - - - CONVERTER - - - - - - - - - - - - - - - - - - - -
@@ -106,4 +114,13 @@ public class BLLManager {
         return configValidations.checkIfConfigExists(config, configList);
 
     }
+          public void changeColorIfWrong(Node node,String fieldText,List<String> headersList)
+     {
+          configValidations.changeColorIfWrong(node, fieldText, headersList);
+     }
+     
+         public boolean wrongInputValidation(AnchorPane pane)
+         {
+             return configValidations.wrongInputValidation(pane);
+         }
 }
