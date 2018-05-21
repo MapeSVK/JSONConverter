@@ -516,7 +516,7 @@ public class MainFXMLController implements Initializable {
                     Popup popup = new Popup();
 
                     popup.setX(x - 300);
-                    popup.setY(y - 300);
+                    popup.setY(y - 200);
                     TextArea ta = new TextArea();
 
 
