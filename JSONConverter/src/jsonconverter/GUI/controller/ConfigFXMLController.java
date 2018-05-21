@@ -17,11 +17,11 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-import javax.swing.JOptionPane;
 import jsonconverter.BE.Config;
 import jsonconverter.GUI.model.Model;
 import org.controlsfx.control.textfield.TextFields;
@@ -142,9 +142,9 @@ public class ConfigFXMLController implements Initializable {
 
     @FXML
     private void saveButtonOnAction(ActionEvent event) throws ParseException {
-        
+
         if (headerNameField.getText().isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Please, insert a valid name");
+            Alert("Error", "Please, insert a valid name");
         } else {
             //   if (model.checkIfConfigExists(createConfig())) {
             model = new Model();
@@ -162,14 +162,14 @@ public class ConfigFXMLController implements Initializable {
 
     @FXML
     private void removeButtonOnAction(ActionEvent event) {
-        int selectedOption = JOptionPane.showConfirmDialog(null,
-                "It will be removed permanently. Are you sure?",
-                "Are you sure?",
-                JOptionPane.YES_NO_OPTION);
-        if (selectedOption == JOptionPane.YES_OPTION) {
-            model = new Model();
-            model.removeConfigToDatabase(choosenConfig);
-            closeWindow();
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Are you sure?");
+        alert.setContentText("It will be removed permanently. Are you sure?");
+        alert.showAndWait();
+        if (alert.getResult() == ButtonType.OK) {
+        model = new Model();
+        model.removeConfigToDatabase(choosenConfig);
+        closeWindow();
         }
     }
 
@@ -203,24 +203,22 @@ public class ConfigFXMLController implements Initializable {
     /* creates config based on users texFields and saves it in the database */
     private Config createConfig() {
         Config newConfig = new Config();
-        
+
         if (!siteNameField.getText().isEmpty() && siteNameFieldEmpty.isDisable() == false && !siteNameFieldEmpty.getText().isEmpty()) {
             newConfig.setSiteName(siteNameField.getText() + "&&" + siteNameFieldEmpty.getText());
         } else {
             newConfig.setSiteName(siteNameField.getText());
         }
-    
 
-    
         if (!assetSerialNumberField.getText().isEmpty() && assetSerialNumberFieldEmpty.isDisable() == false && !assetSerialNumberFieldEmpty.getText().isEmpty()) {
             newConfig.setAssetSerialNumber(siteNameField.getText() + "&&" + assetSerialNumberFieldEmpty.getText());
-        } else  {
+        } else {
             newConfig.setAssetSerialNumber(assetSerialNumberField.getText());
         }
 
         if (!createdOnField.getText().isEmpty() && createdOnFieldEmpty.isDisable() == false && !createdOnFieldEmpty.getText().isEmpty()) {
             newConfig.setCreatedOn(createdOnField.getText() + "&&" + createdOnFieldEmpty.getText());
-        } else  {
+        } else {
             newConfig.setCreatedOn(createdOnField.getText());
         }
 
@@ -232,11 +230,11 @@ public class ConfigFXMLController implements Initializable {
 
         if (statusFieldEmpty.isDisable() == false && !statusFieldEmpty.getText().isEmpty()) {
             newConfig.setStatus(statusField.getText() + "&&" + statusFieldEmpty.getText());
-        } else{
+        } else {
             newConfig.setStatus(statusField.getText());
         }
 
-        if ( estimatedTimeFieldEmpty.isDisable() == false && !estimatedTimeFieldEmpty.getText().isEmpty()) {
+        if (estimatedTimeFieldEmpty.isDisable() == false && !estimatedTimeFieldEmpty.getText().isEmpty()) {
             newConfig.setEstimatedTime(estimatedTimeField.getText() + "&&" + estimatedTimeFieldEmpty.getText());
         } else {
             newConfig.setEstimatedTime(estimatedTimeField.getText());
@@ -248,31 +246,31 @@ public class ConfigFXMLController implements Initializable {
             newConfig.setType(typeField.getText());
         }
 
-        if ( externalWorkOrderIdFieldEmpty.isDisable() == false && !externalWorkOrderIdFieldEmpty.getText().isEmpty()) {
+        if (externalWorkOrderIdFieldEmpty.isDisable() == false && !externalWorkOrderIdFieldEmpty.getText().isEmpty()) {
             newConfig.setExternalWorkOrderId(externalWorkOrderIdField.getText() + "&&" + externalWorkOrderIdFieldEmpty.getText());
         } else if (!externalWorkOrderIdField.getText().isEmpty()) {
             newConfig.setExternalWorkOrderId(externalWorkOrderIdField.getText());
         }
 
-        if ( systemStatusFieldEmpty.isDisable() == false && !systemStatusFieldEmpty.getText().isEmpty()) {
+        if (systemStatusFieldEmpty.isDisable() == false && !systemStatusFieldEmpty.getText().isEmpty()) {
             newConfig.setSystemStatus(systemStatusField.getText() + "&&" + systemStatusFieldEmpty.getText());
         } else if (!systemStatusField.getText().isEmpty()) {
             newConfig.setSystemStatus(systemStatusField.getText());
         }
 
-        if ( userStatusFieldEmpty.isDisable() == false && !userStatusFieldEmpty.getText().isEmpty()) {
+        if (userStatusFieldEmpty.isDisable() == false && !userStatusFieldEmpty.getText().isEmpty()) {
             newConfig.setUserStatus(userStatusField.getText() + "&&" + userStatusFieldEmpty.getText());
         } else if (!userStatusField.getText().isEmpty()) {
             newConfig.setUserStatus(userStatusField.getText());
         }
 
-        if ( nameFieldEmpty.isDisable() == false && !nameFieldEmpty.getText().isEmpty()) {
+        if (nameFieldEmpty.isDisable() == false && !nameFieldEmpty.getText().isEmpty()) {
             newConfig.setName(nameField.getText() + "&&" + nameFieldEmpty.getText());
         } else if (!nameField.getText().isEmpty()) {
             newConfig.setName(nameField.getText());
         }
 
-        if ( priorityFieldEmpty.isDisable() == false && !priorityFieldEmpty.getText().isEmpty()) {
+        if (priorityFieldEmpty.isDisable() == false && !priorityFieldEmpty.getText().isEmpty()) {
             newConfig.setPriority(priorityField.getText() + "&&" + priorityFieldEmpty.getText());
         } else if (!priorityField.getText().isEmpty()) {
             newConfig.setPriority(priorityField.getText());
@@ -280,7 +278,7 @@ public class ConfigFXMLController implements Initializable {
 
         if (latestFinishDateFieldEmpty.isDisable() == false && !latestFinishDateFieldEmpty.getText().isEmpty()) {
             newConfig.setLatestFinishDate(latestFinishDateField.getText() + "&&" + latestFinishDateFieldEmpty.getText());
-        } else if (!latestFinishDateField.getText().isEmpty() ) {
+        } else if (!latestFinishDateField.getText().isEmpty()) {
             newConfig.setLatestFinishDate(latestFinishDateField.getText());
         }
 
@@ -290,7 +288,7 @@ public class ConfigFXMLController implements Initializable {
             newConfig.setEarliestStartDate(earliestStartDateField.getText());
         }
 
-        if ( latestStartDateFieldEmpty.isDisable() == false && !latestStartDateFieldEmpty.getText().isEmpty()) {
+        if (latestStartDateFieldEmpty.isDisable() == false && !latestStartDateFieldEmpty.getText().isEmpty()) {
             newConfig.setLatestStartDate(latestStartDateField.getText() + "&&" + latestStartDateFieldEmpty.getText());
         } else if (!latestStartDateField.getText().isEmpty()) {
             newConfig.setLatestStartDate(latestStartDateField.getText());
@@ -302,7 +300,7 @@ public class ConfigFXMLController implements Initializable {
 
         return newConfig;
     }
-    
+
 //    /* VALIDATION */
 //    private void validation() {
 //        for (String header : model.getOnlyFileHeaders(converter)) {
@@ -315,9 +313,15 @@ public class ConfigFXMLController implements Initializable {
 //            }
 //        }
 //    }
-
     private void Alert(String title, String text) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setContentText(text);
+        alert.showAndWait();
+    }
+
+    private void ConfirmationAlert(String title, String text) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle(title);
         alert.setContentText(text);
         alert.showAndWait();

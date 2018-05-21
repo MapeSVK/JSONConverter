@@ -118,10 +118,9 @@ public class DALConfig {
             pstmt.setInt(1, config.getCinfig_id());
             int affected = pstmt.executeUpdate();
             if (affected < 1) {
-                throw new SQLException("Config could not be removed");
+               // throw new SQLException("Config could not be removed");
             } else {
                 System.out.println("Config removed correctly");
-
             }
             pool.checkIn(con);
         } catch (SQLException ex) {
@@ -179,7 +178,7 @@ public class DALConfig {
             }
             int affected = pstmt.executeUpdate();
             if (affected < 1) {
-                throw new SQLException("Config could not be saved");
+               // throw new SQLException("Config could not be saved");
             } else {
                 System.out.println("Config saved correctly");
             }

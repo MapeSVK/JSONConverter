@@ -43,7 +43,7 @@
                               <TableColumn fx:id="pauseButtonColumn" minWidth="0.0" prefWidth="0.0" />
                           </columns>
                         </TableView>
-                        <Button layoutX="399.0" layoutY="513.0" mnemonicParsing="false" onAction="#convertTasksButtonClick" text="CONVERT">
+                        <Button fx:id="convertTaskButton" layoutX="399.0" layoutY="513.0" mnemonicParsing="false" onAction="#convertTasksButtonClick" text="CONVERT">
                            <font>
                               <Font name="Arial Bold" size="13.0" />
                            </font></Button>

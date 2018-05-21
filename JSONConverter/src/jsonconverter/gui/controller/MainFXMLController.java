@@ -45,7 +45,6 @@ import javafx.stage.Modality;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
-import javax.swing.JOptionPane;
 import jsonconverter.BE.Config;
 import jsonconverter.BE.History;
 import jsonconverter.BE.TaskInOurProgram;
@@ -119,6 +118,8 @@ public class MainFXMLController implements Initializable {
 
     @FXML
     private Button editButton;
+    @FXML
+    private Button convertTaskButton;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -130,22 +131,20 @@ public class MainFXMLController implements Initializable {
         tasksTableView.setSelectionModel(null);
         historyTableView.setSelectionModel(null);
         model.loadAvailableConfig();
-       
+
         /* set history tableView */
         model.loadHistoryFromDatabase();
         historyTableView.setItems(model.getSortedAllHistory());
-                    
+
         /* set datePickers in History tab */
         toDate = currentDate;
         setPromptDateInDatePickerToEuropeanStyle();
         activeDatePickersInHistoryTab();
-      
+
         /* style history tableView and show error as a pop-up */
         openErrorMessageAfterHoveringOverRow();
-        
-        /*reverse order of history rows */
-        
 
+        /*reverse order of history rows */
     }
 
     @FXML
@@ -165,12 +164,6 @@ public class MainFXMLController implements Initializable {
         }
 
     }
-
-    
-   
-
-
-    
 
     /* set tableView columns */
     public void setTasksTableViewColumns() {
@@ -229,13 +222,12 @@ public class MainFXMLController implements Initializable {
             fileType = ".xml";
             labelFileExtension.setText("xml");
             model.setConverter(fileType, filePath);
-        }              
+        }
     }
 
     /**
      * getting the name of the file from the path
      */
-    
     public String gettingTheFileNameFromThePath(File file) {
         String nameOfTheFile = file.getName();
         int pos = nameOfTheFile.lastIndexOf(".");
@@ -248,7 +240,7 @@ public class MainFXMLController implements Initializable {
     @FXML
     private void createNewConfigButtonClick(ActionEvent event) throws IOException {
         if (filePath.equals("") || nameOfImportedFile.equals("")) {
-            JOptionPane.showMessageDialog(null, "No file imported. Please, import one previously");
+            Alert("Error", "No file imported. Please, import one previously");
         } else {
             Parent root;
             Stage stage = new Stage();
@@ -264,37 +256,45 @@ public class MainFXMLController implements Initializable {
 
     @FXML
     private void addTaskButtonClick(ActionEvent event) {
-        /* CONDITIONS */
-        boolean isRightNameOfTheFile = false;
-        boolean isConfigSet = false;
-        boolean isRightExtension = false;
+        if (filePath.equals("") || nameOfImportedFile.equals("")) {
+            Alert("Error", "No file imported. Please, import one previously");
 
-        if (nameOfImportedFile != null && !nameOfImportedFile.equals("")) {
-            isRightNameOfTheFile = true;
+        } else {
+            if (configChoiceBox.getSelectionModel().isEmpty()) {
+                Alert("Error", "Choose a valid configuration");
+            } else {
+                /* CONDITIONS */
+                boolean isRightNameOfTheFile = false;
+                boolean isConfigSet = false;
+                boolean isRightExtension = false;
+
+                if (nameOfImportedFile != null && !nameOfImportedFile.equals("")) {
+                    isRightNameOfTheFile = true;
+                }
+
+                if (!configChoiceBox.getSelectionModel().getSelectedItem().equals("")
+                        && configChoiceBox.getSelectionModel().getSelectedItem() != null) {
+                    isConfigSet = true;
+                }
+
+                if (!labelFileExtension.getText().equals("") && labelFileExtension.getText() != null) {
+                    isRightExtension = true;
+                }
+
+                /* ADDING */
+                if (isRightNameOfTheFile == true && isConfigSet == true && isRightExtension == true) {
+                    TaskInOurProgram task = new TaskInOurProgram(nameOfImportedFile, configChoiceBox.getSelectionModel().getSelectedItem().getConfigName(),
+                            labelFileExtension.getText());
+                    model.getConverter(task);
+                    task.setConfig(configChoiceBox.getValue());
+                    task.setFilePath(directoryPath);
+                    task.setFileName(nameOfImportedFile);
+                    model.addTask(task);
+                }
+
+                pauseConvertingClick();
+            }
         }
-
-        if (!configChoiceBox.getSelectionModel().getSelectedItem().equals("")
-                && configChoiceBox.getSelectionModel().getSelectedItem() != null) {
-            isConfigSet = true;
-        }
-
-        if (!labelFileExtension.getText().equals("") && labelFileExtension.getText() != null) {
-            isRightExtension = true;
-        }
-
-        /* ADDING */
-        if (isRightNameOfTheFile == true && isConfigSet == true && isRightExtension == true) {
-            TaskInOurProgram task = new TaskInOurProgram(nameOfImportedFile, configChoiceBox.getSelectionModel().getSelectedItem().getConfigName(),
-                    labelFileExtension.getText());
-            model.getConverter(task);
-            task.setConfig(configChoiceBox.getValue());
-            task.setFilePath(directoryPath);
-            task.setFileName(nameOfImportedFile);
-            model.addTask(task);
-        }
-
-        pauseConvertingClick();
-
     }
 
     public void activeDatePickersInHistoryTab() {
@@ -404,7 +404,7 @@ public class MainFXMLController implements Initializable {
         File selectedDirectory = directoryChooser.showDialog(chooseDirectoryButton.getScene().getWindow());
         directoryChooser.setTitle("Select a directory");
         if (selectedDirectory == null) {
-            JOptionPane.showMessageDialog(null, "You did not select any directory. Try again!");
+            Alert("Is that correct?", "You did not select any directory.");
         } else {
             System.out.println("Selected directory: " + selectedDirectory.getAbsolutePath());
             directoryPath = selectedDirectory.getAbsoluteFile();
@@ -414,44 +414,46 @@ public class MainFXMLController implements Initializable {
 
     @FXML
     private void convertTasksButtonClick(ActionEvent event) throws IOException {
+        if (directoryPathHasBeenSelected == false && convertTaskButton.isFocused()) {
+            Alert("Error","Directory must be choosed first");
 
-         for (TaskInOurProgram task : model.getTasksInTheTableView()) {
+        } else {
+            for (TaskInOurProgram task : model.getTasksInTheTableView()) {
 
-                    if (task.isIsExecutedForFirstTime() == false && task.isPause() == false) {
-                        executor.submit(task);
-                        task.setIsExecutedForFirstTime(true);
-                        task.getPauseTask().setGraphic(new ImageView(pauseImage));  
-                        
-                    } 
-                    else if (task.isIsExecutedForFirstTime() == true && task.isPause() == true && task.isIfWasStarted()==true) {
-                        task.getPauseTask().setGraphic(new ImageView(pauseImage));
-                        task.continueThis();
+                if (task.isIsExecutedForFirstTime() == false && task.isPause() == false) {
+                    executor.submit(task);
+                    task.setIsExecutedForFirstTime(true);
+                    task.getPauseTask().setGraphic(new ImageView(pauseImage));
 
-                    }   
+                } else if (task.isIsExecutedForFirstTime() == true && task.isPause() == true && task.isIfWasStarted() == true) {
+                    task.getPauseTask().setGraphic(new ImageView(pauseImage));
+                    task.continueThis();
+
+                }
+            }
+
+            createHistoryOfWholeAction();
+
         }
-        
-        createHistoryOfWholeAction();
-
     }
 
     @FXML
     private void pauseTasksButtonClick(ActionEvent event) throws InterruptedException {
-               for (TaskInOurProgram task : model.getTasksInTheTableView()) {
+        for (TaskInOurProgram task : model.getTasksInTheTableView()) {
 
             //set default image before clicking on the button
             //task.getPauseTask().setGraphic(new ImageView(playImage));
-
-                     if (task.isIsExecutedForFirstTime() == true && task.isPause() == false && task.isIfWasStarted()==true) {
-                        task.getPauseTask().setGraphic(new ImageView(playImage));
-                        task.pauseThis();
-               } 
+            if (task.isIsExecutedForFirstTime() == true && task.isPause() == false && task.isIfWasStarted() == true) {
+                task.getPauseTask().setGraphic(new ImageView(playImage));
+                task.pauseThis();
+            }
         }
 
     }
-    
+
     @FXML
     private void deleteTasksButtonClick(ActionEvent event) {
-        
+
     }
 
     @FXML
@@ -494,7 +496,7 @@ public class MainFXMLController implements Initializable {
             row.hoverProperty().addListener((observable) -> {
                 for (History his : model.getAllHistoryObservableArrayList()) {
                     final History historyRow = row.getItem();
-                   
+
                     if (row.isHover() && his == historyRow) {
                         //creation of the popup
                         popup.setX(300);
@@ -510,12 +512,12 @@ public class MainFXMLController implements Initializable {
                         stage.show();
                         //popup.show(stage);
                     } else {
-                        
+
                         stage.close();
                     }
                 }
             });
-          return row;
+            return row;
         });
     }
 
@@ -529,7 +531,7 @@ public class MainFXMLController implements Initializable {
     public void createHistoryForTask(TaskInOurProgram task) {
         /* create new history after button is presset */
         History history = new History(getFormatedActualDateAndTimeAsString(), 1, hostName.getUserName(),
-               task.getFileName(), true, "Error");
+                task.getFileName(), true, "Error");
         model.addHistoryToTheDatabase(history);
     }
 
@@ -562,13 +564,12 @@ public class MainFXMLController implements Initializable {
             }
         });
 
-
     }
 
     @FXML
     private void editConfigButtonClick(ActionEvent event) throws IOException, ParseException {
         if (configChoiceBox.getSelectionModel().isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Please, choose a valid configuration");
+            Alert("Error", "Choose a valid configuration");
         } else {
             Parent root;
             Stage stage = new Stage();

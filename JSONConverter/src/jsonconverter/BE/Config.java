@@ -11,7 +11,7 @@ package jsonconverter.BE;
  */
 public class Config {
 
-    private int cinfig_id = -1;
+    private int cinfig_id;
     private String siteName;
     private String assetSerialNumber;
     private String type;
