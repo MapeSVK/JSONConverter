@@ -13,20 +13,15 @@ import jsonconverter.BE.Config;
  * @author Pepe15224
  */
 public class NewConfigValidations {
-    
-    public boolean checkIfConfigExists(Config config,List<Config> configList)
-    {
-        for(Config configInList : configList)
-        {
-            System.out.println(configInList.getConfigName());
-            if(configInList.getConfigName().equals(config.getConfigName()))
-            {
-                System.out.println("jest");
-               return false;
-               
+
+    /* checks if config with this name aleready exists */
+    public boolean checkIfConfigExists(Config config, List<Config> configList) {
+        for (Config configInList : configList) {
+            if (configInList.getConfigName().equals(config.getConfigName())) {
+                return false;
             }
         }
         return true;
     }
-  
+
 }

@@ -19,32 +19,28 @@ import jsonconverter.BE.History;
 import jsonconverter.BE.TaskInOurProgram;
 import jsonconverter.BLL.BLLManager;
 
-
 public class Model {
 
     private BLLManager manager = new BLLManager();
 
-    /* contains configs from the database which can be chosen in the choiceBox */
-    private ObservableList<String> configChoiceBoxItems = FXCollections.observableArrayList();
     /* contains each task in tableview */
-    private ObservableList<TaskInOurProgram> tasksInTheTableView = FXCollections.observableArrayList();  
+    private ObservableList<TaskInOurProgram> tasksInTheTableView = FXCollections.observableArrayList();
     /* contains each history from database */
     private ObservableList<History> allHistoryObservableArrayList = FXCollections.observableArrayList();
     /* contains history date based on chosen dates */
-    private ObservableList<History> historyDatasBasedOnChosenTimeList = FXCollections.observableArrayList();    
+    private ObservableList<History> historyDatasBasedOnChosenTimeList = FXCollections.observableArrayList();
     /* sorted lists for all history, so new items will be on the top. This sorted list is used everywhere then */
     SortedList<History> sortedAllHistory = new SortedList<>(allHistoryObservableArrayList, Comparator.comparing(History::getDateAndTime).reversed());
-    /* Configs*/
+    /* contains configs from the database  */
     private ObservableList<Config> allConfigObservableArrayList = FXCollections.observableArrayList();
 
-
-
-
-    /* returns hashMap of headers from file (Headers are keys and numbers are values) */
-    public HashMap<String, Integer> getFileHeaders() {
-        return manager.getFileHeaders();
+    //- - - - - - - - - - - - - - - - - - - - CREATE JASON - - - - - - - - - - - - - - - - - - - -
+    /* creates json file from JSONObject list */
+    public void createJsonFile(String fileName, File filePath, TaskInOurProgram cuttentTask) throws InterruptedException {
+        manager.createJsonFile(fileName, filePath, cuttentTask);
     }
 
+    //- - - - - - - - - - - - - - - - - - - - TASK - - - - - - - - - - - - - - - - - - - -
     /* adding tasks to the observableArrayList */
     public void addTask(TaskInOurProgram task) {
         tasksInTheTableView.add(task);
@@ -55,67 +51,109 @@ public class Model {
         return tasksInTheTableView;
     }
 
-    /* returns values from the selected file */
-    public ArrayList<String> getFileValues() {
-        return manager.getFileValues();
-    }
-
-    /* creates json file from JSONObject list */
-    public void createJsonFile(String fileName, File filePath, TaskInOurProgram cuttentTask) throws InterruptedException {
-        manager.createJsonFile(fileName, filePath, cuttentTask);
-    }
-
+    //- - - - - - - - - - - - - - - - - - - - CONVERTER - - - - - - - - - - - - - - - - - - - -
     /*returns list of Headers from the file */
     public List<String> getOnlyFileHeaders() {
         return manager.getOnlyFileHeaders();
     }
 
+    /* gets converter from current task */
     public void getConverter(TaskInOurProgram currentTask) {
         manager.getConverter(currentTask);
     }
 
+    /* sets converter for chosen file */
     public void setConverter(String fileType, String filePath) {
         manager.setConverter(fileType, filePath);
     }
+
+    /* returns hashMap of headers from file (Headers are keys and numbers are values) */
+    public HashMap<String, Integer> getFileHeaders() {
+        return manager.getFileHeaders();
+    }
+
+    /* returns values from the selected file */
+    public ArrayList<String> getFileValues() {
+        return manager.getFileValues();
+    }
+
+    //- - - - - - - - - - - - - - - - - - - - CONFIG - - - - - - - - - - - - - - - - - - - -
+    /* gets all available configs for current user */
+    public List<Config> getAllAvailableConfigs() {
+        return manager.getAllAvailableConfigs();
+    }
+
+    /* gets all configs for current user */
+    public List<Config> getAllConfigs() {
+        return manager.getAllConfigs();
+    }
+
+    /* removes config from the database */
     public void removeConfigToDatabase(Config config) {
         manager.removeConfigFromDatabase(config);
         allConfigObservableArrayList.remove(config);
     }
 
-    public void saveConfigToDatabase(Config config,  boolean isEditMode) {
+    /* saves new config in the databast */
+    public void saveConfigToDatabase(Config config, boolean isEditMode) {
         manager.saveConfigToDatabase(config, isEditMode);
-        allConfigObservableArrayList.add(config); 
-        System.out.println("DUPA");
+        allConfigObservableArrayList.add(config);
     }
 
+    /* returns the list of all configs */
     public ObservableList<Config> getAllConfigObservableArrayList() {
         return allConfigObservableArrayList;
     }
 
-    /* HISTORY */
-     
-    
-    /* add history to a database after some action is done */
-    public void addHistoryToTheDatabase(History history) {
-        allHistoryObservableArrayList.add(history);
-        manager.addNewHistoryToDatabase(history);
-    }
-
-    public void loadAvailableConfig()
-    {
+    /* loads available configs */
+    public void loadAvailableConfig() {
         allConfigObservableArrayList.clear();
         allConfigObservableArrayList.setAll(getAllAvailableConfigs());
     }
+
+    /* removes configs that dont match chosen file */
+    public void checkIfYouCanUseConfig() {
+        int checkForErrors = 0;
+        int i = 0;
+        for (Config config : getAllAvailableConfigs()) {
+            i = 0;
+            checkForErrors = 0;
+            while (i < 15) {
+                String configString = config.getAllGetters(i);
+
+                if (configString.contains("&&") && !configString.equals("")) {
+                    String[] splitedConfig = configString.split("&&");
+                    if (!getOnlyFileHeaders().contains(splitedConfig[0])) {
+                        checkForErrors++;
+                    }
+                    if (!getOnlyFileHeaders().contains(splitedConfig[1])) {
+                        checkForErrors++;
+                    }
+                } else if (!getOnlyFileHeaders().contains(configString) && !configString.equals("")) {
+                    checkForErrors++;
+                }
+                i++;
+            }
+            if (checkForErrors != 0) {
+                System.out.println(config.getConfigName());
+                allConfigObservableArrayList.remove(config);
+            }
+        }
+    }
+
+    //- - - - - - - - - - - - - - - - - - - - HISTORY - - - - - - - - - - - - - - - - - - - -
+    /* gets list of history */
     public ObservableList<History> getAllHistoryObservableArrayList() {
         return allHistoryObservableArrayList;
     }
 
+    /* loads history from the database */
     public void loadHistoryFromDatabase() {
         allHistoryObservableArrayList.clear();
         allHistoryObservableArrayList.addAll(manager.getAllHistory());
     }
 
-    
+    /* gets history in chosen period of time */
     public ObservableList<History> getHistoryOfChosenPeriod(ObservableList<History> allHistory, Date from, Date to) {
         historyDatasBasedOnChosenTimeList.clear();
         for (History history : allHistory) {
@@ -124,83 +162,45 @@ public class Model {
                     .appendPattern("dd.MM.yyyy HH:mm")
                     .parseDefaulting(MONTH_OF_YEAR, 1)
                     .toFormatter();
-            
+
             LocalDate dateFromLocalDateForm = LocalDate.parse(history.getDateAndTime(), f);
             LocalDate dateToLocalDateForm = LocalDate.parse(history.getDateAndTime(), f);
 
             Date dateFrom = Date.from(dateFromLocalDateForm.atStartOfDay(ZoneId.systemDefault()).toInstant());
             Date dateTo = Date.from(dateToLocalDateForm.atStartOfDay(ZoneId.systemDefault()).toInstant());
 
-            
             if (!dateFrom.before((java.util.Date) from) && !dateTo.after((java.util.Date) to)) {
                 historyDatasBasedOnChosenTimeList.add(history);
             }
         }
         return historyDatasBasedOnChosenTimeList;
     }
-    
-  public String getHostname() {
-        return manager.getHostname();
+
+    /* add history to a database after some action is done */
+    public void addHistoryToTheDatabase(History history) {
+        allHistoryObservableArrayList.add(history);
+        manager.addNewHistoryToDatabase(history);
     }
 
-    public String getUserName() {
-        return manager.getUserName();
-    } 
-     /* gets all available configs for current user */
-    public List<Config> getAllAvailableConfigs() {
-        return manager.getAllAvailableConfigs();
-    }
-    
-    /* gets all configs for current user */
-    public List<Config> getAllConfigs() {
-        return manager.getAllConfigs();
-    }
-
+    /* returns sorted history list */
     public SortedList<History> getSortedAllHistory() {
         return sortedAllHistory;
     }
-    
-    public void checkIfYouCanUseConfig()
-    {
-        int checkForErrors=0;
-      int i=0;
-      for(Config config : getAllAvailableConfigs())
-      {
-          i=0;
-          checkForErrors=0;
-          while(i<15)
-          {
-            String configString = config.getAllGetters(i);
-       
-            if(configString.contains("&&") && !configString.equals(""))
-            {             
-                String[] splitedConfig = configString.split("&&");
-                if(!getOnlyFileHeaders().contains(splitedConfig[0]))
-                {
-                checkForErrors++;
-                }
-                if(!getOnlyFileHeaders().contains(splitedConfig[1]))
-                {                  
-                    checkForErrors++;   
-                }
-            }           
-          else  if(!getOnlyFileHeaders().contains(configString) && !configString.equals(""))
-                {
-                  checkForErrors++;
-                }
-              i++;
-          }
-          if(checkForErrors!=0)
-          {
-              System.out.println(config.getConfigName());
-              allConfigObservableArrayList.remove(config);
-          }
-      }
+
+    //- - - - - - - - - - - - - - - - - - - - HOSTNAME - - - - - - - - - - - - - - - - - - - -
+    /* returns local Hostname */
+    public String getHostname() {
+        return manager.getHostname();
+    }
+
+    /* returns local Username */
+    public String getUserName() {
+        return manager.getUserName();
     }
 
     //- - - - - - - - - - - - - - - - - - - - VALIDATIONS - - - - - - - - - - - - - - - - - - - -
-    public boolean checkIfConfigExists(Config config)
-    {
+    /* checks if config with this name aleready exists */
+    public boolean checkIfConfigExists(Config config) {
         return manager.checkIfConfigExists(config, manager.getAllConfigs());
     }
 }

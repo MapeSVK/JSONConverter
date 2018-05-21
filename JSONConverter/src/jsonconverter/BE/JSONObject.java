@@ -11,7 +11,7 @@ package jsonconverter.BE;
  */
 public class JSONObject {
 
-    private String siteName = "";
+    private String siteName;
     private String assetSerialNumber;
     private String type;
     private String externalWorkOrderId;
@@ -21,7 +21,7 @@ public class JSONObject {
     private String createdBy;
     private String name;
     private String priority;
-    private String status = "NEW";
+    private String status;
     private Planning planning;
 
     public JSONObject(String siteName, String assetSerialNumber, String type, String externalWorkOrderId, String systemStatus, String userStatus, String createdOn, String createdBy, String name, String priority, String status, Planning planning) {

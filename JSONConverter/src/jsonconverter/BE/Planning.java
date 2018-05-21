@@ -16,12 +16,6 @@ public class Planning {
     private String latestStartDate;
     private String estimatedTime;
 
-//    public Planning(String latestFinishDate, String earliestStartDate, String latestStartDate, String estimatedTime) {
-//        this.latestFinishDate = latestFinishDate;
-//        this.earliestStartDate = earliestStartDate;
-//        this.latestStartDate = latestStartDate;
-//        this.estimatedTime = estimatedTime;
-//    }
     public String getEstimatedTime() {
         return estimatedTime;
     }

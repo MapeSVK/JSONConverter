@@ -43,11 +43,13 @@ if(onlyOnce==-1)
     }
     }
   
+    /* returns host name */
     public String getHostname()
     {
         return hostname;
     }
 
+    /* reurns user name */
     public String getUserName() {
         return userName;
     }

@@ -65,7 +65,6 @@ public class ConfigFXMLController implements Initializable {
     private JFXTextField latestStartDateField;
     @FXML
     private JFXTextField estimatedTimeField;
-    boolean isValid;
     @FXML
     private JFXButton saveConfigButton;
     @FXML
@@ -73,15 +72,7 @@ public class ConfigFXMLController implements Initializable {
     @FXML
     private JFXTextField headerNameField;
     @FXML
-    private AnchorPane configFieldsPane;
-    private SuggestionProvider<String> suggest;
-    private ArrayList<String> headersList = new ArrayList<>();
-    private int fieldsCounter = 0;
-    private boolean isEditMode;
-    private Config choosenConfig;
-
-    @FXML
-    protected JFXButton removeconfigButton;
+    public JFXButton removeconfigButton;
     @FXML
     private JFXTextField siteNameFieldEmpty;
     @FXML
@@ -112,7 +103,15 @@ public class ConfigFXMLController implements Initializable {
     private JFXTextField latestStartDateFieldEmpty;
     @FXML
     private JFXTextField estimatedTimeFieldEmpty;
+    @FXML
+    private AnchorPane configFieldsPane;
 
+    private SuggestionProvider<String> suggest;
+    private ArrayList<String> headersList = new ArrayList<>();
+    private int fieldsCounter = 0;
+    private boolean isEditMode;
+    private Config choosenConfig;
+    boolean isValid;
     private Tooltip tooltip;
 
     /**
@@ -140,25 +139,27 @@ public class ConfigFXMLController implements Initializable {
         estimatedTimeField.setTooltip(new Tooltip("Estimated Time"));
     }
 
-    @FXML
-    private void saveButtonOnAction(ActionEvent event) throws ParseException {
-        
-        if (headerNameField.getText().isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Please, insert a valid name");
-        } else {
-            //   if (model.checkIfConfigExists(createConfig())) {
-            model.saveConfigToDatabase(createConfig(), isEditMode);
-            closeWindow();
-        }
-        //   } else {
-        //      Alert("Config already exists", "Config with this name already exists!");
-        //    }
-    }
-
     protected boolean setEditMode() {
         return isEditMode = true;
     }
 
+    /* saves new config to the datbase*/
+    @FXML
+    private void saveButtonOnAction(ActionEvent event) throws ParseException {
+
+        if (headerNameField.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Please, insert a valid name");
+        } else {
+            if (model.checkIfConfigExists(createConfig())) {
+                model.saveConfigToDatabase(createConfig(), isEditMode);
+                closeWindow();
+            } else {
+                Alert("Config already exists", "Config with this name already exists!");
+            }
+        }
+    }
+
+    /*removes config from database */
     @FXML
     private void removeButtonOnAction(ActionEvent event) {
         int selectedOption = JOptionPane.showConfirmDialog(null,
@@ -172,6 +173,15 @@ public class ConfigFXMLController implements Initializable {
         }
     }
 
+    /* gets converter of imported file */
+    public void getModel(Model model) {
+        this.model = model;
+        headersList.addAll(model.getOnlyFileHeaders());
+        suggest = SuggestionProvider.create(headersList);
+        addAutoCompletionToFields();
+        checkTextProperty();
+    }
+
     /* binds textfields with autocompletion */
     private void addAutoCompletionToFields() {
         for (Node node : configFieldsPane.getChildren()) {
@@ -181,16 +191,7 @@ public class ConfigFXMLController implements Initializable {
         }
     }
 
-    /* gets converter of imported file */
-    protected void getModel(Model model) {
-        this.model = model;
-        headersList.addAll(model.getOnlyFileHeaders());
-        suggest = SuggestionProvider.create(headersList);
-        addAutoCompletionToFields();
-        checkTextProperty();
-    }
-
-    protected Config setConfig(Config choosenConfig) throws ParseException {
+    public Config setConfig(Config choosenConfig) throws ParseException {
         headerNameField.setText(choosenConfig.getConfigName());
         checkBoxPrivacy.setSelected(choosenConfig.isPrivacy());
         fillIfEmptyEdit(choosenConfig);
@@ -199,27 +200,25 @@ public class ConfigFXMLController implements Initializable {
         return choosenConfig;
     }
 
-    /* creates config based on users texFields and saves it in the database */
+    /* creates config based on users text fields and saves it in the database */
     private Config createConfig() {
         Config newConfig = new Config();
-        
+
         if (!siteNameField.getText().isEmpty() && siteNameFieldEmpty.isDisable() == false && !siteNameFieldEmpty.getText().isEmpty()) {
             newConfig.setSiteName(siteNameField.getText() + "&&" + siteNameFieldEmpty.getText());
         } else {
             newConfig.setSiteName(siteNameField.getText());
         }
-    
 
-    
         if (!assetSerialNumberField.getText().isEmpty() && assetSerialNumberFieldEmpty.isDisable() == false && !assetSerialNumberFieldEmpty.getText().isEmpty()) {
             newConfig.setAssetSerialNumber(siteNameField.getText() + "&&" + assetSerialNumberFieldEmpty.getText());
-        } else  {
+        } else {
             newConfig.setAssetSerialNumber(assetSerialNumberField.getText());
         }
 
         if (!createdOnField.getText().isEmpty() && createdOnFieldEmpty.isDisable() == false && !createdOnFieldEmpty.getText().isEmpty()) {
             newConfig.setCreatedOn(createdOnField.getText() + "&&" + createdOnFieldEmpty.getText());
-        } else  {
+        } else {
             newConfig.setCreatedOn(createdOnField.getText());
         }
 
@@ -231,11 +230,11 @@ public class ConfigFXMLController implements Initializable {
 
         if (statusFieldEmpty.isDisable() == false && !statusFieldEmpty.getText().isEmpty()) {
             newConfig.setStatus(statusField.getText() + "&&" + statusFieldEmpty.getText());
-        } else{
+        } else {
             newConfig.setStatus(statusField.getText());
         }
 
-        if ( estimatedTimeFieldEmpty.isDisable() == false && !estimatedTimeFieldEmpty.getText().isEmpty()) {
+        if (estimatedTimeFieldEmpty.isDisable() == false && !estimatedTimeFieldEmpty.getText().isEmpty()) {
             newConfig.setEstimatedTime(estimatedTimeField.getText() + "&&" + estimatedTimeFieldEmpty.getText());
         } else {
             newConfig.setEstimatedTime(estimatedTimeField.getText());
@@ -247,31 +246,31 @@ public class ConfigFXMLController implements Initializable {
             newConfig.setType(typeField.getText());
         }
 
-        if ( externalWorkOrderIdFieldEmpty.isDisable() == false && !externalWorkOrderIdFieldEmpty.getText().isEmpty()) {
+        if (externalWorkOrderIdFieldEmpty.isDisable() == false && !externalWorkOrderIdFieldEmpty.getText().isEmpty()) {
             newConfig.setExternalWorkOrderId(externalWorkOrderIdField.getText() + "&&" + externalWorkOrderIdFieldEmpty.getText());
         } else if (!externalWorkOrderIdField.getText().isEmpty()) {
             newConfig.setExternalWorkOrderId(externalWorkOrderIdField.getText());
         }
 
-        if ( systemStatusFieldEmpty.isDisable() == false && !systemStatusFieldEmpty.getText().isEmpty()) {
+        if (systemStatusFieldEmpty.isDisable() == false && !systemStatusFieldEmpty.getText().isEmpty()) {
             newConfig.setSystemStatus(systemStatusField.getText() + "&&" + systemStatusFieldEmpty.getText());
         } else if (!systemStatusField.getText().isEmpty()) {
             newConfig.setSystemStatus(systemStatusField.getText());
         }
 
-        if ( userStatusFieldEmpty.isDisable() == false && !userStatusFieldEmpty.getText().isEmpty()) {
+        if (userStatusFieldEmpty.isDisable() == false && !userStatusFieldEmpty.getText().isEmpty()) {
             newConfig.setUserStatus(userStatusField.getText() + "&&" + userStatusFieldEmpty.getText());
         } else if (!userStatusField.getText().isEmpty()) {
             newConfig.setUserStatus(userStatusField.getText());
         }
 
-        if ( nameFieldEmpty.isDisable() == false && !nameFieldEmpty.getText().isEmpty()) {
+        if (nameFieldEmpty.isDisable() == false && !nameFieldEmpty.getText().isEmpty()) {
             newConfig.setName(nameField.getText() + "&&" + nameFieldEmpty.getText());
         } else if (!nameField.getText().isEmpty()) {
             newConfig.setName(nameField.getText());
         }
 
-        if ( priorityFieldEmpty.isDisable() == false && !priorityFieldEmpty.getText().isEmpty()) {
+        if (priorityFieldEmpty.isDisable() == false && !priorityFieldEmpty.getText().isEmpty()) {
             newConfig.setPriority(priorityField.getText() + "&&" + priorityFieldEmpty.getText());
         } else if (!priorityField.getText().isEmpty()) {
             newConfig.setPriority(priorityField.getText());
@@ -279,7 +278,7 @@ public class ConfigFXMLController implements Initializable {
 
         if (latestFinishDateFieldEmpty.isDisable() == false && !latestFinishDateFieldEmpty.getText().isEmpty()) {
             newConfig.setLatestFinishDate(latestFinishDateField.getText() + "&&" + latestFinishDateFieldEmpty.getText());
-        } else if (!latestFinishDateField.getText().isEmpty() ) {
+        } else if (!latestFinishDateField.getText().isEmpty()) {
             newConfig.setLatestFinishDate(latestFinishDateField.getText());
         }
 
@@ -289,7 +288,7 @@ public class ConfigFXMLController implements Initializable {
             newConfig.setEarliestStartDate(earliestStartDateField.getText());
         }
 
-        if ( latestStartDateFieldEmpty.isDisable() == false && !latestStartDateFieldEmpty.getText().isEmpty()) {
+        if (latestStartDateFieldEmpty.isDisable() == false && !latestStartDateFieldEmpty.getText().isEmpty()) {
             newConfig.setLatestStartDate(latestStartDateField.getText() + "&&" + latestStartDateFieldEmpty.getText());
         } else if (!latestStartDateField.getText().isEmpty()) {
             newConfig.setLatestStartDate(latestStartDateField.getText());
@@ -301,20 +300,8 @@ public class ConfigFXMLController implements Initializable {
 
         return newConfig;
     }
-    
-//    /* VALIDATION */
-//    private void validation() {
-//        for (String header : model.getOnlyFileHeaders(converter)) {
-//            for (JFXTextField textField : arrayListWithTextFields) {
-//                if (textField.getText().equals(header)) {
-//                    isValid = true;
-//                } else {
-//                    Alert("Error", "Text imputs are not valid! Check each text and then try it again!");
-//                }
-//            }
-//        }
-//    }
 
+    /* creates pop up alert window */
     private void Alert(String title, String text) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(title);
@@ -322,11 +309,13 @@ public class ConfigFXMLController implements Initializable {
         alert.showAndWait();
     }
 
+    /* closes the window */
     private void closeWindow() {
         Stage stage = (Stage) saveConfigButton.getScene().getWindow();
         stage.close();
     }
 
+    /* updates helpers */
     private void checkTextProperty() {
         for (Node node : configFieldsPane.getChildren()) {
             if (node instanceof JFXTextField) {
@@ -337,6 +326,7 @@ public class ConfigFXMLController implements Initializable {
         }
     }
 
+    /* removes helper if it is in use */
     private void addAndRemoveHeadersFromBinding() {
 
         for (String string : model.getOnlyFileHeaders()) {
@@ -344,7 +334,7 @@ public class ConfigFXMLController implements Initializable {
             for (Node node : configFieldsPane.getChildren()) {
                 if (node instanceof JFXTextField) {
                     if (((JFXTextField) node).getText().equals(string)) {
-                        ifEmpyField(((JFXTextField) node).getId(), false);
+                        DisableSecondaryField(((JFXTextField) node).getId(), false);
                         headersList.remove(string);
                         suggest.clearSuggestions();
                         suggest.addPossibleSuggestions(headersList);
@@ -357,14 +347,15 @@ public class ConfigFXMLController implements Initializable {
                             suggest.addPossibleSuggestions(headersList);
                         }
                     } else if (!model.getOnlyFileHeaders().contains(((JFXTextField) node).getText())) {
-                        ifEmpyField(((JFXTextField) node).getId(), true);
+                        DisableSecondaryField(((JFXTextField) node).getId(), true);
                     }
                 }
             }
         }
     }
 
-    private void ifEmpyField(String originalField, boolean disable) {
+    /* disables secondary field if the main field hasnt got proper value */
+    private void DisableSecondaryField(String originalField, boolean disable) {
         for (Node node : configFieldsPane.getChildren()) {
             if (node instanceof JFXTextField) {
                 if (((JFXTextField) node).getId().equals(originalField + "Empty")) {
@@ -375,6 +366,7 @@ public class ConfigFXMLController implements Initializable {
         }
     }
 
+    /* fills sedondary and main fields when confid is on edited */
     private void fillIfEmptyEdit(Config choosenConfig) {
         int di = 0;
         for (Node node : configFieldsPane.getChildren()) {

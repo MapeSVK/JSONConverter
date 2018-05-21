@@ -26,7 +26,7 @@ public class BLLManager {
 
     //- - - - - - - - - - - - - - - - - - - - CREATE JASON - - - - - - - - - - - - - - - - - - - -
     /* creates json file from JSONObject list */
-    public void createJsonFile(String fileName, File filePath, TaskInOurProgram currentTask) throws InterruptedException {
+    public void createJsonFile(String fileName, File filePath, TaskInOurProgram currentTask) {
         manager.createJsonFile(fileName, filePath, convertJason.returnJasonObjects(currentTask));
     }
 
@@ -45,12 +45,14 @@ public class BLLManager {
     public List<String> getOnlyFileHeaders() {
         return manager.getOnlyFileHeaders();
     }
- /* gets proper converter for current task */
+
+    /* gets proper converter for current task */
     public void getConverter(TaskInOurProgram currentTask) {
         manager.getConverter(currentTask);
 
     }
-/* sets proper converter for current task */
+
+    /* sets proper converter for current task */
     public void setConverter(String fileType, String filePath) {
         manager.setConverter(fileType, filePath);
     }
@@ -60,13 +62,13 @@ public class BLLManager {
     public void saveConfigToDatabase(Config config, boolean isEditMode) {
         manager.saveConfigToDatabase(config, isEditMode);
     }
-    
+
     /* removes config from the database */
-     public void removeConfigFromDatabase(Config config) {
+    public void removeConfigFromDatabase(Config config) {
         manager.removeConfigFromDatabase(config);
     }
-     
-     /* gets all configs for current user */
+
+    /* gets all configs for current user */
     public List<Config> getAllConfigs() {
         return manager.getAllConfigs();
     }
@@ -93,13 +95,14 @@ public class BLLManager {
         return manager.getAllHistory();
     }
 
-
+    /* adds history to the database */
     public void addNewHistoryToDatabase(History history) {
         manager.addNewHistoryToDatabase(history);
     }
+
     //- - - - - - - - - - - - - - - - - - - - VALIDATIONS - - - - - - - - - - - - - - - - - - - -
-    public boolean checkIfConfigExists(Config config,List<Config> configList)
-    {
+    /* checks if config with this name aleready exists */
+    public boolean checkIfConfigExists(Config config, List<Config> configList) {
         return configValidations.checkIfConfigExists(config, configList);
 
     }

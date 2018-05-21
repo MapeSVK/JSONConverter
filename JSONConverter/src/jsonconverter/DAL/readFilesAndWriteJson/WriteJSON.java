@@ -27,6 +27,7 @@ public class WriteJSON {
             ObjectMapper mapper = new ObjectMapper();
             mapper.enable(SerializationFeature.INDENT_OUTPUT);
             mapper.writeValue(fii, jsonList);
+            System.out.println("JSON file created");
         } catch (IOException ex) {
             Logger.getLogger(WriteJSON.class.getName()).log(Level.SEVERE, null, ex);
         }
