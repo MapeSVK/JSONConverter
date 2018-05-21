@@ -119,6 +119,9 @@ public class MainFXMLController implements Initializable {
     private Date toDate;
     private LocalDateTime nowLocalDateTime = LocalDateTime.now();
     private java.sql.Date currentDate = java.sql.Date.valueOf(LocalDate.now());
+   
+    /* Stage needed to display error message */   
+    Stage stage;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -143,7 +146,7 @@ public class MainFXMLController implements Initializable {
         /* style history tableView and show error as a pop-up */
         openErrorMessageAfterHoveringOverRow();
 
-        /*reverse order of history rows */
+      
     }
 
     /* imports the file into program */
@@ -523,6 +526,7 @@ public class MainFXMLController implements Initializable {
        3. show the image of the error in the end of the row
      */
     private void openErrorMessageAfterHoveringOverRow() {
+        
         historyTableView.setRowFactory(tableView -> {
             final TableRow<History> row = new TableRow<>();
 
@@ -541,48 +545,48 @@ public class MainFXMLController implements Initializable {
             for (History his : model.getAllHistoryObservableArrayList()) {
 
                 row.hoverProperty().addListener((observable) -> {
-
                     History historyRow = row.getItem();
+                    
                     Point p = MouseInfo.getPointerInfo().getLocation();
                     int x = p.x;
                     int y = p.y;
 
                     Popup popup = new Popup();
-
                     popup.setX(x - 300);
                     popup.setY(y - 200);
                     TextArea ta = new TextArea();
+                    
+                    AnchorPane layout = new AnchorPane();
+                    stageSingleton().setScene(new Scene(layout));
 
-            Popup popup = new Popup();
-            Stage stage = new Stage();
-
-            row.hoverProperty().addListener((observable) -> {
-                for (History his : model.getAllHistoryObservableArrayList()) {
-                    final History historyRow = row.getItem();
-
-                    if (row.isHover() && his == historyRow) {
-                        //creation of the popup
-                        popup.setX(300);
-                        popup.setY(200);
-                        TextArea ta = new TextArea();
-                        ta.setText(his.getErrorMessage());
+                    if (row.isHover() && his.equals(historyRow)) {
+                        ta.setText(row.getItem().getErrorMessage());
                         popup.getContent().addAll(ta);
-
-                        //creation of the stage
-                        HBox layout = new HBox(10);
-                        stage.setScene(new Scene(layout));
-
-                        stage.show();
-                        //popup.show(stage);
-                    } else {
-
-                        stage.close();
+                        stageSingleton().show();
+                        popup.show(stageSingleton());
+                        
+                    } else if (!row.isHover() && his.equals(historyRow)) {
+                        popup.hide();
+                        stageSingleton().close();
                     }
-                }
-            });
+                    
+                });
+            }            
             return row;
         });
     }
+   
+    public Stage stageSingleton() {
+        
+        if (stage == null) {
+            stage = new Stage();
+            stage.setWidth(1);
+            stage.setHeight(1);
+        }
+        return stage;
+    }
+    
+            
     /* sets right format of the date */
     private String getFormatedActualDateAndTimeAsString() {
         DateTimeFormatter df = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
