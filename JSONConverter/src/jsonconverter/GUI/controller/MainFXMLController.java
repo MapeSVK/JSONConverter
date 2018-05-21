@@ -1,6 +1,8 @@
 package jsonconverter.GUI.controller;
 
 import com.jfoenix.controls.JFXDatePicker;
+import java.awt.MouseInfo;
+import java.awt.Point;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -15,8 +17,13 @@ import java.util.Date;
 import java.util.ResourceBundle;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -30,6 +37,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.stage.FileChooser;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
@@ -39,6 +47,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Modality;
@@ -112,6 +121,7 @@ public class MainFXMLController implements Initializable {
     private TableView<History> historyTableView;
     Date fromDate;
     Date toDate;
+    Stage stage; //stage for creating pop-up after hovering over the history row
 
     LocalDateTime nowLocalDateTime = LocalDateTime.now();
     java.sql.Date currentDate = java.sql.Date.valueOf(LocalDate.now());
@@ -379,7 +389,6 @@ public class MainFXMLController implements Initializable {
                         executor.submit(task);
                         task.setIsExecutedForFirstTime(true);
                         task.getPauseTask().setGraphic(new ImageView(pauseImage));
-                        createHistoryForTask(task);
 
                     } else if (task.isIsExecutedForFirstTime() == true && task.isPause() == false) {
                         task.getPauseTask().setGraphic(new ImageView(playImage));
@@ -392,6 +401,12 @@ public class MainFXMLController implements Initializable {
                     }
                 }
             });
+        }
+    }
+
+    public void registerHistoryIfConvertionIsDone() {
+        for (TaskInOurProgram task : model.getTasksInTheTableView()) {
+
         }
     }
 
@@ -415,7 +430,7 @@ public class MainFXMLController implements Initializable {
     @FXML
     private void convertTasksButtonClick(ActionEvent event) throws IOException {
         if (directoryPathHasBeenSelected == false && convertTaskButton.isFocused()) {
-            Alert("Error","Directory must be choosed first");
+            Alert("Error", "Directory must be choosed first");
 
         } else {
             for (TaskInOurProgram task : model.getTasksInTheTableView()) {
@@ -490,35 +505,49 @@ public class MainFXMLController implements Initializable {
                 }
             }
 
-            Popup popup = new Popup();
-            Stage stage = new Stage();
+            for (History his : model.getAllHistoryObservableArrayList()) {
 
-            row.hoverProperty().addListener((observable) -> {
-                for (History his : model.getAllHistoryObservableArrayList()) {
-                    final History historyRow = row.getItem();
+                row.hoverProperty().addListener((observable) -> {
 
-                    if (row.isHover() && his == historyRow) {
-                        //creation of the popup
-                        popup.setX(300);
-                        popup.setY(200);
-                        TextArea ta = new TextArea();
-                        ta.setText(his.getErrorMessage());
+                    History historyRow = row.getItem();
+                    Point p = MouseInfo.getPointerInfo().getLocation();
+                    int x = p.x;
+                    int y = p.y;
+
+                    Popup popup = new Popup();
+
+                    popup.setX(x - 300);
+                    popup.setY(y - 300);
+                    TextArea ta = new TextArea();
+
+                    AnchorPane layout = new AnchorPane();
+                    test().setScene(new Scene(layout));
+
+                    if (row.isHover() && his.equals(historyRow)) {
+                        ta.setText(row.getItem().getErrorMessage());
                         popup.getContent().addAll(ta);
+                        test().show();
+                        popup.show(test());
 
-                        //creation of the stage
-                        HBox layout = new HBox(10);
-                        stage.setScene(new Scene(layout));
+                    } else if (!row.isHover() && his.equals(historyRow)) {
+                        popup.hide();
+                        test().close();
 
-                        stage.show();
-                        //popup.show(stage);
-                    } else {
-
-                        stage.close();
                     }
-                }
-            });
+                });
+            }
             return row;
         });
+    }
+
+    public Stage test() {
+
+        if (stage == null) {
+            stage = new Stage();
+            stage.setWidth(1);
+            stage.setHeight(1);
+        }
+        return stage;
     }
 
     /* HELPER METHODS */
