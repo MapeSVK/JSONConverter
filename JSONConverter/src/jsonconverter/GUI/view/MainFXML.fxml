@@ -38,12 +38,12 @@
                               <TableColumn fx:id="extensionColumn" prefWidth="44.0" />
                             <TableColumn fx:id="nameOfTheFileColumn" prefWidth="211.0" text="NAME" />
                             <TableColumn fx:id="configNameColumn" prefWidth="212.0" text="CONGIF NAME" />
-                              <TableColumn fx:id="progressCircleColumn" maxWidth="335.0" minWidth="0.0" prefWidth="159.0" />
-                              <TableColumn fx:id="stopButtonColumn" prefWidth="78.0" />
-                              <TableColumn fx:id="pauseButtonColumn" minWidth="0.0" prefWidth="0.0" />
+                              <TableColumn fx:id="progressCircleColumn" maxWidth="335.0" minWidth="0.0" prefWidth="151.0" />
+                              <TableColumn fx:id="stopButtonColumn" prefWidth="45.0" />
+                              <TableColumn fx:id="closeButtonColumn" maxWidth="73.0" minWidth="68.0" prefWidth="71.0" />
                           </columns>
                         </TableView>
-                        <Button layoutX="399.0" layoutY="513.0" mnemonicParsing="false" onAction="#convertTasksButtonClick" text="CONVERT">
+                        <Button fx:id="convertTaskButton" layoutX="399.0" layoutY="513.0" mnemonicParsing="false" onAction="#convertTasksButtonClick" text="CONVERT">
                            <font>
                               <Font name="Arial Bold" size="13.0" />
                            </font></Button>

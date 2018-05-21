@@ -1,0 +1,883 @@
+[ {
+  "siteName" : "",
+  "assetSerialNumber" : "asset._id",
+  "type" : "ZCS5",
+  "externalWorkOrderId" : "12345678",
+  "systemStatus" : "REL  CCOK NMAT PRC  SETC",
+  "userStatus" : "ZBNQ PERF RECV ZBCC",
+  "createdOn" : "21/05/2018 16:11",
+  "createdBy" : "SAP",
+  "name" : "WT Dan Tysk ,DT29 (3601210)",
+  "priority" : "",
+  "status" : "NEW",
+  "planning" : {
+    "latestFinishDate" : "10/10/2016 00:00",
+    "earliestStartDate" : "10/10/2016 00:00",
+    "latestStartDate" : "10/10/2016 00:00",
+    "estimatedTime" : ""
+  }
+}, {
+  "siteName" : "",
+  "assetSerialNumber" : "asset._id",
+  "type" : "ZCS5",
+  "externalWorkOrderId" : "12345679",
+  "systemStatus" : "CRTD MANC NMAT NTUP PRC",
+  "userStatus" : "ZBNQ",
+  "createdOn" : "21/05/2018 16:11",
+  "createdBy" : "SAP",
+  "name" : "WT Dan Tysk ,DT56 (3601237)",
+  "priority" : "",
+  "status" : "NEW",
+  "planning" : {
+    "latestFinishDate" : "13/06/2017 00:00",
+    "earliestStartDate" : "14/06/2017 00:00",
+    "latestStartDate" : "13/06/2017 00:00",
+    "estimatedTime" : ""
+  }
+}, {
+  "siteName" : "",
+  "assetSerialNumber" : "asset._id",
+  "type" : "ZCS5",
+  "externalWorkOrderId" : "12345680",
+  "systemStatus" : "CRTD MANC NMAT NTUP PRC",
+  "userStatus" : "ZBNQ",
+  "createdOn" : "21/05/2018 16:11",
+  "createdBy" : "SAP",
+  "name" : "WT Dan Tysk ,DT35 (3601216)",
+  "priority" : "",
+  "status" : "NEW",
+  "planning" : {
+    "latestFinishDate" : "13/06/2017 00:00",
+    "earliestStartDate" : "14/06/2017 00:00",
+    "latestStartDate" : "13/06/2017 00:00",
+    "estimatedTime" : ""
+  }
+}, {
+  "siteName" : "",
+  "assetSerialNumber" : "asset._id",
+  "type" : "ZCS5",
+  "externalWorkOrderId" : "12345681",
+  "systemStatus" : "REL  CCOK NMAT PRC  SETC",
+  "userStatus" : "ZBNQ PERF RFCO",
+  "createdOn" : "21/05/2018 16:11",
+  "createdBy" : "SAP",
+  "name" : "exchange rubber bellows",
+  "priority" : "",
+  "status" : "NEW",
+  "planning" : {
+    "latestFinishDate" : "03/07/2017 00:00",
+    "earliestStartDate" : "03/07/2017 00:00",
+    "latestStartDate" : "03/07/2017 00:00",
+    "estimatedTime" : ""
+  }
+}, {
+  "siteName" : "",
+  "assetSerialNumber" : "asset._id",
+  "type" : "ZCS5",
+  "externalWorkOrderId" : "12345682",
+  "systemStatus" : "REL  PCNF CCOK NMAT PRC  RESA SETC",
+  "userStatus" : "ZBNQ CLAR PERF ZBMC",
+  "createdOn" : "21/05/2018 16:11",
+  "createdBy" : "SAP",
+  "name" : "SB64 TS Outlet socket in tower",
+  "priority" : "",
+  "status" : "NEW",
+  "planning" : {
+    "latestFinishDate" : "07/07/2017 00:00",
+    "earliestStartDate" : "07/07/2017 00:00",
+    "latestStartDate" : "07/07/2017 00:00",
+    "estimatedTime" : ""
+  }
+}, {
+  "siteName" : "",
+  "assetSerialNumber" : "asset._id",
+  "type" : "ZCS5",
+  "externalWorkOrderId" : "12345683",
+  "systemStatus" : "REL  CCOK NMAT PRC  SETC",
+  "userStatus" : "ZBNQ PERF RFCO ZBMC",
+  "createdOn" : "21/05/2018 16:11",
+  "createdBy" : "SAP",
+  "name" : "Exchange Rubber Bellow",
+  "priority" : "",
+  "status" : "NEW",
+  "planning" : {
+    "latestFinishDate" : "14/07/2017 00:00",
+    "earliestStartDate" : "15/07/2017 00:00",
+    "latestStartDate" : "15/07/2017 00:00",
+    "estimatedTime" : ""
+  }
+}, {
+  "siteName" : "",
+  "assetSerialNumber" : "asset._id",
+  "type" : "ZCS5",
+  "externalWorkOrderId" : "12345684",
+  "systemStatus" : "REL  CCOK NMAT PRC  SETC",
+  "userStatus" : "ZBNQ PERF RFCO ZBMC",
+  "createdOn" : "21/05/2018 16:11",
+  "createdBy" : "SAP",
+  "name" : "Exchange Rubber Bellow",
+  "priority" : "",
+  "status" : "NEW",
+  "planning" : {
+    "latestFinishDate" : "14/07/2017 00:00",
+    "earliestStartDate" : "15/07/2017 00:00",
+    "latestStartDate" : "15/07/2017 00:00",
+    "estimatedTime" : ""
+  }
+}, {
+  "siteName" : "",
+  "assetSerialNumber" : "asset._id",
+  "type" : "ZCS5",
+  "externalWorkOrderId" : "12345685",
+  "systemStatus" : "REL  CCOK NMAT PRC  SETC",
+  "userStatus" : "ZBNQ PERF RFCO ZBMC",
+  "createdOn" : "21/05/2018 16:11",
+  "createdBy" : "SAP",
+  "name" : "Water Ingress Tower Ligth",
+  "priority" : "2",
+  "status" : "NEW",
+  "planning" : {
+    "latestFinishDate" : "21/07/2017 00:00",
+    "earliestStartDate" : "21/07/2017 00:00",
+    "latestStartDate" : "21/07/2017 00:00",
+    "estimatedTime" : ""
+  }
+}, {
+  "siteName" : "",
+  "assetSerialNumber" : "asset._id",
+  "type" : "ZCS5",
+  "externalWorkOrderId" : "12345686",
+  "systemStatus" : "REL  CCOK NMAT PRC  SETC",
+  "userStatus" : "ZBNQ CLAR PERF",
+  "createdOn" : "21/05/2018 16:11",
+  "createdBy" : "SAP",
+  "name" : "SB56: broke plugs on Hiab Crane",
+  "priority" : "",
+  "status" : "NEW",
+  "planning" : {
+    "latestFinishDate" : "25/07/2017 00:00",
+    "earliestStartDate" : "25/07/2017 00:00",
+    "latestStartDate" : "25/07/2017 00:00",
+    "estimatedTime" : ""
+  }
+}, {
+  "siteName" : "",
+  "assetSerialNumber" : "asset._id",
+  "type" : "ZCS5",
+  "externalWorkOrderId" : "12345687",
+  "systemStatus" : "REL  CCOK NMAT PRC  SETC",
+  "userStatus" : "ZBNQ PERF RFCO",
+  "createdOn" : "21/05/2018 16:11",
+  "createdBy" : "SAP",
+  "name" : "exchange rubber bellows",
+  "priority" : "",
+  "status" : "NEW",
+  "planning" : {
+    "latestFinishDate" : "31/07/2017 00:00",
+    "earliestStartDate" : "31/07/2017 00:00",
+    "latestStartDate" : "31/07/2017 00:00",
+    "estimatedTime" : ""
+  }
+}, {
+  "siteName" : "",
+  "assetSerialNumber" : "asset._id",
+  "type" : "ZCS5",
+  "externalWorkOrderId" : "12345688",
+  "systemStatus" : "REL  CCOK MSPT PRC  SETC",
+  "userStatus" : "ZBNQ CLAR PERF ZBA1 ZBPO",
+  "createdOn" : "21/05/2018 16:11",
+  "createdBy" : "SAP",
+  "name" : "Boom Extension on Hiab Crane",
+  "priority" : "2",
+  "status" : "NEW",
+  "planning" : {
+    "latestFinishDate" : "20/06/2017 00:00",
+    "earliestStartDate" : "07/08/2017 00:00",
+    "latestStartDate" : "07/08/2017 00:00",
+    "estimatedTime" : ""
+  }
+}, {
+  "siteName" : "",
+  "assetSerialNumber" : "asset._id",
+  "type" : "ZCS5",
+  "externalWorkOrderId" : "12345689",
+  "systemStatus" : "REL  CCOK NMAT PRC  SETC",
+  "userStatus" : "ZBNQ PERF RFCO ZBMC",
+  "createdOn" : "21/05/2018 16:11",
+  "createdBy" : "SAP",
+  "name" : "Exchange Rubber Bellow",
+  "priority" : "",
+  "status" : "NEW",
+  "planning" : {
+    "latestFinishDate" : "14/07/2017 00:00",
+    "earliestStartDate" : "15/08/2017 00:00",
+    "latestStartDate" : "15/08/2017 00:00",
+    "estimatedTime" : ""
+  }
+}, {
+  "siteName" : "",
+  "assetSerialNumber" : "asset._id",
+  "type" : "ZCS5",
+  "externalWorkOrderId" : "12345690",
+  "systemStatus" : "REL  CCOK GMPS NMAT PRC  RESA SETC",
+  "userStatus" : "ZBNQ PERF RFCO ZBCC",
+  "createdOn" : "21/05/2018 16:11",
+  "createdBy" : "SAP",
+  "name" : "10000 : No connection",
+  "priority" : "",
+  "status" : "NEW",
+  "planning" : {
+    "latestFinishDate" : "15/08/2017 00:00",
+    "earliestStartDate" : "15/08/2017 00:00",
+    "latestStartDate" : "15/08/2017 00:00",
+    "estimatedTime" : ""
+  }
+}, {
+  "siteName" : "",
+  "assetSerialNumber" : "asset._id",
+  "type" : "ZCS3",
+  "externalWorkOrderId" : "12345691",
+  "systemStatus" : "REL  CCOK NMAT PRC  SETC",
+  "userStatus" : "ZBNQ ZBMC",
+  "createdOn" : "21/05/2018 16:11",
+  "createdBy" : "SAP",
+  "name" : "SB39 Remote stop - Owner",
+  "priority" : "",
+  "status" : "NEW",
+  "planning" : {
+    "latestFinishDate" : "24/08/2017 00:00",
+    "earliestStartDate" : "24/08/2017 00:00",
+    "latestStartDate" : "24/08/2017 00:00",
+    "estimatedTime" : ""
+  }
+}, {
+  "siteName" : "",
+  "assetSerialNumber" : "asset._id",
+  "type" : "ZCS5",
+  "externalWorkOrderId" : "12345692",
+  "systemStatus" : "REL  CCOK MACM PRC  SETC",
+  "userStatus" : "ZBNQ PERF RECV RFCO ZBCC",
+  "createdOn" : "21/05/2018 16:11",
+  "createdBy" : "SAP",
+  "name" : "A9B10191123 - Retrofit, yaw software 201",
+  "priority" : "",
+  "status" : "NEW",
+  "planning" : {
+    "latestFinishDate" : "25/08/2017 00:00",
+    "earliestStartDate" : "25/08/2017 00:00",
+    "latestStartDate" : "25/08/2017 00:00",
+    "estimatedTime" : ""
+  }
+}, {
+  "siteName" : "",
+  "assetSerialNumber" : "asset._id",
+  "type" : "ZCS5",
+  "externalWorkOrderId" : "12345693",
+  "systemStatus" : "REL  CCOK NMAT PRC  SETC",
+  "userStatus" : "ZBNQ PERF RFCO ZBMC",
+  "createdOn" : "21/05/2018 16:11",
+  "createdBy" : "SAP",
+  "name" : "exchange rubber bellows",
+  "priority" : "1",
+  "status" : "NEW",
+  "planning" : {
+    "latestFinishDate" : "28/06/2017 00:00",
+    "earliestStartDate" : "28/08/2017 00:00",
+    "latestStartDate" : "28/08/2017 00:00",
+    "estimatedTime" : ""
+  }
+}, {
+  "siteName" : "",
+  "assetSerialNumber" : "asset._id",
+  "type" : "ZCS5",
+  "externalWorkOrderId" : "12345694",
+  "systemStatus" : "REL  CCOK NMAT PRC  SETC",
+  "userStatus" : "ZBNQ PERF RFCO",
+  "createdOn" : "21/05/2018 16:11",
+  "createdBy" : "SAP",
+  "name" : "HIAB Crane: Troubleshooting",
+  "priority" : "2",
+  "status" : "NEW",
+  "planning" : {
+    "latestFinishDate" : "29/08/2017 00:00",
+    "earliestStartDate" : "29/08/2017 00:00",
+    "latestStartDate" : "29/08/2017 00:00",
+    "estimatedTime" : ""
+  }
+}, {
+  "siteName" : "",
+  "assetSerialNumber" : "asset._id",
+  "type" : "ZCS3",
+  "externalWorkOrderId" : "12345695",
+  "systemStatus" : "REL  CCOK NMAT PRC  SETC",
+  "userStatus" : "ZBNQ PERF ZBMC",
+  "createdOn" : "21/05/2018 16:11",
+  "createdBy" : "SAP",
+  "name" : "Krima-2439613: Sabik UPS battery replace",
+  "priority" : "2",
+  "status" : "NEW",
+  "planning" : {
+    "latestFinishDate" : "30/06/2017 00:00",
+    "earliestStartDate" : "30/08/2017 00:00",
+    "latestStartDate" : "30/08/2017 00:00",
+    "estimatedTime" : ""
+  }
+}, {
+  "siteName" : "",
+  "assetSerialNumber" : "asset._id",
+  "type" : "ZCS3",
+  "externalWorkOrderId" : "12345696",
+  "systemStatus" : "REL  CCOK NMAT PRC  SETC",
+  "userStatus" : "ZBNQ PERF RFCO ZBMC",
+  "createdOn" : "21/05/2018 16:11",
+  "createdBy" : "SAP",
+  "name" : "Krima-2439613: UPS batteries replacement",
+  "priority" : "2",
+  "status" : "NEW",
+  "planning" : {
+    "latestFinishDate" : "30/06/2017 00:00",
+    "earliestStartDate" : "30/08/2017 00:00",
+    "latestStartDate" : "30/08/2017 00:00",
+    "estimatedTime" : ""
+  }
+}, {
+  "siteName" : "",
+  "assetSerialNumber" : "asset._id",
+  "type" : "ZCS1",
+  "externalWorkOrderId" : "12345697",
+  "systemStatus" : "REL  NMAT SETC",
+  "userStatus" : "ZBNQ PERF RFCO ZBCC",
+  "createdOn" : "21/05/2018 16:11",
+  "createdBy" : "SAP",
+  "name" : "Crane inspection",
+  "priority" : "",
+  "status" : "NEW",
+  "planning" : {
+    "latestFinishDate" : "19/08/2017 00:00",
+    "earliestStartDate" : "31/08/2017 00:00",
+    "latestStartDate" : "31/08/2017 00:00",
+    "estimatedTime" : ""
+  }
+}, {
+  "siteName" : "",
+  "assetSerialNumber" : "asset._id",
+  "type" : "ZCS1",
+  "externalWorkOrderId" : "12345698",
+  "systemStatus" : "REL  NMAT SETC",
+  "userStatus" : "ZBNQ PERF RFCO ZBCC",
+  "createdOn" : "21/05/2018 16:11",
+  "createdBy" : "SAP",
+  "name" : "3,00_WT-BS01 3601259 Yearly Crane Inspec",
+  "priority" : "",
+  "status" : "NEW",
+  "planning" : {
+    "latestFinishDate" : "19/08/2017 00:00",
+    "earliestStartDate" : "31/08/2017 00:00",
+    "latestStartDate" : "31/08/2017 00:00",
+    "estimatedTime" : ""
+  }
+}, {
+  "siteName" : "",
+  "assetSerialNumber" : "asset._id",
+  "type" : "ZCS1",
+  "externalWorkOrderId" : "12345699",
+  "systemStatus" : "REL  NMAT SETC",
+  "userStatus" : "ZBNQ PERF RFCO",
+  "createdOn" : "21/05/2018 16:11",
+  "createdBy" : "SAP",
+  "name" : "Lift inspection",
+  "priority" : "",
+  "status" : "NEW",
+  "planning" : {
+    "latestFinishDate" : "18/08/2017 00:00",
+    "earliestStartDate" : "31/08/2017 00:00",
+    "latestStartDate" : "31/08/2017 00:00",
+    "estimatedTime" : ""
+  }
+}, {
+  "siteName" : "",
+  "assetSerialNumber" : "asset._id",
+  "type" : "ZCS1",
+  "externalWorkOrderId" : "12345700",
+  "systemStatus" : "REL  NMAT SETC",
+  "userStatus" : "ZBNQ PERF RFCO",
+  "createdOn" : "21/05/2018 16:11",
+  "createdBy" : "SAP",
+  "name" : "3,00_WT-BS01 3601221 Yearly Lift Inspect",
+  "priority" : "",
+  "status" : "NEW",
+  "planning" : {
+    "latestFinishDate" : "18/08/2017 00:00",
+    "earliestStartDate" : "31/08/2017 00:00",
+    "latestStartDate" : "31/08/2017 00:00",
+    "estimatedTime" : ""
+  }
+}, {
+  "siteName" : "",
+  "assetSerialNumber" : "asset._id",
+  "type" : "ZCS1",
+  "externalWorkOrderId" : "12345701",
+  "systemStatus" : "REL  NMAT SETC",
+  "userStatus" : "ZBNQ PERF RFCO",
+  "createdOn" : "21/05/2018 16:11",
+  "createdBy" : "SAP",
+  "name" : "Crane inspection",
+  "priority" : "",
+  "status" : "NEW",
+  "planning" : {
+    "latestFinishDate" : "18/08/2017 00:00",
+    "earliestStartDate" : "31/08/2017 00:00",
+    "latestStartDate" : "31/08/2017 00:00",
+    "estimatedTime" : ""
+  }
+}, {
+  "siteName" : "",
+  "assetSerialNumber" : "asset._id",
+  "type" : "ZCS1",
+  "externalWorkOrderId" : "12345702",
+  "systemStatus" : "REL  NMAT SETC",
+  "userStatus" : "ZBNQ PERF RFCO",
+  "createdOn" : "21/05/2018 16:11",
+  "createdBy" : "SAP",
+  "name" : "3,00_WT-BS01 3601221 Yearly Crane Inspec",
+  "priority" : "",
+  "status" : "NEW",
+  "planning" : {
+    "latestFinishDate" : "18/08/2017 00:00",
+    "earliestStartDate" : "31/08/2017 00:00",
+    "latestStartDate" : "31/08/2017 00:00",
+    "estimatedTime" : ""
+  }
+}, {
+  "siteName" : "",
+  "assetSerialNumber" : "asset._id",
+  "type" : "ZCS5",
+  "externalWorkOrderId" : "12345703",
+  "systemStatus" : "REL  CCOK GMPS MACM PRC  RESA SETC",
+  "userStatus" : "ZBNQ PERF RECV RFCO ZBCC",
+  "createdOn" : "21/05/2018 16:11",
+  "createdBy" : "SAP",
+  "name" : "A9B10170721 Retrofit Power Supply G4",
+  "priority" : "",
+  "status" : "NEW",
+  "planning" : {
+    "latestFinishDate" : "31/08/2017 00:00",
+    "earliestStartDate" : "31/08/2017 00:00",
+    "latestStartDate" : "31/08/2017 00:00",
+    "estimatedTime" : ""
+  }
+}, {
+  "siteName" : "",
+  "assetSerialNumber" : "asset._id",
+  "type" : "ZCS5",
+  "externalWorkOrderId" : "12345704",
+  "systemStatus" : "REL  CCOK GMPS NMAT PRC  RESA SETC",
+  "userStatus" : "ZBNQ PERF RFCO ZBCC",
+  "createdOn" : "21/05/2018 16:11",
+  "createdBy" : "SAP",
+  "name" : "A9B10196140  Retrofit, sign f dehumidifi",
+  "priority" : "",
+  "status" : "NEW",
+  "planning" : {
+    "latestFinishDate" : "31/08/2017 00:00",
+    "earliestStartDate" : "31/08/2017 00:00",
+    "latestStartDate" : "31/08/2017 00:00",
+    "estimatedTime" : ""
+  }
+}, {
+  "siteName" : "",
+  "assetSerialNumber" : "asset._id",
+  "type" : "ZCS5",
+  "externalWorkOrderId" : "12345705",
+  "systemStatus" : "REL  CCOK NMAT PRC  SETC",
+  "userStatus" : "ZBNQ PERF RFCO ZBCC ZBMC",
+  "createdOn" : "21/05/2018 16:11",
+  "createdBy" : "SAP",
+  "name" : "0 : Damaged fiber optic cable",
+  "priority" : "2",
+  "status" : "NEW",
+  "planning" : {
+    "latestFinishDate" : "24/07/2017 00:00",
+    "earliestStartDate" : "01/09/2017 00:00",
+    "latestStartDate" : "01/09/2017 00:00",
+    "estimatedTime" : ""
+  }
+}, {
+  "siteName" : "",
+  "assetSerialNumber" : "asset._id",
+  "type" : "ZCS5",
+  "externalWorkOrderId" : "12345706",
+  "systemStatus" : "REL  CCOK NMAT PRC  SETC",
+  "userStatus" : "ZBNQ CLAR PERF RFCO ZBCC ZBMC",
+  "createdOn" : "21/05/2018 16:11",
+  "createdBy" : "SAP",
+  "name" : "0 : Hiab Crane Slow",
+  "priority" : "3",
+  "status" : "NEW",
+  "planning" : {
+    "latestFinishDate" : "27/07/2017 00:00",
+    "earliestStartDate" : "01/09/2017 00:00",
+    "latestStartDate" : "01/09/2017 00:00",
+    "estimatedTime" : ""
+  }
+}, {
+  "siteName" : "",
+  "assetSerialNumber" : "asset._id",
+  "type" : "ZCS3",
+  "externalWorkOrderId" : "12345707",
+  "systemStatus" : "REL  CCOK NMAT PRC  SETC",
+  "userStatus" : "ZBNQ PERF RFCO",
+  "createdOn" : "21/05/2018 16:11",
+  "createdBy" : "SAP",
+  "name" : "Switching support Vattenfall",
+  "priority" : "",
+  "status" : "NEW",
+  "planning" : {
+    "latestFinishDate" : "01/09/2017 00:00",
+    "earliestStartDate" : "01/09/2017 00:00",
+    "latestStartDate" : "01/09/2017 00:00",
+    "estimatedTime" : ""
+  }
+}, {
+  "siteName" : "",
+  "assetSerialNumber" : "asset._id",
+  "type" : "ZCS5",
+  "externalWorkOrderId" : "12345708",
+  "systemStatus" : "REL  CCOK NMAT PRC  SETC",
+  "userStatus" : "ZBNQ PERF RFCO ZBMC",
+  "createdOn" : "21/05/2018 16:11",
+  "createdBy" : "SAP",
+  "name" : "Inspection on Water Ingress",
+  "priority" : "2",
+  "status" : "NEW",
+  "planning" : {
+    "latestFinishDate" : "01/09/2017 00:00",
+    "earliestStartDate" : "01/09/2017 00:00",
+    "latestStartDate" : "01/09/2017 00:00",
+    "estimatedTime" : ""
+  }
+}, {
+  "siteName" : "",
+  "assetSerialNumber" : "asset._id",
+  "type" : "ZCS5",
+  "externalWorkOrderId" : "12345709",
+  "systemStatus" : "REL  CCOK NMAT PRC  SETC",
+  "userStatus" : "ZBNQ RFCO ZBCC ZBMC",
+  "createdOn" : "21/05/2018 16:11",
+  "createdBy" : "SAP",
+  "name" : "Inspection on Water Ingress",
+  "priority" : "2",
+  "status" : "NEW",
+  "planning" : {
+    "latestFinishDate" : "01/09/2017 00:00",
+    "earliestStartDate" : "01/09/2017 00:00",
+    "latestStartDate" : "01/09/2017 00:00",
+    "estimatedTime" : ""
+  }
+}, {
+  "siteName" : "",
+  "assetSerialNumber" : "asset._id",
+  "type" : "ZCS5",
+  "externalWorkOrderId" : "12345710",
+  "systemStatus" : "REL  CCOK NMAT PRC  SETC",
+  "userStatus" : "ZBNQ PERF RFCO",
+  "createdOn" : "21/05/2018 16:11",
+  "createdBy" : "SAP",
+  "name" : "Inspection on Water Ingress",
+  "priority" : "2",
+  "status" : "NEW",
+  "planning" : {
+    "latestFinishDate" : "04/09/2017 00:00",
+    "earliestStartDate" : "04/09/2017 00:00",
+    "latestStartDate" : "04/09/2017 00:00",
+    "estimatedTime" : ""
+  }
+}, {
+  "siteName" : "",
+  "assetSerialNumber" : "asset._id",
+  "type" : "ZCS5",
+  "externalWorkOrderId" : "12345711",
+  "systemStatus" : "REL  CCOK MACM PRC  SETC",
+  "userStatus" : "ZBNQ PERF RECV ZBCC",
+  "createdOn" : "21/05/2018 16:11",
+  "createdBy" : "SAP",
+  "name" : "A9B10191123 - Retrofit, yaw software 201",
+  "priority" : "",
+  "status" : "NEW",
+  "planning" : {
+    "latestFinishDate" : "18/09/2017 00:00",
+    "earliestStartDate" : "18/09/2017 00:00",
+    "latestStartDate" : "18/09/2017 00:00",
+    "estimatedTime" : ""
+  }
+}, {
+  "siteName" : "",
+  "assetSerialNumber" : "asset._id",
+  "type" : "ZCS5",
+  "externalWorkOrderId" : "12345712",
+  "systemStatus" : "REL  CCOK NMAT PRC  SETC",
+  "userStatus" : "ZBNQ PERF RFCO ZBMC",
+  "createdOn" : "21/05/2018 16:11",
+  "createdBy" : "SAP",
+  "name" : "No Connection",
+  "priority" : "3",
+  "status" : "NEW",
+  "planning" : {
+    "latestFinishDate" : "19/09/2017 00:00",
+    "earliestStartDate" : "19/09/2017 00:00",
+    "latestStartDate" : "19/09/2017 00:00",
+    "estimatedTime" : ""
+  }
+}, {
+  "siteName" : "",
+  "assetSerialNumber" : "asset._id",
+  "type" : "ZCS1",
+  "externalWorkOrderId" : "12345713",
+  "systemStatus" : "REL  NMAT SETC",
+  "userStatus" : "ZBNQ PERF RFCO ZBCC",
+  "createdOn" : "21/05/2018 16:11",
+  "createdBy" : "SAP",
+  "name" : "Crane inspection",
+  "priority" : "",
+  "status" : "NEW",
+  "planning" : {
+    "latestFinishDate" : "25/08/2017 00:00",
+    "earliestStartDate" : "30/09/2017 00:00",
+    "latestStartDate" : "30/09/2017 00:00",
+    "estimatedTime" : ""
+  }
+}, {
+  "siteName" : "",
+  "assetSerialNumber" : "asset._id",
+  "type" : "ZCS1",
+  "externalWorkOrderId" : "12345714",
+  "systemStatus" : "REL  NMAT SETC",
+  "userStatus" : "ZBNQ PERF RFCO ZBCC",
+  "createdOn" : "21/05/2018 16:11",
+  "createdBy" : "SAP",
+  "name" : "3,00_WT-BS01 3601245 Yearly Crane Inspec",
+  "priority" : "",
+  "status" : "NEW",
+  "planning" : {
+    "latestFinishDate" : "25/08/2017 00:00",
+    "earliestStartDate" : "30/09/2017 00:00",
+    "latestStartDate" : "30/09/2017 00:00",
+    "estimatedTime" : ""
+  }
+}, {
+  "siteName" : "",
+  "assetSerialNumber" : "asset._id",
+  "type" : "ZCS1",
+  "externalWorkOrderId" : "12345715",
+  "systemStatus" : "REL  NMAT SETC",
+  "userStatus" : "ZBNQ PERF RFCO ZBCC",
+  "createdOn" : "21/05/2018 16:11",
+  "createdBy" : "SAP",
+  "name" : "Turbine mounted safety equipment",
+  "priority" : "",
+  "status" : "NEW",
+  "planning" : {
+    "latestFinishDate" : "25/08/2017 00:00",
+    "earliestStartDate" : "30/09/2017 00:00",
+    "latestStartDate" : "30/09/2017 00:00",
+    "estimatedTime" : ""
+  }
+}, {
+  "siteName" : "",
+  "assetSerialNumber" : "asset._id",
+  "type" : "ZCS1",
+  "externalWorkOrderId" : "12345716",
+  "systemStatus" : "REL  NMAT SETC",
+  "userStatus" : "ZBNQ PERF RFCO ZBCC",
+  "createdOn" : "21/05/2018 16:11",
+  "createdBy" : "SAP",
+  "name" : "3,00_WT-BS01 3601245 TMSE",
+  "priority" : "",
+  "status" : "NEW",
+  "planning" : {
+    "latestFinishDate" : "25/08/2017 00:00",
+    "earliestStartDate" : "30/09/2017 00:00",
+    "latestStartDate" : "30/09/2017 00:00",
+    "estimatedTime" : ""
+  }
+}, {
+  "siteName" : "",
+  "assetSerialNumber" : "asset._id",
+  "type" : "ZCS1",
+  "externalWorkOrderId" : "12345717",
+  "systemStatus" : "REL  NMAT SETC",
+  "userStatus" : "ZBNQ PERF RECV RFCO",
+  "createdOn" : "21/05/2018 16:11",
+  "createdBy" : "SAP",
+  "name" : "Crane inspection",
+  "priority" : "",
+  "status" : "NEW",
+  "planning" : {
+    "latestFinishDate" : "01/09/2017 00:00",
+    "earliestStartDate" : "30/09/2017 00:00",
+    "latestStartDate" : "30/09/2017 00:00",
+    "estimatedTime" : ""
+  }
+}, {
+  "siteName" : "",
+  "assetSerialNumber" : "asset._id",
+  "type" : "ZCS1",
+  "externalWorkOrderId" : "12345718",
+  "systemStatus" : "REL  NMAT SETC",
+  "userStatus" : "ZBNQ PERF RECV RFCO",
+  "createdOn" : "21/05/2018 16:11",
+  "createdBy" : "SAP",
+  "name" : "3,00_WT-BS01 3601201 Yearly Crane Inspec",
+  "priority" : "",
+  "status" : "NEW",
+  "planning" : {
+    "latestFinishDate" : "01/09/2017 00:00",
+    "earliestStartDate" : "30/09/2017 00:00",
+    "latestStartDate" : "30/09/2017 00:00",
+    "estimatedTime" : ""
+  }
+}, {
+  "siteName" : "",
+  "assetSerialNumber" : "asset._id",
+  "type" : "ZCS5",
+  "externalWorkOrderId" : "12345719",
+  "systemStatus" : "REL  CCOK MACM PRC  SETC",
+  "userStatus" : "ZBNQ PERF RECV ZBCC",
+  "createdOn" : "21/05/2018 16:11",
+  "createdBy" : "SAP",
+  "name" : "A9B10191123 - Retrofit, yaw software 201",
+  "priority" : "",
+  "status" : "NEW",
+  "planning" : {
+    "latestFinishDate" : "30/09/2017 00:00",
+    "earliestStartDate" : "30/09/2017 00:00",
+    "latestStartDate" : "30/09/2017 00:00",
+    "estimatedTime" : ""
+  }
+}, {
+  "siteName" : "",
+  "assetSerialNumber" : "asset._id",
+  "type" : "ZCS5",
+  "externalWorkOrderId" : "12345720",
+  "systemStatus" : "REL  CCOK GMPS MACM PRC  RESA SETC",
+  "userStatus" : "ZBNQ PERF RFCO ZBCC",
+  "createdOn" : "21/05/2018 16:11",
+  "createdBy" : "SAP",
+  "name" : "A9B10196140  Retrofit, sign f dehumidifi",
+  "priority" : "",
+  "status" : "NEW",
+  "planning" : {
+    "latestFinishDate" : "30/09/2017 00:00",
+    "earliestStartDate" : "30/09/2017 00:00",
+    "latestStartDate" : "30/09/2017 00:00",
+    "estimatedTime" : ""
+  }
+}, {
+  "siteName" : "",
+  "assetSerialNumber" : "asset._id",
+  "type" : "ZCS5",
+  "externalWorkOrderId" : "12345721",
+  "systemStatus" : "REL  CCOK MACM PRC  SETC",
+  "userStatus" : "ZBNQ PERF ZBA1 ZBPO",
+  "createdOn" : "21/05/2018 16:11",
+  "createdBy" : "SAP",
+  "name" : "A# Broken hose holder on pitch stat.tank",
+  "priority" : "2",
+  "status" : "NEW",
+  "planning" : {
+    "latestFinishDate" : "17/07/2017 00:00",
+    "earliestStartDate" : "15/10/2017 00:00",
+    "latestStartDate" : "15/10/2017 00:00",
+    "estimatedTime" : ""
+  }
+}, {
+  "siteName" : "",
+  "assetSerialNumber" : "asset._id",
+  "type" : "ZCS1",
+  "externalWorkOrderId" : "12345722",
+  "systemStatus" : "REL  NMAT SETC",
+  "userStatus" : "ZBNQ",
+  "createdOn" : "21/05/2018 16:11",
+  "createdBy" : "SAP",
+  "name" : "TMSE: Exchange Fire Extinguishers",
+  "priority" : "3",
+  "status" : "NEW",
+  "planning" : {
+    "latestFinishDate" : "25/08/2017 00:00",
+    "earliestStartDate" : "25/10/2017 00:00",
+    "latestStartDate" : "25/10/2017 00:00",
+    "estimatedTime" : ""
+  }
+}, {
+  "siteName" : "",
+  "assetSerialNumber" : "asset._id",
+  "type" : "ZCS5",
+  "externalWorkOrderId" : "12345723",
+  "systemStatus" : "REL  CCOK NMAT PRC  SETC",
+  "userStatus" : "ZBNQ PERF RFCO",
+  "createdOn" : "21/05/2018 16:11",
+  "createdBy" : "SAP",
+  "name" : "PT100 sensors possible swapped",
+  "priority" : "2",
+  "status" : "NEW",
+  "planning" : {
+    "latestFinishDate" : "25/08/2017 00:00",
+    "earliestStartDate" : "25/10/2017 00:00",
+    "latestStartDate" : "25/10/2017 00:00",
+    "estimatedTime" : ""
+  }
+}, {
+  "siteName" : "",
+  "assetSerialNumber" : "asset._id",
+  "type" : "ZCS1",
+  "externalWorkOrderId" : "12345724",
+  "systemStatus" : "CRTD MANC NTUP SETC",
+  "userStatus" : "ZBNQ",
+  "createdOn" : "21/05/2018 16:11",
+  "createdBy" : "SAP",
+  "name" : "Jährlich",
+  "priority" : "",
+  "status" : "NEW",
+  "planning" : {
+    "latestFinishDate" : "27/10/2017 00:00",
+    "earliestStartDate" : "27/10/2017 00:00",
+    "latestStartDate" : "27/10/2017 00:00",
+    "estimatedTime" : ""
+  }
+}, {
+  "siteName" : "",
+  "assetSerialNumber" : "asset._id",
+  "type" : "ZCS1",
+  "externalWorkOrderId" : "12345725",
+  "systemStatus" : "CRTD MANC NTUP SETC",
+  "userStatus" : "ZBNQ",
+  "createdOn" : "21/05/2018 16:11",
+  "createdBy" : "SAP",
+  "name" : "12 Monate (nur zur ersten jahreswartung)",
+  "priority" : "",
+  "status" : "NEW",
+  "planning" : {
+    "latestFinishDate" : "27/10/2017 00:00",
+    "earliestStartDate" : "27/10/2017 00:00",
+    "latestStartDate" : "27/10/2017 00:00",
+    "estimatedTime" : ""
+  }
+}, {
+  "siteName" : "",
+  "assetSerialNumber" : "asset._id",
+  "type" : "ZCS1",
+  "externalWorkOrderId" : "12345726",
+  "systemStatus" : "REL  NMAT SETC",
+  "userStatus" : "ZBNQ",
+  "createdOn" : "21/05/2018 16:11",
+  "createdBy" : "SAP",
+  "name" : "TMSE: Echange Fire extinguisher",
+  "priority" : "3",
+  "status" : "NEW",
+  "planning" : {
+    "latestFinishDate" : "06/09/2017 00:00",
+    "earliestStartDate" : "06/11/2017 00:00",
+    "latestStartDate" : "06/11/2017 00:00",
+    "estimatedTime" : ""
+  }
+} ]

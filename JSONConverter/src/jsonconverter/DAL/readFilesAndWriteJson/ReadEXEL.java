@@ -30,13 +30,11 @@ import org.apache.poi.ss.usermodel.WorkbookFactory;
 public class ReadEXEL implements IConverter {
 
     private List<String> allLinesAsStrings = new ArrayList<>();
-    private String filepath;
     private String exelRow = "";
     private SimpleDateFormat dateExelFormatterTimeFormatter = new SimpleDateFormat("dd-MMM-yyyy");
     private SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 
     public ReadEXEL(String filepath) {
-        this.filepath = filepath;
         allLinesAsStrings.clear();
         readExelFile(filepath);
     }

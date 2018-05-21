@@ -8,7 +8,6 @@ package jsonconverter.DAL.readFilesAndWriteJson;
 import java.io.File;
 import java.io.IOException;
 import java.io.StringWriter;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -33,11 +32,9 @@ import org.xml.sax.SAXException;
  */
 public class ReadXML implements IConverter {
 
-    private String filePath;
     private List<String> allLinesAsStrings = new ArrayList<>();
 
     public ReadXML(String filePath) {
-        this.filePath = filePath;
         allLinesAsStrings.clear();
         putAndSplitCSVIntoList(createCSVString(filePath));
     }

@@ -52,7 +52,8 @@ public class Converter {
                     checkConfig(fields, task.getConfig().getStatus(), task),
                     getPlanning(task, fields));
 
-            TimeUnit.MILLISECONDS.sleep(200);
+                TimeUnit.MILLISECONDS.sleep(60);
+
             jasonList.add(newJson);
             objectCounter++;
             task.update(objectCounter);
@@ -65,32 +66,32 @@ public class Converter {
     private Planning getPlanning(TaskInOurProgram task, String[] fields) {
         Planning planning = new Planning();
         try {
-           planning.setLatestFinishDate(dateTimeFormatter.format(dateFormatter.parse(checkConfig(fields, task.getConfig().getLatestFinishDate(), task))));     
+            planning.setLatestFinishDate(dateTimeFormatter.format(dateFormatter.parse(checkConfig(fields, task.getConfig().getLatestFinishDate(), task))));
         } catch (ParseException ex) {
-            try {     
+            try {
                 planning.setLatestFinishDate(dateTimeFormatter.format(dateXMLFormatter.parse(checkConfig(fields, task.getConfig().getLatestFinishDate(), task))));
             } catch (ParseException ex1) {
                 planning.setLatestFinishDate(checkConfig(fields, task.getConfig().getLatestFinishDate(), task));
             }
-            
+
         }
         try {
-           planning.setEarliestStartDate(dateTimeFormatter.format(dateFormatter.parse(checkConfig(fields, task.getConfig().getEarliestStartDate(), task))));          
+            planning.setEarliestStartDate(dateTimeFormatter.format(dateFormatter.parse(checkConfig(fields, task.getConfig().getEarliestStartDate(), task))));
         } catch (ParseException ex) {
             try {
                 planning.setEarliestStartDate(dateTimeFormatter.format(dateXMLFormatter.parse(checkConfig(fields, task.getConfig().getEarliestStartDate(), task))));
             } catch (ParseException ex1) {
-                     planning.setEarliestStartDate(checkConfig(fields, task.getConfig().getEarliestStartDate(), task));
+                planning.setEarliestStartDate(checkConfig(fields, task.getConfig().getEarliestStartDate(), task));
             }
-       
+
         }
         try {
-            planning.setLatestStartDate(dateTimeFormatter.format(dateFormatter.parse(checkConfig(fields, task.getConfig().getLatestStartDate(), task))));             
+            planning.setLatestStartDate(dateTimeFormatter.format(dateFormatter.parse(checkConfig(fields, task.getConfig().getLatestStartDate(), task))));
         } catch (ParseException ex) {
             try {
                 planning.setLatestStartDate(dateTimeFormatter.format(dateXMLFormatter.parse(checkConfig(fields, task.getConfig().getLatestStartDate(), task))));
             } catch (ParseException ex1) {
-         planning.setLatestStartDate(checkConfig(fields, task.getConfig().getLatestStartDate(), task));
+                planning.setLatestStartDate(checkConfig(fields, task.getConfig().getLatestStartDate(), task));
             }
         }
         planning.setEstimatedTime(checkConfig(fields, task.getConfig().getEstimatedTime(), task));
@@ -115,31 +116,26 @@ public class Converter {
             return config;
         }
     }
-    private void checkDefaultValues(TaskInOurProgram task)
-    {
-        
-        if(task.getConfig().getSiteName().equals(""))
-        {
-           task.getConfig().setSiteName("");
+
+    /* adds default values if the fields are empty */
+    private void checkDefaultValues(TaskInOurProgram task) {
+
+        if (task.getConfig().getSiteName().equals("")) {
+            task.getConfig().setSiteName("");
         }
-        if(task.getConfig().getAssetSerialNumber().equals(""))
-        {
+        if (task.getConfig().getAssetSerialNumber().equals("")) {
             task.getConfig().setAssetSerialNumber("asset._id");
         }
-        if(task.getConfig().getCreatedOn().equals(""))
-        {
+        if (task.getConfig().getCreatedOn().equals("")) {
             task.getConfig().setCreatedOn(dateTimeFormatter.format(currentDate));
         }
-        if(task.getConfig().getCreatedBy().equals(""))
-        {
+        if (task.getConfig().getCreatedBy().equals("")) {
             task.getConfig().setCreatedBy("SAP");
         }
-        if(task.getConfig().getStatus().equals(""))
-        {
+        if (task.getConfig().getStatus().equals("")) {
             task.getConfig().setStatus("NEW");
         }
-        if(task.getConfig().getEstimatedTime().equals(""))
-        {
+        if (task.getConfig().getEstimatedTime().equals("")) {
             task.getConfig().setEstimatedTime("");
         }
     }

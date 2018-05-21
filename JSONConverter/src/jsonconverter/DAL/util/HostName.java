@@ -16,7 +16,7 @@ public class HostName {
 
     private String hostname;
     public String userName = System.getProperty("user.name");
-    private int onlyOnce = -1;
+    private static int onlyOnce = -1;
 
     public HostName() {
         takeUserInfo();
@@ -36,18 +36,20 @@ if(onlyOnce==-1)
             addr = InetAddress.getLocalHost();
             hostname = addr.getHostName();
             onlyOnce=1;
-            System.out.println("DOtarlem");
+            System.out.println("User nformation taken");
         } catch (UnknownHostException ex) {
             System.out.println("Hostname can not be resolved");
         }
     }
     }
   
+    /* returns host name */
     public String getHostname()
     {
         return hostname;
     }
 
+    /* reurns user name */
     public String getUserName() {
         return userName;
     }

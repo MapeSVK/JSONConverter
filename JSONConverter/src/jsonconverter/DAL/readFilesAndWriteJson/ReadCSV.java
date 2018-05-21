@@ -24,26 +24,25 @@ public class ReadCSV implements IConverter {
     private List<String> allLinesAsString;
 
     public ReadCSV(String path) {
-        this.path = path;
+       // this.path = path;
+        getAllLinesAsString(path);
     }
 
     /* gets all lines from ReadCSV file and saves them inside of the list */
-    private List<String> getAllLinesAsString() {
+    private void getAllLinesAsString(String path) {
         try {
             java.nio.file.Path filePath = Paths.get(path);
-            List<String> allLinesAsStrings = Files.readAllLines(filePath);
-            return allLinesAsStrings;
+             allLinesAsString = Files.readAllLines(filePath);
         } catch (IOException ex) {
             Logger.getLogger(ReadCSV.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return null;
     }
 
     /* splits the first line from ReadCSV file and then saves this line as a headers inside of the hashMap */
     @Override
     public HashMap<String, Integer> getFileHeaders() {
         HashMap<String, Integer> headersMap = new HashMap<>();
-        String[] headers = getAllLinesAsString().get(0).split(";");
+        String[] headers = allLinesAsString.get(0).split(";");
 
         for (int i = 0; i < headers.length; i++) {
             if (headersMap.containsKey(headers[i])) {
@@ -66,7 +65,7 @@ public class ReadCSV implements IConverter {
     @Override
     public ArrayList<String> getFileValues() {
         ArrayList<String> CSVValuesList = new ArrayList();
-        CSVValuesList.addAll(getAllLinesAsString());
+        CSVValuesList.addAll(allLinesAsString);
         CSVValuesList.remove(0);
         return CSVValuesList;
     }
@@ -76,7 +75,7 @@ public class ReadCSV implements IConverter {
     public List<String> getOnlyFileHeaders() {
         List<String> headers = new ArrayList();
         headers.clear();
-        String[] headersString = getAllLinesAsString().get(0).split(";");
+        String[] headersString = allLinesAsString.get(0).split(";");
         for (int i = 0; i < headersString.length; i++) {
             if (headers.contains(headersString[i])) {
                 String keyString = headersString[i];

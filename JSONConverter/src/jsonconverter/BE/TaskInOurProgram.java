@@ -14,38 +14,38 @@ public class TaskInOurProgram extends Task<Void> {
     private String extensionOfTheFile;
     private String nameOfTheFile;
     private String configName;
+    private String fileName;
     private Config config;
     private IConverter converter;
     private Model model = new Model();
     private Object lock = this;
     private boolean pause = false;
-    private String fileName;
     private File filePath;
-    private boolean isConvertingDone=false;
-    private boolean ifWasStarted=false;
-    
+
+    private boolean isConvertingDone = false;
+    private boolean ifWasStarted = false;
     private boolean isExecutedForFirstTime = false;
     private Button pauseTask;
     private Button closeTask;
-    
-            
+
     public TaskInOurProgram(String name, String configName, String extensionOfTheFile) {
         this.nameOfTheFile = name;
         this.configName = configName;
         this.extensionOfTheFile = extensionOfTheFile;
         this.pauseTask = new Button("");
-        //       this.closeTask = new Button("");       this needs to be added in second sprint
+        this.closeTask = new Button("");
         this.pauseTask.getStyleClass().clear();
         this.pauseTask.getStyleClass().add("pauseButtons");
     }
 
+    /*converts file into JSON */
     @Override
     public Void call() throws Exception {
-        ifWasStarted=true;
+        ifWasStarted = true;
         this.updateProgress(ProgressIndicator.INDETERMINATE_PROGRESS, 1);
         model.createJsonFile(fileName, filePath, this);
         isConvertingDone = true;
-      return null;
+        return null;
     }
 
     public boolean isIsExecutedForFirstTime() {
@@ -59,7 +59,6 @@ public class TaskInOurProgram extends Task<Void> {
     public boolean isPause() {
         return pause;
     }
-
 
     public boolean isIsConvertingDone() {
         return isConvertingDone;
@@ -149,14 +148,21 @@ public class TaskInOurProgram extends Task<Void> {
         this.filePath = filePath;
     }
 
+    public boolean isIfWasStarted() {
+        return ifWasStarted;
+    }
+
+    /* updates progress bar */
     public void update(double update) {
         updateProgress(update, converter.getFileValues().size());
     }
 
+    /* pauses task */
     public void pauseThis() {
         pause = true;
     }
 
+    /* continues paused task */
     public void continueThis() {
         pause = false;
         synchronized (lock) {
@@ -164,12 +170,7 @@ public class TaskInOurProgram extends Task<Void> {
         }
     }
 
-    public boolean isIfWasStarted() {
-        return ifWasStarted;
-    }
-    
-    
-
+    /* pauses task */
     public void pauseThread() {
         synchronized (lock) {
             if (pause) {
