@@ -202,6 +202,10 @@ public class ConfigFXMLController implements Initializable {
     /* creates config based on users text fields and saves it in the database */
     private Config createConfig() {
         Config newConfig = new Config();
+        
+        if (isEditMode) {
+            newConfig.setCinfig_id(choosenConfig.getCinfig_id());
+        }
 
         if (!siteNameField.getText().isEmpty() && siteNameFieldEmpty.isDisable() == false && !siteNameFieldEmpty.getText().isEmpty()) {
             newConfig.setSiteName(siteNameField.getText() + "&&" + siteNameFieldEmpty.getText());
