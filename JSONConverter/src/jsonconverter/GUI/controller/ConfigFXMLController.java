@@ -150,19 +150,15 @@ public class ConfigFXMLController implements Initializable {
         if (headerNameField.getText().isEmpty()) {
             Alert("Error", "Please, insert a valid name");
         } else {
-            if(model.wrongInputValidation(configFieldsPane))
-            {
-                System.out.println("MOZNA ZAPISAC");
-//            if (model.checkIfConfigExists(createConfig())) {
-//                model.saveConfigToDatabase(createConfig(), isEditMode);
-//                closeWindow();
-//            } else {
-//                Alert("Config already exists", "Config with this name already exists!");
-//            }
-            }
-            else
-            {
-                 Alert("Fields filled incorrectly", "Fill fields correctly");
+            if (model.wrongInputValidation(configFieldsPane)) {
+                if (model.checkIfConfigExists(createConfig())) {
+                    model.saveConfigToDatabase(createConfig(), isEditMode);
+                    closeWindow();
+                } else {
+                    Alert("Configuration already exists", "Configuration with this name already exists!");
+                }
+            } else {
+                Alert("Fields filled incorrectly", "Fill fields correctly");
             }
         }
     }
@@ -175,8 +171,8 @@ public class ConfigFXMLController implements Initializable {
         alert.setContentText("It will be removed permanently. Are you sure?");
         alert.showAndWait();
         if (alert.getResult() == ButtonType.OK) {
-        model.removeConfigToDatabase(choosenConfig);
-        closeWindow();
+            model.removeConfigToDatabase(choosenConfig);
+            closeWindow();
         }
     }
 
@@ -194,7 +190,7 @@ public class ConfigFXMLController implements Initializable {
         for (Node node : configFieldsPane.getChildren()) {
             if (node instanceof JFXTextField) {
                 TextFields.bindAutoCompletion(((JFXTextField) node), suggest);
-                model.changeColorIfWrong(node,((JFXTextField) node).getText(), model.getOnlyFileHeaders());
+                model.changeColorIfWrong(node, ((JFXTextField) node).getText(), model.getOnlyFileHeaders());
             }
         }
     }
@@ -211,7 +207,7 @@ public class ConfigFXMLController implements Initializable {
     /* creates config based on users text fields and saves it in the database */
     private Config createConfig() {
         Config newConfig = new Config();
-        
+
         if (isEditMode) {
             newConfig.setCinfig_id(choosenConfig.getCinfig_id());
         }
@@ -332,7 +328,7 @@ public class ConfigFXMLController implements Initializable {
             if (node instanceof JFXTextField) {
                 ((JFXTextField) node).textProperty().addListener(e -> {
                     addAndRemoveHeadersFromBinding();
-                  model.changeColorIfWrong(node,((JFXTextField) node).getText(), model.getOnlyFileHeaders());
+                    model.changeColorIfWrong(node, ((JFXTextField) node).getText(), model.getOnlyFileHeaders());
                 });
             }
         }

@@ -63,6 +63,8 @@ public class DALConfig {
 
             pool.checkIn(con);
         } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Configs could not be loaded");
+
             Logger.getLogger(DALHistory.class.getName()).log(
                     Level.SEVERE, null, ex);
         }
@@ -103,6 +105,8 @@ public class DALConfig {
 
             pool.checkIn(con);
         } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Config could not be loaded");
+
             Logger.getLogger(DALHistory.class.getName()).log(
                     Level.SEVERE, null, ex);
         }

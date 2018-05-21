@@ -7,6 +7,7 @@ package jsonconverter.DAL.util;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -14,38 +15,36 @@ import java.net.UnknownHostException;
  */
 public class HostName {
 
-    private String hostname;
+    String hostname = "Anonymous";
     public String userName = System.getProperty("user.name");
     private static int onlyOnce = -1;
 
     public HostName() {
         takeUserInfo();
     }
-    
+
     /* gets information about localHost */
     private void takeUserInfo() {
-        
-      //  TimeZone tz = TimeZone.getTimeZone("Europe/Copenhagen");
-     //   SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-    //    sdf.setTimeZone(tz);
-    
-if(onlyOnce==-1)
-{
-        try {
-            InetAddress addr;
-            addr = InetAddress.getLocalHost();
-            hostname = addr.getHostName();
-            onlyOnce=1;
-            System.out.println("User nformation taken");
-        } catch (UnknownHostException ex) {
-            System.out.println("Hostname can not be resolved");
+
+        //  TimeZone tz = TimeZone.getTimeZone("Europe/Copenhagen");
+        //   SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        //    sdf.setTimeZone(tz);
+        if (onlyOnce == -1) {
+            try {
+                InetAddress addr;
+                addr = InetAddress.getLocalHost();
+                hostname = addr.getHostName();
+                onlyOnce = 1;
+                System.out.println("User nformation taken");
+            } catch (UnknownHostException ex) {
+                JOptionPane.showMessageDialog(null, "Hostname can not be resolved");
+
+            }
         }
     }
-    }
-  
+
     /* returns host name */
-    public String getHostname()
-    {
+    public String getHostname() {
         return hostname;
     }
 
@@ -55,4 +54,3 @@ if(onlyOnce==-1)
     }
 
 }
-
