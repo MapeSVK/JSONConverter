@@ -10,8 +10,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.scene.Node;
 import javafx.scene.layout.AnchorPane;
 import jsonconverter.BE.Config;

@@ -27,6 +27,7 @@ public class NewConfigValidations {
         return true;
     }
 
+    /* makes background of field red when it is filled incorrectly */
     public void changeColorIfWrong(Node node, String fieldText, List<String> headersList) {
         if (((JFXTextField) node).getId().equals("siteNameField")
                 || ((JFXTextField) node).getId().equals("assetSerialNumberField")
@@ -49,6 +50,7 @@ public class NewConfigValidations {
         }
     }
 
+    /* checks if fields have red background */
     public boolean wrongInputValidation(AnchorPane pane) {
         for (Node node : pane.getChildren()) {
             if (node instanceof JFXTextField) {

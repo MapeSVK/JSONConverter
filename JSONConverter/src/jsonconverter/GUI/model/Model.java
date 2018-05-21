@@ -206,11 +206,12 @@ public class Model {
         return manager.checkIfConfigExists(config, manager.getAllConfigs());
     }
 
-          public void changeColorIfWrong(Node node,String fieldText,List<String> headersList)
-     {
-          manager.changeColorIfWrong(node, fieldText, headersList);
-     }
+    /* makes background of field red when it is filled incorrectly */
+    public void changeColorIfWrong(Node node, String fieldText, List<String> headersList) {
+        manager.changeColorIfWrong(node, fieldText, headersList);
+    }
 
+    /* checks if fields have red background */
     public boolean wrongInputValidation(AnchorPane pane) {
         return manager.wrongInputValidation(pane);
     }
