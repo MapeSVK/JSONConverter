@@ -1,6 +1,8 @@
 package jsonconverter.GUI.controller;
 
 import com.jfoenix.controls.JFXDatePicker;
+import java.awt.MouseInfo;
+import java.awt.Point;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -13,8 +15,12 @@ import java.util.Date;
 import java.util.ResourceBundle;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -27,6 +33,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.stage.FileChooser;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
@@ -36,17 +43,18 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Modality;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
-import javax.swing.JOptionPane;
 import jsonconverter.BE.Config;
 import jsonconverter.BE.History;
 import jsonconverter.BE.TaskInOurProgram;
 import jsonconverter.GUI.model.Model;
+import static org.apache.xmlbeans.impl.store.Public2.test;
 
 public class MainFXMLController implements Initializable {
 
@@ -162,7 +170,7 @@ public class MainFXMLController implements Initializable {
         File selectedDirectory = directoryChooser.showDialog(chooseDirectoryButton.getScene().getWindow());
         directoryChooser.setTitle("Select a directory");
         if (selectedDirectory == null) {
-            JOptionPane.showMessageDialog(null, "You did not select any directory. Try again!");
+            Alert("Is that correct?","You did not select directory");
         } else {
             System.out.println("Selected directory: " + selectedDirectory.getAbsolutePath());
             directoryPath = selectedDirectory.getAbsoluteFile();
@@ -228,7 +236,7 @@ public class MainFXMLController implements Initializable {
     @FXML
     private void createNewConfigButtonClick(ActionEvent event) throws IOException {
         if (filePath.equals("") || nameOfImportedFile.equals("")) {
-            JOptionPane.showMessageDialog(null, "No file imported. Please, import one previously");
+            Alert("Error", "No file imported. Please, import one previously");
         } else {
             Parent root;
             Stage stage = new Stage();
@@ -245,7 +253,14 @@ public class MainFXMLController implements Initializable {
     /* adds task to the taskTable */
     @FXML
     private void addTaskButtonClick(ActionEvent event) {
-        /* CONDITIONS */
+        if (filePath.equals("") || nameOfImportedFile.equals("")) {
+            Alert("Error", "No file imported. Please, import one previously");
+
+        } else {
+            if (configChoiceBox.getSelectionModel().isEmpty()) {
+                Alert("Error", "Choose a valid configuration");
+            } else {
+            /* CONDITIONS */
         boolean isRightNameOfTheFile = false;
         boolean isConfigSet = false;
         boolean isRightExtension = false;
@@ -277,12 +292,14 @@ public class MainFXMLController implements Initializable {
         pauseConvertingClick();
         closeTaskButtonClick();
     }
+        }
+    }
 
     /* pops up window where user can edit chosen chonfig */
     @FXML
     private void editConfigButtonClick(ActionEvent event) throws IOException, ParseException {
         if (configChoiceBox.getSelectionModel().isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Please, choose a valid configuration");
+                 Alert("Error", "Choose a valid configuration");
         } else {
             Parent root;
             Stage stage = new Stage();
@@ -322,7 +339,8 @@ public class MainFXMLController implements Initializable {
 
         tasksTableView.getColumns().addAll(statusCol);
 
-    }
+                pauseConvertingClick();
+            }       
 
     /* getting data from the model and setting this data in the choiceBox */
     private void setConfigChoiceBoxItems() {
@@ -457,7 +475,6 @@ public class MainFXMLController implements Initializable {
                         executor.submit(task);
                         task.setIsExecutedForFirstTime(true);
                         task.getPauseTask().setGraphic(new ImageView(pauseImage));
-                        createHistoryForTask(task);
 
                     } else if (task.isIsExecutedForFirstTime() == true && task.isPause() == false) {
                         task.getPauseTask().setGraphic(new ImageView(playImage));
@@ -551,7 +568,6 @@ public class MainFXMLController implements Initializable {
             return row;
         });
     }
-
     /* sets right format of the date */
     private String getFormatedActualDateAndTimeAsString() {
         DateTimeFormatter df = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
@@ -597,7 +613,5 @@ public class MainFXMLController implements Initializable {
                 }
             }
         });
-
     }
-
 }

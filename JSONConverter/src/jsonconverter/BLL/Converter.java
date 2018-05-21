@@ -30,7 +30,7 @@ public class Converter {
     private Date currentDate = new Date();
 
     /* converts values from imported file into JSON list basen on config */
-    public List<JSONObject> returnJasonObjects(TaskInOurProgram task) {
+    public List<JSONObject> returnJasonObjects(TaskInOurProgram task) throws InterruptedException {
         ObservableList<JSONObject> jasonList = FXCollections.observableArrayList();
         double objectCounter = 0;
         jasonList.clear();
@@ -52,11 +52,7 @@ public class Converter {
                     checkConfig(fields, task.getConfig().getStatus(), task),
                     getPlanning(task, fields));
 
-            try {
                 TimeUnit.MILLISECONDS.sleep(60);
-            } catch (InterruptedException ex) {
-                Logger.getLogger(Converter.class.getName()).log(Level.SEVERE, null, ex);
-            }
 
             jasonList.add(newJson);
             objectCounter++;

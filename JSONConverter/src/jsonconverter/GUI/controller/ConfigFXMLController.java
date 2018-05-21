@@ -17,11 +17,11 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-import javax.swing.JOptionPane;
 import jsonconverter.BE.Config;
 import jsonconverter.GUI.model.Model;
 import org.controlsfx.control.textfield.TextFields;
@@ -148,7 +148,7 @@ public class ConfigFXMLController implements Initializable {
     private void saveButtonOnAction(ActionEvent event) throws ParseException {
 
         if (headerNameField.getText().isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Please, insert a valid name");
+            Alert("Error", "Please, insert a valid name");
         } else {
             if (model.checkIfConfigExists(createConfig())) {
                 model.saveConfigToDatabase(createConfig(), isEditMode);
@@ -162,14 +162,13 @@ public class ConfigFXMLController implements Initializable {
     /*removes config from database */
     @FXML
     private void removeButtonOnAction(ActionEvent event) {
-        int selectedOption = JOptionPane.showConfirmDialog(null,
-                "It will be removed permanently. Are you sure?",
-                "Are you sure?",
-                JOptionPane.YES_NO_OPTION);
-        if (selectedOption == JOptionPane.YES_OPTION) {
-            System.out.println("CIPA");
-            model.removeConfigToDatabase(choosenConfig);
-            closeWindow();
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Are you sure?");
+        alert.setContentText("It will be removed permanently. Are you sure?");
+        alert.showAndWait();
+        if (alert.getResult() == ButtonType.OK) {
+        model.removeConfigToDatabase(choosenConfig);
+        closeWindow();
         }
     }
 
@@ -309,7 +308,6 @@ public class ConfigFXMLController implements Initializable {
         alert.showAndWait();
     }
 
-    /* closes the window */
     private void closeWindow() {
         Stage stage = (Stage) saveConfigButton.getScene().getWindow();
         stage.close();
