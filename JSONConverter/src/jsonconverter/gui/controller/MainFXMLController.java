@@ -6,12 +6,15 @@ import java.awt.Point;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import static java.nio.file.Files.list;
 import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.ResourceBundle;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -179,20 +182,21 @@ public class MainFXMLController implements Initializable {
     private void importFileFromFolderAction(ActionEvent event) {
         DirectoryChooser directoryChooser = new DirectoryChooser();
         File selectedDirectory = directoryChooser.showDialog(importFileFromFolderButton.getScene().getWindow());
-
-        nameOfImportedFileLabel.setText(selectedDirectory.getName());
-        labelFileExtension.setText("file");
-        File[] listOfFiles = selectedDirectory.listFiles();
-        filePath = "placki";
-        nameOfImportedFile = "file";
-        configChoiceBox.setDisable(false);
-        createNewConfigButton.setDisable(true);
-        editButton.setDisable(true);
-        model.getAllFilesInFolder().clear();
-        model.loadAvailableConfig();
-        for (int i = 0; i < listOfFiles.length; i++) {
-            if (listOfFiles[i].isFile()) {
-                model.addFileFromTheFolder(listOfFiles[i]);
+        if (selectedDirectory != null) {
+            nameOfImportedFileLabel.setText(selectedDirectory.getName());
+            labelFileExtension.setText("file");
+            File[] listOfFiles = selectedDirectory.listFiles();
+            filePath = "placki";
+            nameOfImportedFile = "file";
+            configChoiceBox.setDisable(false);
+            createNewConfigButton.setDisable(true);
+            editButton.setDisable(true);
+            model.getAllFilesInFolder().clear();
+            model.loadAvailableConfig();
+            for (int i = 0; i < listOfFiles.length; i++) {
+                if (listOfFiles[i].isFile()) {
+                    model.addFileFromTheFolder(listOfFiles[i]);
+                }
             }
         }
     }
@@ -206,7 +210,6 @@ public class MainFXMLController implements Initializable {
         if (selectedDirectory == null) {
             model.Alert("Is that correct?", "You did not select directory");
         } else {
-            System.out.println("Selected directory: " + selectedDirectory.getAbsolutePath());
             directoryPath = selectedDirectory.getAbsoluteFile();
             directoryPathHasBeenSelected = true;
             addTaskButton.setDisable(false);
@@ -294,7 +297,7 @@ public class MainFXMLController implements Initializable {
         boolean isRightNameOfTheFile = false;
         boolean isConfigSet = false;
         boolean isRightExtension = false;
-        String failedToAdd ="";
+        String failedToAdd = "";
 
         if (nameOfImportedFile != null && !nameOfImportedFile.equals("")) {
             isRightNameOfTheFile = true;
@@ -355,14 +358,13 @@ public class MainFXMLController implements Initializable {
                     convertTaskButton.setDisable(false);
                     pauseProcessButton.setDisable(false);
                     deleteProcessButton.setDisable(false);
-                }
-                else
-                {
-                    failedToAdd=failedToAdd+","+file.getName();
+                } else {
+                    failedToAdd = failedToAdd + "," + file.getName();
                 }
             }
+            model.Alert("Files failed to add", failedToAdd + " were unable to add because they dont match chosen config");
         }
-        model.Alert("Files failed to add", failedToAdd+" were unable to add because they dont match chosen config");
+        createAlertIfFileExistsInReposytory(listOfFilesThatCanBeOverrided());
     }
 
     /* pops up window where user can edit chosen chonfig */
@@ -419,11 +421,12 @@ public class MainFXMLController implements Initializable {
     /* getting data from the model and setting this data in the choiceBox */
     private void setConfigChoiceBoxItems() {
         configChoiceBox.setItems(model.getAllConfigObservableArrayList());
-        configChoiceBox.valueProperty().addListener(e->{
-            if(configChoiceBox.getValue()!=null)
+        configChoiceBox.valueProperty().addListener(e -> {
+            if (configChoiceBox.getValue() != null) {
                 chooseDirectoryButton.setDisable(false);
-            else
+            } else {
                 chooseDirectoryButton.setDisable(true);
+            }
         });
     }
 
@@ -462,14 +465,14 @@ public class MainFXMLController implements Initializable {
     /* sets right converter for imported file from folder */
     private void fileInFolderExtension(File file) {
         if (file.getPath().endsWith(".csv")) {
-            fileType = ".csv";
-            model.setConverter(fileType, file.getPath());
+            fileType = "csv";
+            model.setConverter(".csv", file.getPath());
         } else if (file.getPath().endsWith(".xlsx")) {
-            fileType = ".xlsx";
-            model.setConverter(fileType, file.getPath());
+            fileType = "xlsx";
+            model.setConverter(".xlsx", file.getPath());
         } else if (file.getPath().endsWith(".xml")) {
-            fileType = ".xml";
-            model.setConverter(fileType, file.getPath());
+            model.setConverter(".xml", file.getPath());
+            fileType = "xml";
         }
     }
 
@@ -722,7 +725,6 @@ public class MainFXMLController implements Initializable {
         model.addHistoryToTheDatabase(history);
     }
 
-
     /* ends executor when the main window is closed */
     public void getStage(Stage stage) {
         stage.showingProperty().addListener(e -> {
@@ -737,5 +739,37 @@ public class MainFXMLController implements Initializable {
                 }
             }
         });
+    }
+
+    /* returns list of tasks that aleready exist in choser directory */
+    private List<TaskInOurProgram> listOfFilesThatCanBeOverrided() {
+        List<TaskInOurProgram> filesThatExist = new ArrayList();
+
+        File[] files = directoryPath.listFiles();
+        for (int i = 0; i < files.length; i++) {
+            if (files[i].isFile()) {
+
+                for (TaskInOurProgram task : model.getTasksInTheTableView()) {
+                    if (files[i].getName().equals(task.getFileName() + "." + task.getExtensionOfTheFile())) {
+                        filesThatExist.add(task);
+                    }
+                }
+            }
+        }
+        return filesThatExist;
+    }
+
+    /* creates alert with overrite question for all tasks in list */
+    private void createAlertIfFileExistsInReposytory(List<TaskInOurProgram> tasks) {
+        for (TaskInOurProgram task : tasks) {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("file exists");
+            alert.setContentText(task.getFileName()+"aleready exists in chosen reposytory."
+                    + "Do you want to override it?");
+            alert.showAndWait();
+            if (alert.getResult() == ButtonType.CANCEL) {
+                model.getTasksInTheTableView().remove(task);
+            }
+        }
     }
 }
