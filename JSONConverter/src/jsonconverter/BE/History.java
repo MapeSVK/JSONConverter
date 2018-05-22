@@ -94,5 +94,7 @@ public class History {
     public String toString() {
         return "History{" + "dateAndTime=" + dateAndTime + ", id=" + id + ", username=" + username + ", fileName=" + fileName + ", hasError=" + hasError + ", errorMessage=" + errorMessage + '}';
     }
+    
+    
 
 }

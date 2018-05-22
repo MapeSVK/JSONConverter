@@ -50,8 +50,11 @@
     -fx-text-fill: #fff;
 }
 
-.errorHistoryRow {
+/*.errorHistoryRow {
     -fx-background-color: #FE807F;
-}
+}*/
+
+
+.table-row-cell:error { -fx-selection-bar-non-focused: red; -fx-selection-bar: purple; -fx-background-color: red}
 
 
