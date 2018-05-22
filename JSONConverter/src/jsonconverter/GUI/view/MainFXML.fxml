@@ -20,7 +20,7 @@
                <content>
                   <AnchorPane id="AnchorPane" onDragDetected="#historyPageButtonClick" prefHeight="564.0" prefWidth="908.0">
                      <children>
-                        <Button layoutX="22.0" layoutY="84.0" mnemonicParsing="false" onAction="#importFileButtonClick" prefHeight="27.0" prefWidth="152.0" style="-fx-background-color: #0D5F76; -fx-text-fill: #fff;" text="Import">
+                        <Button layoutX="21.0" layoutY="55.0" mnemonicParsing="false" onAction="#importFileButtonClick" prefHeight="27.0" prefWidth="152.0" style="-fx-background-color: #0D5F76; -fx-text-fill: #fff;" text="Import">
                            <font>
                               <Font name="Arial Bold" size="13.0" />
                            </font></Button>
@@ -43,15 +43,15 @@
                               <TableColumn fx:id="closeButtonColumn" maxWidth="73.0" minWidth="68.0" prefWidth="71.0" />
                           </columns>
                         </TableView>
-                        <Button fx:id="convertTaskButton" disable="true" layoutX="399.0" layoutY="513.0" mnemonicParsing="false" onAction="#convertTasksButtonClick" text="CONVERT">
+                        <Button fx:id="convertTaskButton" layoutX="399.0" layoutY="513.0" mnemonicParsing="false" onAction="#convertTasksButtonClick" text="CONVERT">
                            <font>
                               <Font name="Arial Bold" size="13.0" />
                            </font></Button>
-                        <Button fx:id="pauseProcessButton" disable="true" layoutX="588.0" layoutY="512.0" mnemonicParsing="false" onAction="#pauseTasksButtonClick" prefHeight="27.0" prefWidth="138.0" text="PAUSE PROCESS">
+                        <Button layoutX="588.0" layoutY="512.0" mnemonicParsing="false" onAction="#pauseTasksButtonClick" prefHeight="27.0" prefWidth="138.0" text="PAUSE PROCESS">
                            <font>
                               <Font name="Arial Bold" size="13.0" />
                            </font></Button>
-                        <Button fx:id="deleteProcessButton" disable="true" layoutX="745.0" layoutY="513.0" mnemonicParsing="false" onAction="#deleteTasksButtonClick" prefHeight="27.0" prefWidth="138.0" text="DELETE PROCESS">
+                        <Button layoutX="745.0" layoutY="513.0" mnemonicParsing="false" onAction="#deleteTasksButtonClick" prefHeight="27.0" prefWidth="138.0" text="DELETE PROCESS">
                            <font>
                               <Font name="Arial Bold" size="13.0" />
                            </font></Button>
@@ -69,7 +69,7 @@
                            <font>
                               <Font name="Arial Bold" size="13.0" />
                            </font></Button>
-                        <Label layoutX="55.0" layoutY="59.0" text="IMPORT FILE" textFill="#0d5f76">
+                        <Label layoutX="57.0" layoutY="40.0" text="IMPORT FILE" textFill="#0d5f76">
                            <font>
                               <Font name="Arial Bold" size="12.0" />
                            </font>
@@ -112,6 +112,11 @@
                         <Button fx:id="editButton" layoutX="18.0" layoutY="392.0" mnemonicParsing="false" onAction="#editConfigButtonClick" prefHeight="27.0" prefWidth="157.0" text="Edit">
                            <font>
                               <Font name="Arial Bold" size="12.0" />
+                           </font>
+                        </Button>
+                        <Button fx:id="importFileFromFolderButton" layoutX="21.0" layoutY="90.0" mnemonicParsing="false" onAction="#importFileFromFolderAction" prefHeight="27.0" prefWidth="152.0" style="-fx-background-color: #0D5F76; -fx-text-fill: #fff;" text="Import folder">
+                           <font>
+                              <Font name="Arial Bold" size="13.0" />
                            </font>
                         </Button>
 

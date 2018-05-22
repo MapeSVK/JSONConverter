@@ -90,6 +90,8 @@ public class MainFXMLController implements Initializable {
     private Button editButton;
     @FXML
     private TableColumn<TaskInOurProgram, Button> closeButtonColumn;
+    @FXML
+    private Button importFileFromFolderButton;
 
     private String filePath = "";
     private String fileType;
@@ -118,9 +120,7 @@ public class MainFXMLController implements Initializable {
     Stage stage;
     @FXML
     private Button convertTaskButton;
-    @FXML
     private Button pauseProcessButton;
-    @FXML
     private Button deleteProcessButton;
 
     @Override
@@ -158,10 +158,29 @@ public class MainFXMLController implements Initializable {
             filePath = fileChoosedByImport.toString();
             nameOfImportedFile = gettingTheFileNameFromThePath(fileChoosedByImport);
             fileExtendionIdentifier();
-            model.checkIfYouCanUseConfig();
+            model.getAllConfigObservableArrayList().clear();
+            model.getAllConfigObservableArrayList().setAll(model.checkIfYouCanUseConfig());
             nameOfImportedFileLabel.setText(nameOfImportedFile);
         } else {
             Alert("Error", "File could not be imported");
+        }
+    }
+
+    /* importf files from file */
+    @FXML
+    private void importFileFromFolderAction(ActionEvent event) {
+        DirectoryChooser directoryChooser = new DirectoryChooser();
+        File selectedDirectory = directoryChooser.showDialog(importFileFromFolderButton.getScene().getWindow());
+
+        nameOfImportedFileLabel.setText(selectedDirectory.getName());
+        labelFileExtension.setText("file");
+        File[] listOfFiles = selectedDirectory.listFiles();
+        filePath="placki";
+        nameOfImportedFile="file";
+        for (int i = 0; i < listOfFiles.length; i++) {
+            if (listOfFiles[i].isFile()) {
+                model.addFileFromTheFolder(listOfFiles[i]);
+            }
         }
     }
 
@@ -288,7 +307,7 @@ public class MainFXMLController implements Initializable {
                 }
 
                 /* ADDING */
-                if (isRightNameOfTheFile == true && isConfigSet == true && isRightExtension == true) {
+                if (isRightNameOfTheFile == true && isConfigSet == true && isRightExtension == true && !labelFileExtension.getText().equals("file")) {
                     TaskInOurProgram task = new TaskInOurProgram(nameOfImportedFile, configChoiceBox.getSelectionModel().getSelectedItem().getConfigName(),
                             labelFileExtension.getText());
                     model.getConverter(task);
@@ -297,13 +316,32 @@ public class MainFXMLController implements Initializable {
                     task.setFileName(nameOfImportedFile);
                     model.addTask(task);
                 }
-
-                pauseConvertingClick();
+                else if (isRightNameOfTheFile == true && isConfigSet == true && isRightExtension == true && labelFileExtension.getText().equals("file")) {
+                    System.out.println("Te dobre");
+                    for(File file : model.getAllFilesInFolder())
+                    {
+                        fileInFolderExtension(file);
+                        nameOfImportedFile = gettingTheFileNameFromThePath(file);
+                        if(model.checkIfFileMatchesConfig(configChoiceBox.getValue()))
+                        {
+                    TaskInOurProgram task = new TaskInOurProgram(nameOfImportedFile, configChoiceBox.getSelectionModel().getSelectedItem().getConfigName(),
+                            fileType);
+                    model.getConverter(task);
+                    task.setConfig(configChoiceBox.getValue());
+                    task.setFilePath(file);
+                    task.setFileName(nameOfImportedFile);
+                    model.addTask(task);
+                        }
+                        
+                    }
+                    
+                }           
+            }
+            pauseConvertingClick();
                 closeTaskButtonClick();
                 convertTaskButton.setDisable(false);
                 pauseProcessButton.setDisable(false);
                 deleteProcessButton.setDisable(false);
-            }
         }
     }
 
@@ -392,6 +430,21 @@ public class MainFXMLController implements Initializable {
             fileType = ".xml";
             labelFileExtension.setText("xml");
             model.setConverter(fileType, filePath);
+        }
+    }
+    
+    /* sets right converter for imported file from folder */
+    private void fileInFolderExtension(File file)
+    {
+        if (file.getPath().endsWith(".csv")) {
+            fileType = ".csv";
+            model.setConverter(fileType, file.getPath());
+        } else if (file.getPath().endsWith(".xlsx")) {
+            fileType = ".xlsx";
+            model.setConverter(fileType, file.getPath());
+        } else if (file.getPath().endsWith(".xml")) {
+            fileType = ".xml";
+            model.setConverter(fileType, file.getPath());
         }
     }
 
