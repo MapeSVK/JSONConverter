@@ -87,6 +87,12 @@ public class BLLManager {
     public List<Config> getAllAvailableConfigs() {
         return manager.getAllAvailableConfigs();
     }
+    
+    /* updates selected config */
+    public void editConfig(Config config)
+    {
+        manager.editConfig(config);
+    }
 
     //- - - - - - - - - - - - - - - - - - - - HOSTNAME - - - - - - - - - - - - - - - - - - - -
     /* returns local Hostname */

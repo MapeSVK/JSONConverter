@@ -1,15 +1,14 @@
 package jsonconverter.GUI.controller;
 
 import com.jfoenix.controls.JFXDatePicker;
+import com.jfoenix.controls.JFXTextField;
 import java.awt.MouseInfo;
 import java.awt.Point;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import static java.nio.file.Files.list;
 import java.text.ParseException;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -20,6 +19,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -41,7 +42,6 @@ import javafx.scene.control.cell.ProgressBarTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Region;
 import javafx.stage.DirectoryChooser;
@@ -54,7 +54,6 @@ import jsonconverter.BE.Config;
 import jsonconverter.BE.History;
 import jsonconverter.BE.TaskInOurProgram;
 import jsonconverter.GUI.model.Model;
-import jsonconverter.GUI.util.HistoryRow;
 
 public class MainFXMLController implements Initializable {
 
@@ -153,6 +152,8 @@ public class MainFXMLController implements Initializable {
     @FXML
     private Label nameOfImportedFileLabelLabel;
 
+    private JFXTextField searchByUsernameField;
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         /* set big icons instead of basic look of buttons */
@@ -170,6 +171,7 @@ public class MainFXMLController implements Initializable {
 
         tasksTableView.setSelectionModel(null);
         historyTableView.setSelectionModel(null);
+        
         model.loadAvailableConfig();
 
         /* set history tableView */
@@ -180,10 +182,11 @@ public class MainFXMLController implements Initializable {
         toDate = currentDate;
         setPromptDateInDatePickerToEuropeanStyle();
         activeDatePickersInHistoryTab();
+        model.getAllHistoryObservableArrayList().setAll(model.getSortedAllHistory());
+        searchHistoryByUsername();
 
-        /* style history tableView and show error as a pop-up */       
-        openErrorMessageAfterHoveringOverRow();   
-
+        /* style history tableView and show error as a pop-up */
+        openErrorMessageAfterHoveringOverRow();
     }
 
     /* imports the file into program */
@@ -538,6 +541,7 @@ public class MainFXMLController implements Initializable {
             fromDate = c.getTime();
 
             historyTableView.setItems(model.getHistoryOfChosenPeriod(model.getSortedAllHistory(), fromDate, toDate));
+            model.getAllHistoryObservableArrayList().setAll(model.getHistoryOfChosenPeriod(model.getSortedAllHistory(), fromDate, toDate));
 
         });
 
@@ -549,6 +553,7 @@ public class MainFXMLController implements Initializable {
             toDate = c.getTime();
 
             historyTableView.setItems(model.getHistoryOfChosenPeriod(model.getSortedAllHistory(), fromDate, toDate));
+            model.getAllHistoryObservableArrayList().setAll(model.getHistoryOfChosenPeriod(model.getSortedAllHistory(), fromDate, toDate));
         });
     }
 
@@ -664,24 +669,92 @@ public class MainFXMLController implements Initializable {
         userNameColumn.setCellValueFactory(new PropertyValueFactory("username"));
         errorColumn.setCellValueFactory(new PropertyValueFactory("errorIcon"));
     }
-    
-    
+
+    public void test() {
+        historyTableView.setRowFactory(tableView -> new TableRow<History>() {
+            @Override
+            protected void updateItem(History history, boolean empty) {
+                super.updateItem(history, empty);
+                if (empty) {
+                    setStyle("");
+                } else if (history.isHasError() == true) {
+                    getStyleClass().clear();
+                    getStyleClass().add("errorHistoryRow");
+                } else if (history.isHasError() == false) {
+                    getStyleClass().clear();
+                    getStyleClass().add("");
+                }
+            }
+        });
+    }
+
     /* 1. show pop-up window after hovering over the row which has error
        2. change background color to red of rows with errors 
        3. show the image of the error in the end of the row
      */
     private void openErrorMessageAfterHoveringOverRow() {
-        // calling the most powerful class in this universe
-        historyTableView.setRowFactory(t -> new HistoryRow());
-        
-        for (History history : model.getAllHistoryObservableArrayList()) {                           
+
+        historyTableView.setRowFactory(tableView -> {
+            final TableRow<History> row = new TableRow<>();
+
+            //for each loop to set image and color only
+            for (History history : model.getAllHistoryObservableArrayList()) {
+
                 if (history.isHasError() == true) {
+
                     //show icon in the end of the row
                     history.getErrorIcon().setImage(errorSmall);
                 }
-        }
+            }
+
+            for (History his : model.getAllHistoryObservableArrayList()) {
+
+                row.hoverProperty().addListener((observable) -> {
+                    History historyRow = row.getItem();
+
+                    Point p = MouseInfo.getPointerInfo().getLocation();
+                    int x = p.x;
+                    int y = p.y;
+
+                    Popup popup = new Popup();
+                    popup.setX(x - 300);
+                    popup.setY(y - 200);
+                    TextArea ta = new TextArea();
+
+                    AnchorPane layout = new AnchorPane();
+                    Scene scene = new Scene(layout);
+                    stageSingleton().setScene(scene);
+
+                    if (row.isHover() && his.equals(historyRow)) {
+                        ta.setText(row.getItem().getErrorMessage());
+                        popup.getContent().addAll(ta);
+                        stageSingleton().show();
+                        popup.show(stageSingleton());
+
+                    } else if (!row.isHover() && his.equals(historyRow)) {
+                        popup.hide();
+                        stageSingleton().close();
+                    }
+
+                });
+            }
+            return row;
+        });
+
     }
-    
+
+    public Stage stageSingleton() {
+
+        if (stage == null) {
+            stage = new Stage();
+            stage.setWidth(1);
+            stage.setHeight(1);
+            stage.initStyle(StageStyle.UNDECORATED);
+        }
+        return stage;
+
+    }
+
     /* creates new history for task */
     private void createHistoryForTask(TaskInOurProgram task, Boolean hasError, String errorMessage) {
         /* create new history after button is presset */
@@ -714,10 +787,12 @@ public class MainFXMLController implements Initializable {
         File[] files = directoryPath.listFiles();
         for (int i = 0; i < files.length; i++) {
             if (files[i].isFile()) {
-
+             
                 for (TaskInOurProgram task : model.getTasksInTheTableView()) {
-                    if (files[i].getName().equals(task.getFileName() + "." + task.getExtensionOfTheFile())) {
-                        filesThatExist.add(task);
+                    if (files[i].getName().equals(task.getFileName()+".json") && task.isIsConvertingDone()==false
+                          && task.getFilePath().toString().equals(directoryPath.getAbsolutePath().toString())) {
+                        
+                            filesThatExist.add(task);                          
                     }
                 }
             }
@@ -730,12 +805,34 @@ public class MainFXMLController implements Initializable {
         for (TaskInOurProgram task : tasks) {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle("file exists");
-            alert.setContentText(task.getFileName()+"aleready exists in chosen reposytory."
-                    + "Do you want to override it?");
+            alert.setContentText(task.getFileName()+" aleready exists in chosen reposytory."
+                    + " Do you want to override it?");
             alert.showAndWait();
             if (alert.getResult() == ButtonType.CANCEL) {
                 model.getTasksInTheTableView().remove(task);
             }
         }
+    }
+    
+    /* sorts history by username field */
+    private void searchHistoryByUsername()
+    {
+        ObservableList<History> listOfAvailableHistory = FXCollections.observableArrayList();
+        searchByUsernameField.textProperty().addListener(e ->{
+            if(searchByUsernameField.getText().isEmpty())
+            {
+                historyTableView.setItems(model.getAllHistoryObservableArrayList());
+            }
+            else
+            {
+                listOfAvailableHistory.clear();
+                for(History his : model.getAllHistoryObservableArrayList())
+                {
+                    if(his.getUsername().toLowerCase().startsWith(searchByUsernameField.getText().toLowerCase()))
+                    listOfAvailableHistory.add(his);
+                }
+                historyTableView.setItems(listOfAvailableHistory);
+            }
+        });
     }
 }
