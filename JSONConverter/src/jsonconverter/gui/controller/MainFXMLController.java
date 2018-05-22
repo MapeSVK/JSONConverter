@@ -763,7 +763,7 @@ public class MainFXMLController implements Initializable {
         for (TaskInOurProgram task : tasks) {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle("file exists");
-            alert.setContentText(task.getFileName()+" aleready exists in chosen reposytory."
+            alert.setContentText(task.getFileName()+" aleready exists in chosen directory."
                     + " Do you want to override it?");
             alert.showAndWait();
             if (alert.getResult() == ButtonType.CANCEL) {
