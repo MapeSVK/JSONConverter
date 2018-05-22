@@ -91,6 +91,12 @@ public class Model {
     public List<Config> getAllAvailableConfigs() {
         return manager.getAllAvailableConfigs();
     }
+    
+    /* updates selected config */
+    public void editConfig(Config config)
+    {
+        manager.editConfig(config);
+    }
 
     /* gets all configs for current user */
     public List<Config> getAllConfigs() {

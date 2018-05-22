@@ -103,6 +103,11 @@ public class DALFacade {
     public void removeConfigFromDatabase(Config removeConfig) {
         config.removeConfigFromDatabase(removeConfig);
     }
+    /* updates selected config */
+    public void editConfig(Config chosenConfig)
+    {
+        config.editConfig(chosenConfig);
+    }
 
     //- - - - - - - - - - - - - - - - - - - - HOSTNAME - - - - - - - - - - - - - - - - - - - -
     /* returns local Hostname */

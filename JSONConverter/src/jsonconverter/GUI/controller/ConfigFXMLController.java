@@ -152,15 +152,20 @@ public class ConfigFXMLController implements Initializable {
             model.Alert("Error", "Please, insert a valid name");
         } else {
             if (model.wrongInputValidation(configFieldsPane)) {
-                if (model.checkIfConfigExists(createConfig())) {
-                    model.saveConfigToDatabase(createConfig(), isEditMode);
-                    if (isEditMode) {
-                        createHistoryAfterEditConfig(headerNameField.getText());
-                    } else {
-                        createHistoryAfterAddingNewConfig(headerNameField.getText());
-                    }
+                if (model.checkIfConfigExists(createConfig(new Config())) && isEditMode==false){
+                    model.saveConfigToDatabase(createConfig(new Config()), isEditMode);
+                    createHistoryAfterAddingNewConfig(headerNameField.getText());             
                     model.closeWindow(saveConfigButton);
-                } else {
+                    
+                } else if(isEditMode==true)
+                {
+                    model.editConfig(createConfig(chosenConfig));
+                    model.getAllConfigObservableArrayList().remove(chosenConfig);
+                    model.getAllConfigObservableArrayList().add(chosenConfig);
+                    model.closeWindow(saveConfigButton);
+                    createHistoryAfterEditConfig(headerNameField.getText());
+                }
+                 else {
                     model.Alert("Configuration already exists", "Configuration with this name already exists!");
                 }
             } else {
@@ -212,12 +217,7 @@ public class ConfigFXMLController implements Initializable {
     }
 
     /* creates config based on users text fields and saves it in the database */
-    private Config createConfig() {
-        Config newConfig = new Config();
-
-        if (isEditMode) {
-            newConfig.setCinfig_id(chosenConfig.getCinfig_id());
-        }
+    private Config createConfig(Config newConfig) {    
 
         if (!siteNameField.getText().isEmpty() && siteNameFieldEmpty.isDisable() == false && !siteNameFieldEmpty.getText().isEmpty()) {
             newConfig.setSiteName(siteNameField.getText() + "&&" + siteNameFieldEmpty.getText());
@@ -402,7 +402,7 @@ public class ConfigFXMLController implements Initializable {
     private void createHistoryAfterAddingNewConfig(String nameOfTheConfig) {
         /* create new history after button is presset */
         History history = new History(model.getFormatedActualDateAndTimeAsString(), 1, model.getUserName(),
-                nameOfTheConfig + "configuration was created", false, "");
+                nameOfTheConfig + " configuration was created", false, "");
         model.addHistoryToTheDatabase(history);
     }
 
@@ -418,7 +418,7 @@ public class ConfigFXMLController implements Initializable {
     private void createHistoryAfterDeletingNewConfig(Config config) {
         /* create new history after button is presset */
         History history = new History(model.getFormatedActualDateAndTimeAsString(), 1, model.getUserName(),
-                config.getConfigName() + "configuration was deleted", false, "");
+                config.getConfigName() + " configuration was deleted", false, "");
         model.addHistoryToTheDatabase(history);
     }
 

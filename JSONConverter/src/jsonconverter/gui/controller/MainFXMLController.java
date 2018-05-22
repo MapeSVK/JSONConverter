@@ -53,7 +53,6 @@ import jsonconverter.BE.Config;
 import jsonconverter.BE.History;
 import jsonconverter.BE.TaskInOurProgram;
 import jsonconverter.GUI.model.Model;
-import jsonconverter.GUI.util.HistoryRow;
 
 public class MainFXMLController implements Initializable {
 
@@ -153,9 +152,8 @@ public class MainFXMLController implements Initializable {
         setPromptDateInDatePickerToEuropeanStyle();
         activeDatePickersInHistoryTab();
 
-        /* style history tableView and show error as a pop-up */       
-        openErrorMessageAfterHoveringOverRow();     
-
+        /* style history tableView and show error as a pop-up */
+        openErrorMessageAfterHoveringOverRow();
     }
 
     /* imports the file into program */
@@ -625,24 +623,92 @@ public class MainFXMLController implements Initializable {
         userNameColumn.setCellValueFactory(new PropertyValueFactory("username"));
         errorColumn.setCellValueFactory(new PropertyValueFactory("errorIcon"));
     }
-    
-    
+
+    public void test() {
+        historyTableView.setRowFactory(tableView -> new TableRow<History>() {
+            @Override
+            protected void updateItem(History history, boolean empty) {
+                super.updateItem(history, empty);
+                if (empty) {
+                    setStyle("");
+                } else if (history.isHasError() == true) {
+                    getStyleClass().clear();
+                    getStyleClass().add("errorHistoryRow");
+                } else if (history.isHasError() == false) {
+                    getStyleClass().clear();
+                    getStyleClass().add("");
+                }
+            }
+        });
+    }
+
     /* 1. show pop-up window after hovering over the row which has error
        2. change background color to red of rows with errors 
        3. show the image of the error in the end of the row
      */
     private void openErrorMessageAfterHoveringOverRow() {
-        // calling the most powerful class in this universe
-        historyTableView.setRowFactory(t -> new HistoryRow());
-        
-        for (History history : model.getAllHistoryObservableArrayList()) {                           
+
+        historyTableView.setRowFactory(tableView -> {
+            final TableRow<History> row = new TableRow<>();
+
+            //for each loop to set image and color only
+            for (History history : model.getAllHistoryObservableArrayList()) {
+
                 if (history.isHasError() == true) {
+
                     //show icon in the end of the row
                     history.getErrorIcon().setImage(errorImage);
                 }
-        }
+            }
+
+            for (History his : model.getAllHistoryObservableArrayList()) {
+
+                row.hoverProperty().addListener((observable) -> {
+                    History historyRow = row.getItem();
+
+                    Point p = MouseInfo.getPointerInfo().getLocation();
+                    int x = p.x;
+                    int y = p.y;
+
+                    Popup popup = new Popup();
+                    popup.setX(x - 300);
+                    popup.setY(y - 200);
+                    TextArea ta = new TextArea();
+
+                    AnchorPane layout = new AnchorPane();
+                    Scene scene = new Scene(layout);
+                    stageSingleton().setScene(scene);
+
+                    if (row.isHover() && his.equals(historyRow)) {
+                        ta.setText(row.getItem().getErrorMessage());
+                        popup.getContent().addAll(ta);
+                        stageSingleton().show();
+                        popup.show(stageSingleton());
+
+                    } else if (!row.isHover() && his.equals(historyRow)) {
+                        popup.hide();
+                        stageSingleton().close();
+                    }
+
+                });
+            }
+            return row;
+        });
+
     }
-    
+
+    public Stage stageSingleton() {
+
+        if (stage == null) {
+            stage = new Stage();
+            stage.setWidth(1);
+            stage.setHeight(1);
+            stage.initStyle(StageStyle.UNDECORATED);
+        }
+        return stage;
+
+    }
+
     /* creates new history for task */
     private void createHistoryForTask(TaskInOurProgram task) {
         /* create new history after button is presset */
@@ -698,8 +764,8 @@ public class MainFXMLController implements Initializable {
         for (TaskInOurProgram task : tasks) {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle("file exists");
-            alert.setContentText(task.getFileName()+"aleready exists in chosen reposytory."
-                    + "Do you want to override it?");
+            alert.setContentText(task.getFileName()+" aleready exists in chosen reposytory."
+                    + " Do you want to override it?");
             alert.showAndWait();
             if (alert.getResult() == ButtonType.CANCEL) {
                 model.getTasksInTheTableView().remove(task);
