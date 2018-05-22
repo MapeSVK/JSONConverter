@@ -8,28 +8,62 @@ package jsonconverter.DAL.readFilesAndWriteJson;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.scene.control.Alert;
+import jsonconverter.BE.History;
 import jsonconverter.BE.JSONObject;
 
-/**
- *
- * @author Pepe15224
- */
+
+
 public class WriteJSON {
+    boolean success = false;
 
     /* creates json file from JSONObject list */
-    public void createJsonFile(String fileName, File filePath, List<JSONObject> jsonList) {
+    public void createJsonFile(String fileName, File filePath, List<JSONObject> jsonList){
         try {
             File fii = new File(filePath, fileName + ".json");
             ObjectMapper mapper = new ObjectMapper();
             mapper.enable(SerializationFeature.INDENT_OUTPUT);
             mapper.writeValue(fii, jsonList);
             System.out.println("JSON file created");
-        } catch (IOException ex) {
-            Logger.getLogger(WriteJSON.class.getName()).log(Level.SEVERE, null, ex);
+            success = true;
+            
+        } catch (FileNotFoundException ex) {
+            
+            success = false;
+            
+        } catch (IOException e) {
+            success = false;
+        }       
+        
+        if (success == false) {
+            System.out.println("PICA SA ULOZILA");
+            Alert("File could not be created!", "JSON file could not be created because chosen directory for JSON file was modified or "
+                    + "removed. Try it again and do not change chosen directory folder while converting is in the progress. ");
         }
+
+    } 
+
+    public boolean isSuccess() {
+        return success;
     }
+
+    public void setSuccess(boolean success) {
+        this.success = success;
+    }
+    
+    /* creates pop up alert window */
+    public void Alert(String title, String text) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setContentText(text);
+        alert.showAndWait();
+    }
+
 }

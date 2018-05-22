@@ -285,4 +285,9 @@ public class Model {
         stage.close();
     }
     
+    /* returns true if JSON was saved successfuly */
+    public boolean isFileSaved() {
+       return manager.isFileSaved();
+    }
+    
 }
