@@ -1,15 +1,14 @@
 package jsonconverter.GUI.controller;
 
 import com.jfoenix.controls.JFXDatePicker;
+import com.jfoenix.controls.JFXTextField;
 import java.awt.MouseInfo;
 import java.awt.Point;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import static java.nio.file.Files.list;
 import java.text.ParseException;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -20,6 +19,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -41,7 +42,6 @@ import javafx.scene.control.cell.ProgressBarTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Modality;
@@ -131,7 +131,9 @@ public class MainFXMLController implements Initializable {
     private Button addTaskButton;
     @FXML
     private Button createNewConfigButton;
-
+    @FXML
+    private JFXTextField searchByUsernameField;
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         setTasksTableViewColumns();
@@ -141,6 +143,7 @@ public class MainFXMLController implements Initializable {
 
         tasksTableView.setSelectionModel(null);
         historyTableView.setSelectionModel(null);
+        
         model.loadAvailableConfig();
 
         /* set history tableView */
@@ -151,6 +154,8 @@ public class MainFXMLController implements Initializable {
         toDate = currentDate;
         setPromptDateInDatePickerToEuropeanStyle();
         activeDatePickersInHistoryTab();
+        model.getAllHistoryObservableArrayList().setAll(model.getSortedAllHistory());
+        searchHistoryByUsername();
 
         /* style history tableView and show error as a pop-up */
         openErrorMessageAfterHoveringOverRow();
@@ -496,6 +501,7 @@ public class MainFXMLController implements Initializable {
             fromDate = c.getTime();
 
             historyTableView.setItems(model.getHistoryOfChosenPeriod(model.getSortedAllHistory(), fromDate, toDate));
+            model.getAllHistoryObservableArrayList().setAll(model.getHistoryOfChosenPeriod(model.getSortedAllHistory(), fromDate, toDate));
 
         });
 
@@ -507,6 +513,7 @@ public class MainFXMLController implements Initializable {
             toDate = c.getTime();
 
             historyTableView.setItems(model.getHistoryOfChosenPeriod(model.getSortedAllHistory(), fromDate, toDate));
+            model.getAllHistoryObservableArrayList().setAll(model.getHistoryOfChosenPeriod(model.getSortedAllHistory(), fromDate, toDate));
         });
     }
 
@@ -738,10 +745,12 @@ public class MainFXMLController implements Initializable {
         File[] files = directoryPath.listFiles();
         for (int i = 0; i < files.length; i++) {
             if (files[i].isFile()) {
-
+             
                 for (TaskInOurProgram task : model.getTasksInTheTableView()) {
-                    if (files[i].getName().equals(task.getFileName() + "." + task.getExtensionOfTheFile())) {
-                        filesThatExist.add(task);
+                    if (files[i].getName().equals(task.getFileName()+".json") && task.isIsConvertingDone()==false
+                          && task.getFilePath().toString().equals(directoryPath.getAbsolutePath().toString())) {
+                        
+                            filesThatExist.add(task);                          
                     }
                 }
             }
@@ -761,5 +770,27 @@ public class MainFXMLController implements Initializable {
                 model.getTasksInTheTableView().remove(task);
             }
         }
+    }
+    
+    /* sorts history by username field */
+    private void searchHistoryByUsername()
+    {
+        ObservableList<History> listOfAvailableHistory = FXCollections.observableArrayList();
+        searchByUsernameField.textProperty().addListener(e ->{
+            if(searchByUsernameField.getText().isEmpty())
+            {
+                historyTableView.setItems(model.getAllHistoryObservableArrayList());
+            }
+            else
+            {
+                listOfAvailableHistory.clear();
+                for(History his : model.getAllHistoryObservableArrayList())
+                {
+                    if(his.getUsername().toLowerCase().startsWith(searchByUsernameField.getText().toLowerCase()))
+                    listOfAvailableHistory.add(his);
+                }
+                historyTableView.setItems(listOfAvailableHistory);
+            }
+        });
     }
 }
