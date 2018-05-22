@@ -2,6 +2,7 @@ package jsonconverter.GUI.model;
 
 import java.io.File;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
@@ -15,7 +16,10 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.SortedList;
 import javafx.scene.Node;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
 import jsonconverter.BE.Config;
 import jsonconverter.BE.History;
 import jsonconverter.BE.TaskInOurProgram;
@@ -24,6 +28,7 @@ import jsonconverter.BLL.BLLManager;
 public class Model {
 
     private BLLManager manager = new BLLManager();
+    private LocalDateTime nowLocalDateTime = LocalDateTime.now();
 
     /* contains each task in tableview */
     private ObservableList<TaskInOurProgram> tasksInTheTableView = FXCollections.observableArrayList();
@@ -257,4 +262,27 @@ public class Model {
     public boolean wrongInputValidation(AnchorPane pane) {
         return manager.wrongInputValidation(pane);
     }
+    
+    //- - - - - - - - - - - - - - - - - - - - OTHERS - - - - - - - - - - - - - - - - - - - -
+    /* sets right format of the date */
+    public String getFormatedActualDateAndTimeAsString() {
+        DateTimeFormatter df = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
+        String dateAndTimeString = df.format(nowLocalDateTime);
+        return dateAndTimeString;
+    }
+    
+    /* creates pop up alert window */
+    public void Alert(String title, String text) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setContentText(text);
+        alert.showAndWait();
+    }
+    
+    /* closes window */
+    public void closeWindow(Button button) {
+        Stage stage = (Stage) button.getScene().getWindow();
+        stage.close();
+    }
+    
 }

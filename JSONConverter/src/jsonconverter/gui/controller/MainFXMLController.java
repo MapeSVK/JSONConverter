@@ -44,6 +44,7 @@ import javafx.stage.DirectoryChooser;
 import javafx.stage.Modality;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.util.StringConverter;
 import jsonconverter.BE.Config;
 import jsonconverter.BE.History;
@@ -113,15 +114,20 @@ public class MainFXMLController implements Initializable {
     private final Image errorImage = new Image("file:images/errorImage.png");
     private Date fromDate;
     private Date toDate;
-    private LocalDateTime nowLocalDateTime = LocalDateTime.now();
     private java.sql.Date currentDate = java.sql.Date.valueOf(LocalDate.now());
 
     /* Stage needed to display error message */
     Stage stage;
     @FXML
     private Button convertTaskButton;
+    @FXML
     private Button pauseProcessButton;
+    @FXML
     private Button deleteProcessButton;
+    @FXML
+    private Button addTaskButton;
+    @FXML
+    private Button createNewConfigButton;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -145,7 +151,6 @@ public class MainFXMLController implements Initializable {
 
         /* style history tableView and show error as a pop-up */
         openErrorMessageAfterHoveringOverRow();
-
     }
 
     /* imports the file into program */
@@ -155,6 +160,9 @@ public class MainFXMLController implements Initializable {
         fileChooserSettings();
         fileChoosedByImport = fileChooser.showOpenDialog(null);
         if (fileChoosedByImport != null) {
+            configChoiceBox.setDisable(false);
+            createNewConfigButton.setDisable(false);
+            editButton.setDisable(false);
             filePath = fileChoosedByImport.toString();
             nameOfImportedFile = gettingTheFileNameFromThePath(fileChoosedByImport);
             fileExtendionIdentifier();
@@ -162,7 +170,7 @@ public class MainFXMLController implements Initializable {
             model.getAllConfigObservableArrayList().setAll(model.checkIfYouCanUseConfig());
             nameOfImportedFileLabel.setText(nameOfImportedFile);
         } else {
-            Alert("Error", "File could not be imported");
+            model.Alert("Error", "File could not be imported");
         }
     }
 
@@ -175,8 +183,13 @@ public class MainFXMLController implements Initializable {
         nameOfImportedFileLabel.setText(selectedDirectory.getName());
         labelFileExtension.setText("file");
         File[] listOfFiles = selectedDirectory.listFiles();
-        filePath="placki";
-        nameOfImportedFile="file";
+        filePath = "placki";
+        nameOfImportedFile = "file";
+        configChoiceBox.setDisable(false);
+        createNewConfigButton.setDisable(true);
+        editButton.setDisable(true);
+        model.getAllFilesInFolder().clear();
+        model.loadAvailableConfig();
         for (int i = 0; i < listOfFiles.length; i++) {
             if (listOfFiles[i].isFile()) {
                 model.addFileFromTheFolder(listOfFiles[i]);
@@ -191,11 +204,12 @@ public class MainFXMLController implements Initializable {
         File selectedDirectory = directoryChooser.showDialog(chooseDirectoryButton.getScene().getWindow());
         directoryChooser.setTitle("Select a directory");
         if (selectedDirectory == null) {
-            Alert("Is that correct?", "You did not select directory");
+            model.Alert("Is that correct?", "You did not select directory");
         } else {
             System.out.println("Selected directory: " + selectedDirectory.getAbsolutePath());
             directoryPath = selectedDirectory.getAbsoluteFile();
             directoryPathHasBeenSelected = true;
+            addTaskButton.setDisable(false);
         }
     }
 
@@ -203,7 +217,7 @@ public class MainFXMLController implements Initializable {
     @FXML
     private void convertTasksButtonClick(ActionEvent event) throws IOException {
         if (convertTaskButton.isFocused() && !directoryPathHasBeenSelected) {
-            Alert("Error", "Choose a directory first");
+            model.Alert("Error", "Choose a directory first");
         } else {
             for (TaskInOurProgram task : model.getTasksInTheTableView()) {
 
@@ -255,16 +269,11 @@ public class MainFXMLController implements Initializable {
 
     }
 
-    @FXML
-    private void historyPageButtonClick(MouseEvent event) {
-
-    }
-
     /* pops up window where user can create new config */
     @FXML
     private void createNewConfigButtonClick(ActionEvent event) throws IOException {
         if (filePath.equals("") || nameOfImportedFile.equals("")) {
-            Alert("Error", "No file imported. Please, import one previously");
+            model.Alert("Error", "No file imported. Please, import one previously");
         } else {
             Parent root;
             Stage stage = new Stage();
@@ -281,78 +290,89 @@ public class MainFXMLController implements Initializable {
     /* adds task to the taskTable */
     @FXML
     private void addTaskButtonClick(ActionEvent event) {
-        if (filePath.equals("") || nameOfImportedFile.equals("")) {
-            Alert("Error", "No file imported. Please, import one previously");
+        /* CONDITIONS */
+        boolean isRightNameOfTheFile = false;
+        boolean isConfigSet = false;
+        boolean isRightExtension = false;
+        String failedToAdd ="";
 
-        } else {
-            if (configChoiceBox.getSelectionModel().isEmpty()) {
-                Alert("Error", "Choose a valid configuration");
-            } else {
-                /* CONDITIONS */
-                boolean isRightNameOfTheFile = false;
-                boolean isConfigSet = false;
-                boolean isRightExtension = false;
+        if (nameOfImportedFile != null && !nameOfImportedFile.equals("")) {
+            isRightNameOfTheFile = true;
+        }
 
-                if (nameOfImportedFile != null && !nameOfImportedFile.equals("")) {
-                    isRightNameOfTheFile = true;
-                }
+        if (!configChoiceBox.getSelectionModel().getSelectedItem().equals("")
+                && configChoiceBox.getSelectionModel().getSelectedItem() != null) {
+            isConfigSet = true;
+        }
 
-                if (!configChoiceBox.getSelectionModel().getSelectedItem().equals("")
-                        && configChoiceBox.getSelectionModel().getSelectedItem() != null) {
-                    isConfigSet = true;
-                }
+        if (!labelFileExtension.getText().equals("") && labelFileExtension.getText() != null) {
+            isRightExtension = true;
+        }
 
-                if (!labelFileExtension.getText().equals("") && labelFileExtension.getText() != null) {
-                    isRightExtension = true;
-                }
+        /* ADDING */
+        if (isRightNameOfTheFile == true && isConfigSet == true && isRightExtension == true && !labelFileExtension.getText().equals("file")) {
+            TaskInOurProgram task = new TaskInOurProgram(nameOfImportedFile, configChoiceBox.getSelectionModel().getSelectedItem().getConfigName(),
+                    labelFileExtension.getText());
+            model.getConverter(task);
+            task.setConfig(configChoiceBox.getValue());
+            task.setFilePath(directoryPath);
+            task.setFileName(nameOfImportedFile);
+            model.addTask(task);
 
-                /* ADDING */
-                if (isRightNameOfTheFile == true && isConfigSet == true && isRightExtension == true && !labelFileExtension.getText().equals("file")) {
+            /* if conditions were met then add to the history */
+            createHistoryForTask(task);
+
+            /* if task is added to the tableView, you can use pause or close */
+            pauseConvertingClick();
+            closeTaskButtonClick();
+
+            /* set buttons disable until task will be added */
+            convertTaskButton.setDisable(false);
+            pauseProcessButton.setDisable(false);
+            deleteProcessButton.setDisable(false);
+
+        } else if (isRightNameOfTheFile == true && isConfigSet == true && isRightExtension == true && labelFileExtension.getText().equals("file")) {
+            for (File file : model.getAllFilesInFolder()) {
+                fileInFolderExtension(file);
+                nameOfImportedFile = gettingTheFileNameFromThePath(file);
+                if (model.checkIfFileMatchesConfig(configChoiceBox.getValue())) {
                     TaskInOurProgram task = new TaskInOurProgram(nameOfImportedFile, configChoiceBox.getSelectionModel().getSelectedItem().getConfigName(),
-                            labelFileExtension.getText());
+                            fileType);
                     model.getConverter(task);
                     task.setConfig(configChoiceBox.getValue());
                     task.setFilePath(directoryPath);
                     task.setFileName(nameOfImportedFile);
                     model.addTask(task);
+
+                    /* if conditions were met then add to the history */
+                    //createHistoryForTask(task);
+
+                    /* if task is added to the tableView, you can use pause or close */
+                    pauseConvertingClick();
+                    closeTaskButtonClick();
+
+                    /* set buttons disable until task will be added */
+                    convertTaskButton.setDisable(false);
+                    pauseProcessButton.setDisable(false);
+                    deleteProcessButton.setDisable(false);
                 }
-                else if (isRightNameOfTheFile == true && isConfigSet == true && isRightExtension == true && labelFileExtension.getText().equals("file")) {
-                    System.out.println("Te dobre");
-                    for(File file : model.getAllFilesInFolder())
-                    {
-                        fileInFolderExtension(file);
-                        nameOfImportedFile = gettingTheFileNameFromThePath(file);
-                        if(model.checkIfFileMatchesConfig(configChoiceBox.getValue()))
-                        {
-                    TaskInOurProgram task = new TaskInOurProgram(nameOfImportedFile, configChoiceBox.getSelectionModel().getSelectedItem().getConfigName(),
-                            fileType);
-                    model.getConverter(task);
-                    task.setConfig(configChoiceBox.getValue());
-                    task.setFilePath(file);
-                    task.setFileName(nameOfImportedFile);
-                    model.addTask(task);
-                        }
-                        
-                    }
-                    
-                }           
+                else
+                {
+                    failedToAdd=failedToAdd+","+file.getName();
+                }
             }
-            pauseConvertingClick();
-                closeTaskButtonClick();
-                convertTaskButton.setDisable(false);
-                pauseProcessButton.setDisable(false);
-                deleteProcessButton.setDisable(false);
         }
+        model.Alert("Files failed to add", failedToAdd+" were unable to add because they dont match chosen config");
     }
 
     /* pops up window where user can edit chosen chonfig */
     @FXML
     private void editConfigButtonClick(ActionEvent event) throws IOException, ParseException {
-        if (filePath.equals("")) {
-            Alert("Error", "Import first a file.");
+        if (configChoiceBox.getSelectionModel().isEmpty()) {
+            model.Alert("Error", "Choose a valid configuration");
         } else {
             if (configChoiceBox.getSelectionModel().isEmpty()) {
-                Alert("Error", "Choose a valid configuration.");
+                model.Alert("Error", "Choose a valid configuration.");
             } else {
                 Parent root;
                 Stage stage = new Stage();
@@ -399,6 +419,12 @@ public class MainFXMLController implements Initializable {
     /* getting data from the model and setting this data in the choiceBox */
     private void setConfigChoiceBoxItems() {
         configChoiceBox.setItems(model.getAllConfigObservableArrayList());
+        configChoiceBox.valueProperty().addListener(e->{
+            if(configChoiceBox.getValue()!=null)
+                chooseDirectoryButton.setDisable(false);
+            else
+                chooseDirectoryButton.setDisable(true);
+        });
     }
 
     /**
@@ -432,10 +458,9 @@ public class MainFXMLController implements Initializable {
             model.setConverter(fileType, filePath);
         }
     }
-    
+
     /* sets right converter for imported file from folder */
-    private void fileInFolderExtension(File file)
-    {
+    private void fileInFolderExtension(File file) {
         if (file.getPath().endsWith(".csv")) {
             fileType = ".csv";
             model.setConverter(fileType, file.getPath());
@@ -596,6 +621,24 @@ public class MainFXMLController implements Initializable {
         errorColumn.setCellValueFactory(new PropertyValueFactory("errorIcon"));
     }
 
+    public void test() {
+        historyTableView.setRowFactory(tableView -> new TableRow<History>() {
+            @Override
+            protected void updateItem(History history, boolean empty) {
+                super.updateItem(history, empty);
+                if (empty) {
+                    setStyle("");
+                } else if (history.isHasError() == true) {
+                    getStyleClass().clear();
+                    getStyleClass().add("errorHistoryRow");
+                } else if (history.isHasError() == false) {
+                    getStyleClass().clear();
+                    getStyleClass().add("");
+                }
+            }
+        });
+    }
+
     /* 1. show pop-up window after hovering over the row which has error
        2. change background color to red of rows with errors 
        3. show the image of the error in the end of the row
@@ -607,10 +650,8 @@ public class MainFXMLController implements Initializable {
 
             //for each loop to set image and color only
             for (History history : model.getAllHistoryObservableArrayList()) {
+
                 if (history.isHasError() == true) {
-                    //set style of this "error" history
-                    row.getStyleClass().clear();
-                    row.getStyleClass().add("errorHistoryRow");
 
                     //show icon in the end of the row
                     history.getErrorIcon().setImage(errorImage);
@@ -632,7 +673,8 @@ public class MainFXMLController implements Initializable {
                     TextArea ta = new TextArea();
 
                     AnchorPane layout = new AnchorPane();
-                    stageSingleton().setScene(new Scene(layout));
+                    Scene scene = new Scene(layout);
+                    stageSingleton().setScene(scene);
 
                     if (row.isHover() && his.equals(historyRow)) {
                         ta.setText(row.getItem().getErrorMessage());
@@ -649,6 +691,7 @@ public class MainFXMLController implements Initializable {
             }
             return row;
         });
+
     }
 
     public Stage stageSingleton() {
@@ -657,40 +700,28 @@ public class MainFXMLController implements Initializable {
             stage = new Stage();
             stage.setWidth(1);
             stage.setHeight(1);
+            stage.initStyle(StageStyle.UNDECORATED);
         }
         return stage;
-    }
 
-    /* sets right format of the date */
-    private String getFormatedActualDateAndTimeAsString() {
-        DateTimeFormatter df = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
-        String dateAndTimeString = df.format(nowLocalDateTime);
-        return dateAndTimeString;
     }
 
     /* creates new history for task */
     private void createHistoryForTask(TaskInOurProgram task) {
         /* create new history after button is presset */
-        History history = new History(getFormatedActualDateAndTimeAsString(), 1, model.getUserName(),
-                task.getFileName(), true, "Error");
+        History history = new History(model.getFormatedActualDateAndTimeAsString(), 1, model.getUserName(),
+                "File " + task.getFileName() + " was converted", false, "");
         model.addHistoryToTheDatabase(history);
     }
 
     /* creates history for action */
-    public void createHistoryOfWholeAction() {
+    private void createHistoryOfWholeAction() {
         /* create new history after button is presset */
-        History history = new History(getFormatedActualDateAndTimeAsString(), 1, model.getUserName(),
+        History history = new History(model.getFormatedActualDateAndTimeAsString(), 1, model.getUserName(),
                 "Multiple Conversion (" + tasksTableView.getItems().size() + " files)", true, "Error");
         model.addHistoryToTheDatabase(history);
     }
 
-    /* creates alert pop up window */
-    private void Alert(String title, String text) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle(title);
-        alert.setContentText(text);
-        alert.showAndWait();
-    }
 
     /* ends executor when the main window is closed */
     public void getStage(Stage stage) {
