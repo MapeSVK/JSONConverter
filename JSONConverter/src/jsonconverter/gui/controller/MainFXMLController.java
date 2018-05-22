@@ -101,7 +101,7 @@ public class MainFXMLController implements Initializable {
     private String fileType;
     private String nameOfImportedFile = "";
     private FileChooser fileChooser;
-    private File fileChoosedByImport;
+    private File fileChoseByImport;
     private File directoryPath;
     private boolean directoryPathHasBeenSelected = false;
     private String newFileName = nameOfImportedFile;//Name needs to be indicate! It's just an example
@@ -161,13 +161,13 @@ public class MainFXMLController implements Initializable {
     private void importFileButtonClick(ActionEvent event) {
         fileChooser = new FileChooser();
         fileChooserSettings();
-        fileChoosedByImport = fileChooser.showOpenDialog(null);
-        if (fileChoosedByImport != null) {
+        fileChoseByImport = fileChooser.showOpenDialog(null);
+        if (fileChoseByImport != null) {
             configChoiceBox.setDisable(false);
             createNewConfigButton.setDisable(false);
             editButton.setDisable(false);
-            filePath = fileChoosedByImport.toString();
-            nameOfImportedFile = gettingTheFileNameFromThePath(fileChoosedByImport);
+            filePath = fileChoseByImport.toString();
+            nameOfImportedFile = gettingTheFileNameFromThePath(fileChoseByImport);
             fileExtendionIdentifier();
             model.getAllConfigObservableArrayList().clear();
             model.getAllConfigObservableArrayList().setAll(model.checkIfYouCanUseConfig());
@@ -234,7 +234,7 @@ public class MainFXMLController implements Initializable {
                     task.continueThis();
                 }
             }
-            createHistoryOfWholeAction();
+           
         }
     }
 
@@ -321,9 +321,6 @@ public class MainFXMLController implements Initializable {
             task.setFilePath(directoryPath);
             task.setFileName(nameOfImportedFile);
             model.addTask(task);
-
-            /* if conditions were met then add to the history */
-            createHistoryForTask(task);
 
             /* if task is added to the tableView, you can use pause or close */
             pauseConvertingClick();
@@ -572,7 +569,7 @@ public class MainFXMLController implements Initializable {
                         executor.submit(task);
                         task.setIsExecutedForFirstTime(true);
                         task.getPauseTask().setGraphic(new ImageView(pauseImage));
-
+                        
                     } else if (task.isIsExecutedForFirstTime() == true && task.isPause() == false) {
                         task.getPauseTask().setGraphic(new ImageView(playImage));
                         task.pauseThis();
@@ -710,20 +707,13 @@ public class MainFXMLController implements Initializable {
     }
 
     /* creates new history for task */
-    private void createHistoryForTask(TaskInOurProgram task) {
+    private void createHistoryForTask(TaskInOurProgram task, Boolean hasError, String errorMessage) {
         /* create new history after button is presset */
         History history = new History(model.getFormatedActualDateAndTimeAsString(), 1, model.getUserName(),
-                "File " + task.getFileName() + " was converted", false, "");
+                "File " + task.getFileName() + " was converted", hasError, errorMessage);
         model.addHistoryToTheDatabase(history);
     }
 
-    /* creates history for action */
-    private void createHistoryOfWholeAction() {
-        /* create new history after button is presset */
-        History history = new History(model.getFormatedActualDateAndTimeAsString(), 1, model.getUserName(),
-                "Multiple Conversion (" + tasksTableView.getItems().size() + " files)", true, "Error");
-        model.addHistoryToTheDatabase(history);
-    }
 
     /* ends executor when the main window is closed */
     public void getStage(Stage stage) {

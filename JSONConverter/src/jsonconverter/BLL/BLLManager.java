@@ -35,6 +35,10 @@ public class BLLManager {
         } catch (InterruptedException ex) {
         }
     }
+    
+    public boolean isFileSaved() {
+        return manager.isFileSaved();
+    }
 
     //- - - - - - - - - - - - - - - - - - - - CONVERTER - - - - - - - - - - - - - - - - - - - -
     /* returns hashMap of headers from file (Headers are keys and numbers are values) */
@@ -118,13 +122,12 @@ public class BLLManager {
         return configValidations.checkIfConfigExists(config, configList);
 
     }
-          public void changeColorIfWrong(Node node,String fieldText,List<String> headersList)
-     {
-          configValidations.changeColorIfWrong(node, fieldText, headersList);
-     }
-     
-         public boolean wrongInputValidation(AnchorPane pane)
-         {
-             return configValidations.wrongInputValidation(pane);
-         }
+
+    public void changeColorIfWrong(Node node, String fieldText, List<String> headersList) {
+        configValidations.changeColorIfWrong(node, fieldText, headersList);
+    }
+
+    public boolean wrongInputValidation(AnchorPane pane) {
+        return configValidations.wrongInputValidation(pane);
+    }
 }
