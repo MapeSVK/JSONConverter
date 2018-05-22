@@ -40,6 +40,8 @@ public class Model {
     SortedList<History> sortedAllHistory = new SortedList<>(allHistoryObservableArrayList, Comparator.comparing(History::getDateAndTime).reversed());
     /* contains configs from the database  */
     private ObservableList<Config> allConfigObservableArrayList = FXCollections.observableArrayList();
+    /* contains all files inside chosen folder */
+    private List<File> allFilesInFolder = new ArrayList();
 
     //- - - - - - - - - - - - - - - - - - - - CREATE JASON - - - - - - - - - - - - - - - - - - - -
     /* creates json file from JSONObject list */
@@ -119,7 +121,8 @@ public class Model {
     }
 
     /* removes configs that dont match chosen file */
-    public void checkIfYouCanUseConfig() {
+    public List<Config> checkIfYouCanUseConfig() {
+        List<Config> superList = new ArrayList();
         int checkForErrors = 0;
         int i = 0;
         for (Config config : getAllAvailableConfigs()) {
@@ -141,11 +144,39 @@ public class Model {
                 }
                 i++;
             }
-            if (checkForErrors != 0) {
-//                Alert("Error", config.getConfigName());
-                allConfigObservableArrayList.remove(config);
+            if (checkForErrors == 0) {
+                superList.add(config);
             }
         }
+        return superList;
+    }
+
+    /* checks if config matches file */
+    public boolean checkIfFileMatchesConfig(Config config) {
+        int checkForErrors = 0;
+        int i = 0;
+        i = 0;
+        checkForErrors = 0;
+        while (i < 15) {
+            String configString = config.getAllGetters(i);
+
+            if (configString.contains("&&") && !configString.equals("")) {
+                String[] splitedConfig = configString.split("&&");
+                if (!getOnlyFileHeaders().contains(splitedConfig[0])) {
+                    checkForErrors++;
+                }
+                if (!getOnlyFileHeaders().contains(splitedConfig[1])) {
+                    checkForErrors++;
+                }
+            } else if (!getOnlyFileHeaders().contains(configString) && !configString.equals("")) {
+                checkForErrors++;
+            }
+            i++;
+        }
+        if (checkForErrors == 0) {
+            return true;
+        }
+        return false;
     }
 
     //- - - - - - - - - - - - - - - - - - - - HISTORY - - - - - - - - - - - - - - - - - - - -
@@ -203,6 +234,17 @@ public class Model {
     /* returns local Username */
     public String getUserName() {
         return manager.getUserName();
+    }
+
+    //- - - - - - - - - - - - - - - - - - - - FILES IN FOLDER - - - - - - - - - - - - - - - - - - - -
+    /* gets all files in list */
+    public List<File> getAllFilesInFolder() {
+        return allFilesInFolder;
+    }
+
+    /* adds files from the folder to the list */
+    public void addFileFromTheFolder(File newFile) {
+        allFilesInFolder.add(newFile);
     }
 
     //- - - - - - - - - - - - - - - - - - - - VALIDATIONS - - - - - - - - - - - - - - - - - - - -

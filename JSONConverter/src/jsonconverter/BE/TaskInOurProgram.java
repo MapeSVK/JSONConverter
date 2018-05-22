@@ -41,12 +41,10 @@ public class TaskInOurProgram extends Task<Void> {
     /*converts file into JSON */
     @Override
     public Void call() throws Exception {
-        System.out.println(isConvertingDone);
         ifWasStarted = true;
         this.updateProgress(ProgressIndicator.INDETERMINATE_PROGRESS, 1);
         model.createJsonFile(fileName, filePath, this);
         isConvertingDone = true;
-        System.out.println(isConvertingDone);
         return null;
     }
 

@@ -6,12 +6,15 @@ import java.awt.Point;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import static java.nio.file.Files.list;
 import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.ResourceBundle;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -92,6 +95,8 @@ public class MainFXMLController implements Initializable {
     private Button editButton;
     @FXML
     private TableColumn<TaskInOurProgram, Button> closeButtonColumn;
+    @FXML
+    private Button importFileFromFolderButton;
 
     private String filePath = "";
     private String fileType;
@@ -123,6 +128,10 @@ public class MainFXMLController implements Initializable {
     private Button pauseProcessButton;
     @FXML
     private Button deleteProcessButton;
+    @FXML
+    private Button addTaskButton;
+    @FXML
+    private Button createNewConfigButton;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -146,7 +155,7 @@ public class MainFXMLController implements Initializable {
 
         /* style history tableView and show error as a pop-up */       
         openErrorMessageAfterHoveringOverRow();     
-        
+
     }
 
     /* imports the file into program */
@@ -156,13 +165,41 @@ public class MainFXMLController implements Initializable {
         fileChooserSettings();
         fileChoosedByImport = fileChooser.showOpenDialog(null);
         if (fileChoosedByImport != null) {
+            configChoiceBox.setDisable(false);
+            createNewConfigButton.setDisable(false);
+            editButton.setDisable(false);
             filePath = fileChoosedByImport.toString();
             nameOfImportedFile = gettingTheFileNameFromThePath(fileChoosedByImport);
             fileExtendionIdentifier();
-            model.checkIfYouCanUseConfig();
+            model.getAllConfigObservableArrayList().clear();
+            model.getAllConfigObservableArrayList().setAll(model.checkIfYouCanUseConfig());
             nameOfImportedFileLabel.setText(nameOfImportedFile);
         } else {
             model.Alert("Error", "File could not be imported");
+        }
+    }
+
+    /* importf files from file */
+    @FXML
+    private void importFileFromFolderAction(ActionEvent event) {
+        DirectoryChooser directoryChooser = new DirectoryChooser();
+        File selectedDirectory = directoryChooser.showDialog(importFileFromFolderButton.getScene().getWindow());
+        if (selectedDirectory != null) {
+            nameOfImportedFileLabel.setText(selectedDirectory.getName());
+            labelFileExtension.setText("file");
+            File[] listOfFiles = selectedDirectory.listFiles();
+            filePath = "placki";
+            nameOfImportedFile = "file";
+            configChoiceBox.setDisable(false);
+            createNewConfigButton.setDisable(true);
+            editButton.setDisable(true);
+            model.getAllFilesInFolder().clear();
+            model.loadAvailableConfig();
+            for (int i = 0; i < listOfFiles.length; i++) {
+                if (listOfFiles[i].isFile()) {
+                    model.addFileFromTheFolder(listOfFiles[i]);
+                }
+            }
         }
     }
 
@@ -175,9 +212,9 @@ public class MainFXMLController implements Initializable {
         if (selectedDirectory == null) {
             model.Alert("Is that correct?", "You did not select directory");
         } else {
-            System.out.println("Selected directory: " + selectedDirectory.getAbsolutePath());
             directoryPath = selectedDirectory.getAbsoluteFile();
             directoryPathHasBeenSelected = true;
+            addTaskButton.setDisable(false);
         }
     }
 
@@ -262,6 +299,7 @@ public class MainFXMLController implements Initializable {
         boolean isRightNameOfTheFile = false;
         boolean isConfigSet = false;
         boolean isRightExtension = false;
+        String failedToAdd = "";
 
         if (nameOfImportedFile != null && !nameOfImportedFile.equals("")) {
             isRightNameOfTheFile = true;
@@ -277,7 +315,7 @@ public class MainFXMLController implements Initializable {
         }
 
         /* ADDING */
-        if (isRightNameOfTheFile == true && isConfigSet == true && isRightExtension == true) {
+        if (isRightNameOfTheFile == true && isConfigSet == true && isRightExtension == true && !labelFileExtension.getText().equals("file")) {
             TaskInOurProgram task = new TaskInOurProgram(nameOfImportedFile, configChoiceBox.getSelectionModel().getSelectedItem().getConfigName(),
                     labelFileExtension.getText());
             model.getConverter(task);
@@ -297,9 +335,39 @@ public class MainFXMLController implements Initializable {
             convertTaskButton.setDisable(false);
             pauseProcessButton.setDisable(false);
             deleteProcessButton.setDisable(false);
-        }
-    }
 
+        } else if (isRightNameOfTheFile == true && isConfigSet == true && isRightExtension == true && labelFileExtension.getText().equals("file")) {
+            for (File file : model.getAllFilesInFolder()) {
+                fileInFolderExtension(file);
+                nameOfImportedFile = gettingTheFileNameFromThePath(file);
+                if (model.checkIfFileMatchesConfig(configChoiceBox.getValue())) {
+                    TaskInOurProgram task = new TaskInOurProgram(nameOfImportedFile, configChoiceBox.getSelectionModel().getSelectedItem().getConfigName(),
+                            fileType);
+                    model.getConverter(task);
+                    task.setConfig(configChoiceBox.getValue());
+                    task.setFilePath(directoryPath);
+                    task.setFileName(nameOfImportedFile);
+                    model.addTask(task);
+
+                    /* if conditions were met then add to the history */
+                    //createHistoryForTask(task);
+
+                    /* if task is added to the tableView, you can use pause or close */
+                    pauseConvertingClick();
+                    closeTaskButtonClick();
+
+                    /* set buttons disable until task will be added */
+                    convertTaskButton.setDisable(false);
+                    pauseProcessButton.setDisable(false);
+                    deleteProcessButton.setDisable(false);
+                } else {
+                    failedToAdd = failedToAdd + "," + file.getName();
+                }
+            }
+            model.Alert("Files failed to add", failedToAdd + " were unable to add because they dont match chosen config");
+        }
+        createAlertIfFileExistsInReposytory(listOfFilesThatCanBeOverrided());
+    }
 
     /* pops up window where user can edit chosen chonfig */
     @FXML
@@ -355,6 +423,13 @@ public class MainFXMLController implements Initializable {
     /* getting data from the model and setting this data in the choiceBox */
     private void setConfigChoiceBoxItems() {
         configChoiceBox.setItems(model.getAllConfigObservableArrayList());
+        configChoiceBox.valueProperty().addListener(e -> {
+            if (configChoiceBox.getValue() != null) {
+                chooseDirectoryButton.setDisable(false);
+            } else {
+                chooseDirectoryButton.setDisable(true);
+            }
+        });
     }
 
     /**
@@ -386,6 +461,20 @@ public class MainFXMLController implements Initializable {
             fileType = ".xml";
             labelFileExtension.setText("xml");
             model.setConverter(fileType, filePath);
+        }
+    }
+
+    /* sets right converter for imported file from folder */
+    private void fileInFolderExtension(File file) {
+        if (file.getPath().endsWith(".csv")) {
+            fileType = "csv";
+            model.setConverter(".csv", file.getPath());
+        } else if (file.getPath().endsWith(".xlsx")) {
+            fileType = "xlsx";
+            model.setConverter(".xlsx", file.getPath());
+        } else if (file.getPath().endsWith(".xml")) {
+            model.setConverter(".xml", file.getPath());
+            fileType = "xml";
         }
     }
 
@@ -538,6 +627,10 @@ public class MainFXMLController implements Initializable {
     }
     
     
+    /* 1. show pop-up window after hovering over the row which has error
+       2. change background color to red of rows with errors 
+       3. show the image of the error in the end of the row
+     */
     private void openErrorMessageAfterHoveringOverRow() {
         // calling the most powerful class in this universe
         historyTableView.setRowFactory(t -> new HistoryRow());
@@ -549,7 +642,7 @@ public class MainFXMLController implements Initializable {
                 }
         }
     }
-
+    
     /* creates new history for task */
     private void createHistoryForTask(TaskInOurProgram task) {
         /* create new history after button is presset */
@@ -566,7 +659,6 @@ public class MainFXMLController implements Initializable {
         model.addHistoryToTheDatabase(history);
     }
 
-
     /* ends executor when the main window is closed */
     public void getStage(Stage stage) {
         stage.showingProperty().addListener(e -> {
@@ -581,5 +673,37 @@ public class MainFXMLController implements Initializable {
                 }
             }
         });
+    }
+
+    /* returns list of tasks that aleready exist in choser directory */
+    private List<TaskInOurProgram> listOfFilesThatCanBeOverrided() {
+        List<TaskInOurProgram> filesThatExist = new ArrayList();
+
+        File[] files = directoryPath.listFiles();
+        for (int i = 0; i < files.length; i++) {
+            if (files[i].isFile()) {
+
+                for (TaskInOurProgram task : model.getTasksInTheTableView()) {
+                    if (files[i].getName().equals(task.getFileName() + "." + task.getExtensionOfTheFile())) {
+                        filesThatExist.add(task);
+                    }
+                }
+            }
+        }
+        return filesThatExist;
+    }
+
+    /* creates alert with overrite question for all tasks in list */
+    private void createAlertIfFileExistsInReposytory(List<TaskInOurProgram> tasks) {
+        for (TaskInOurProgram task : tasks) {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("file exists");
+            alert.setContentText(task.getFileName()+"aleready exists in chosen reposytory."
+                    + "Do you want to override it?");
+            alert.showAndWait();
+            if (alert.getResult() == ButtonType.CANCEL) {
+                model.getTasksInTheTableView().remove(task);
+            }
+        }
     }
 }

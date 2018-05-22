@@ -20,15 +20,15 @@
                <content>
                   <AnchorPane id="AnchorPane" prefHeight="564.0" prefWidth="908.0">
                      <children>
-                        <Button layoutX="22.0" layoutY="84.0" mnemonicParsing="false" onAction="#importFileButtonClick" prefHeight="27.0" prefWidth="152.0" style="-fx-background-color: #0D5F76; -fx-text-fill: #fff;" text="Import">
+                        <Button layoutX="21.0" layoutY="55.0" mnemonicParsing="false" onAction="#importFileButtonClick" prefHeight="27.0" prefWidth="152.0" style="-fx-background-color: #0D5F76; -fx-text-fill: #fff;" text="Import">
                            <font>
                               <Font name="Arial Bold" size="13.0" />
                            </font></Button>
-                        <Button layoutX="19.0" layoutY="354.0" mnemonicParsing="false" onAction="#createNewConfigButtonClick" prefHeight="27.0" prefWidth="157.0" style="-fx-background-color: #0D5F76; -fx-text-fill: #fff;" text="Create New">
+                        <Button fx:id="createNewConfigButton" disable="true" layoutX="19.0" layoutY="354.0" mnemonicParsing="false" onAction="#createNewConfigButtonClick" prefHeight="27.0" prefWidth="157.0" style="-fx-background-color: #0D5F76; -fx-text-fill: #fff;" text="Create New">
                            <font>
                               <Font name="Arial Bold" size="12.0" />
                            </font></Button>
-                        <Button layoutX="28.0" layoutY="474.0" mnemonicParsing="false" onAction="#addTaskButtonClick" prefHeight="68.0" prefWidth="134.0" style="-fx-background-color: #0D5F76; -fx-text-fill: #fff;" text="Add Task">
+                        <Button fx:id="addTaskButton" disable="true" layoutX="28.0" layoutY="474.0" mnemonicParsing="false" onAction="#addTaskButtonClick" prefHeight="68.0" prefWidth="134.0" style="-fx-background-color: #0D5F76; -fx-text-fill: #fff;" text="Add Task">
                            <font>
                               <Font name="Arial Bold" size="12.0" />
                            </font></Button>
@@ -55,7 +55,7 @@
                            <font>
                               <Font name="Arial Bold" size="13.0" />
                            </font></Button>
-                        <ChoiceBox fx:id="configChoiceBox" layoutX="21.0" layoutY="291.0" prefHeight="27.0" prefWidth="156.0" style="-fx-background-color: #0D5F76;" />
+                        <ChoiceBox fx:id="configChoiceBox" disable="true" layoutX="21.0" layoutY="291.0" prefHeight="27.0" prefWidth="156.0" style="-fx-background-color: #0D5F76;" />
                         <Label fx:id="nameOfImportedFileLabel" layoutX="66.0" layoutY="132.0" prefHeight="18.0" prefWidth="111.0">
                            <font>
                               <Font name="Arial" size="12.0" />
@@ -65,11 +65,11 @@
                               <Font name="Arial" size="12.0" />
                            </font></Label>
 
-                        <Button fx:id="chooseDirectoryButton" layoutX="207.0" layoutY="512.0" mnemonicParsing="false" onAction="#chooseDirectoryButtonClick" style="-fx-background-color: #0D5F76; -fx-text-fill: #fff;" text="CHOOSE DIRECTORY">
+                        <Button fx:id="chooseDirectoryButton" disable="true" layoutX="207.0" layoutY="512.0" mnemonicParsing="false" onAction="#chooseDirectoryButtonClick" style="-fx-background-color: #0D5F76; -fx-text-fill: #fff;" text="CHOOSE DIRECTORY">
                            <font>
                               <Font name="Arial Bold" size="13.0" />
                            </font></Button>
-                        <Label layoutX="55.0" layoutY="59.0" text="IMPORT FILE" textFill="#0d5f76">
+                        <Label layoutX="57.0" layoutY="40.0" text="IMPORT FILE" textFill="#0d5f76">
                            <font>
                               <Font name="Arial Bold" size="12.0" />
                            </font>
@@ -109,9 +109,14 @@
                               <Font name="Arial Bold" size="17.0" />
                            </font>
                         </Label>
-                        <Button fx:id="editButton" layoutX="18.0" layoutY="392.0" mnemonicParsing="false" onAction="#editConfigButtonClick" prefHeight="27.0" prefWidth="157.0" text="Edit">
+                        <Button fx:id="editButton" disable="true" layoutX="18.0" layoutY="392.0" mnemonicParsing="false" onAction="#editConfigButtonClick" prefHeight="27.0" prefWidth="157.0" text="Edit">
                            <font>
                               <Font name="Arial Bold" size="12.0" />
+                           </font>
+                        </Button>
+                        <Button fx:id="importFileFromFolderButton" layoutX="21.0" layoutY="90.0" mnemonicParsing="false" onAction="#importFileFromFolderAction" prefHeight="27.0" prefWidth="152.0" style="-fx-background-color: #0D5F76; -fx-text-fill: #fff;" text="Import folder">
+                           <font>
+                              <Font name="Arial Bold" size="13.0" />
                            </font>
                         </Button>
 
