@@ -142,7 +142,7 @@ public class Model {
                 i++;
             }
             if (checkForErrors != 0) {
-                System.out.println(config.getConfigName());
+//                Alert("Error", config.getConfigName());
                 allConfigObservableArrayList.remove(config);
             }
         }

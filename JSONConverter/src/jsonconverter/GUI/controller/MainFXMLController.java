@@ -15,12 +15,8 @@ import java.util.Date;
 import java.util.ResourceBundle;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
-
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -30,10 +26,10 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.stage.FileChooser;
 import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
@@ -44,17 +40,16 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.HBox;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Modality;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.util.StringConverter;
 import jsonconverter.BE.Config;
 import jsonconverter.BE.History;
 import jsonconverter.BE.TaskInOurProgram;
 import jsonconverter.GUI.model.Model;
-import static org.apache.xmlbeans.impl.store.Public2.test;
 
 public class MainFXMLController implements Initializable {
 
@@ -121,6 +116,12 @@ public class MainFXMLController implements Initializable {
 
     /* Stage needed to display error message */
     Stage stage;
+    @FXML
+    private Button convertTaskButton;
+    @FXML
+    private Button pauseProcessButton;
+    @FXML
+    private Button deleteProcessButton;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -142,9 +143,8 @@ public class MainFXMLController implements Initializable {
         setPromptDateInDatePickerToEuropeanStyle();
         activeDatePickersInHistoryTab();
 
-        /* style history tableView and show error as a pop-up */
-        openErrorMessageAfterHoveringOverRow();
-
+        /* style history tableView and show error as a pop-up */       
+        openErrorMessageAfterHoveringOverRow();      
     }
 
     /* imports the file into program */
@@ -160,7 +160,7 @@ public class MainFXMLController implements Initializable {
             model.checkIfYouCanUseConfig();
             nameOfImportedFileLabel.setText(nameOfImportedFile);
         } else {
-            System.out.println("ERROR: File could not be imported.");
+            model.Alert("Error", "File could not be imported");
         }
     }
 
@@ -182,23 +182,23 @@ public class MainFXMLController implements Initializable {
     /* converts all tasks in taskTable */
     @FXML
     private void convertTasksButtonClick(ActionEvent event) throws IOException {
+        if (convertTaskButton.isFocused() && !directoryPathHasBeenSelected) {
+            model.Alert("Error", "Choose a directory first");
+        } else {
+            for (TaskInOurProgram task : model.getTasksInTheTableView()) {
 
-        for (TaskInOurProgram task : model.getTasksInTheTableView()) {
+                if (task.isIsExecutedForFirstTime() == false && task.isPause() == false) {
+                    executor.submit(task);
+                    task.setIsExecutedForFirstTime(true);
+                    task.getPauseTask().setGraphic(new ImageView(pauseImage));
 
-            if (task.isIsExecutedForFirstTime() == false && task.isPause() == false) {
-                executor.submit(task);
-                task.setIsExecutedForFirstTime(true);
-                task.getPauseTask().setGraphic(new ImageView(pauseImage));
-
-            } else if (task.isIsExecutedForFirstTime() == true && task.isPause() == true && task.isIfWasStarted() == true) {
-                task.getPauseTask().setGraphic(new ImageView(pauseImage));
-                task.continueThis();
-
+                } else if (task.isIsExecutedForFirstTime() == true && task.isPause() == true && task.isIfWasStarted() == true) {
+                    task.getPauseTask().setGraphic(new ImageView(pauseImage));
+                    task.continueThis();
+                }
             }
+            createHistoryOfWholeAction();
         }
-
-        createHistoryOfWholeAction();
-
     }
 
     /* pauses all running tasks in taskTable */
@@ -219,16 +219,21 @@ public class MainFXMLController implements Initializable {
     /* stops all tasks and removes them from taskTable */
     @FXML
     private void deleteTasksButtonClick(ActionEvent event) {
-        for (TaskInOurProgram task : model.getTasksInTheTableView()) {
-            if (task.isPause()) {
-                task.continueThis();
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Are you sure?");
+        alert.setContentText("It will be removed permanently. Are you sure?");
+        alert.showAndWait();
+        if (alert.getResult() == ButtonType.OK) {
+            for (TaskInOurProgram task : model.getTasksInTheTableView()) {
+                if (task.isPause()) {
+                    task.continueThis();
+                }
+                task.cancel();
             }
-            task.cancel();
+            model.getTasksInTheTableView().clear();
         }
-        model.getTasksInTheTableView().clear();
-    }
 
-    
+    }
 
     /* pops up window where user can create new config */
     @FXML
@@ -278,14 +283,19 @@ public class MainFXMLController implements Initializable {
             task.setFilePath(directoryPath);
             task.setFileName(nameOfImportedFile);
             model.addTask(task);
-            
+
             /* if conditions were met then add to the history */
             createHistoryForTask(task);
-            
+
             /* if task is added to the tableView, you can use pause or close */
             pauseConvertingClick();
-            closeTaskButtonClick();           
-        }        
+            closeTaskButtonClick();
+
+            /* set buttons disable until task will be added */
+            convertTaskButton.setDisable(false);
+            pauseProcessButton.setDisable(false);
+            deleteProcessButton.setDisable(false);
+        }
     }
 
 
@@ -295,20 +305,24 @@ public class MainFXMLController implements Initializable {
         if (configChoiceBox.getSelectionModel().isEmpty()) {
             model.Alert("Error", "Choose a valid configuration");
         } else {
-            Parent root;
-            Stage stage = new Stage();
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/jsonconverter/GUI/view/ConfigFXML.fxml"));
-            root = loader.load();
-            ConfigFXMLController controller = loader.getController();
-            controller.setConfig(configChoiceBox.getValue());
-            controller.getModel(model);
-            controller.setToolTips();
-            controller.setEditMode();
-            controller.removeconfigButton.setOpacity(1);
-            controller.removeconfigButton.setDisable(false);
-            stage.initModality(Modality.APPLICATION_MODAL);
-            stage.setScene(new Scene(root));
-            stage.showAndWait();
+            if (configChoiceBox.getSelectionModel().isEmpty()) {
+                model.Alert("Error", "Choose a valid configuration.");
+            } else {
+                Parent root;
+                Stage stage = new Stage();
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/jsonconverter/GUI/view/ConfigFXML.fxml"));
+                root = loader.load();
+                ConfigFXMLController controller = loader.getController();
+                controller.setConfig(configChoiceBox.getValue());
+                controller.getModel(model);
+                controller.setToolTips();
+                controller.setEditMode();
+                controller.removeconfigButton.setOpacity(1);
+                controller.removeconfigButton.setDisable(false);
+                stage.initModality(Modality.APPLICATION_MODAL);
+                stage.setScene(new Scene(root));
+                stage.showAndWait();
+            }
         }
     }
 
@@ -486,21 +500,30 @@ public class MainFXMLController implements Initializable {
 
     /* removes selected task */
     private void closeTaskButtonClick() {
+
         for (TaskInOurProgram task : model.getTasksInTheTableView()) {
             task.getCloseTask().setGraphic(new ImageView(closeImage));
 
             task.getCloseTask().setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent event) {
+                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                    alert.setTitle("Are you sure?");
+                    alert.setContentText("It will be removed permanently. Are you sure?");
+                    alert.showAndWait();
+                    if (alert.getResult() == ButtonType.OK) {
 
-                    if (task.isPause() == true) {
-                        task.continueThis();
+                        if (task.isPause() == true) {
+                            task.continueThis();
+                            task.cancel();
+                        }
                         task.cancel();
+                        model.getTasksInTheTableView().remove(task);
+                    } else {
                     }
-                    task.cancel();
-                    model.getTasksInTheTableView().remove(task);
                 }
-            });
+            }
+            );
         }
     }
 
@@ -511,6 +534,24 @@ public class MainFXMLController implements Initializable {
         userNameColumn.setCellValueFactory(new PropertyValueFactory("username"));
         errorColumn.setCellValueFactory(new PropertyValueFactory("errorIcon"));
     }
+    
+    public void test() {
+            historyTableView.setRowFactory(tableView -> new TableRow<History>() {
+            @Override
+            protected void updateItem(History history, boolean empty) {
+                super.updateItem(history, empty);
+                if (empty) {
+                    setStyle("");
+                } else if (history.isHasError() == true) {
+                    getStyleClass().clear();
+                    getStyleClass().add("errorHistoryRow");
+                } else if (history.isHasError() == false){
+                    getStyleClass().clear();
+                    getStyleClass().add("");
+                }
+            }
+        });
+    }
 
     /* 1. show pop-up window after hovering over the row which has error
        2. change background color to red of rows with errors 
@@ -518,20 +559,18 @@ public class MainFXMLController implements Initializable {
      */
     private void openErrorMessageAfterHoveringOverRow() {
 
-        historyTableView.setRowFactory(tableView -> {
+            historyTableView.setRowFactory(tableView -> {
             final TableRow<History> row = new TableRow<>();
-
+                      
             //for each loop to set image and color only
             for (History history : model.getAllHistoryObservableArrayList()) {
+                
                 if (history.isHasError() == true) {
-                    //set style of this "error" history
-                    row.getStyleClass().clear();
-                    row.getStyleClass().add("errorHistoryRow");
-
+                    
                     //show icon in the end of the row
                     history.getErrorIcon().setImage(errorImage);
                 }
-            }
+            }                   
 
             for (History his : model.getAllHistoryObservableArrayList()) {
 
@@ -548,7 +587,8 @@ public class MainFXMLController implements Initializable {
                     TextArea ta = new TextArea();
 
                     AnchorPane layout = new AnchorPane();
-                    stageSingleton().setScene(new Scene(layout));
+                    Scene scene = new Scene(layout);
+                    stageSingleton().setScene(scene);
 
                     if (row.isHover() && his.equals(historyRow)) {
                         ta.setText(row.getItem().getErrorMessage());
@@ -560,10 +600,12 @@ public class MainFXMLController implements Initializable {
                         popup.hide();
                         stageSingleton().close();
                     }
+
                 });
             }
             return row;
         });
+        
     }
 
     public Stage stageSingleton() {
@@ -572,18 +614,20 @@ public class MainFXMLController implements Initializable {
             stage = new Stage();
             stage.setWidth(1);
             stage.setHeight(1);
+            stage.initStyle(StageStyle.UNDECORATED);
         }
         return stage;
+        
     }
 
     /* creates new history for task */
     private void createHistoryForTask(TaskInOurProgram task) {
         /* create new history after button is presset */
         History history = new History(model.getFormatedActualDateAndTimeAsString(), 1, model.getUserName(),
-                "Task" + task.getFileName() + "was converted", true, "Error");
+                "File " + task.getFileName() + " was converted", false, "");
         model.addHistoryToTheDatabase(history);
     }
-    
+
     /* creates history for action */
     private void createHistoryOfWholeAction() {
         /* create new history after button is presset */
@@ -591,7 +635,7 @@ public class MainFXMLController implements Initializable {
                 "Multiple Conversion (" + tasksTableView.getItems().size() + " files)", true, "Error");
         model.addHistoryToTheDatabase(history);
     }
-    
+
 
     /* ends executor when the main window is closed */
     public void getStage(Stage stage) {

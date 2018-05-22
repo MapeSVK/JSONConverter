@@ -111,7 +111,7 @@ public class ConfigFXMLController implements Initializable {
     private ArrayList<String> headersList = new ArrayList<>();
     private int fieldsCounter = 0;
     private boolean isEditMode;
-    private Config choosenConfig;
+    private Config chosenConfig;
     boolean isValid;
     private Tooltip tooltip;
 
@@ -155,9 +155,9 @@ public class ConfigFXMLController implements Initializable {
                 if (model.checkIfConfigExists(createConfig())) {
                     model.saveConfigToDatabase(createConfig(), isEditMode);
                     if (isEditMode) {
-                        createHistoryAfterEditConfig(choosenConfig);
+                        createHistoryAfterEditConfig(headerNameField.getText());
                     } else {
-                        createHistoryAfterAddingNewConfig(choosenConfig);
+                        createHistoryAfterAddingNewConfig(headerNameField.getText());
                     }
                     model.closeWindow(saveConfigButton);
                 } else {
@@ -177,8 +177,8 @@ public class ConfigFXMLController implements Initializable {
         alert.setContentText("It will be removed permanently. Are you sure?");
         alert.showAndWait();
         if (alert.getResult() == ButtonType.OK) {
-        model.removeConfigToDatabase(choosenConfig);      
-        createHistoryAfterDeletingNewConfig(choosenConfig); //create history row after removing
+        model.removeConfigToDatabase(chosenConfig);      
+        createHistoryAfterDeletingNewConfig(chosenConfig); //create history row after removing
         model.closeWindow(saveConfigButton);
         }
     }
@@ -197,7 +197,7 @@ public class ConfigFXMLController implements Initializable {
         for (Node node : configFieldsPane.getChildren()) {
             if (node instanceof JFXTextField) {
                 TextFields.bindAutoCompletion(((JFXTextField) node), suggest);
-                model.changeColorIfWrong(node,((JFXTextField) node).getText(), model.getOnlyFileHeaders());
+                model.changeColorIfWrong(node, ((JFXTextField) node).getText(), model.getOnlyFileHeaders());
             }
         }
     }
@@ -207,16 +207,16 @@ public class ConfigFXMLController implements Initializable {
         checkBoxPrivacy.setSelected(choosenConfig.isPrivacy());
         fillIfEmptyEdit(choosenConfig);
         removeconfigButton.setDisable(false);
-        this.choosenConfig = choosenConfig;
+        this.chosenConfig = choosenConfig;
         return choosenConfig;
     }
 
     /* creates config based on users text fields and saves it in the database */
     private Config createConfig() {
         Config newConfig = new Config();
-        
+
         if (isEditMode) {
-            newConfig.setCinfig_id(choosenConfig.getCinfig_id());
+            newConfig.setCinfig_id(chosenConfig.getCinfig_id());
         }
 
         if (!siteNameField.getText().isEmpty() && siteNameFieldEmpty.isDisable() == false && !siteNameFieldEmpty.getText().isEmpty()) {
@@ -324,7 +324,7 @@ public class ConfigFXMLController implements Initializable {
             if (node instanceof JFXTextField) {
                 ((JFXTextField) node).textProperty().addListener(e -> {
                     addAndRemoveHeadersFromBinding();
-                  model.changeColorIfWrong(node,((JFXTextField) node).getText(), model.getOnlyFileHeaders());
+                    model.changeColorIfWrong(node, ((JFXTextField) node).getText(), model.getOnlyFileHeaders());
                 });
             }
         }
@@ -399,18 +399,18 @@ public class ConfigFXMLController implements Initializable {
     /* ADDING TO THE HISTORY  */
     
     /* add config */
-    private void createHistoryAfterAddingNewConfig(Config config) {
+    private void createHistoryAfterAddingNewConfig(String nameOfTheConfig) {
         /* create new history after button is presset */
         History history = new History(model.getFormatedActualDateAndTimeAsString(), 1, model.getUserName(),
-                config.getConfigName() + "configuration was created", false, "");
+                nameOfTheConfig + "configuration was created", false, "");
         model.addHistoryToTheDatabase(history);
     }
 
     /* edit config */
-    private void createHistoryAfterEditConfig(Config config) {
+    private void createHistoryAfterEditConfig(String nameOfTheConfig) {
         /* create new history after button is presset */
         History history = new History(model.getFormatedActualDateAndTimeAsString(), 1, model.getUserName(),
-                config.getConfigName() + "configuration was eddited", false, "");
+                nameOfTheConfig+ " configuration was eddited", false, "");
         model.addHistoryToTheDatabase(history);
     }
     

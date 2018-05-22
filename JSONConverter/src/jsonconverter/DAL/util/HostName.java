@@ -9,29 +9,26 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import javafx.scene.control.Alert;
 
-/**
- *
- * @author Samuel
- */
 public class HostName {
 
-    private String hostname;
+    String hostname = "Anonymous";
     public String userName = System.getProperty("user.name");
     private static int onlyOnce = -1;
 
     public HostName() {
         takeUserInfo();
     }
-    
+
     /* gets information about localHost */
     private void takeUserInfo() {
-    
+
         if (onlyOnce == -1) {
             try {
                 InetAddress addr;
                 addr = InetAddress.getLocalHost();
                 hostname = addr.getHostName();
                 onlyOnce = 1;
+
             } catch (UnknownHostException ex) {
                 Alert("Cannot get username", "System could not get user name from your computer. "
                         + "To solve this problem please write e-mail to jsonconverter@jsonconverter.com. "
@@ -40,9 +37,10 @@ public class HostName {
         }
     }
   
+
+
     /* returns host name */
-    public String getHostname()
-    {
+    public String getHostname() {
         return hostname;
     }
 
@@ -59,4 +57,3 @@ public class HostName {
         alert.showAndWait();
     }
 }
-

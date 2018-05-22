@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import jsonconverter.BE.History;
 
 /**
@@ -49,16 +50,17 @@ public class DALHistory {
 
             pool.checkIn(con);
         } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "History could not be loaded");
+
             Logger.getLogger(DALHistory.class.getName()).log(
                     Level.SEVERE, null, ex);
         }
         return history;
     }
-    
-    
+
     /* adding history to a database */
     public void addHistory(History history) {
-       try (Connection con = pool.checkOut()) {
+        try (Connection con = pool.checkOut()) {
             String sql
                     = "INSERT INTO History"
                     + "(local_username,action_message,history_date_time,has_error,error_message) "
@@ -66,27 +68,24 @@ public class DALHistory {
             PreparedStatement pstmt
                     = con.prepareStatement(
                             sql, Statement.RETURN_GENERATED_KEYS);
-            
-           
+
             pstmt.setString(1, history.getUsername());
             pstmt.setString(2, history.getFileName());
             pstmt.setString(3, history.getDateAndTime());
             pstmt.setBoolean(4, history.isHasError());
             pstmt.setString(5, history.getErrorMessage());
-            
-            
 
             int affected = pstmt.executeUpdate();
-            
+
             // Get database generated id
             ResultSet rs = pstmt.getGeneratedKeys();
             if (rs.next()) {
                 history.setId(rs.getInt(1));
             }
-            
-             pool.checkIn(con);
-        }
-        catch (SQLException ex) {
+
+            pool.checkIn(con);
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "History could not be added");
             Logger.getLogger(DALHistory.class.getName()).log(
                     Level.SEVERE, null, ex);
         }
