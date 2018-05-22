@@ -37,7 +37,8 @@ public class HistoryRow extends TableRow<History> {
             popup.setX(x - 300);
             popup.setY(y - 200);
             TextArea ta = new TextArea();
-
+            ta.getStyleClass().add("errorTextArea");
+          
             AnchorPane layout = new AnchorPane();
             Scene scene = new Scene(layout);
             stageSingleton().setScene(scene);

@@ -41,13 +41,6 @@ public class WriteJSON {
         } catch (IOException e) {
             success = false;
         }       
-        
-        if (success == false) {
-            System.out.println("PICA SA ULOZILA");
-            Alert("File could not be created!", "JSON file could not be created because chosen directory for JSON file was modified or "
-                    + "removed. Try it again and do not change chosen directory folder while converting is in the progress. ");
-        }
-
     } 
 
     public boolean isSuccess() {

@@ -43,6 +43,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Region;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Modality;
 import javafx.stage.Popup;
@@ -112,10 +113,18 @@ public class MainFXMLController implements Initializable {
     private TaskInOurProgram task;
     private ExecutorService executor = Executors.newFixedThreadPool(3);
     private Date fromDateInDatePicker;
-    private final Image pauseImage = new Image("file:images/pauseImage.png");
-    private final Image closeImage = new Image("file:images/close.png");
-    private final Image playImage = new Image("file:images/playImage.png");
-    private final Image errorImage = new Image("file:images/errorImage.png");
+    
+    /*SMALL ICONS*/
+    private final Image errorSmall = new Image("file:images/errorImage.png");
+    private final Image pauseSmall = new Image("file:images/pauseSmall.png");
+    private final Image stopSmall = new Image("file:images/stopSmall.png");
+    private final Image playSmall = new Image("file:images/playSmall.png");
+    
+    /*BIG ICONS*/
+    private final Image pauseBig = new Image("file:images/pauseBig.png");
+    private final Image playBig = new Image("file:images/playBig.png");
+    private final Image stopBig = new Image("file:images/stopBig.png");
+   
     private Date fromDate;
     private Date toDate;
     private java.sql.Date currentDate = java.sql.Date.valueOf(LocalDate.now());
@@ -123,7 +132,7 @@ public class MainFXMLController implements Initializable {
     /* Stage needed to display error message */
     Stage stage;
     @FXML
-    private Button convertTaskButton;
+    private Button convertTasksButton;
     @FXML
     private Button pauseProcessButton;
     @FXML
@@ -132,9 +141,28 @@ public class MainFXMLController implements Initializable {
     private Button addTaskButton;
     @FXML
     private Button createNewConfigButton;
+    @FXML
+    private Label typeOfImportedFileLabel;
+    private Label nameOfImportedFileValueLabel;
+    @FXML
+    private Region firstRegion;
+    @FXML
+    private Region secondRegion;
+    @FXML
+    private Region thirdRegion;
+    @FXML
+    private Label nameOfImportedFileLabelLabel;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        /* set big icons instead of basic look of buttons */
+        pauseProcessButton.setGraphic(new ImageView(pauseBig));
+        convertTasksButton.setGraphic(new ImageView(playBig));
+        deleteProcessButton.setGraphic(new ImageView(stopBig));
+        pauseProcessButton.getStyleClass().add("pauseBigButton");
+        convertTasksButton.getStyleClass().add("playBigButton");
+        deleteProcessButton.getStyleClass().add("stopBigButton");
+
         setTasksTableViewColumns();
         setHistoryTableViewColumns();
         setConfigChoiceBoxItems();
@@ -154,7 +182,7 @@ public class MainFXMLController implements Initializable {
         activeDatePickersInHistoryTab();
 
         /* style history tableView and show error as a pop-up */       
-        openErrorMessageAfterHoveringOverRow();     
+        openErrorMessageAfterHoveringOverRow();   
 
     }
 
@@ -167,7 +195,15 @@ public class MainFXMLController implements Initializable {
         if (fileChoseByImport != null) {
             configChoiceBox.setDisable(false);
             createNewConfigButton.setDisable(false);
-            editButton.setDisable(false);
+            editButton.setDisable(true);
+            /* name and type set to visible */
+            nameOfImportedFileLabelLabel.setVisible(true);
+            typeOfImportedFileLabel.setVisible(true);
+            labelFileExtension.setVisible(true);
+            nameOfImportedFileLabel.setVisible(true);
+            
+            firstRegion.setVisible(false);
+            
             filePath = fileChoseByImport.toString();
             nameOfImportedFile = gettingTheFileNameFromThePath(fileChoseByImport);
             fileExtendionIdentifier();
@@ -193,6 +229,14 @@ public class MainFXMLController implements Initializable {
             configChoiceBox.setDisable(false);
             createNewConfigButton.setDisable(true);
             editButton.setDisable(true);
+            /* name and type set to visible */
+            nameOfImportedFileLabelLabel.setVisible(true);
+            typeOfImportedFileLabel.setVisible(true);
+            labelFileExtension.setVisible(true);
+            nameOfImportedFileLabel.setVisible(true);
+            
+            firstRegion.setVisible(false);
+            
             model.getAllFilesInFolder().clear();
             model.loadAvailableConfig();
             for (int i = 0; i < listOfFiles.length; i++) {
@@ -215,13 +259,14 @@ public class MainFXMLController implements Initializable {
             directoryPath = selectedDirectory.getAbsoluteFile();
             directoryPathHasBeenSelected = true;
             addTaskButton.setDisable(false);
+            thirdRegion.setVisible(false);
         }
     }
 
     /* converts all tasks in taskTable */
     @FXML
     private void convertTasksButtonClick(ActionEvent event) throws IOException {
-        if (convertTaskButton.isFocused() && !directoryPathHasBeenSelected) {
+        if (convertTasksButton.isFocused() && !directoryPathHasBeenSelected) {
             model.Alert("Error", "Choose a directory first");
         } else {
             for (TaskInOurProgram task : model.getTasksInTheTableView()) {
@@ -229,10 +274,10 @@ public class MainFXMLController implements Initializable {
                 if (task.isIsExecutedForFirstTime() == false && task.isPause() == false) {
                     executor.submit(task);
                     task.setIsExecutedForFirstTime(true);
-                    task.getPauseTask().setGraphic(new ImageView(pauseImage));
+                    task.getPauseTask().setGraphic(new ImageView(pauseSmall));
 
                 } else if (task.isIsExecutedForFirstTime() == true && task.isPause() == true && task.isIfWasStarted() == true) {
-                    task.getPauseTask().setGraphic(new ImageView(pauseImage));
+                    task.getPauseTask().setGraphic(new ImageView(pauseSmall));
                     task.continueThis();
                 }
             }
@@ -246,9 +291,9 @@ public class MainFXMLController implements Initializable {
         for (TaskInOurProgram task : model.getTasksInTheTableView()) {
 
             //set default image before clicking on the button
-            //task.getPauseTask().setGraphic(new ImageView(playImage));
+            //task.getPauseTask().setGraphic(new ImageView(playSmall));
             if (task.isIsExecutedForFirstTime() == true && task.isPause() == false && task.isIfWasStarted() == true) {
-                task.getPauseTask().setGraphic(new ImageView(playImage));
+                task.getPauseTask().setGraphic(new ImageView(playSmall));
                 task.pauseThis();
             }
         }
@@ -329,7 +374,7 @@ public class MainFXMLController implements Initializable {
             closeTaskButtonClick();
 
             /* set buttons disable until task will be added */
-            convertTaskButton.setDisable(false);
+            convertTasksButton.setDisable(false);
             pauseProcessButton.setDisable(false);
             deleteProcessButton.setDisable(false);
 
@@ -354,7 +399,7 @@ public class MainFXMLController implements Initializable {
                     closeTaskButtonClick();
 
                     /* set buttons disable until task will be added */
-                    convertTaskButton.setDisable(false);
+                    convertTasksButton.setDisable(false);
                     pauseProcessButton.setDisable(false);
                     deleteProcessButton.setDisable(false);
                 } else {
@@ -401,19 +446,11 @@ public class MainFXMLController implements Initializable {
 
         stopButtonColumn.setCellValueFactory(new PropertyValueFactory("pauseTask"));
         closeButtonColumn.setCellValueFactory(new PropertyValueFactory("closeTask"));
-
-        TableColumn<TaskInOurProgram, String> statusCol = new TableColumn("Status");
-        statusCol.setCellValueFactory(new PropertyValueFactory<TaskInOurProgram, String>(
-                "message"));
-        statusCol.setPrefWidth(75);
-
         progressCircleColumn.setCellValueFactory(new PropertyValueFactory<TaskInOurProgram, Double>(
                 "progress"));
         progressCircleColumn
                 .setCellFactory(ProgressBarTableCell.<TaskInOurProgram>forTableColumn());
-
-        tasksTableView.getColumns().addAll(statusCol);
-
+        
         pauseConvertingClick();
     }
 
@@ -423,8 +460,11 @@ public class MainFXMLController implements Initializable {
         configChoiceBox.valueProperty().addListener(e -> {
             if (configChoiceBox.getValue() != null) {
                 chooseDirectoryButton.setDisable(false);
+                editButton.setDisable(false);
+                secondRegion.setVisible(false);
             } else {
                 chooseDirectoryButton.setDisable(true);
+                
             }
         });
     }
@@ -561,7 +601,7 @@ public class MainFXMLController implements Initializable {
         for (TaskInOurProgram task : model.getTasksInTheTableView()) {
 
             //set default image before clicking on the button
-            task.getPauseTask().setGraphic(new ImageView(playImage));
+            task.getPauseTask().setGraphic(new ImageView(playSmall));
 
             task.getPauseTask().setOnAction(new EventHandler<ActionEvent>() {
                 @Override
@@ -570,19 +610,21 @@ public class MainFXMLController implements Initializable {
                     if (task.isIsExecutedForFirstTime() == false && task.isPause() == false) {
                         executor.submit(task);
                         task.setIsExecutedForFirstTime(true);
-                        task.getPauseTask().setGraphic(new ImageView(pauseImage));
+                        task.getPauseTask().setGraphic(new ImageView(pauseSmall));
                         
                     } else if (task.isIsExecutedForFirstTime() == true && task.isPause() == false) {
-                        task.getPauseTask().setGraphic(new ImageView(playImage));
+                        task.getPauseTask().setGraphic(new ImageView(playSmall));
                         task.pauseThis();
 
                     } else if (task.isIsExecutedForFirstTime() == true && task.isPause() == true) {
-                        task.getPauseTask().setGraphic(new ImageView(pauseImage));
+                        task.getPauseTask().setGraphic(new ImageView(pauseSmall));
                         task.continueThis();
 
                     }
                 }
             });
+            
+            
         }
     }
 
@@ -590,7 +632,7 @@ public class MainFXMLController implements Initializable {
     private void closeTaskButtonClick() {
 
         for (TaskInOurProgram task : model.getTasksInTheTableView()) {
-            task.getCloseTask().setGraphic(new ImageView(closeImage));
+            task.getCloseTask().setGraphic(new ImageView(stopSmall));
 
             task.getCloseTask().setOnAction(new EventHandler<ActionEvent>() {
                 @Override
@@ -635,7 +677,7 @@ public class MainFXMLController implements Initializable {
         for (History history : model.getAllHistoryObservableArrayList()) {                           
                 if (history.isHasError() == true) {
                     //show icon in the end of the row
-                    history.getErrorIcon().setImage(errorImage);
+                    history.getErrorIcon().setImage(errorSmall);
                 }
         }
     }
