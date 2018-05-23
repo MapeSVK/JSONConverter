@@ -369,8 +369,8 @@ public class ConfigFXMLController implements Initializable {
             if (node instanceof JFXTextField) {
 
                 if (di < 15) {
-                    JFXTextField mainField = (JFXTextField) configFieldsPane.getChildren().get(di);
-                    JFXTextField secondaryField = (JFXTextField) configFieldsPane.getChildren().get(di + 15);
+                    JFXTextField mainField = (JFXTextField) configFieldsPane.getChildren().get(di+35);
+                    JFXTextField secondaryField = (JFXTextField) configFieldsPane.getChildren().get(di + 15+35);
 
                     if (choosenConfig.getAllGetters(di).contains("&&")) {
                         String[] splited = choosenConfig.getAllGetters(di).split("&&");

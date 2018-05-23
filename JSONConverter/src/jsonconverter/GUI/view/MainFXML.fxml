@@ -148,7 +148,7 @@
                               <TableColumn fx:id="errorColumn" minWidth="4.0" prefWidth="45.0" />
                           </columns>
                         </TableView>
-                        <JFXTextField fx:id="searchByUsernameField" layoutX="546.0" layoutY="14.0" prefHeight="25.0" prefWidth="190.0" />
+                        <JFXTextField fx:id="searchByUsernameField" focusColor="#0d8ab8" layoutX="546.0" layoutY="14.0" prefHeight="25.0" prefWidth="190.0" />
                      </children></AnchorPane>
             </content>
           </Tab>

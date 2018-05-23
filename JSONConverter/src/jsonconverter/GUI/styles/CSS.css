@@ -217,7 +217,9 @@
 .table-row-cell:error { -fx-selection-bar-non-focused: red; -fx-selection-bar: purple; -fx-background-color: #FE807F}
 
 
-.errorTextArea {
-    -fx-background-color: #000000;
-    -fx-text-fill: #FE807F75;
+#fancytext {
+    -fx-font: 20px Tahoma;
+    -fx-fill: #FE807F;
+    -fx-stroke: #00000075;
+    -fx-stroke-width: 1;
 }

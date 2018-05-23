@@ -8,10 +8,13 @@ package jsonconverter.GUI.util;
 import java.awt.MouseInfo;
 import java.awt.Point;
 import javafx.css.PseudoClass;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.text.Text;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -36,19 +39,37 @@ public class HistoryRow extends TableRow<History> {
             Popup popup = new Popup();
             popup.setX(x - 300);
             popup.setY(y - 200);
-            TextArea ta = new TextArea();
-            ta.getStyleClass().add("errorTextArea");
-          
+
+            // error label
+            Label errorLabel = new Label();
+            errorLabel.setStyle("-fx-text-fill: #FE807F; -fx-font: 12px Arial; -fx-font-weight: bold;-fx-padding: 20 20 20 20");
+            errorLabel.setMaxWidth(300);
+            errorLabel.setAlignment(Pos.CENTER);
+            errorLabel.setWrapText(true);
+            
+            //anchor pane
+            AnchorPane background = new AnchorPane();
+            background.setStyle("-fx-background-color: #000;-fx-background-radius:8px");
+            background.setPrefHeight(100);
+            background.setPrefWidth(400);
+            
+            //add label to the anchor pane
+            background.getChildren().add(errorLabel);
+            
+            //create layout and scene
             AnchorPane layout = new AnchorPane();
             Scene scene = new Scene(layout);
+            
+            //put this scene to the stage
             stageSingleton().setScene(scene);
             
             if (newValue) {
                 History historyRow = getItem();
                 
                 if (historyRow != null && historyRow.isHasError()) {
-                    ta.setText(historyRow.getErrorMessage());
-                    popup.getContent().addAll(ta);
+                    errorLabel.setText(historyRow.getErrorMessage());
+                    
+                    popup.getContent().addAll(background);
                     stageSingleton().show();
                     popup.show(stageSingleton());
                 }

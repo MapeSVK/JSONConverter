@@ -412,7 +412,7 @@ public class MainFXMLController implements Initializable {
             }
             model.Alert("Files failed to add", failedToAdd + " were unable to add because they dont match chosen config");
         }
-        createAlertIfFileExistsInReposytory(listOfFilesThatCanBeOverrided());
+        createAlertIfFileExistsInRepository(listOfFilesThatCanBeOverrided());
     }
 
     /* pops up window where user can edit chosen chonfig */
@@ -735,11 +735,11 @@ public class MainFXMLController implements Initializable {
     }
 
     /* creates alert with overrite question for all tasks in list */
-    private void createAlertIfFileExistsInReposytory(List<TaskInOurProgram> tasks) {
+    private void createAlertIfFileExistsInRepository(List<TaskInOurProgram> tasks) {
         for (TaskInOurProgram task : tasks) {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle("file exists");
-            alert.setContentText(task.getFileName()+" aleready exists in chosen reposytory."
+            alert.setContentText(task.getFileName()+" aleready exists in chosen repository."
                     + " Do you want to override it?");
             alert.showAndWait();
             if (alert.getResult() == ButtonType.CANCEL) {
