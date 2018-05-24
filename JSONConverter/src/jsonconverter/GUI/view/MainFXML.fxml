@@ -70,12 +70,12 @@
                            <font>
                               <Font name="Arial Bold" size="13.0" />
                            </font></Button>
-                        <Label fx:id="nameOfImportedFileLabelLabel" layoutX="24.0" layoutY="134.0" text="Name:">
+                        <Label layoutX="24.0" layoutY="134.0" text="Name:">
                            <font>
                               <Font name="Arial Bold" size="12.0" />
                            </font>
                         </Label>
-                        <Label fx:id="typeOfImportedFileLabel" layoutX="24.0" layoutY="152.0" text="Type:">
+                        <Label layoutX="24.0" layoutY="152.0" text="Type:">
                            <font>
                               <Font name="Arial Bold" size="12.0" />
                            </font>
@@ -85,7 +85,7 @@
                               <Font name="Arial Bold" size="12.0" />
                            </font>
                         </Label>
-                        <Label layoutX="112.0" layoutY="317.0" text="OR">
+                        <Label fx:id="labelStep2" layoutX="112.0" layoutY="317.0" text="OR">
                            <font>
                               <Font name="Arial Bold" size="13.0" />
                            </font>
@@ -125,10 +125,11 @@
                               <Font name="Arial Bold" size="12.0" />
                            </font>
                         </Label>
-                        <Region fx:id="firstRegion" layoutY="179.0" prefHeight="214.0" prefWidth="242.0" style="-fx-background-color: #00000054;" />
+                        <Region fx:id="firstRegion" layoutY="178.0" prefHeight="215.0" prefWidth="242.0" style="-fx-background-color: #00000054;" />
                         <Region fx:id="secondRegion" layoutY="393.0" prefHeight="92.0" prefWidth="242.0" style="-fx-background-color: #00000054;" />
                         <Region fx:id="thirdRegion" layoutY="485.0" prefHeight="152.0" prefWidth="242.0" style="-fx-background-color: #00000054;" />
                         <Separator layoutX="242.0" layoutY="9.0" orientation="VERTICAL" prefHeight="628.0" prefWidth="1.0" />
+                        <Label fx:id="directoryLabel" alignment="CENTER" layoutX="15.0" layoutY="468.0" prefHeight="17.0" prefWidth="214.0" textAlignment="CENTER" />
 
                      </children>
                   </AnchorPane>
