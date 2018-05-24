@@ -11,115 +11,124 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Region?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="530.0" prefWidth="909.0" stylesheets="@../styles/CSS.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jsonconverter.GUI.controller.MainFXMLController">
+<AnchorPane id="AnchorPane" prefHeight="670.0" prefWidth="911.0" stylesheets="@../styles/CSS.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jsonconverter.GUI.controller.MainFXMLController">
    <children>
-      <TabPane prefHeight="590.0" prefWidth="911.0" tabClosingPolicy="UNAVAILABLE">
+      <TabPane prefHeight="670.0" prefWidth="966.0" tabClosingPolicy="UNAVAILABLE">
         <tabs>
           <Tab text="CONVERTER">
                <content>
-                  <AnchorPane id="AnchorPane" prefHeight="564.0" prefWidth="908.0">
+                  <AnchorPane id="AnchorPane" prefHeight="621.0" prefWidth="911.0">
                      <children>
-                        <Button layoutX="21.0" layoutY="55.0" mnemonicParsing="false" onAction="#importFileButtonClick" prefHeight="27.0" prefWidth="152.0" style="-fx-background-color: #0D5F76; -fx-text-fill: #fff;" text="Import">
+                        <Button layoutX="22.0" layoutY="38.0" mnemonicParsing="false" onAction="#importFileButtonClick" prefHeight="33.0" prefWidth="200.0" style="-fx-background-color: #0D8AB8; -fx-text-fill: #fff;" text="Import file">
                            <font>
                               <Font name="Arial Bold" size="13.0" />
                            </font></Button>
-                        <Button fx:id="createNewConfigButton" disable="true" layoutX="19.0" layoutY="354.0" mnemonicParsing="false" onAction="#createNewConfigButtonClick" prefHeight="27.0" prefWidth="157.0" style="-fx-background-color: #0D5F76; -fx-text-fill: #fff;" text="Create New">
+                        <Button fx:id="createNewConfigButton" disable="true" layoutX="22.0" layoutY="341.0" mnemonicParsing="false" onAction="#createNewConfigButtonClick" prefHeight="33.0" prefWidth="200.0" style="-fx-background-color: #0D8AB8; -fx-text-fill: #fff;" text="CREATE NEW">
                            <font>
                               <Font name="Arial Bold" size="12.0" />
                            </font></Button>
-                        <Button fx:id="addTaskButton" disable="true" layoutX="28.0" layoutY="474.0" mnemonicParsing="false" onAction="#addTaskButtonClick" prefHeight="68.0" prefWidth="134.0" style="-fx-background-color: #0D5F76; -fx-text-fill: #fff;" text="Add Task">
+                        <Button fx:id="addTaskButton" disable="true" layoutX="22.0" layoutY="529.0" mnemonicParsing="false" onAction="#addTaskButtonClick" prefHeight="86.0" prefWidth="200.0" style="-fx-background-color: #0D8AB8; -fx-text-fill: #fff;" text="Add Task">
                            <font>
                               <Font name="Arial Bold" size="12.0" />
                            </font></Button>
-                        <Separator layoutX="202.0" layoutY="-2.0" orientation="VERTICAL" prefHeight="562.0" prefWidth="6.0" />
-                        <TableView fx:id="tasksTableView" layoutX="203.0" layoutY="9.0" prefHeight="478.0" prefWidth="706.0">
+                        <TableView fx:id="tasksTableView" layoutX="243.0" layoutY="9.0" prefHeight="536.0" prefWidth="723.0">
                           <columns>
-                              <TableColumn fx:id="extensionColumn" prefWidth="44.0" />
-                            <TableColumn fx:id="nameOfTheFileColumn" prefWidth="211.0" text="NAME" />
-                            <TableColumn fx:id="configNameColumn" prefWidth="212.0" text="CONGIF NAME" />
-                              <TableColumn fx:id="progressCircleColumn" maxWidth="335.0" minWidth="0.0" prefWidth="151.0" />
-                              <TableColumn fx:id="stopButtonColumn" prefWidth="45.0" />
-                              <TableColumn fx:id="closeButtonColumn" maxWidth="73.0" minWidth="68.0" prefWidth="71.0" />
+                              <TableColumn fx:id="extensionColumn" prefWidth="49.0" text="TYPE" />
+                            <TableColumn fx:id="nameOfTheFileColumn" prefWidth="226.0" text="NAME" />
+                            <TableColumn fx:id="configNameColumn" prefWidth="200.0" text="CONFIGURATION NAME" />
+                              <TableColumn fx:id="progressCircleColumn" maxWidth="335.0" minWidth="0.0" prefWidth="161.0" />
+                              <TableColumn fx:id="stopButtonColumn" maxWidth="48.0" minWidth="48.0" prefWidth="48.0" />
+                              <TableColumn fx:id="closeButtonColumn" maxWidth="48.0" minWidth="48.0" prefWidth="48.0" />
                           </columns>
                         </TableView>
-                        <Button fx:id="convertTaskButton" disable="true" layoutX="399.0" layoutY="513.0" mnemonicParsing="false" onAction="#convertTasksButtonClick" text="CONVERT">
+                        <Button fx:id="convertTasksButton" disable="true" layoutX="330.0" layoutY="558.0" mnemonicParsing="false" onAction="#convertTasksButtonClick" text=" ">
                            <font>
                               <Font name="Arial Bold" size="13.0" />
                            </font></Button>
-                        <Button fx:id="pauseProcessButton" disable="true" layoutX="588.0" layoutY="512.0" mnemonicParsing="false" onAction="#pauseTasksButtonClick" prefHeight="27.0" prefWidth="138.0" text="PAUSE PROCESS">
+                        <Button fx:id="pauseProcessButton" disable="true" layoutX="550.0" layoutY="558.0" mnemonicParsing="false" onAction="#pauseTasksButtonClick" prefHeight="27.0" prefWidth="138.0">
                            <font>
                               <Font name="Arial Bold" size="13.0" />
                            </font></Button>
-                        <Button fx:id="deleteProcessButton" disable="true" layoutX="745.0" layoutY="513.0" mnemonicParsing="false" onAction="#deleteTasksButtonClick" prefHeight="27.0" prefWidth="138.0" text="DELETE PROCESS">
+                        <Button fx:id="deleteProcessButton" disable="true" layoutX="800.0" layoutY="558.0" mnemonicParsing="false" onAction="#deleteTasksButtonClick" prefHeight="27.0" prefWidth="138.0">
                            <font>
                               <Font name="Arial Bold" size="13.0" />
                            </font></Button>
-                        <ChoiceBox fx:id="configChoiceBox" disable="true" layoutX="21.0" layoutY="291.0" prefHeight="27.0" prefWidth="156.0" style="-fx-background-color: #0D5F76;" />
-                        <Label fx:id="nameOfImportedFileLabel" layoutX="66.0" layoutY="132.0" prefHeight="18.0" prefWidth="111.0">
+                        <ChoiceBox fx:id="configChoiceBox" disable="true" layoutX="22.0" layoutY="248.0" prefHeight="33.0" prefWidth="200.0" style="-fx-background-color: #0D8AB8; -fx-text-fill: #fff;" />
+                        <Label fx:id="nameOfImportedFileLabel" layoutX="81.0" layoutY="134.0" prefHeight="18.0" prefWidth="140.0" visible="false">
                            <font>
-                              <Font name="Arial" size="12.0" />
+                              <Font name="Arial Bold" size="12.0" />
                            </font></Label>
-                        <Label fx:id="labelFileExtension" layoutX="64.0" layoutY="159.0" prefHeight="17.0" prefWidth="115.0">
+                        <Label fx:id="labelFileExtension" layoutX="81.0" layoutY="151.0" prefHeight="17.0" prefWidth="140.0" visible="false">
                            <font>
-                              <Font name="Arial" size="12.0" />
+                              <Font name="Arial Bold" size="12.0" />
                            </font></Label>
 
-                        <Button fx:id="chooseDirectoryButton" disable="true" layoutX="207.0" layoutY="512.0" mnemonicParsing="false" onAction="#chooseDirectoryButtonClick" style="-fx-background-color: #0D5F76; -fx-text-fill: #fff;" text="CHOOSE DIRECTORY">
+                        <Button fx:id="chooseDirectoryButton" disable="true" layoutX="22.0" layoutY="428.0" mnemonicParsing="false" onAction="#chooseDirectoryButtonClick" prefHeight="33.0" prefWidth="200.0" style="-fx-background-color: #0D8AB8; -fx-text-fill: #fff;" text="CHOOSE DIRECTORY">
                            <font>
                               <Font name="Arial Bold" size="13.0" />
                            </font></Button>
-                        <Label layoutX="57.0" layoutY="40.0" text="IMPORT FILE" textFill="#0d5f76">
+                        <Label fx:id="nameOfImportedFileLabelLabel" layoutX="24.0" layoutY="134.0" text="Name:">
                            <font>
                               <Font name="Arial Bold" size="12.0" />
                            </font>
                         </Label>
-                        <Label layoutX="20.0" layoutY="134.0" text="Name:">
-                           <font>
-                              <Font name="Arial" size="12.0" />
-                           </font>
-                        </Label>
-                        <Label layoutX="20.0" layoutY="161.0" text="Type:">
-                           <font>
-                              <Font name="Arial" size="12.0" />
-                           </font>
-                        </Label>
-                        <Label layoutX="20.0" layoutY="264.0" prefHeight="18.0" prefWidth="158.0" text="CHOOSE CONFIGURATION" textFill="#0d5f76">
+                        <Label fx:id="typeOfImportedFileLabel" layoutX="24.0" layoutY="152.0" text="Type:">
                            <font>
                               <Font name="Arial Bold" size="12.0" />
                            </font>
                         </Label>
-                        <Label layoutX="86.0" layoutY="329.0" text="OR" textFill="#0d5f76">
+                        <Label alignment="CENTER" contentDisplay="CENTER" layoutX="26.0" layoutY="228.0" prefHeight="18.0" prefWidth="191.0" text="CHOOSE CONFIGURATION">
                            <font>
                               <Font name="Arial Bold" size="12.0" />
                            </font>
                         </Label>
-                        <Label layoutX="20.0" layoutY="20.0" text="STEP 1" textFill="#0d5f76">
+                        <Label layoutX="112.0" layoutY="317.0" text="OR">
+                           <font>
+                              <Font name="Arial Bold" size="13.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="22.0" layoutY="14.0" prefWidth="200.0" text="STEP 1">
                            <font>
                               <Font name="Arial Bold" size="17.0" />
                            </font>
                         </Label>
-                        <Label layoutX="24.0" layoutY="230.0" prefHeight="20.0" prefWidth="73.0" text="STEP 2" textFill="#0d5f76">
+                        <Label layoutX="22.0" layoutY="199.0" prefHeight="20.0" prefWidth="200.0" text="STEP 2">
                            <font>
                               <Font name="Arial Bold" size="17.0" />
                            </font>
                         </Label>
-                        <Label layoutX="26.0" layoutY="436.0" text="STEP 3" textFill="#0d5f76">
+                        <Label layoutX="22.0" layoutY="403.0" prefHeight="25.0" prefWidth="200.0" text="STEP 3">
                            <font>
                               <Font name="Arial Bold" size="17.0" />
                            </font>
                         </Label>
-                        <Button fx:id="editButton" disable="true" layoutX="18.0" layoutY="392.0" mnemonicParsing="false" onAction="#editConfigButtonClick" prefHeight="27.0" prefWidth="157.0" text="Edit">
+                        <Button fx:id="editButton" disable="true" layoutX="25.0" layoutY="283.0" mnemonicParsing="false" onAction="#editConfigButtonClick" prefHeight="23.0" prefWidth="193.0" style="-fx-background-color: transparent; -fx-text-fill: #0D8AB8; -fx-underline: true;" text="EDIT THIS CONFIGURATION">
                            <font>
-                              <Font name="Arial Bold" size="12.0" />
+                              <Font name="Arial Bold" size="10.0" />
                            </font>
                         </Button>
-                        <Button fx:id="importFileFromFolderButton" layoutX="21.0" layoutY="90.0" mnemonicParsing="false" onAction="#importFileFromFolderAction" prefHeight="27.0" prefWidth="152.0" style="-fx-background-color: #0D5F76; -fx-text-fill: #fff;" text="Import folder">
+                        <Button fx:id="importFileFromFolderButton" layoutX="22.0" layoutY="95.0" mnemonicParsing="false" onAction="#importFileFromFolderAction" prefHeight="33.0" prefWidth="200.0" style="-fx-background-color: #0D8AB8; -fx-text-fill: #fff;" text="Import folder">
                            <font>
                               <Font name="Arial Bold" size="13.0" />
                            </font>
                         </Button>
+                        <Label layoutX="27.0" layoutY="503.0" text="STEP 4">
+                           <font>
+                              <Font name="Arial Bold" size="17.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="112.0" layoutY="77.0" text="OR">
+                           <font>
+                              <Font name="Arial Bold" size="12.0" />
+                           </font>
+                        </Label>
+                        <Region fx:id="firstRegion" layoutY="179.0" prefHeight="214.0" prefWidth="242.0" style="-fx-background-color: #00000054;" />
+                        <Region fx:id="secondRegion" layoutY="393.0" prefHeight="92.0" prefWidth="242.0" style="-fx-background-color: #00000054;" />
+                        <Region fx:id="thirdRegion" layoutY="485.0" prefHeight="152.0" prefWidth="242.0" style="-fx-background-color: #00000054;" />
+                        <Separator layoutX="242.0" layoutY="9.0" orientation="VERTICAL" prefHeight="628.0" prefWidth="1.0" />
 
                      </children>
                   </AnchorPane>
@@ -129,17 +138,17 @@
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <JFXDatePicker fx:id="startDateDatePicker" layoutX="64.0" layoutY="12.0" />
-                        <JFXDatePicker fx:id="endDateDatePicker" layoutX="297.0" layoutY="12.0" />
-                        <TableView fx:id="historyTableView" layoutX="-1.0" layoutY="58.0" prefHeight="501.0" prefWidth="911.0">
+                        <JFXDatePicker fx:id="startDateDatePicker" defaultColor="#0d8ab8" layoutX="64.0" layoutY="12.0" />
+                        <JFXDatePicker fx:id="endDateDatePicker" defaultColor="#0d8ab8" layoutX="297.0" layoutY="12.0" />
+                        <TableView fx:id="historyTableView" layoutY="71.0" prefHeight="566.0" prefWidth="960.0">
                           <columns>
-                            <TableColumn fx:id="dateAndTimeColumn" prefWidth="252.0" text="DATE / TIME" />
-                            <TableColumn fx:id="taskNameColumn" minWidth="4.0" prefWidth="248.0" text="TASK NAME" />
-                              <TableColumn fx:id="userNameColumn" minWidth="4.0" prefWidth="273.0" text="USER NAME" />
-                              <TableColumn fx:id="errorColumn" minWidth="4.0" prefWidth="137.0" text="ERROR" />
+                            <TableColumn fx:id="dateAndTimeColumn" prefWidth="171.0" text="DATE / TIME" />
+                            <TableColumn fx:id="taskNameColumn" minWidth="4.0" prefWidth="457.0" text="ACTION" />
+                              <TableColumn fx:id="userNameColumn" minWidth="4.0" prefWidth="283.0" text="USER NAME" />
+                              <TableColumn fx:id="errorColumn" minWidth="4.0" prefWidth="45.0" />
                           </columns>
                         </TableView>
-                        <JFXTextField fx:id="searchByUsernameField" layoutX="546.0" layoutY="14.0" prefHeight="25.0" prefWidth="190.0" />
+                        <JFXTextField fx:id="searchByUsernameField" focusColor="#0d8ab8" layoutX="546.0" layoutY="14.0" prefHeight="25.0" prefWidth="190.0" />
                      </children></AnchorPane>
             </content>
           </Tab>

@@ -21,12 +21,10 @@ public class TaskInOurProgram extends Task<Void> {
     private Object lock = this;
     private boolean pause = false;
     private File filePath;
-    
-
+  
     private boolean isConvertingDone = false;
     private boolean ifWasStarted = false;
     private boolean isExecutedForFirstTime = false;
-    private boolean fileWasCreated;
     private Button pauseTask;
     private Button closeTask;
 
@@ -38,6 +36,10 @@ public class TaskInOurProgram extends Task<Void> {
         this.closeTask = new Button("");
         this.pauseTask.getStyleClass().clear();
         this.pauseTask.getStyleClass().add("pauseButtons");
+        
+        this.closeTask.getStyleClass().clear();
+        this.closeTask.getStyleClass().add("stopButton");
+       
     }
 
     /*converts file into JSON */
@@ -50,14 +52,7 @@ public class TaskInOurProgram extends Task<Void> {
         return null;
     }
 
-    public boolean isFileWasCreated() {
-        return fileWasCreated;
-    }
-
-    public void setFileWasCreated(boolean fileWasCreated) {
-        this.fileWasCreated = fileWasCreated;
-    }
-
+    
     public boolean isIsExecutedForFirstTime() {
         return isExecutedForFirstTime;
     }
