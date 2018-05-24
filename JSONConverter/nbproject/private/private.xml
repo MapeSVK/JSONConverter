@@ -8,11 +8,11 @@
             <file>file:/C:/Users/Pepe15224/Desktop/100/Repositories/God%20Help%20Me/JSONConverter/JSONConverter/src/jsonconverter/GUI/controller/MainFXMLController.java</file>
         </group>
         <group>
-            <file>file:/Users/Mape/GitClonePath/JSONConverter/JSONConverter/src/jsonconverter/GUI/styles/CSS.css</file>
-            <file>file:/Users/Mape/GitClonePath/JSONConverter/JSONConverter/src/jsonconverter/GUI/util/HistoryRow.java</file>
-            <file>file:/Users/Mape/GitClonePath/JSONConverter/JSONConverter/src/jsonconverter/GUI/controller/MainFXMLController.java</file>
+            <file>file:/Users/Mape/GitClonePath/JSONConverter/JSONConverter/src/jsonconverter/GUI/model/Model.java</file>
+            <file>file:/Users/Mape/GitClonePath/JSONConverter/JSONConverter/src/jsonconverter/BE/History.java</file>
+            <file>file:/Users/Mape/GitClonePath/JSONConverter/JSONConverter/src/jsonconverter/DAL/connection/DALHistory.java</file>
             <file>file:/Users/Mape/GitClonePath/JSONConverter/JSONConverter/src/jsonconverter/BE/TaskInOurProgram.java</file>
-            <file>file:/Users/Mape/GitClonePath/JSONConverter/JSONConverter/src/jsonconverter/GUI/view/MainFXML.fxml</file>
+            <file>file:/Users/Mape/GitClonePath/JSONConverter/JSONConverter/src/jsonconverter/GUI/controller/MainFXMLController.java</file>
         </group>
     </open-files>
 </project-private>

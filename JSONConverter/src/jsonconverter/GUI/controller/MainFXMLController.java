@@ -279,6 +279,7 @@ public class MainFXMLController implements Initializable {
                     executor.submit(task);
                     task.setIsExecutedForFirstTime(true);
                     task.getPauseTask().setGraphic(new ImageView(pauseSmall));
+                    
 
                 } else if (task.isIsExecutedForFirstTime() == true && task.isPause() == true && task.isIfWasStarted() == true) {
                     task.getPauseTask().setGraphic(new ImageView(pauseSmall));
@@ -381,6 +382,8 @@ public class MainFXMLController implements Initializable {
             convertTasksButton.setDisable(false);
             pauseProcessButton.setDisable(false);
             deleteProcessButton.setDisable(false);
+            
+            
 
         } else if (isRightNameOfTheFile == true && isConfigSet == true && isRightExtension == true && labelFileExtension.getText().equals("file")) {
             for (File file : model.getAllFilesInFolder()) {
@@ -630,6 +633,7 @@ public class MainFXMLController implements Initializable {
                 }
             });
             
+          
             
         }
     }
