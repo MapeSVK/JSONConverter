@@ -109,13 +109,15 @@ public class MainFXMLController implements Initializable {
     private Button addTaskButton;
     @FXML
     private Button createNewConfigButton;
-    //private Label typeOfImportedFileLabel;
+    @FXML
+    private Label typeOfImportedFileLabel;
     @FXML
     private Region firstRegion;
     @FXML
     private Region secondRegion;
     @FXML
     private Region thirdRegion;
+    @FXML
     private Label nameOfImportedFileLabelLabel;
     @FXML
     private JFXTextField searchByUsernameField;
@@ -137,6 +139,7 @@ public class MainFXMLController implements Initializable {
     private Model model = new Model();
     private TaskInOurProgram task;
     private ExecutorService executor = Executors.newFixedThreadPool(3);
+    
    // private Date fromDateInDatePicker;
     private Tooltip tooltip = new Tooltip();
     
@@ -207,8 +210,8 @@ public class MainFXMLController implements Initializable {
             createNewConfigButton.setVisible(true);
             labelStep2.setVisible(true);
             /* name and type set to visible */
-            nameOfImportedFileLabelLabel.setVisible(true);
-            typeOfImportedFileLabel.setVisible(true);
+            //nameOfImportedFileLabelLabel.setVisible(true);
+//            typeOfImportedFileLabel.setVisible(true);
             labelFileExtension.setVisible(true);
             nameOfImportedFileLabel.setVisible(true);            
             firstRegion.setVisible(false);

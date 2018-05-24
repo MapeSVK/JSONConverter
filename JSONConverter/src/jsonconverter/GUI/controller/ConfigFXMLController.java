@@ -105,7 +105,7 @@ public class ConfigFXMLController implements Initializable {
     private boolean isEditMode;
     private Config chosenConfig;
     boolean isValid;
-    private Tooltip tooltip;
+    //private Tooltip tooltip;
 
     /**
      * Initializes the controller class.
@@ -336,7 +336,7 @@ public class ConfigFXMLController implements Initializable {
                         suggest.addPossibleSuggestions(headersList);
                     } else if (!((JFXTextField) node).getText().equals(string) && !headersList.contains(string)) {
                         fieldsCounter++;
-                        if (fieldsCounter == 30) {
+                        if (fieldsCounter == 45) {
                             fieldsCounter = 0;
                             headersList.add(string);
                             suggest.clearSuggestions();
