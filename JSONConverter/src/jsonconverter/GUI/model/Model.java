@@ -37,18 +37,30 @@ public class Model {
     /* contains history date based on chosen dates */
     private ObservableList<History> historyDatasBasedOnChosenTimeList = FXCollections.observableArrayList();
     /* sorted lists for all history, so new items will be on the top. This sorted list is used everywhere then */
-    SortedList<History> sortedAllHistory = new SortedList<>(allHistoryObservableArrayList, Comparator.comparing(History::getDateAndTime).reversed());
+    private SortedList<History> sortedAllHistory = new SortedList<>(allHistoryObservableArrayList, Comparator.comparing(History::getDateAndTime).reversed());
     /* contains configs from the database  */
     private ObservableList<Config> allConfigObservableArrayList = FXCollections.observableArrayList();
     /* contains all files inside chosen folder */
     private List<File> allFilesInFolder = new ArrayList();
+    /* list with previous history */
+    private ObservableList<History> histList = FXCollections.observableArrayList();
+    /* observable list of sorted list to update tableView */
+    private History history;
 
     //- - - - - - - - - - - - - - - - - - - - CREATE JASON - - - - - - - - - - - - - - - - - - - -
     /* creates json file from JSONObject list */
     public void createJsonFile(String fileName, File filePath, TaskInOurProgram cuttentTask) throws InterruptedException {
-        manager.createJsonFile(fileName, filePath, cuttentTask);
+         if(manager.createJsonFile(fileName, filePath, cuttentTask))
+          history = new History(getFormatedActualDateAndTimeAsString(), 1, getUserName(),"File "+fileName+".json was created", false,"");
+             else
+         {
+              history = new History(getFormatedActualDateAndTimeAsString(), 1, getUserName(),"JSON file could not be created", true,fileName+" file directory was"
+                     + " changed or deleted");
+             //cuttentTask.cancel();
+         }
+         addHistoryToTheDatabase(history);
+         sortedAllHistory.add(history);      
     }
-
     //- - - - - - - - - - - - - - - - - - - - TASK - - - - - - - - - - - - - - - - - - - -
     /* adding tasks to the observableArrayList */
     public void addTask(TaskInOurProgram task) {
@@ -110,8 +122,8 @@ public class Model {
     }
 
     /* saves new config in the databast */
-    public void saveConfigToDatabase(Config config, boolean isEditMode) {
-        manager.saveConfigToDatabase(config, isEditMode);
+    public void saveConfigToDatabase(Config config) {
+        manager.saveConfigToDatabase(config);
         allConfigObservableArrayList.add(config);
     }
 
@@ -126,69 +138,15 @@ public class Model {
         allConfigObservableArrayList.setAll(getAllAvailableConfigs());
     }
 
-    /* removes configs that dont match chosen file */
-    public List<Config> checkIfYouCanUseConfig() {
-        List<Config> superList = new ArrayList();
-        int checkForErrors = 0;
-        int i = 0;
-        for (Config config : getAllAvailableConfigs()) {
-            i = 0;
-            checkForErrors = 0;
-            while (i < 15) {
-                String configString = config.getAllGetters(i);
-
-                if (configString.contains("&&") && !configString.equals("")) {
-                    String[] splitedConfig = configString.split("&&");
-                    if (!getOnlyFileHeaders().contains(splitedConfig[0])) {
-                        checkForErrors++;
-                    }
-                    if (!getOnlyFileHeaders().contains(splitedConfig[1])) {
-                        checkForErrors++;
-                    }
-                } else if (!getOnlyFileHeaders().contains(configString) && !configString.equals("")) {
-                    checkForErrors++;
-                }
-                i++;
-            }
-            if (checkForErrors == 0) {
-                superList.add(config);
-            }
-        }
-        return superList;
-    }
-
-    /* checks if config matches file */
-    public boolean checkIfFileMatchesConfig(Config config) {
-        int checkForErrors = 0;
-        int i = 0;
-        i = 0;
-        checkForErrors = 0;
-        while (i < 15) {
-            String configString = config.getAllGetters(i);
-
-            if (configString.contains("&&") && !configString.equals("")) {
-                String[] splitedConfig = configString.split("&&");
-                if (!getOnlyFileHeaders().contains(splitedConfig[0])) {
-                    checkForErrors++;
-                }
-                if (!getOnlyFileHeaders().contains(splitedConfig[1])) {
-                    checkForErrors++;
-                }
-            } else if (!getOnlyFileHeaders().contains(configString) && !configString.equals("")) {
-                checkForErrors++;
-            }
-            i++;
-        }
-        if (checkForErrors == 0) {
-            return true;
-        }
-        return false;
-    }
-
     //- - - - - - - - - - - - - - - - - - - - HISTORY - - - - - - - - - - - - - - - - - - - -
     /* gets list of history */
     public ObservableList<History> getAllHistoryObservableArrayList() {
         return allHistoryObservableArrayList;
+    }
+    /* returns the list of previous history*/
+    public ObservableList<History> getHistList()
+    {
+        return histList;
     }
 
     /* loads history from the database */
@@ -269,6 +227,18 @@ public class Model {
         return manager.wrongInputValidation(pane);
     }
     
+    /* checks if config matches file */
+    public boolean checkIfFileMatchesConfig(Config config,List<String> fileHeaders)
+    {
+        return manager.checkIfFileMatchesConfig(config, fileHeaders);
+    }
+    
+    /* removes configs that dont match chosen file */
+    public List<Config> checkIfYouCanUseConfig(List<String> fileHeaders,List<Config> configs)
+    {
+        return manager.checkIfYouCanUseConfig(fileHeaders, configs);
+    }
+    
     //- - - - - - - - - - - - - - - - - - - - OTHERS - - - - - - - - - - - - - - - - - - - -
     /* sets right format of the date */
     public String getFormatedActualDateAndTimeAsString() {
@@ -289,11 +259,6 @@ public class Model {
     public void closeWindow(Button button) {
         Stage stage = (Stage) button.getScene().getWindow();
         stage.close();
-    }
-    
-    /* returns true if JSON was saved successfuly */
-    public boolean isFileSaved() {
-       return manager.isFileSaved();
     }
     
 }

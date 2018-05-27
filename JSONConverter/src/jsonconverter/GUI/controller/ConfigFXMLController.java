@@ -145,7 +145,7 @@ public class ConfigFXMLController implements Initializable {
         } else {
             if (model.wrongInputValidation(configFieldsPane)) {
                 if (model.checkIfConfigExists(createConfig(new Config())) && isEditMode==false){
-                    model.saveConfigToDatabase(createConfig(new Config()), isEditMode);
+                    model.saveConfigToDatabase(createConfig(new Config()));
                     createHistoryAfterAddingNewConfig(headerNameField.getText());             
                     model.closeWindow(saveConfigButton);
                     
@@ -307,8 +307,6 @@ public class ConfigFXMLController implements Initializable {
 
         return newConfig;
     }
-
-
 
     /* updates helpers */
     private void checkTextProperty() {

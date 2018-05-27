@@ -2,8 +2,6 @@ package jsonconverter.GUI.controller;
 
 import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXTextField;
-import java.awt.MouseInfo;
-import java.awt.Point;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -35,21 +33,16 @@ import javafx.scene.control.Label;
 import javafx.stage.FileChooser;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
-import javafx.scene.control.TextArea;
 import javafx.scene.control.Tooltip;
 import javafx.scene.control.cell.ProgressBarTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Region;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Modality;
-import javafx.stage.Popup;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 import javafx.util.StringConverter;
 import jsonconverter.BE.Config;
 import jsonconverter.BE.History;
@@ -189,7 +182,7 @@ public class MainFXMLController implements Initializable {
         toDate = currentDate;
         setPromptDateInDatePickerToEuropeanStyle();
         activeDatePickersInHistoryTab();
-        model.getAllHistoryObservableArrayList().setAll(model.getSortedAllHistory());
+        model.getHistList().setAll(model.getSortedAllHistory());
         searchHistoryByUsername();
 
         /* style history tableView and show error as a pop-up */
@@ -220,7 +213,7 @@ public class MainFXMLController implements Initializable {
             nameOfImportedFile = gettingTheFileNameFromThePath(fileChoseByImport);
             fileExtendionIdentifier();
             model.getAllConfigObservableArrayList().clear();
-            model.getAllConfigObservableArrayList().setAll(model.checkIfYouCanUseConfig());
+            model.getAllConfigObservableArrayList().setAll(model.checkIfYouCanUseConfig(model.getOnlyFileHeaders(),model.getAllAvailableConfigs()));
             nameOfImportedFileLabel.setText(nameOfImportedFile);
         } else {
             model.Alert("Error", "File could not be imported");
@@ -404,7 +397,7 @@ public class MainFXMLController implements Initializable {
             for (File file : model.getAllFilesInFolder()) {
                 fileInFolderExtension(file);
                 nameOfImportedFile = gettingTheFileNameFromThePath(file);
-                if (model.checkIfFileMatchesConfig(configChoiceBox.getValue())) {
+                if (model.checkIfFileMatchesConfig(configChoiceBox.getValue(),model.getOnlyFileHeaders())) {
                     TaskInOurProgram task = new TaskInOurProgram(nameOfImportedFile, configChoiceBox.getSelectionModel().getSelectedItem().getConfigName(),
                             fileType);
                     model.getConverter(task);
@@ -484,8 +477,14 @@ public class MainFXMLController implements Initializable {
                 chooseDirectoryButton.setDisable(false);
                 editButton.setDisable(false);
                 secondRegion.setVisible(false);
+                if(directoryLabel!=null)
+                {
+                    addTaskButton.setDisable(false);
+                }
             } else {
                 chooseDirectoryButton.setDisable(true);
+                addTaskButton.setDisable(true);
+                
                 
             }
         });
@@ -563,7 +562,7 @@ public class MainFXMLController implements Initializable {
             fromDate = c.getTime();
 
             historyTableView.setItems(model.getHistoryOfChosenPeriod(model.getSortedAllHistory(), fromDate, toDate));
-            model.getAllHistoryObservableArrayList().setAll(model.getHistoryOfChosenPeriod(model.getSortedAllHistory(), fromDate, toDate));
+            model.getHistList().setAll(model.getHistoryOfChosenPeriod(model.getSortedAllHistory(), fromDate, toDate));
 
         });
 
@@ -575,7 +574,7 @@ public class MainFXMLController implements Initializable {
             toDate = c.getTime();
 
             historyTableView.setItems(model.getHistoryOfChosenPeriod(model.getSortedAllHistory(), fromDate, toDate));
-            model.getAllHistoryObservableArrayList().setAll(model.getHistoryOfChosenPeriod(model.getSortedAllHistory(), fromDate, toDate));
+            model.getHistList().setAll(model.getHistoryOfChosenPeriod(model.getSortedAllHistory(), fromDate, toDate));
         });
     }
 
@@ -636,6 +635,7 @@ public class MainFXMLController implements Initializable {
 
                     if (task.isIsExecutedForFirstTime() == false && task.isPause() == false) {
                         executor.submit(task);
+                        System.out.println("DZIALA?");
                         task.setIsExecutedForFirstTime(true);
                         task.getPauseTask().setGraphic(new ImageView(pauseSmall));
                         
@@ -777,12 +777,12 @@ public class MainFXMLController implements Initializable {
         searchByUsernameField.textProperty().addListener(e ->{
             if(searchByUsernameField.getText().isEmpty())
             {
-                historyTableView.setItems(model.getAllHistoryObservableArrayList());
+                historyTableView.setItems(model.getHistList());
             }
             else
             {
                 listOfAvailableHistory.clear();
-                for(History his : model.getAllHistoryObservableArrayList())
+                for(History his : model.getHistList())
                 {
                     if(his.getUsername().toLowerCase().startsWith(searchByUsernameField.getText().toLowerCase()))
                     listOfAvailableHistory.add(his);

@@ -36,7 +36,6 @@ public class TaskInOurProgram extends Task<Void> {
         this.closeTask = new Button("");
         this.pauseTask.getStyleClass().clear();
         this.pauseTask.getStyleClass().add("pauseButtons");
-        
         this.closeTask.getStyleClass().clear();
         this.closeTask.getStyleClass().add("stopButton");
        

@@ -20,11 +20,11 @@ import java.util.logging.Logger;
  */
 public class ReadCSV implements IConverter {
 
-    private String path;
     private List<String> allLinesAsString;
-
+    private ArrayList<String> CSVValuesList = new ArrayList();
+    private List<String> headers = new ArrayList();
+    HashMap<String, Integer> headersMap = new HashMap<>();
     public ReadCSV(String path) {
-       // this.path = path;
         getAllLinesAsString(path);
     }
 
@@ -41,7 +41,8 @@ public class ReadCSV implements IConverter {
     /* splits the first line from ReadCSV file and then saves this line as a headers inside of the hashMap */
     @Override
     public HashMap<String, Integer> getFileHeaders() {
-        HashMap<String, Integer> headersMap = new HashMap<>();
+        if(headersMap.isEmpty())
+        {
         String[] headers = allLinesAsString.get(0).split(";");
 
         for (int i = 0; i < headers.length; i++) {
@@ -55,25 +56,32 @@ public class ReadCSV implements IConverter {
                 }
                 headersMap.put(keyString, i);
             } else {
+                if(i==0)
+                    headersMap.put(headers[i].substring(1),i);
+                else             
                 headersMap.put(headers[i], i);
             }
         }
+        }        
         return headersMap;
     }
 
     /* returns lines with values from ReadCSV value except for the first line */
     @Override
     public ArrayList<String> getFileValues() {
-        ArrayList<String> CSVValuesList = new ArrayList();
+        if(CSVValuesList.isEmpty())
+        {
         CSVValuesList.addAll(allLinesAsString);
         CSVValuesList.remove(0);
+        }
         return CSVValuesList;
     }
 
     /*returns list of Headers from the file */
     @Override
     public List<String> getOnlyFileHeaders() {
-        List<String> headers = new ArrayList();
+        if(headers.isEmpty())
+        {
         headers.clear();
         String[] headersString = allLinesAsString.get(0).split(";");
         for (int i = 0; i < headersString.length; i++) {
@@ -86,9 +94,13 @@ public class ReadCSV implements IConverter {
                     keyString = keyString + orderNumber;
                 }
                 headers.add(keyString);
-            } else {
+            } else if(!headers.contains(headersString[i])) {
+                if(i==0)
+                    headers.add(headersString[i].substring(1));
+                else
                 headers.add(headersString[i]);
             }
+        }     
         }
         return headers;
     }

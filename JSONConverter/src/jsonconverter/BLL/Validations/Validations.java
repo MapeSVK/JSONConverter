@@ -6,6 +6,7 @@
 package jsonconverter.BLL.Validations;
 
 import com.jfoenix.controls.JFXTextField;
+import java.util.ArrayList;
 import java.util.List;
 import javafx.scene.Node;
 import javafx.scene.layout.AnchorPane;
@@ -15,7 +16,7 @@ import jsonconverter.BE.Config;
  *
  * @author Pepe15224
  */
-public class NewConfigValidations {
+public class Validations {
 
     /* checks if config with this name aleready exists */
     public boolean checkIfConfigExists(Config config, List<Config> configList) {
@@ -61,5 +62,64 @@ public class NewConfigValidations {
             }
         }
         return true;
+    }
+    
+    /* checks if config matches file */
+    public boolean checkIfFileMatchesConfig(Config config,List<String> fileHeaders){
+        int checkForErrors = 0;
+        int i = 0;
+        i = 0;
+        checkForErrors = 0;
+        while (i < 15) {
+            String configString = config.getAllGetters(i);
+
+            if (configString.contains("&&") && !configString.equals("")) {
+                String[] splitedConfig = configString.split("&&");
+                if (!fileHeaders.contains(splitedConfig[0])) {
+                    checkForErrors++;
+                }
+                if (!fileHeaders.contains(splitedConfig[1])) {
+                    checkForErrors++;
+                }
+            } else if (!fileHeaders.contains(configString) && !configString.equals("")) {
+                checkForErrors++;
+            }
+            i++;
+        }
+        if (checkForErrors == 0) {
+            return true;
+        }
+        return false;
+    }
+    
+    /* removes configs that dont match chosen file */
+    public List<Config> checkIfYouCanUseConfig(List<String> fileHeaders,List<Config> configs) {
+        List<Config> superList = new ArrayList();
+        int checkForErrors = 0;
+        int i = 0;
+        for (Config config : configs) {
+            i = 0;
+            checkForErrors = 0;
+            while (i < 15) {
+                String configString = config.getAllGetters(i);
+
+                if (configString.contains("&&") && !configString.equals("")) {
+                    String[] splitedConfig = configString.split("&&");
+                    if (!fileHeaders.contains(splitedConfig[0])) {
+                        checkForErrors++;
+                    }
+                    if (!fileHeaders.contains(splitedConfig[1])) {
+                        checkForErrors++;
+                    }
+                } else if (!fileHeaders.contains(configString) && !configString.equals("")) {
+                    checkForErrors++;
+                }
+                i++;
+            }
+            if (checkForErrors == 0) {
+                superList.add(config);
+            }
+        }
+        return superList;
     }
 }
