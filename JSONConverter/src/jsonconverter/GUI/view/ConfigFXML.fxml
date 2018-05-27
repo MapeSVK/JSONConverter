@@ -4,148 +4,153 @@
 <?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="703.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jsonconverter.GUI.controller.ConfigFXMLController">
+<AnchorPane id="AnchorPane" prefHeight="690.0" prefWidth="857.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jsonconverter.GUI.controller.ConfigFXMLController">
    <children>
-      <AnchorPane layoutY="-2.0" prefHeight="435.0" prefWidth="475.0">
-         <children>
-            <AnchorPane fx:id="configFieldsPane" layoutX="14.0" layoutY="2.0" prefHeight="794.0" prefWidth="825.0">
+      <ScrollPane layoutX="-7.0" layoutY="-1.0" prefHeight="709.0" prefWidth="800.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <content>
+            <AnchorPane prefHeight="435.0" prefWidth="475.0">
                <children>
-                  <Region layoutX="552.0" layoutY="595.0" prefHeight="128.0" prefWidth="242.0" style="-fx-background-color: #cccccc50; -fx-background-radius: 10;" />
-                  <Label alignment="CENTER" layoutX="552.0" layoutY="605.0" prefWidth="241.0" text="estimatedTime" textFill="#0d8ab8">
-                     <font>
-                        <Font name="Arial Bold" size="13.0" />
-                     </font>
-                  </Label>
-                  <Region layoutX="552.0" layoutY="450.0" prefHeight="128.0" prefWidth="242.0" style="-fx-background-color: #cccccc50; -fx-background-radius: 10;" />
-                  <Label alignment="CENTER" layoutX="552.0" layoutY="460.0" prefWidth="241.0" text="latestStartDate" textFill="#0d8ab8">
-                     <font>
-                        <Font name="Arial Bold" size="13.0" />
-                     </font>
-                  </Label>
-                  <Region layoutX="552.0" layoutY="304.0" prefHeight="128.0" prefWidth="242.0" style="-fx-background-color: #cccccc50; -fx-background-radius: 10;" />
-                  <Label alignment="CENTER" layoutX="552.0" layoutY="314.0" prefWidth="241.0" text="earliestStartDate" textFill="#0d8ab8">
-                     <font>
-                        <Font name="Arial Bold" size="13.0" />
-                     </font>
-                  </Label>
-                  <Region layoutX="552.0" layoutY="15.0" prefHeight="128.0" prefWidth="242.0" style="-fx-background-color: #cccccc50; -fx-background-radius: 10;" />
-                  <Label alignment="CENTER" layoutX="552.0" layoutY="25.0" prefWidth="241.0" text="status" textFill="#0d8ab8">
-                     <font>
-                        <Font name="Arial Bold" size="13.0" />
-                     </font>
-                  </Label>
-                  <Region layoutX="552.0" layoutY="159.0" prefHeight="128.0" prefWidth="242.0" style="-fx-background-color: #cccccc50; -fx-background-radius: 10;" />
-                  <Label alignment="CENTER" layoutX="552.0" layoutY="169.0" prefWidth="241.0" text="latestFinishDate" textFill="#0d8ab8">
-                     <font>
-                        <Font name="Arial Bold" size="13.0" />
-                     </font>
-                  </Label>
-                  <Region layoutX="283.0" layoutY="595.0" prefHeight="128.0" prefWidth="242.0" style="-fx-background-color: #cccccc50; -fx-background-radius: 10;" />
-                  <Region layoutX="283.0" layoutY="450.0" prefHeight="128.0" prefWidth="242.0" style="-fx-background-color: #cccccc50; -fx-background-radius: 10;" />
-                  <Region layoutX="283.0" layoutY="304.0" prefHeight="128.0" prefWidth="242.0" style="-fx-background-color: #cccccc50; -fx-background-radius: 10;" />
-                  <Region layoutX="283.0" layoutY="159.0" prefHeight="128.0" prefWidth="242.0" style="-fx-background-color: #cccccc50; -fx-background-radius: 10;" />
-                  <Region layoutX="15.0" layoutY="304.0" prefHeight="128.0" prefWidth="242.0" style="-fx-background-color: #cccccc50; -fx-background-radius: 10;" />
-                  <Region layoutX="283.0" layoutY="15.0" prefHeight="128.0" prefWidth="242.0" style="-fx-background-color: #cccccc50; -fx-background-radius: 10;" />
-                  <Region layoutX="15.0" layoutY="159.0" prefHeight="128.0" prefWidth="242.0" style="-fx-background-color: #cccccc50; -fx-background-radius: 10;" />
-                  <Region layoutX="15.0" layoutY="15.0" prefHeight="128.0" prefWidth="242.0" style="-fx-background-color: #cccccc50; -fx-background-radius: 10;" />
-                  <Region layoutX="15.0" layoutY="450.0" prefHeight="128.0" prefWidth="242.0" style="-fx-background-color: #cccccc50; -fx-background-radius: 10;" />
-                  <Region layoutX="15.0" layoutY="595.0" prefHeight="128.0" prefWidth="242.0" style="-fx-background-color: #cccccc50; -fx-background-radius: 10;" />
-                  <JFXTextField fx:id="headerNameField" accessibleRole="IMAGE_VIEW" focusColor="#0d8ab8" layoutX="373.0" layoutY="750.0" promptText="Config Name" unFocusColor="#0d8ab8" />
-                  <JFXButton fx:id="removeconfigButton" buttonType="RAISED" disable="true" layoutX="15.0" layoutY="750.0" onAction="#removeButtonOnAction" opacity="0.0" text="Remove" textFill="#0f8bb887" />
-                  <JFXButton fx:id="saveConfigButton" buttonType="RAISED" layoutX="741.0" layoutY="751.0" onAction="#saveButtonOnAction" ripplerFill="#0f8bb88f" text="SAVE" />
-                  <CheckBox fx:id="checkBoxPrivacy" layoutX="605.0" layoutY="756.0" mnemonicParsing="false" text="Private" />
-                  <Label alignment="CENTER" layoutX="15.0" layoutY="15.0" prefHeight="17.0" prefWidth="241.0" text="siteName" textFill="#0d8ab8">
-                     <font>
-                        <Font name="Arial Bold" size="13.0" />
-                     </font>
-                  </Label>
-                  <Label alignment="CENTER" layoutX="15.0" layoutY="37.0" prefHeight="17.0" prefWidth="241.0" text="(no value = &quot;NEW&quot; text)" textFill="#000000a8">
-                     <font>
-                        <Font size="11.0" />
-                     </font>
-                  </Label>
-                  <Label alignment="CENTER" layoutX="15.0" layoutY="169.0" prefHeight="17.0" prefWidth="241.0" text="assetSerialNumber" textFill="#0d8ab8">
-                     <font>
-                        <Font name="Arial Bold" size="13.0" />
-                     </font>
-                  </Label>
-                  <Label alignment="CENTER" layoutX="15.0" layoutY="314.0" prefHeight="17.0" prefWidth="241.0" text="type" textFill="#0d8ab8">
-                     <font>
-                        <Font name="Arial Bold" size="13.0" />
-                     </font>
-                  </Label>
-                  <Label alignment="CENTER" layoutX="15.0" layoutY="460.0" prefHeight="17.0" prefWidth="241.0" text="externalWorkOrderId" textFill="#0d8ab8">
-                     <font>
-                        <Font name="Arial Bold" size="13.0" />
-                     </font>
-                  </Label>
-                  <Label alignment="CENTER" layoutX="15.0" layoutY="605.0" prefHeight="17.0" prefWidth="241.0" text="systemStatus" textFill="#0d8ab8">
-                     <font>
-                        <Font name="Arial Bold" size="13.0" />
-                     </font>
-                  </Label>
-                  <Label alignment="CENTER" layoutX="283.0" layoutY="25.0" prefWidth="241.0" text="userStatus" textFill="#0d8ab8">
-                     <font>
-                        <Font name="Arial Bold" size="13.0" />
-                     </font>
-                  </Label>
-                  <Label alignment="CENTER" layoutX="283.0" layoutY="169.0" prefWidth="241.0" text="createdOn" textFill="#0d8ab8">
-                     <font>
-                        <Font name="Arial Bold" size="13.0" />
-                     </font>
-                  </Label>
-                  <Label alignment="CENTER" layoutX="283.0" layoutY="314.0" prefWidth="241.0" text="createdBy" textFill="#0d8ab8">
-                     <font>
-                        <Font name="Arial Bold" size="13.0" />
-                     </font>
-                  </Label>
-                  <Label alignment="CENTER" layoutX="283.0" layoutY="460.0" prefWidth="241.0" text="priority" textFill="#0d8ab8">
-                     <font>
-                        <Font name="Arial Bold" size="13.0" />
-                     </font>
-                  </Label>
-                  <Label alignment="CENTER" layoutX="283.0" layoutY="605.0" prefWidth="241.0" text="name" textFill="#0d8ab8">
-                     <font>
-                        <Font name="Arial Bold" size="13.0" />
-                     </font>
-                  </Label>
-                  <JFXTextField fx:id="userStatusField" focusColor="#0d8ab8" layoutX="329.0" layoutY="57.0" promptText="userStatus" unFocusColor="#0d8ab8" />
-                  <JFXTextField fx:id="createdOnField" focusColor="#0d8ab8" layoutX="329.0" layoutY="201.0" promptText="createdOn" unFocusColor="#0d8ab8" />
-                  <JFXTextField fx:id="createdByField" focusColor="#0d8ab8" layoutX="329.0" layoutY="347.0" promptText="createdBy" unFocusColor="#0d8ab8" />
-                  <JFXTextField fx:id="nameField" focusColor="#0d8ab8" layoutX="329.0" layoutY="637.0" promptText="name" unFocusColor="#0d8ab8" />
-                  <JFXTextField fx:id="priorityField" focusColor="#0d8ab8" layoutX="329.0" layoutY="486.0" promptText="priority" unFocusColor="#0d8ab8" />
-                  <JFXTextField fx:id="statusField" focusColor="#0d8ab8" layoutX="596.0" layoutY="57.0" promptText="status" unFocusColor="#0d8ab8" />
-                  <JFXTextField fx:id="latestFinishDateField" focusColor="#0d8ab8" layoutX="596.0" layoutY="201.0" promptText="latestFinishDate" unFocusColor="#0d8ab8" />
-                  <JFXTextField fx:id="earliestStartDateField" focusColor="#0d8ab8" layoutX="596.0" layoutY="347.0" promptText="earliestStartDate" unFocusColor="#0d8ab8" />
-                  <JFXTextField fx:id="latestStartDateField" focusColor="#0d8ab8" layoutX="596.0" layoutY="486.0" promptText="latestStartDate" unFocusColor="#0d8ab8" />
-                  <JFXTextField fx:id="estimatedTimeField" focusColor="#0d8ab8" layoutX="596.0" layoutY="637.0" promptText="estimatedTime" unFocusColor="#0d8ab8" />
-                  <JFXTextField fx:id="userStatusFieldEmpty" disable="true" focusColor="#0d8ab8" layoutX="329.0" layoutY="96.0" promptText="If empty" unFocusColor="#0d8ab8" />
-                  <JFXTextField fx:id="createdOnFieldEmpty" disable="true" focusColor="#0d8ab8" layoutX="329.0" layoutY="240.0" promptText="If empty" unFocusColor="#0d8ab8" />
-                  <JFXTextField fx:id="createdByFieldEmpty" disable="true" focusColor="#0d8ab8" layoutX="329.0" layoutY="387.0" promptText="If empty" unFocusColor="#0d8ab8" />
-                  <JFXTextField fx:id="priorityFieldEmpty" disable="true" focusColor="#0d8ab8" layoutX="329.0" layoutY="529.0" promptText="If empty" unFocusColor="#0d8ab8" />
-                  <JFXTextField fx:id="nameFieldEmpty" disable="true" focusColor="#0d8ab8" layoutX="329.0" layoutY="677.0" promptText="If empty" unFocusColor="#0d8ab8" />
-                  <JFXTextField fx:id="statusFieldEmpty" disable="true" focusColor="#0d8ab8" layoutX="596.0" layoutY="96.0" promptText="If empty" unFocusColor="#0d8ab8" />
-                  <JFXTextField fx:id="latestFinishDateFieldEmpty" disable="true" focusColor="#0d8ab8" layoutX="596.0" layoutY="240.0" promptText="If empty" unFocusColor="#0d8ab8" />
-                  <JFXTextField fx:id="earliestStartDateFieldEmpty" disable="true" focusColor="#0d8ab8" layoutX="596.0" layoutY="387.0" promptText="If empty" unFocusColor="#0d8ab8" />
-                  <JFXTextField fx:id="latestStartDateFieldEmpty" disable="true" focusColor="#0d8ab8" layoutX="596.0" layoutY="529.0" promptText="If empty" unFocusColor="#0d8ab8" />
-                  <JFXTextField fx:id="estimatedTimeFieldEmpty" disable="true" editable="false" focusColor="#0d8ab8" layoutX="596.0" layoutY="677.0" promptText="If empty" unFocusColor="#0d8ab8" />
-                  <JFXTextField fx:id="siteNameField" focusColor="#0d8ab8" layoutX="60.0" layoutY="57.0" promptText="siteName default: &quot;NEW&quot;" unFocusColor="#0d8ab8" />
-                  <JFXTextField fx:id="siteNameFieldEmpty" disable="true" focusColor="#0d8ab8" layoutX="60.0" layoutY="96.0" promptText="If empty" unFocusColor="#0d8ab8" />
-                  <JFXTextField fx:id="assetSerialNumberField" focusColor="#0d8ab8" layoutX="60.0" layoutY="201.0" promptText="assetSerialNumber" unFocusColor="#0d8ab8" />
-                  <JFXTextField fx:id="assetSerialNumberFieldEmpty" disable="true" focusColor="#0d8ab8" layoutX="60.0" layoutY="240.0" promptText="If empty" unFocusColor="#0d8ab8" />
-                  <JFXTextField fx:id="typeField" focusColor="#0d8ab8" layoutX="60.0" layoutY="347.0" promptText="type" unFocusColor="#0d8ab8" />
-                  <JFXTextField fx:id="typeFieldEmpty" disable="true" focusColor="#0d8ab8" layoutX="60.0" layoutY="387.0" promptText="If empty" unFocusColor="#0d8ab8" />
-                  <JFXTextField fx:id="externalWorkOrderIdField" focusColor="#0d8ab8" layoutX="60.0" layoutY="486.0" promptText="externalWorkOrderId" unFocusColor="#0d8ab8" />
-                  <JFXTextField fx:id="externalWorkOrderIdFieldEmpty" disable="true" focusColor="#0d8ab8" layoutX="60.0" layoutY="529.0" promptText="If empty" unFocusColor="#0d8ab8" />
-                  <JFXTextField fx:id="systemStatusField" focusColor="#0d8ab8" layoutX="60.0" layoutY="637.0" promptText="systemStatus" unFocusColor="#0d8ab8" />
-                  <JFXTextField fx:id="systemStatusFieldEmpty" disable="true" focusColor="#0d8ab8" layoutX="60.0" layoutY="677.0" promptText="If empty" unFocusColor="#0d8ab8" />
+                  <AnchorPane fx:id="configFieldsPane" layoutX="14.0" layoutY="2.0" prefHeight="794.0" prefWidth="825.0">
+                     <children>
+                        <Region layoutX="552.0" layoutY="595.0" prefHeight="128.0" prefWidth="242.0" style="-fx-background-color: #cccccc50; -fx-background-radius: 10;" />
+                        <Label alignment="CENTER" layoutX="552.0" layoutY="605.0" prefWidth="241.0" text="estimatedTime" textFill="#0d8ab8">
+                           <font>
+                              <Font name="Arial Bold" size="13.0" />
+                           </font>
+                        </Label>
+                        <Region layoutX="552.0" layoutY="450.0" prefHeight="128.0" prefWidth="242.0" style="-fx-background-color: #cccccc50; -fx-background-radius: 10;" />
+                        <Label alignment="CENTER" layoutX="552.0" layoutY="460.0" prefWidth="241.0" text="latestStartDate" textFill="#0d8ab8">
+                           <font>
+                              <Font name="Arial Bold" size="13.0" />
+                           </font>
+                        </Label>
+                        <Region layoutX="552.0" layoutY="304.0" prefHeight="128.0" prefWidth="242.0" style="-fx-background-color: #cccccc50; -fx-background-radius: 10;" />
+                        <Label alignment="CENTER" layoutX="552.0" layoutY="314.0" prefWidth="241.0" text="earliestStartDate" textFill="#0d8ab8">
+                           <font>
+                              <Font name="Arial Bold" size="13.0" />
+                           </font>
+                        </Label>
+                        <Region layoutX="552.0" layoutY="15.0" prefHeight="128.0" prefWidth="242.0" style="-fx-background-color: #cccccc50; -fx-background-radius: 10;" />
+                        <Label alignment="CENTER" layoutX="552.0" layoutY="25.0" prefWidth="241.0" text="status" textFill="#0d8ab8">
+                           <font>
+                              <Font name="Arial Bold" size="13.0" />
+                           </font>
+                        </Label>
+                        <Region layoutX="552.0" layoutY="159.0" prefHeight="128.0" prefWidth="242.0" style="-fx-background-color: #cccccc50; -fx-background-radius: 10;" />
+                        <Label alignment="CENTER" layoutX="552.0" layoutY="169.0" prefWidth="241.0" text="latestFinishDate" textFill="#0d8ab8">
+                           <font>
+                              <Font name="Arial Bold" size="13.0" />
+                           </font>
+                        </Label>
+                        <Region layoutX="283.0" layoutY="595.0" prefHeight="128.0" prefWidth="242.0" style="-fx-background-color: #cccccc50; -fx-background-radius: 10;" />
+                        <Region layoutX="283.0" layoutY="450.0" prefHeight="128.0" prefWidth="242.0" style="-fx-background-color: #cccccc50; -fx-background-radius: 10;" />
+                        <Region layoutX="283.0" layoutY="304.0" prefHeight="128.0" prefWidth="242.0" style="-fx-background-color: #cccccc50; -fx-background-radius: 10;" />
+                        <Region layoutX="283.0" layoutY="159.0" prefHeight="128.0" prefWidth="242.0" style="-fx-background-color: #cccccc50; -fx-background-radius: 10;" />
+                        <Region layoutX="15.0" layoutY="304.0" prefHeight="128.0" prefWidth="242.0" style="-fx-background-color: #cccccc50; -fx-background-radius: 10;" />
+                        <Region layoutX="283.0" layoutY="15.0" prefHeight="128.0" prefWidth="242.0" style="-fx-background-color: #cccccc50; -fx-background-radius: 10;" />
+                        <Region layoutX="15.0" layoutY="159.0" prefHeight="128.0" prefWidth="242.0" style="-fx-background-color: #cccccc50; -fx-background-radius: 10;" />
+                        <Region layoutX="15.0" layoutY="15.0" prefHeight="128.0" prefWidth="242.0" style="-fx-background-color: #cccccc50; -fx-background-radius: 10;" />
+                        <Region layoutX="15.0" layoutY="450.0" prefHeight="128.0" prefWidth="242.0" style="-fx-background-color: #cccccc50; -fx-background-radius: 10;" />
+                        <Region layoutX="15.0" layoutY="595.0" prefHeight="128.0" prefWidth="242.0" style="-fx-background-color: #cccccc50; -fx-background-radius: 10;" />
+                        <JFXTextField fx:id="headerNameField" accessibleRole="IMAGE_VIEW" focusColor="#0d8ab8" layoutX="373.0" layoutY="750.0" promptText="Config Name" unFocusColor="#0d8ab8" />
+                        <JFXButton fx:id="removeconfigButton" buttonType="RAISED" disable="true" layoutX="15.0" layoutY="750.0" onAction="#removeButtonOnAction" opacity="0.0" text="Remove" textFill="#0f8bb887" />
+                        <JFXButton fx:id="saveConfigButton" buttonType="RAISED" layoutX="741.0" layoutY="751.0" onAction="#saveButtonOnAction" ripplerFill="#0f8bb88f" text="SAVE" />
+                        <CheckBox fx:id="checkBoxPrivacy" layoutX="605.0" layoutY="756.0" mnemonicParsing="false" text="Private" />
+                        <Label alignment="CENTER" layoutX="15.0" layoutY="15.0" prefHeight="17.0" prefWidth="241.0" text="siteName" textFill="#0d8ab8">
+                           <font>
+                              <Font name="Arial Bold" size="13.0" />
+                           </font>
+                        </Label>
+                        <Label alignment="CENTER" layoutX="15.0" layoutY="37.0" prefHeight="17.0" prefWidth="241.0" text="(no value = &quot;NEW&quot; text)" textFill="#000000a8">
+                           <font>
+                              <Font size="11.0" />
+                           </font>
+                        </Label>
+                        <Label alignment="CENTER" layoutX="15.0" layoutY="169.0" prefHeight="17.0" prefWidth="241.0" text="assetSerialNumber" textFill="#0d8ab8">
+                           <font>
+                              <Font name="Arial Bold" size="13.0" />
+                           </font>
+                        </Label>
+                        <Label alignment="CENTER" layoutX="15.0" layoutY="314.0" prefHeight="17.0" prefWidth="241.0" text="type" textFill="#0d8ab8">
+                           <font>
+                              <Font name="Arial Bold" size="13.0" />
+                           </font>
+                        </Label>
+                        <Label alignment="CENTER" layoutX="15.0" layoutY="460.0" prefHeight="17.0" prefWidth="241.0" text="externalWorkOrderId" textFill="#0d8ab8">
+                           <font>
+                              <Font name="Arial Bold" size="13.0" />
+                           </font>
+                        </Label>
+                        <Label alignment="CENTER" layoutX="15.0" layoutY="605.0" prefHeight="17.0" prefWidth="241.0" text="systemStatus" textFill="#0d8ab8">
+                           <font>
+                              <Font name="Arial Bold" size="13.0" />
+                           </font>
+                        </Label>
+                        <Label alignment="CENTER" layoutX="283.0" layoutY="25.0" prefWidth="241.0" text="userStatus" textFill="#0d8ab8">
+                           <font>
+                              <Font name="Arial Bold" size="13.0" />
+                           </font>
+                        </Label>
+                        <Label alignment="CENTER" layoutX="283.0" layoutY="169.0" prefWidth="241.0" text="createdOn" textFill="#0d8ab8">
+                           <font>
+                              <Font name="Arial Bold" size="13.0" />
+                           </font>
+                        </Label>
+                        <Label alignment="CENTER" layoutX="283.0" layoutY="314.0" prefWidth="241.0" text="createdBy" textFill="#0d8ab8">
+                           <font>
+                              <Font name="Arial Bold" size="13.0" />
+                           </font>
+                        </Label>
+                        <Label alignment="CENTER" layoutX="283.0" layoutY="460.0" prefWidth="241.0" text="priority" textFill="#0d8ab8">
+                           <font>
+                              <Font name="Arial Bold" size="13.0" />
+                           </font>
+                        </Label>
+                        <Label alignment="CENTER" layoutX="283.0" layoutY="605.0" prefWidth="241.0" text="name" textFill="#0d8ab8">
+                           <font>
+                              <Font name="Arial Bold" size="13.0" />
+                           </font>
+                        </Label>
+                        <JFXTextField fx:id="userStatusField" focusColor="#0d8ab8" layoutX="329.0" layoutY="57.0" promptText="userStatus" unFocusColor="#0d8ab8" />
+                        <JFXTextField fx:id="createdOnField" focusColor="#0d8ab8" layoutX="329.0" layoutY="201.0" promptText="createdOn" unFocusColor="#0d8ab8" />
+                        <JFXTextField fx:id="createdByField" focusColor="#0d8ab8" layoutX="329.0" layoutY="347.0" promptText="createdBy" unFocusColor="#0d8ab8" />
+                        <JFXTextField fx:id="nameField" focusColor="#0d8ab8" layoutX="329.0" layoutY="637.0" promptText="name" unFocusColor="#0d8ab8" />
+                        <JFXTextField fx:id="priorityField" focusColor="#0d8ab8" layoutX="329.0" layoutY="486.0" promptText="priority" unFocusColor="#0d8ab8" />
+                        <JFXTextField fx:id="statusField" focusColor="#0d8ab8" layoutX="596.0" layoutY="57.0" promptText="status" unFocusColor="#0d8ab8" />
+                        <JFXTextField fx:id="latestFinishDateField" focusColor="#0d8ab8" layoutX="596.0" layoutY="201.0" promptText="latestFinishDate" unFocusColor="#0d8ab8" />
+                        <JFXTextField fx:id="earliestStartDateField" focusColor="#0d8ab8" layoutX="596.0" layoutY="347.0" promptText="earliestStartDate" unFocusColor="#0d8ab8" />
+                        <JFXTextField fx:id="latestStartDateField" focusColor="#0d8ab8" layoutX="596.0" layoutY="486.0" promptText="latestStartDate" unFocusColor="#0d8ab8" />
+                        <JFXTextField fx:id="estimatedTimeField" focusColor="#0d8ab8" layoutX="596.0" layoutY="637.0" promptText="estimatedTime" unFocusColor="#0d8ab8" />
+                        <JFXTextField fx:id="userStatusFieldEmpty" disable="true" focusColor="#0d8ab8" layoutX="329.0" layoutY="96.0" promptText="If empty" unFocusColor="#0d8ab8" />
+                        <JFXTextField fx:id="createdOnFieldEmpty" disable="true" focusColor="#0d8ab8" layoutX="329.0" layoutY="240.0" promptText="If empty" unFocusColor="#0d8ab8" />
+                        <JFXTextField fx:id="createdByFieldEmpty" disable="true" focusColor="#0d8ab8" layoutX="329.0" layoutY="387.0" promptText="If empty" unFocusColor="#0d8ab8" />
+                        <JFXTextField fx:id="priorityFieldEmpty" disable="true" focusColor="#0d8ab8" layoutX="329.0" layoutY="529.0" promptText="If empty" unFocusColor="#0d8ab8" />
+                        <JFXTextField fx:id="nameFieldEmpty" disable="true" focusColor="#0d8ab8" layoutX="329.0" layoutY="677.0" promptText="If empty" unFocusColor="#0d8ab8" />
+                        <JFXTextField fx:id="statusFieldEmpty" disable="true" focusColor="#0d8ab8" layoutX="596.0" layoutY="96.0" promptText="If empty" unFocusColor="#0d8ab8" />
+                        <JFXTextField fx:id="latestFinishDateFieldEmpty" disable="true" focusColor="#0d8ab8" layoutX="596.0" layoutY="240.0" promptText="If empty" unFocusColor="#0d8ab8" />
+                        <JFXTextField fx:id="earliestStartDateFieldEmpty" disable="true" focusColor="#0d8ab8" layoutX="596.0" layoutY="387.0" promptText="If empty" unFocusColor="#0d8ab8" />
+                        <JFXTextField fx:id="latestStartDateFieldEmpty" disable="true" focusColor="#0d8ab8" layoutX="596.0" layoutY="529.0" promptText="If empty" unFocusColor="#0d8ab8" />
+                        <JFXTextField fx:id="estimatedTimeFieldEmpty" disable="true" editable="false" focusColor="#0d8ab8" layoutX="596.0" layoutY="677.0" promptText="If empty" unFocusColor="#0d8ab8" />
+                        <JFXTextField fx:id="siteNameField" focusColor="#0d8ab8" layoutX="60.0" layoutY="57.0" promptText="siteName default: &quot;NEW&quot;" unFocusColor="#0d8ab8" />
+                        <JFXTextField fx:id="siteNameFieldEmpty" disable="true" focusColor="#0d8ab8" layoutX="60.0" layoutY="96.0" promptText="If empty" unFocusColor="#0d8ab8" />
+                        <JFXTextField fx:id="assetSerialNumberField" focusColor="#0d8ab8" layoutX="60.0" layoutY="201.0" promptText="assetSerialNumber" unFocusColor="#0d8ab8" />
+                        <JFXTextField fx:id="assetSerialNumberFieldEmpty" disable="true" focusColor="#0d8ab8" layoutX="60.0" layoutY="240.0" promptText="If empty" unFocusColor="#0d8ab8" />
+                        <JFXTextField fx:id="typeField" focusColor="#0d8ab8" layoutX="60.0" layoutY="347.0" promptText="type" unFocusColor="#0d8ab8" />
+                        <JFXTextField fx:id="typeFieldEmpty" disable="true" focusColor="#0d8ab8" layoutX="60.0" layoutY="387.0" promptText="If empty" unFocusColor="#0d8ab8" />
+                        <JFXTextField fx:id="externalWorkOrderIdField" focusColor="#0d8ab8" layoutX="60.0" layoutY="486.0" promptText="externalWorkOrderId" unFocusColor="#0d8ab8" />
+                        <JFXTextField fx:id="externalWorkOrderIdFieldEmpty" disable="true" focusColor="#0d8ab8" layoutX="60.0" layoutY="529.0" promptText="If empty" unFocusColor="#0d8ab8" />
+                        <JFXTextField fx:id="systemStatusField" focusColor="#0d8ab8" layoutX="60.0" layoutY="637.0" promptText="systemStatus" unFocusColor="#0d8ab8" />
+                        <JFXTextField fx:id="systemStatusFieldEmpty" disable="true" focusColor="#0d8ab8" layoutX="60.0" layoutY="677.0" promptText="If empty" unFocusColor="#0d8ab8" />
+                     </children>
+                  </AnchorPane>
                </children>
             </AnchorPane>
-         </children>
-      </AnchorPane>
+         </content>
+      </ScrollPane>
    </children>
 </AnchorPane>
