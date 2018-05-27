@@ -39,6 +39,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.Tooltip;
 import javafx.scene.control.cell.ProgressBarTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
@@ -99,6 +100,30 @@ public class MainFXMLController implements Initializable {
     private TableColumn<TaskInOurProgram, Button> closeButtonColumn;
     @FXML
     private Button importFileFromFolderButton;
+    @FXML
+    private Button convertTasksButton;
+    @FXML
+    private Button pauseProcessButton;
+    @FXML
+    private Button deleteProcessButton;
+    @FXML
+    private Button addTaskButton;
+    @FXML
+    private Button createNewConfigButton;
+    //private Label typeOfImportedFileLabel;
+    @FXML
+    private Region firstRegion;
+    @FXML
+    private Region secondRegion;
+    @FXML
+    private Region thirdRegion;
+    private Label nameOfImportedFileLabelLabel;
+    @FXML
+    private JFXTextField searchByUsernameField;
+    @FXML
+    private Label labelStep2;
+    @FXML
+    private Label directoryLabel;
 
     private String filePath = "";
     private String fileType;
@@ -113,7 +138,11 @@ public class MainFXMLController implements Initializable {
     private Model model = new Model();
     private TaskInOurProgram task;
     private ExecutorService executor = Executors.newFixedThreadPool(3);
-    private Date fromDateInDatePicker;
+   // private Date fromDateInDatePicker;
+    private Tooltip tooltip = new Tooltip();
+    
+    /* Stage needed to display error message */
+    private Stage stage;
     
     /*SMALL ICONS*/
     private final Image errorSmall = new Image("file:images/errorImage.png");
@@ -129,33 +158,7 @@ public class MainFXMLController implements Initializable {
     private Date fromDate;
     private Date toDate;
     private java.sql.Date currentDate = java.sql.Date.valueOf(LocalDate.now());
-
-    /* Stage needed to display error message */
-    Stage stage;
-    @FXML
-    private Button convertTasksButton;
-    @FXML
-    private Button pauseProcessButton;
-    @FXML
-    private Button deleteProcessButton;
-    @FXML
-    private Button addTaskButton;
-    @FXML
-    private Button createNewConfigButton;
-    @FXML
-    private Label typeOfImportedFileLabel;
-    private Label nameOfImportedFileValueLabel;
-    @FXML
-    private Region firstRegion;
-    @FXML
-    private Region secondRegion;
-    @FXML
-    private Region thirdRegion;
-    @FXML
-    private Label nameOfImportedFileLabelLabel;
-    @FXML
-    private JFXTextField searchByUsernameField;
-
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         /* set big icons instead of basic look of buttons */
@@ -200,13 +203,15 @@ public class MainFXMLController implements Initializable {
         if (fileChoseByImport != null) {
             configChoiceBox.setDisable(false);
             createNewConfigButton.setDisable(false);
-            editButton.setDisable(true);
+            editButton.setVisible(true);
+            editButton.setDisable(false);
+            createNewConfigButton.setVisible(true);
+            labelStep2.setVisible(true);
             /* name and type set to visible */
             nameOfImportedFileLabelLabel.setVisible(true);
             typeOfImportedFileLabel.setVisible(true);
             labelFileExtension.setVisible(true);
-            nameOfImportedFileLabel.setVisible(true);
-            
+            nameOfImportedFileLabel.setVisible(true);            
             firstRegion.setVisible(false);
             
             filePath = fileChoseByImport.toString();
@@ -229,11 +234,12 @@ public class MainFXMLController implements Initializable {
             nameOfImportedFileLabel.setText(selectedDirectory.getName());
             labelFileExtension.setText("file");
             File[] listOfFiles = selectedDirectory.listFiles();
-            filePath = "placki";
+            filePath = "no need";
             nameOfImportedFile = "file";
             configChoiceBox.setDisable(false);
             createNewConfigButton.setDisable(true);
             editButton.setDisable(true);
+            
             /* name and type set to visible */
             nameOfImportedFileLabelLabel.setVisible(true);
             typeOfImportedFileLabel.setVisible(true);
@@ -245,9 +251,12 @@ public class MainFXMLController implements Initializable {
             model.getAllFilesInFolder().clear();
             model.loadAvailableConfig();
             for (int i = 0; i < listOfFiles.length; i++) {
-                if (listOfFiles[i].isFile()) {
+                if (listOfFiles[i].isFile() && (listOfFiles[i].getName().endsWith(".xml") || listOfFiles[i].getName().endsWith(".csv")||listOfFiles[i].getName().endsWith(".xlsx"))) {
                     model.addFileFromTheFolder(listOfFiles[i]);
                 }
+                labelStep2.setVisible(false);
+                editButton.setVisible(false);
+                createNewConfigButton.setVisible(false);
             }
         }
     }
@@ -265,6 +274,9 @@ public class MainFXMLController implements Initializable {
             directoryPathHasBeenSelected = true;
             addTaskButton.setDisable(false);
             thirdRegion.setVisible(false);
+            directoryLabel.setText(directoryPath.getPath());
+            tooltip.setText(directoryPath.getPath());
+            directoryLabel.setTooltip(tooltip);
         }
     }
 
@@ -498,13 +510,16 @@ public class MainFXMLController implements Initializable {
         if (filePath.endsWith(".csv")) {
             fileType = ".csv";
             labelFileExtension.setText("csv");
+            System.out.println(filePath);
             model.setConverter(fileType, filePath);
         } else if (filePath.endsWith(".xlsx")) {
             fileType = ".xlsx";
+            System.out.println(filePath);
             labelFileExtension.setText("xlsx");
             model.setConverter(fileType, filePath);
         } else if (filePath.endsWith(".xml")) {
             fileType = ".xml";
+            System.out.println(filePath);
             labelFileExtension.setText("xml");
             model.setConverter(fileType, filePath);
         }
@@ -513,14 +528,14 @@ public class MainFXMLController implements Initializable {
     /* sets right converter for imported file from folder */
     private void fileInFolderExtension(File file) {
         if (file.getPath().endsWith(".csv")) {
-            fileType = "csv";
+           fileType = "csv";
             model.setConverter(".csv", file.getPath());
         } else if (file.getPath().endsWith(".xlsx")) {
             fileType = "xlsx";
-            model.setConverter(".xlsx", file.getPath());
+           model.setConverter(".xlsx", file.getPath());
         } else if (file.getPath().endsWith(".xml")) {
-            model.setConverter(".xml", file.getPath());
-            fileType = "xml";
+          model.setConverter(".xml", file.getPath());
+           fileType = "xml";
         }
     }
 
@@ -744,7 +759,7 @@ public class MainFXMLController implements Initializable {
         for (TaskInOurProgram task : tasks) {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle("file exists");
-            alert.setContentText(task.getFileName()+" aleready exists in chosen repository."
+            alert.setContentText(task.getFileName()+" aleready exists in chosen directory."
                     + " Do you want to override it?");
             alert.showAndWait();
             if (alert.getResult() == ButtonType.CANCEL) {
