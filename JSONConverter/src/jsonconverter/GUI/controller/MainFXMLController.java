@@ -21,6 +21,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.WorkerStateEvent;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -458,6 +459,7 @@ public class MainFXMLController implements Initializable {
         progressCircleColumn
                 .setCellFactory(ProgressBarTableCell.<TaskInOurProgram>forTableColumn());
         
+        
         pauseConvertingClick();
     }
 
@@ -631,10 +633,9 @@ public class MainFXMLController implements Initializable {
 
                     }
                 }
-            });
-            
-          
-            
+                
+               
+            }); 
         }
     }
 
