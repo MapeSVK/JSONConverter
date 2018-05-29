@@ -70,12 +70,12 @@
                            <font>
                               <Font name="Arial Bold" size="13.0" />
                            </font></Button>
-                        <Label layoutX="24.0" layoutY="134.0" text="Name:">
+                        <Label fx:id="nameOfImportedFileLabelLabel" layoutX="24.0" layoutY="134.0" text="Name:" visible="false">
                            <font>
                               <Font name="Arial Bold" size="12.0" />
                            </font>
                         </Label>
-                        <Label layoutX="24.0" layoutY="152.0" text="Type:">
+                        <Label fx:id="typeOfImportedFileLabel" layoutX="24.0" layoutY="152.0" text="Type:" visible="false">
                            <font>
                               <Font name="Arial Bold" size="12.0" />
                            </font>

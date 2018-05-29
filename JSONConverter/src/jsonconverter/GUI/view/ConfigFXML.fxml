@@ -64,7 +64,7 @@
                               <Font name="Arial Bold" size="13.0" />
                            </font>
                         </Label>
-                        <Label alignment="CENTER" layoutX="15.0" layoutY="37.0" prefHeight="17.0" prefWidth="241.0" text="(no value = &quot;NEW&quot; text)" textFill="#000000a8">
+                        <Label alignment="CENTER" layoutX="15.0" layoutY="37.0" prefHeight="17.0" prefWidth="241.0" text="(no value = &quot;&quot; text)" textFill="#000000a8">
                            <font>
                               <Font size="11.0" />
                            </font>
@@ -115,7 +115,7 @@
                               <Font name="Arial Bold" size="13.0" />
                            </font>
                         </Label>
-                        <JFXTextField fx:id="siteNameField" focusColor="#0d8ab8" layoutX="60.0" layoutY="57.0" promptText="siteName default: &quot;NEW&quot;" unFocusColor="#0d8ab8" />
+                        <JFXTextField fx:id="siteNameField" focusColor="#0d8ab8" layoutX="60.0" layoutY="57.0" promptText="siteName " unFocusColor="#0d8ab8" />
                         <JFXTextField fx:id="assetSerialNumberField" focusColor="#0d8ab8" layoutX="60.0" layoutY="201.0" promptText="assetSerialNumber" unFocusColor="#0d8ab8" />
                         <JFXTextField fx:id="typeField" focusColor="#0d8ab8" layoutX="60.0" layoutY="347.0" promptText="type" unFocusColor="#0d8ab8" />
                         <JFXTextField fx:id="externalWorkOrderIdField" focusColor="#0d8ab8" layoutX="60.0" layoutY="486.0" promptText="externalWorkOrderId" unFocusColor="#0d8ab8" />

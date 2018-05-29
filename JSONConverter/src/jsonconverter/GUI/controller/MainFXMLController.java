@@ -154,6 +154,7 @@ public class MainFXMLController implements Initializable {
     private Date fromDate;
     private Date toDate;
     private java.sql.Date currentDate = java.sql.Date.valueOf(LocalDate.now());
+    @FXML
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
