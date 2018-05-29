@@ -1,31 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
-    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="2">
-        <file>
-            <url>src/jsonconverter/GUI/controller/MainFXMLController.java</url>
-            <bookmark id="1">
-                <name/>
-                <line>47</line>
-                <key/>
-            </bookmark>
-        </file>
-        <file>
-            <url>src/jsonconverter/GUI/controller/ConfigFXMLController.java</url>
-            <bookmark id="2">
-                <name/>
-                <line>132</line>
-                <key/>
-            </bookmark>
-        </file>
-    </editor-bookmarks>
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group>
-            <file>file:/Users/Mape/GitClonePath/JSONConverter/JSONConverter/src/jsonconverter/GUI/model/Model.java</file>
-            <file>file:/Users/Mape/GitClonePath/JSONConverter/JSONConverter/src/jsonconverter/BE/History.java</file>
-            <file>file:/Users/Mape/GitClonePath/JSONConverter/JSONConverter/src/jsonconverter/DAL/connection/DALHistory.java</file>
-            <file>file:/Users/Mape/GitClonePath/JSONConverter/JSONConverter/src/jsonconverter/BE/TaskInOurProgram.java</file>
-            <file>file:/Users/Mape/GitClonePath/JSONConverter/JSONConverter/src/jsonconverter/GUI/controller/MainFXMLController.java</file>
-        </group>
         <group name="Repositories">
             <file>file:/C:/Users/Pepe15224/Desktop/100/Repositories/God%20Help%20Me/JSONConverter/JSONConverter/src/jsonconverter/DAL/readFilesAndWriteJson/ReadCSV.java</file>
             <file>file:/C:/Users/Pepe15224/Desktop/100/Repositories/God%20Help%20Me/JSONConverter/JSONConverter/src/jsonconverter/DAL/readFilesAndWriteJson/ReadEXEL.java</file>
@@ -37,6 +13,14 @@
             <file>file:/C:/Users/Pepe15224/Desktop/100/Repositories/God%20Help%20Me/JSONConverter/JSONConverter/src/jsonconverter/JSONConverter.java</file>
             <file>file:/C:/Users/Pepe15224/Desktop/100/Repositories/God%20Help%20Me/JSONConverter/JSONConverter/nbproject/jfx-impl.xml</file>
             <file>file:/C:/Users/Pepe15224/Desktop/100/Repositories/God%20Help%20Me/JSONConverter/JSONConverter/src/jsonconverter/GUI/model/Model.java</file>
+        </group>
+        <group>
+            <file>file:/Users/Mape/GitClonePath/JSONConverter/JSONConverter/src/jsonconverter/GUI/model/Model.java</file>
+            <file>file:/Users/Mape/GitClonePath/JSONConverter/JSONConverter/src/jsonconverter/BE/History.java</file>
+            <file>file:/Users/Mape/GitClonePath/JSONConverter/JSONConverter/src/jsonconverter/DAL/util/HostName.java</file>
+            <file>file:/Users/Mape/GitClonePath/JSONConverter/JSONConverter/src/jsonconverter/DAL/connection/DALHistory.java</file>
+            <file>file:/Users/Mape/GitClonePath/JSONConverter/JSONConverter/src/jsonconverter/BE/TaskInOurProgram.java</file>
+            <file>file:/Users/Mape/GitClonePath/JSONConverter/JSONConverter/src/jsonconverter/GUI/controller/MainFXMLController.java</file>
         </group>
     </open-files>
 </project-private>

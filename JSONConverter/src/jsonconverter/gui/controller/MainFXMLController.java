@@ -117,6 +117,7 @@ public class MainFXMLController implements Initializable {
     private Region secondRegion;
     @FXML
     private Region thirdRegion;
+    @FXML
     private Label nameOfImportedFileLabelLabel;
     @FXML
     private JFXTextField searchByUsernameField;
@@ -158,6 +159,8 @@ public class MainFXMLController implements Initializable {
     private Date fromDate;
     private Date toDate;
     private java.sql.Date currentDate = java.sql.Date.valueOf(LocalDate.now());
+    @FXML
+    private Label typeOfImportedFileLabel;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
