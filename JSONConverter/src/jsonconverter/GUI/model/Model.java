@@ -118,12 +118,14 @@ public class Model {
     /* removes config from the database */
     public void removeConfigToDatabase(Config config) {
         manager.removeConfigFromDatabase(config);
+        getAllConfigs().remove(config);
         allConfigObservableArrayList.remove(config);
     }
 
     /* saves new config in the databast */
     public void saveConfigToDatabase(Config config) {
         manager.saveConfigToDatabase(config);
+        getAllConfigs().add(config);
         allConfigObservableArrayList.add(config);
     }
 
@@ -214,7 +216,7 @@ public class Model {
     //- - - - - - - - - - - - - - - - - - - - VALIDATIONS - - - - - - - - - - - - - - - - - - - -
     /* checks if config with this name aleready exists */
     public boolean checkIfConfigExists(Config config) {
-        return manager.checkIfConfigExists(config, manager.getAllConfigs());
+        return manager.checkIfConfigExists(config, getAllConfigs());
     }
 
     /* makes background of field red when it is filled incorrectly */

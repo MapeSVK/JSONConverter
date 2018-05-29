@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javafx.scene.Node;
 import javafx.scene.layout.AnchorPane;
+import jdk.nashorn.internal.ir.annotations.Ignore;
 import jsonconverter.BE.Config;
 import junit.framework.TestCase;
 import static junit.framework.TestCase.assertFalse;
@@ -61,6 +62,7 @@ public class ValidationsTest extends TestCase {
     /**
      * Test of changeColorIfWrong method, of class Validations.
      */
+    @Ignore
     public void testChangeColorIfWrong() {
         System.out.println("ValidationsTest : testChangeColorIfWrong");
         
@@ -81,6 +83,7 @@ public class ValidationsTest extends TestCase {
     /**
      * Test of wrongInputValidation method, of class Validations.
      */
+    @Ignore
     public void testWrongInputValidation(){          
         System.out.println("ValidationsTest : testWrongInputValidation");
         

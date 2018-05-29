@@ -21,8 +21,20 @@ public class Validations {
     /* checks if config with this name aleready exists */
     public boolean checkIfConfigExists(Config config, List<Config> configList) {
         for (Config configInList : configList) {
+         
             if (configInList.getConfigName().equals(config.getConfigName())) {
-                return false;
+                return false;            
+            }
+            else if(configInList.getConfigName().endsWith(" ")&& configInList.getConfigName().length()==20 )
+            {
+                String checkToBeSure=config.getConfigName();
+                for(int i = config.getConfigName().length(); i<20;i++)
+                {
+                    checkToBeSure=checkToBeSure+" ";
+                }
+                if (configInList.getConfigName().equals(checkToBeSure)) {
+                return false;            
+            }
             }
         }
         return true;
@@ -42,7 +54,9 @@ public class Validations {
             } else {
                 ((JFXTextField) node).setStyle("-fx-background-color :");
             }
-        } else {
+        } else if(((JFXTextField) node).getId().equals("headerNameField"))
+        {}    
+        else {
             if (fieldText.isEmpty() || !headersList.contains(fieldText)) {
                 ((JFXTextField) node).setStyle("-fx-background-color : red");
             } else {

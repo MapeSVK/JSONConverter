@@ -174,10 +174,11 @@ public class ConfigFXMLController implements Initializable {
         alert.setContentText("It will be removed permanently. Are you sure?");
         alert.showAndWait();
         if (alert.getResult() == ButtonType.OK) {
-        model.removeConfigToDatabase(chosenConfig);      
+        model.removeConfigToDatabase(chosenConfig);
         createHistoryAfterDeletingNewConfig(chosenConfig); //create history row after removing
-        model.closeWindow(saveConfigButton);
+       // model.closeWindow(saveConfigButton);
         }
+        System.out.println("dupa");
     }
 
     /* gets converter of imported file */
@@ -334,7 +335,7 @@ public class ConfigFXMLController implements Initializable {
                         suggest.addPossibleSuggestions(headersList);
                     } else if (!((JFXTextField) node).getText().equals(string) && !headersList.contains(string)) {
                         fieldsCounter++;
-                        if (fieldsCounter == 45) {
+                        if (fieldsCounter == 31) {
                             fieldsCounter = 0;
                             headersList.add(string);
                             suggest.clearSuggestions();
@@ -367,8 +368,8 @@ public class ConfigFXMLController implements Initializable {
             if (node instanceof JFXTextField) {
 
                 if (di < 15) {
-                    JFXTextField mainField = (JFXTextField) configFieldsPane.getChildren().get(di+35);
-                    JFXTextField secondaryField = (JFXTextField) configFieldsPane.getChildren().get(di + 15+35);
+                    JFXTextField mainField = (JFXTextField) configFieldsPane.getChildren().get(di+34);
+                    JFXTextField secondaryField = (JFXTextField) configFieldsPane.getChildren().get(di + 15+34);
 
                     if (choosenConfig.getAllGetters(di).contains("&&")) {
                         String[] splited = choosenConfig.getAllGetters(di).split("&&");
