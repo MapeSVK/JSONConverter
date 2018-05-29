@@ -137,7 +137,7 @@ public class DALConfig {
     }
 
     /* adds config to the database */
-    public void saveConfigToDatabase(Config config, boolean editMode) {
+    public void saveConfigToDatabase(Config config) {
         String sqlToRun;
         
         String saveSQL = "INSERT INTO Config "
@@ -220,7 +220,7 @@ public class DALConfig {
             
             int affected = pstmt.executeUpdate();
             if (affected < 1) {
-                // throw new SQLException("Config could not be saved");
+                // throw new SQLException("Config could not be edited");
             } else {
                 System.out.println("Config edited correctly");
             }

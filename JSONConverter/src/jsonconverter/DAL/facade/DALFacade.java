@@ -37,8 +37,8 @@ public class DALFacade {
 
     //- - - - - - - - - - - - - - - - - - - - CREATE JASON - - - - - - - - - - - - - - - - - - - -
     /* creates json file from JSONObject list */
-    public void createJsonFile(String fileName, File filePath, List<JSONObject> jsonList) {
-        createJson.createJsonFile(fileName, filePath, jsonList);
+    public boolean createJsonFile(String fileName, File filePath, List<JSONObject> jsonList) {
+        return createJson.createJsonFile(fileName, filePath, jsonList);
     }
 
     //- - - - - - - - - - - - - - - - - - - - CONVERTER - - - - - - - - - - - - - - - - - - - -
@@ -86,8 +86,8 @@ public class DALFacade {
 
     //- - - - - - - - - - - - - - - - - - - - CONFIG - - - - - - - - - - - - - - - - - - - -
     /* saves config to the database */
-    public void saveConfigToDatabase(Config newconfig, boolean isEditMode) {
-        config.saveConfigToDatabase(newconfig, isEditMode);
+    public void saveConfigToDatabase(Config newconfig) {
+        config.saveConfigToDatabase(newconfig);
     }
 
     /* gets all available configs for current user */
@@ -121,7 +121,7 @@ public class DALFacade {
         return hostName.getUserName();
     }
     
-    public boolean isFileSaved() {
-        return createJson.isSuccess();
-    }
+//    public boolean isFileSaved() {
+//        return createJson.isSuccess();
+//    }
 }

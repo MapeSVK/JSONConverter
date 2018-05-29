@@ -33,6 +33,9 @@ public class ReadEXEL implements IConverter {
     private String exelRow = "";
     private SimpleDateFormat dateExelFormatterTimeFormatter = new SimpleDateFormat("dd-MMM-yyyy");
     private SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+    private HashMap<String, Integer> headersMap = new HashMap<>();
+    private ArrayList<String> CSVValuesList = new ArrayList();
+    List<String> headers = new ArrayList();
 
     public ReadEXEL(String filepath) {
         allLinesAsStrings.clear();
@@ -42,21 +45,22 @@ public class ReadEXEL implements IConverter {
     /* splits the first line from the list file and then saves this line as a headers inside of the hashMap */
     @Override
     public HashMap<String, Integer> getFileHeaders() {
-        HashMap<String, Integer> headersMap = new HashMap<>();
-        String[] headers = allLinesAsStrings.get(0).split(";");
+        if (headersMap.isEmpty()) {
+            String[] headers = allLinesAsStrings.get(0).split(";");
 
-        for (int i = 0; i < headers.length; i++) {
-            if (headersMap.containsKey(headers[i])) {
-                String keyString = headers[i];
-                int orderNumber = 1;
-                while (headersMap.containsKey(keyString)) {
-                    keyString = headers[i];
-                    orderNumber++;
-                    keyString = keyString + orderNumber;
+            for (int i = 0; i < headers.length; i++) {
+                if (headersMap.containsKey(headers[i])) {
+                    String keyString = headers[i];
+                    int orderNumber = 1;
+                    while (headersMap.containsKey(keyString)) {
+                        keyString = headers[i];
+                        orderNumber++;
+                        keyString = keyString + orderNumber;
+                    }
+                    headersMap.put(keyString, i);
+                } else {
+                        headersMap.put(headers[i], i); 
                 }
-                headersMap.put(keyString, i);
-            } else {
-                headersMap.put(headers[i], i);
             }
         }
         return headersMap;
@@ -65,16 +69,19 @@ public class ReadEXEL implements IConverter {
     /* returns lines with values from list value except for the first line */
     @Override
     public ArrayList<String> getFileValues() {
-        ArrayList<String> CSVValuesList = new ArrayList();
+        if(CSVValuesList.isEmpty())
+        {
         CSVValuesList.addAll(allLinesAsStrings);
         CSVValuesList.remove(0);
-        return CSVValuesList;
+        }
+        return CSVValuesList;        
     }
 
     /*returns list of Headers from the file */
     @Override
     public List<String> getOnlyFileHeaders() {
-        List<String> headers = new ArrayList();
+        if(headers.isEmpty())
+        {
         headers.clear();
         String[] headersString = allLinesAsStrings.get(0).split(";");
         for (int i = 0; i < headersString.length; i++) {
@@ -88,8 +95,9 @@ public class ReadEXEL implements IConverter {
                 }
                 headers.add(keyString);
             } else {
-                headers.add(headersString[i]);
+                    headers.add(headersString[i]);      
             }
+        }
         }
         return headers;
     }

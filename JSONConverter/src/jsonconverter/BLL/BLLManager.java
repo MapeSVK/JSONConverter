@@ -5,7 +5,7 @@
  */
 package jsonconverter.BLL;
 
-import jsonconverter.BLL.Validations.NewConfigValidations;
+import jsonconverter.BLL.Validations.Validations;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -25,20 +25,18 @@ public class BLLManager {
 
     private DALFacade manager = new DALFacade();
     private Converter convertJason = new Converter();
-    private NewConfigValidations configValidations = new NewConfigValidations();
+    private Validations validations = new Validations();
 
     //- - - - - - - - - - - - - - - - - - - - CREATE JASON - - - - - - - - - - - - - - - - - - - -
     /* creates json file from JSONObject list */
-    public void createJsonFile(String fileName, File filePath, TaskInOurProgram currentTask) {
-        try {
-            manager.createJsonFile(fileName, filePath, convertJason.returnJasonObjects(currentTask));
-        } catch (InterruptedException ex) {
+    public boolean createJsonFile(String fileName, File filePath, TaskInOurProgram currentTask) throws InterruptedException {
+            return manager.createJsonFile(fileName, filePath, convertJason.returnJasonObjects(currentTask));
+
         }
-    }
     
-    public boolean isFileSaved() {
-        return manager.isFileSaved();
-    }
+//    public boolean isFileSaved() {
+//        return manager.isFileSaved();
+//    }
 
     //- - - - - - - - - - - - - - - - - - - - CONVERTER - - - - - - - - - - - - - - - - - - - -
     /* returns hashMap of headers from file (Headers are keys and numbers are values) */
@@ -69,8 +67,8 @@ public class BLLManager {
 
     //- - - - - - - - - - - - - - - - - - - - CONFIG - - - - - - - - - - - - - - - - - - - -
 /* saves config to the database */
-    public void saveConfigToDatabase(Config config, boolean isEditMode) {
-        manager.saveConfigToDatabase(config, isEditMode);
+    public void saveConfigToDatabase(Config config) {
+        manager.saveConfigToDatabase(config);
     }
 
     /* removes config from the database */
@@ -119,15 +117,27 @@ public class BLLManager {
     //- - - - - - - - - - - - - - - - - - - - VALIDATIONS - - - - - - - - - - - - - - - - - - - -
     /* checks if config with this name aleready exists */
     public boolean checkIfConfigExists(Config config, List<Config> configList) {
-        return configValidations.checkIfConfigExists(config, configList);
+        return validations.checkIfConfigExists(config, configList);
 
     }
 
     public void changeColorIfWrong(Node node, String fieldText, List<String> headersList) {
-        configValidations.changeColorIfWrong(node, fieldText, headersList);
+        validations.changeColorIfWrong(node, fieldText, headersList);
     }
 
     public boolean wrongInputValidation(AnchorPane pane) {
-        return configValidations.wrongInputValidation(pane);
+        return validations.wrongInputValidation(pane);
+    }
+    
+    /* checks if config matches file */
+    public boolean checkIfFileMatchesConfig(Config config,List<String> fileHeaders)
+    {
+        return validations.checkIfFileMatchesConfig(config, fileHeaders);
+    }
+    
+    /* removes configs that dont match chosen file */
+    public List<Config> checkIfYouCanUseConfig(List<String> fileHeaders,List<Config> configs)
+    {
+        return validations.checkIfYouCanUseConfig(fileHeaders, configs);
     }
 }

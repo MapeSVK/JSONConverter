@@ -33,7 +33,9 @@ import org.xml.sax.SAXException;
 public class ReadXML implements IConverter {
 
     private List<String> allLinesAsStrings = new ArrayList<>();
-
+    private List<String> headers = new ArrayList();
+    ArrayList<String> CSVValuesList = new ArrayList();
+    private HashMap<String, Integer> headersMap = new HashMap<>();
     public ReadXML(String filePath) {
         allLinesAsStrings.clear();
         putAndSplitCSVIntoList(createCSVString(filePath));
@@ -42,7 +44,8 @@ public class ReadXML implements IConverter {
     /* splits the first line from the list file and then saves this line as a headers inside of the hashMap */
     @Override
     public HashMap<String, Integer> getFileHeaders() {
-        HashMap<String, Integer> headersMap = new HashMap<>();
+        if(headersMap.isEmpty())
+        {
         String[] headers = allLinesAsStrings.get(0).split(";");
 
         for (int i = 0; i < headers.length; i++) {
@@ -56,8 +59,10 @@ public class ReadXML implements IConverter {
                 }
                 headersMap.put(keyString, i);
             } else {
+            
                 headersMap.put(headers[i], i);
             }
+        }
         }
         return headersMap;
     }
@@ -65,16 +70,19 @@ public class ReadXML implements IConverter {
     /* returns lines with values from list value except for the first line */
     @Override
     public ArrayList<String> getFileValues() {
-        ArrayList<String> CSVValuesList = new ArrayList();
+        if(CSVValuesList.isEmpty())
+        {
         CSVValuesList.addAll(allLinesAsStrings);
         CSVValuesList.remove(0);
+        }
         return CSVValuesList;
     }
 
     /*returns list of Headers from the file */
     @Override
     public List<String> getOnlyFileHeaders() {
-        List<String> headers = new ArrayList();
+ if(headers.isEmpty())
+ {
         headers.clear();
         String[] headersString = allLinesAsStrings.get(0).split(";");
         for (int i = 0; i < headersString.length; i++) {
@@ -91,6 +99,7 @@ public class ReadXML implements IConverter {
                 headers.add(headersString[i]);
             }
         }
+ }
         return headers;
     }
 

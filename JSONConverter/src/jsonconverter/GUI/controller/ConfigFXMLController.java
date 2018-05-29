@@ -105,7 +105,7 @@ public class ConfigFXMLController implements Initializable {
     private boolean isEditMode;
     private Config chosenConfig;
     boolean isValid;
-    private Tooltip tooltip;
+    //private Tooltip tooltip;
 
     /**
      * Initializes the controller class.
@@ -145,7 +145,7 @@ public class ConfigFXMLController implements Initializable {
         } else {
             if (model.wrongInputValidation(configFieldsPane)) {
                 if (model.checkIfConfigExists(createConfig(new Config())) && isEditMode==false){
-                    model.saveConfigToDatabase(createConfig(new Config()), isEditMode);
+                    model.saveConfigToDatabase(createConfig(new Config()));
                     createHistoryAfterAddingNewConfig(headerNameField.getText());             
                     model.closeWindow(saveConfigButton);
                     
@@ -308,8 +308,6 @@ public class ConfigFXMLController implements Initializable {
         return newConfig;
     }
 
-
-
     /* updates helpers */
     private void checkTextProperty() {
         for (Node node : configFieldsPane.getChildren()) {
@@ -336,7 +334,7 @@ public class ConfigFXMLController implements Initializable {
                         suggest.addPossibleSuggestions(headersList);
                     } else if (!((JFXTextField) node).getText().equals(string) && !headersList.contains(string)) {
                         fieldsCounter++;
-                        if (fieldsCounter == 30) {
+                        if (fieldsCounter == 45) {
                             fieldsCounter = 0;
                             headersList.add(string);
                             suggest.clearSuggestions();
