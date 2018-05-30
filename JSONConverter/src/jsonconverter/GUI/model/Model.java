@@ -50,16 +50,18 @@ public class Model {
     //- - - - - - - - - - - - - - - - - - - - CREATE JASON - - - - - - - - - - - - - - - - - - - -
     /* creates json file from JSONObject list */
     public void createJsonFile(String fileName, File filePath, TaskInOurProgram cuttentTask) throws InterruptedException {
-         if(manager.createJsonFile(fileName, filePath, cuttentTask))
-          history = new History(getFormatedActualDateAndTimeAsString(), 1, getUserName(),"File "+fileName+".json was created", false,"");
-             else
+        History history;
+        if(manager.createJsonFile(fileName, filePath, cuttentTask))
+        {
+           history = new History(getFormatedActualDateAndTimeAsString(), 1, getUserName(),"File "+fileName+".json was created", false,"");
+            addHistoryToTheDatabase(history);        
+        }
+        else
          {
               history = new History(getFormatedActualDateAndTimeAsString(), 1, getUserName(),"JSON file could not be created", true,fileName+" file directory was"
                      + " changed or deleted");
-             //cuttentTask.cancel();
+              addHistoryToTheDatabase(history);    
          }
-         addHistoryToTheDatabase(history);
-         sortedAllHistory.add(history);      
     }
     //- - - - - - - - - - - - - - - - - - - - TASK - - - - - - - - - - - - - - - - - - - -
     /* adding tasks to the observableArrayList */
@@ -87,17 +89,7 @@ public class Model {
     public void setConverter(String fileType, String filePath) {
         manager.setConverter(fileType, filePath);
     }
-
-    /* returns hashMap of headers from file (Headers are keys and numbers are values) */
-    public HashMap<String, Integer> getFileHeaders() {
-        return manager.getFileHeaders();
-    }
-
-    /* returns values from the selected file */
-    public ArrayList<String> getFileValues() {
-        return manager.getFileValues();
-    }
-
+    
     //- - - - - - - - - - - - - - - - - - - - CONFIG - - - - - - - - - - - - - - - - - - - -
     /* gets all available configs for current user */
     public List<Config> getAllAvailableConfigs() {

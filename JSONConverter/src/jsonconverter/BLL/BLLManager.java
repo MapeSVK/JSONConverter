@@ -39,16 +39,6 @@ public class BLLManager {
 //    }
 
     //- - - - - - - - - - - - - - - - - - - - CONVERTER - - - - - - - - - - - - - - - - - - - -
-    /* returns hashMap of headers from file (Headers are keys and numbers are values) */
-    public HashMap<String, Integer> getFileHeaders() {
-        return manager.getFileHeaders();
-    }
-
-    /* returns values from the selected file */
-    public ArrayList<String> getFileValues() {
-        return manager.getFileValues();
-    }
-
     /*returns list of Headers from the file */
     public List<String> getOnlyFileHeaders() {
         return manager.getOnlyFileHeaders();

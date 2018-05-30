@@ -205,8 +205,8 @@ public class MainFXMLController implements Initializable {
             createNewConfigButton.setVisible(true);
             labelStep2.setVisible(true);
             /* name and type set to visible */
-            //nameOfImportedFileLabelLabel.setVisible(true);
-//            typeOfImportedFileLabel.setVisible(true);
+            nameOfImportedFileLabelLabel.setVisible(true);
+            typeOfImportedFileLabel.setVisible(true);
             labelFileExtension.setVisible(true);
             nameOfImportedFileLabel.setVisible(true);            
             firstRegion.setVisible(false);
@@ -382,6 +382,7 @@ public class MainFXMLController implements Initializable {
             task.setConfig(configChoiceBox.getValue());
             task.setFilePath(directoryPath);
             task.setFileName(nameOfImportedFile);
+            task.setModel(model);
             model.addTask(task);
 
             /* if task is added to the tableView, you can use pause or close */
@@ -406,6 +407,7 @@ public class MainFXMLController implements Initializable {
                     task.setConfig(configChoiceBox.getValue());
                     task.setFilePath(directoryPath);
                     task.setFileName(nameOfImportedFile);
+                    task.setModel(model);
                     model.addTask(task);
 
                     /* if conditions were met then add to the history */
