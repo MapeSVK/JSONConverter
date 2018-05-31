@@ -191,7 +191,7 @@ public class ConfigFXMLController implements Initializable {
     /* binds textfields with autocompletion */
     private void addAutoCompletionToFields() {
         for (Node node : configFieldsPane.getChildren()) {
-            if (node instanceof JFXTextField) {
+            if (node instanceof JFXTextField &&!((JFXTextField) node).getId().equals("headerNameField") ) {
                 TextFields.bindAutoCompletion(((JFXTextField) node), suggest);
                 model.changeColorIfWrong(node, ((JFXTextField) node).getText(), model.getOnlyFileHeaders());
             }

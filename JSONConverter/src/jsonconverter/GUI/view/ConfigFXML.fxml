@@ -15,10 +15,10 @@
          <content>
             <AnchorPane prefHeight="435.0" prefWidth="840.0">
                <children>
-                  <AnchorPane fx:id="configFieldsPane" layoutX="14.0" layoutY="2.0" prefHeight="638.0" prefWidth="826.0">
+                  <AnchorPane fx:id="configFieldsPane" layoutX="14.0" layoutY="1.0" prefHeight="638.0" prefWidth="826.0">
                      <children>
                         <Region layoutX="552.0" layoutY="595.0" prefHeight="128.0" prefWidth="242.0" style="-fx-background-color: #cccccc50; -fx-background-radius: 10;" />
-                        <Label alignment="CENTER" layoutX="552.0" layoutY="605.0" prefWidth="241.0" text="estimatedTime" textFill="#0d8ab8">
+                        <Label alignment="CENTER" layoutX="552.0" layoutY="597.0" prefWidth="241.0" text="estimatedTime" textFill="#0d8ab8">
                            <font>
                               <Font name="Arial Bold" size="13.0" />
                            </font>
@@ -36,7 +36,7 @@
                            </font>
                         </Label>
                         <Region layoutX="552.0" layoutY="15.0" prefHeight="128.0" prefWidth="242.0" style="-fx-background-color: #cccccc50; -fx-background-radius: 10;" />
-                        <Label alignment="CENTER" layoutX="552.0" layoutY="25.0" prefWidth="241.0" text="status" textFill="#0d8ab8">
+                        <Label alignment="CENTER" layoutX="552.0" layoutY="17.0" prefWidth="241.0" text="status" textFill="#0d8ab8">
                            <font>
                               <Font name="Arial Bold" size="13.0" />
                            </font>
@@ -64,12 +64,12 @@
                               <Font name="Arial Bold" size="13.0" />
                            </font>
                         </Label>
-                        <Label alignment="CENTER" layoutX="15.0" layoutY="37.0" prefHeight="17.0" prefWidth="241.0" text="(no value = &quot;&quot; text)" textFill="#000000a8">
+                        <Label alignment="CENTER" layoutX="15.0" layoutY="37.0" prefHeight="17.0" prefWidth="241.0" text="(no value = &quot;&quot; )" textFill="#000000a8">
                            <font>
                               <Font size="11.0" />
                            </font>
                         </Label>
-                        <Label alignment="CENTER" layoutX="15.0" layoutY="169.0" prefHeight="17.0" prefWidth="241.0" text="assetSerialNumber" textFill="#0d8ab8">
+                        <Label alignment="CENTER" layoutX="15.0" layoutY="161.0" prefHeight="17.0" prefWidth="241.0" text="assetSerialNumber" textFill="#0d8ab8">
                            <font>
                               <Font name="Arial Bold" size="13.0" />
                            </font>
@@ -95,12 +95,12 @@
                               <Font name="Arial Bold" size="13.0" />
                            </font>
                         </Label>
-                        <Label alignment="CENTER" layoutX="283.0" layoutY="169.0" prefWidth="241.0" text="createdOn" textFill="#0d8ab8">
+                        <Label alignment="CENTER" layoutX="283.0" layoutY="162.0" prefWidth="241.0" text="createdOn" textFill="#0d8ab8">
                            <font>
                               <Font name="Arial Bold" size="13.0" />
                            </font>
                         </Label>
-                        <Label alignment="CENTER" layoutX="283.0" layoutY="314.0" prefWidth="241.0" text="createdBy" textFill="#0d8ab8">
+                        <Label alignment="CENTER" layoutX="283.0" layoutY="306.0" prefWidth="241.0" text="createdBy" textFill="#0d8ab8">
                            <font>
                               <Font name="Arial Bold" size="13.0" />
                            </font>
@@ -146,6 +146,31 @@
                         <JFXTextField fx:id="latestStartDateFieldEmpty" disable="true" focusColor="#0d8ab8" layoutX="596.0" layoutY="529.0" promptText="If empty" unFocusColor="#0d8ab8" />
                         <JFXTextField fx:id="estimatedTimeFieldEmpty" disable="true" editable="false" focusColor="#0d8ab8" layoutX="596.0" layoutY="677.0" promptText="If empty" unFocusColor="#0d8ab8" />
                         <JFXTextField fx:id="headerNameField" accessibleRole="IMAGE_VIEW" focusColor="#0d8ab8" layoutX="432.0" layoutY="741.0" prefHeight="25.0" prefWidth="146.0" promptText="Config Name" unFocusColor="#0d8ab8" />
+                        <Label alignment="CENTER" layoutX="7.0" layoutY="186.0" prefHeight="17.0" prefWidth="241.0" text="(no value = &quot;asset._id&quot; )" textFill="#000000a8">
+                           <font>
+                              <Font size="11.0" />
+                           </font>
+                        </Label>
+                        <Label alignment="CENTER" layoutX="284.0" layoutY="186.0" prefHeight="17.0" prefWidth="241.0" text="(no value = current date )" textFill="#000000a8">
+                           <font>
+                              <Font size="11.0" />
+                           </font>
+                        </Label>
+                        <Label alignment="CENTER" layoutX="552.0" layoutY="37.0" prefHeight="17.0" prefWidth="241.0" text="(no value = &quot;NEW&quot; )" textFill="#000000a8">
+                           <font>
+                              <Font size="11.0" />
+                           </font>
+                        </Label>
+                        <Label alignment="CENTER" layoutX="552.0" layoutY="621.0" prefHeight="17.0" prefWidth="241.0" text="(no value = &quot;&quot; )" textFill="#000000a8">
+                           <font>
+                              <Font size="11.0" />
+                           </font>
+                        </Label>
+                        <Label alignment="CENTER" layoutX="284.0" layoutY="331.0" prefHeight="17.0" prefWidth="241.0" text="(no value = &quot;SAP&quot; )" textFill="#000000a8">
+                           <font>
+                              <Font size="11.0" />
+                           </font>
+                        </Label>
                      </children>
                   </AnchorPane>
                </children>

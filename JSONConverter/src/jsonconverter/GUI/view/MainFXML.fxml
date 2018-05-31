@@ -56,7 +56,7 @@
                            <font>
                               <Font name="Arial Bold" size="13.0" />
                            </font></Button>
-                        <ChoiceBox fx:id="configChoiceBox" disable="true" layoutX="22.0" layoutY="248.0" prefHeight="33.0" prefWidth="200.0" style="-fx-background-color: #0D8AB8; -fx-text-fill: #fff;" />
+                        <ChoiceBox fx:id="configChoiceBox" disable="true" layoutX="22.0" layoutY="248.0" prefHeight="33.0" prefWidth="200.0" style="-fx-background-color: #0D8AB8;" />
                         <Label fx:id="nameOfImportedFileLabel" layoutX="81.0" layoutY="134.0" prefHeight="18.0" prefWidth="140.0" visible="false">
                            <font>
                               <Font name="Arial Bold" size="12.0" />

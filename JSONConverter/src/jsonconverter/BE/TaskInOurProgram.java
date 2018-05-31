@@ -3,6 +3,7 @@ package jsonconverter.BE;
 import java.io.File;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.scene.control.Button;
 import javafx.scene.control.ProgressIndicator;
@@ -18,7 +19,7 @@ public class TaskInOurProgram extends Task<Void> {
     private Config config;
     private IConverter converter;
     private Model model = new Model();
-    private Object lock = this;
+    private final Object lock = this;
     private boolean pause = false;
     private File filePath;
   
@@ -27,6 +28,17 @@ public class TaskInOurProgram extends Task<Void> {
     private boolean isExecutedForFirstTime = false;
     private Button pauseTask;
     private Button closeTask;
+    
+    private ObservableList<History> kurwaDzialaj;
+
+    public ObservableList<History> getKurwaDzialaj() {
+        return kurwaDzialaj;
+    }
+
+    public void setKurwaDzialaj(ObservableList<History> kurwaDzialaj) {
+        this.kurwaDzialaj = kurwaDzialaj;
+    }
+
 
     public TaskInOurProgram(String name, String configName, String extensionOfTheFile) {
         this.nameOfTheFile = name;

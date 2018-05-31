@@ -130,7 +130,7 @@ public class MainFXMLController implements Initializable {
     private String newFileName = nameOfImportedFile;//Name needs to be indicate! It's just an example
     private final String newFileExtension = ".json";
     private String newFileInfo = newFileName + newFileExtension;
-    private Model model = new Model();
+    private Model model = Model.getInstance();
     private TaskInOurProgram task;
     private ExecutorService executor = Executors.newFixedThreadPool(3);
     
@@ -154,7 +154,6 @@ public class MainFXMLController implements Initializable {
     private Date fromDate;
     private Date toDate;
     private java.sql.Date currentDate = java.sql.Date.valueOf(LocalDate.now());
-    @FXML
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -165,7 +164,6 @@ public class MainFXMLController implements Initializable {
         pauseProcessButton.getStyleClass().add("pauseBigButton");
         convertTasksButton.getStyleClass().add("playBigButton");
         deleteProcessButton.getStyleClass().add("stopBigButton");
-
         setTasksTableViewColumns();
         setHistoryTableViewColumns();
         setConfigChoiceBoxItems();

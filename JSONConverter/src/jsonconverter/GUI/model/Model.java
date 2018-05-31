@@ -10,7 +10,6 @@ import static java.time.temporal.ChronoField.MONTH_OF_YEAR;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -44,9 +43,17 @@ public class Model {
     private List<File> allFilesInFolder = new ArrayList();
     /* list with previous history */
     private ObservableList<History> histList = FXCollections.observableArrayList();
-    /* observable list of sorted list to update tableView */
-    private History history;
-    
+    /* static instance of Model for MainView*/
+    private static Model instance;
+    /*not really singleton method that allows to save history (createJsonFile) */
+   
+    public static Model getInstance() { 
+                if (instance == null) {
+                    instance = new Model();
+                }
+        return instance;
+    }
+
 
     //- - - - - - - - - - - - - - - - - - - - CREATE JASON - - - - - - - - - - - - - - - - - - - -
     /* creates json file from JSONObject list */
@@ -55,13 +62,14 @@ public class Model {
         if(manager.createJsonFile(fileName, filePath, cuttentTask))
         {
            history = new History(getFormatedActualDateAndTimeAsString(), 1, getUserName(),"File "+fileName+".json was created", false,"");
-            addHistoryToTheDatabase(history);        
+            instance.addHistoryToTheDatabase(history); 
+     
         }
         else
          {
               history = new History(getFormatedActualDateAndTimeAsString(), 1, getUserName(),"JSON file could not be created", true,fileName+" file directory was"
                      + " changed or deleted");
-              addHistoryToTheDatabase(history);    
+            instance.addHistoryToTheDatabase(history);    
          }
     }
     //- - - - - - - - - - - - - - - - - - - - TASK - - - - - - - - - - - - - - - - - - - -
@@ -69,7 +77,6 @@ public class Model {
     public void addTask(TaskInOurProgram task) {
         tasksInTheTableView.add(task);
     }
-
     /* getting observableArrayList with the tasks */
     public ObservableList<TaskInOurProgram> getTasksInTheTableView() {
         return tasksInTheTableView;

@@ -71,6 +71,9 @@
     -fx-padding: 0.166667em 0.333333em 0.25em 0.5em; /* 2 4 3 6 */
     -fx-text-fill: #fff;
 }
+.combo-box .list-view .list-cell {
+    -fx-text-fill: black;
+}
 
 
 
