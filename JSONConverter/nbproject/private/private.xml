@@ -5,7 +5,7 @@
             <url>src/jsonconverter/GUI/controller/MainFXMLController.java</url>
             <bookmark id="1">
                 <name/>
-                <line>39</line>
+                <line>38</line>
                 <key/>
             </bookmark>
         </file>
@@ -33,6 +33,29 @@
             <file>file:/Users/Mape/GitClonePath/JSONConverter/JSONConverter/src/jsonconverter/BE/TaskInOurProgram.java</file>
             <file>file:/Users/Mape/GitClonePath/JSONConverter/JSONConverter/src/jsonconverter/GUI/controller/MainFXMLController.java</file>
         </group>
-        <group name="Repositories"/>
+        <group name="Repositories">
+            <file>file:/C:/Users/Pepe15224/Desktop/100/Repositories/God%20Help%20Me/JSONConverter/JSONConverter/src/jsonconverter/GUI/model/Model.java</file>
+            <file>file:/C:/Users/Pepe15224/Desktop/100/Repositories/God%20Help%20Me/JSONConverter/JSONConverter/src/jsonconverter/DAL/facade/DALFacade.java</file>
+            <file>file:/C:/Users/Pepe15224/Desktop/100/Repositories/God%20Help%20Me/JSONConverter/JSONConverter/src/jsonconverter/GUI/controller/ConfigFXMLController.java</file>
+            <file>file:/C:/Users/Pepe15224/Desktop/100/Repositories/God%20Help%20Me/JSONConverter/JSONConverter/src/jsonconverter/DAL/readFilesAndWriteJson/ReadEXEL.java</file>
+            <file>file:/C:/Users/Pepe15224/Desktop/100/Repositories/God%20Help%20Me/JSONConverter/JSONConverter/src/jsonconverter/GUI/styles/CSS.css</file>
+            <file>file:/C:/Users/Pepe15224/Desktop/100/Repositories/God%20Help%20Me/JSONConverter/JSONConverter/src/jsonconverter/DAL/readFilesAndWriteJson/ReadCSV.java</file>
+            <file>file:/C:/Users/Pepe15224/Desktop/100/Repositories/God%20Help%20Me/JSONConverter/JSONConverter/src/jsonconverter/GUI/controller/MainFXMLController.java</file>
+            <file>file:/C:/Users/Pepe15224/Desktop/100/Repositories/God%20Help%20Me/JSONConverter/JSONConverter/src/jsonconverter/DAL/connection/DALConfig.java</file>
+            <file>file:/C:/Users/Pepe15224/Desktop/100/Repositories/God%20Help%20Me/JSONConverter/JSONConverter/src/jsonconverter/BE/JSONObject.java</file>
+            <file>file:/C:/Users/Pepe15224/Desktop/100/Repositories/God%20Help%20Me/JSONConverter/JSONConverter/src/jsonconverter/BE/History.java</file>
+            <file>file:/C:/Users/Pepe15224/Desktop/100/Repositories/God%20Help%20Me/JSONConverter/JSONConverter/src/jsonconverter/DAL/connection/DALHistory.java</file>
+            <file>file:/C:/Users/Pepe15224/Desktop/100/Repositories/God%20Help%20Me/JSONConverter/JSONConverter/src/jsonconverter/BLL/Validations/Validations.java</file>
+            <file>file:/C:/Users/Pepe15224/Desktop/100/Repositories/God%20Help%20Me/JSONConverter/JSONConverter/src/jsonconverter/DAL/readFilesAndWriteJson/WriteJSON.java</file>
+            <file>file:/C:/Users/Pepe15224/Desktop/100/Repositories/God%20Help%20Me/JSONConverter/JSONConverter/test/jsonconverter/BLL/Validations/ValidationsTest.java</file>
+            <file>file:/C:/Users/Pepe15224/Desktop/100/Repositories/God%20Help%20Me/JSONConverter/JSONConverter/src/jsonconverter/BE/Planning.java</file>
+            <file>file:/C:/Users/Pepe15224/Desktop/100/Repositories/God%20Help%20Me/JSONConverter/JSONConverter/src/jsonconverter/BLL/Converter.java</file>
+            <file>file:/C:/Users/Pepe15224/Desktop/100/Repositories/God%20Help%20Me/JSONConverter/JSONConverter/src/jsonconverter/DAL/util/HostName.java</file>
+            <file>file:/C:/Users/Pepe15224/Desktop/100/Repositories/God%20Help%20Me/JSONConverter/JSONConverter/src/jsonconverter/DAL/readFilesAndWriteJson/ReadXML.java</file>
+            <file>file:/C:/Users/Pepe15224/Desktop/100/Repositories/God%20Help%20Me/JSONConverter/JSONConverter/src/jsonconverter/DAL/connection/JDBCConnectionPool.java</file>
+            <file>file:/C:/Users/Pepe15224/Desktop/100/Repositories/God%20Help%20Me/JSONConverter/JSONConverter/src/jsonconverter/BLL/BLLManager.java</file>
+            <file>file:/C:/Users/Pepe15224/Desktop/100/Repositories/God%20Help%20Me/JSONConverter/JSONConverter/src/jsonconverter/BE/TaskInOurProgram.java</file>
+            <file>file:/C:/Users/Pepe15224/Desktop/100/Repositories/God%20Help%20Me/JSONConverter/JSONConverter/src/jsonconverter/BE/Config.java</file>
+        </group>
     </open-files>
 </project-private>

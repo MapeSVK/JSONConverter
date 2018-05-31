@@ -7,8 +7,6 @@ package jsonconverter.BLL;
 
 import jsonconverter.BLL.Validations.Validations;
 import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import javafx.scene.Node;
 import javafx.scene.layout.AnchorPane;

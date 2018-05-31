@@ -19,7 +19,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.concurrent.WorkerStateEvent;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -286,7 +285,7 @@ public class MainFXMLController implements Initializable {
                 task.setIsExecutedForFirstTime(true);
                 task.getPauseTask().setGraphic(new ImageView(pauseSmall));
 
-            } else if (task.isIsExecutedForFirstTime() == true && task.isPause() == true && task.isIfWasStarted() == true) {
+            } else if (task.isIsExecutedForFirstTime() == true && task.isPause() == true) {
                 task.getPauseTask().setGraphic(new ImageView(pauseSmall));
                 task.continueThis();
 
@@ -301,7 +300,7 @@ public class MainFXMLController implements Initializable {
 
             //set default image before clicking on the button
             //task.getPauseTask().setGraphic(new ImageView(playSmall));
-            if (task.isIsExecutedForFirstTime() == true && task.isPause() == false && task.isIfWasStarted() == true) {
+            if (task.isIsExecutedForFirstTime() == true && task.isPause() == false) {
                 task.getPauseTask().setGraphic(new ImageView(playSmall));
                 task.pauseThis();
             }
