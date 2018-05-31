@@ -17,7 +17,7 @@ public class TaskInOurProgram extends Task<Void> {
     private String fileName;
     private Config config;
     private IConverter converter;
-    private Model model;
+    private Model model = new Model();
     private Object lock = this;
     private boolean pause = false;
     private File filePath;

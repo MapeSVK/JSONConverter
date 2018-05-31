@@ -46,6 +46,7 @@ public class Model {
     private ObservableList<History> histList = FXCollections.observableArrayList();
     /* observable list of sorted list to update tableView */
     private History history;
+    
 
     //- - - - - - - - - - - - - - - - - - - - CREATE JASON - - - - - - - - - - - - - - - - - - - -
     /* creates json file from JSONObject list */
