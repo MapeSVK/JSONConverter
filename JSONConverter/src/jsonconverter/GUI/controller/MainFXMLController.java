@@ -281,23 +281,18 @@ public class MainFXMLController implements Initializable {
     /* converts all tasks in taskTable */
     @FXML
     private void convertTasksButtonClick(ActionEvent event) throws IOException {
-        if (convertTasksButton.isFocused() && !directoryPathHasBeenSelected) {
-            model.Alert("Error", "Choose a directory first");
-        } else {
-            for (TaskInOurProgram task : model.getTasksInTheTableView()) {
+        for (TaskInOurProgram task : model.getTasksInTheTableView()) {
 
-                if (task.isIsExecutedForFirstTime() == false && task.isPause() == false) {
-                    executor.submit(task);
-                    task.setIsExecutedForFirstTime(true);
-                    task.getPauseTask().setGraphic(new ImageView(pauseSmall));
-                    
+            if (task.isIsExecutedForFirstTime() == false && task.isPause() == false) {
+                executor.submit(task);
+                task.setIsExecutedForFirstTime(true);
+                task.getPauseTask().setGraphic(new ImageView(pauseSmall));
 
-                } else if (task.isIsExecutedForFirstTime() == true && task.isPause() == true && task.isIfWasStarted() == true) {
-                    task.getPauseTask().setGraphic(new ImageView(pauseSmall));
-                    task.continueThis();
-                }
+            } else if (task.isIsExecutedForFirstTime() == true && task.isPause() == true && task.isIfWasStarted() == true) {
+                task.getPauseTask().setGraphic(new ImageView(pauseSmall));
+                task.continueThis();
+
             }
-           
         }
     }
 
@@ -383,7 +378,6 @@ public class MainFXMLController implements Initializable {
             task.setConfig(configChoiceBox.getValue());
             task.setFilePath(directoryPath);
             task.setFileName(nameOfImportedFile);
-            task.setModel(model);
             model.addTask(task);
 
             /* if task is added to the tableView, you can use pause or close */
@@ -407,8 +401,7 @@ public class MainFXMLController implements Initializable {
                     model.getConverter(task);
                     task.setConfig(configChoiceBox.getValue());
                     task.setFilePath(directoryPath);
-                    task.setFileName(nameOfImportedFile);
-                    task.setModel(model);
+                    task.setFileName(nameOfImportedFile);            
                     model.addTask(task);
 
                     /* if conditions were met then add to the history */

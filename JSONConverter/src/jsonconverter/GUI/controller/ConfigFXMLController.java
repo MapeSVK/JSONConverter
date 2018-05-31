@@ -17,7 +17,6 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.AnchorPane;
-import javafx.stage.Stage;
 import jsonconverter.BE.Config;
 import jsonconverter.BE.History;
 import jsonconverter.GUI.model.Model;
@@ -176,9 +175,8 @@ public class ConfigFXMLController implements Initializable {
         if (alert.getResult() == ButtonType.OK) {
         model.removeConfigToDatabase(chosenConfig);
         createHistoryAfterDeletingNewConfig(chosenConfig); //create history row after removing
-       // model.closeWindow(saveConfigButton);
+        model.closeWindow(saveConfigButton);
         }
-        System.out.println("dupa");
     }
 
     /* gets converter of imported file */

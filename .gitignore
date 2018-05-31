@@ -126,3 +126,4 @@ $RECYCLE.BIN/
 # End of https://www.gitignore.io/api/java,windows,netbeans,intellij
 *.properties
 /JSONConverter10/nbproject/private/
+JSONConverter/nbproject/private/private.xml
