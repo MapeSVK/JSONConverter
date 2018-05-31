@@ -9,11 +9,11 @@
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="690.0" prefWidth="857.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jsonconverter.GUI.controller.ConfigFXMLController">
+<AnchorPane id="AnchorPane" prefHeight="823.0" prefWidth="857.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jsonconverter.GUI.controller.ConfigFXMLController">
    <children>
       <ScrollPane layoutX="-7.0" layoutY="-1.0" prefHeight="777.0" prefWidth="857.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <content>
-            <AnchorPane prefHeight="435.0" prefWidth="475.0">
+            <AnchorPane prefHeight="435.0" prefWidth="840.0">
                <children>
                   <AnchorPane fx:id="configFieldsPane" layoutX="14.0" layoutY="2.0" prefHeight="638.0" prefWidth="826.0">
                      <children>
