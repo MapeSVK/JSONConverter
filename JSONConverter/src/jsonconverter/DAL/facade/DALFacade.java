@@ -42,16 +42,6 @@ public class DALFacade {
     }
 
     //- - - - - - - - - - - - - - - - - - - - CONVERTER - - - - - - - - - - - - - - - - - - - -
-    /* returns hashMap of headers from file (Headers are keys and numbers are values) */
-    public HashMap<String, Integer> getFileHeaders() {
-        return converter.getFileHeaders();
-    }
-
-    /* returns values from the selected file */
-    public ArrayList<String> getFileValues() {
-        return converter.getFileValues();
-    }
-
     /*returns list of Headers from the file */
     public List<String> getOnlyFileHeaders() {
         return converter.getOnlyFileHeaders();
