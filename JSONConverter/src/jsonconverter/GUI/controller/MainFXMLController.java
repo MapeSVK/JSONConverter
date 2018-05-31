@@ -189,6 +189,7 @@ public class MainFXMLController implements Initializable {
 
         /* style history tableView and show error as a pop-up */
         openErrorMessageAfterHoveringOverRow();
+ 
     }
 
     /* imports the file into program */
@@ -467,6 +468,7 @@ public class MainFXMLController implements Initializable {
                 "progress"));
         progressCircleColumn
                 .setCellFactory(ProgressBarTableCell.<TaskInOurProgram>forTableColumn());
+       
         
         
         pauseConvertingClick();
@@ -626,7 +628,6 @@ public class MainFXMLController implements Initializable {
 
     /* pauses selected task */
     private void pauseConvertingClick() {
-
         for (TaskInOurProgram task : model.getTasksInTheTableView()) {
 
             //set default image before clicking on the button
@@ -638,7 +639,6 @@ public class MainFXMLController implements Initializable {
 
                     if (task.isIsExecutedForFirstTime() == false && task.isPause() == false) {
                         executor.submit(task);
-                        System.out.println("DZIALA?");
                         task.setIsExecutedForFirstTime(true);
                         task.getPauseTask().setGraphic(new ImageView(pauseSmall));
                         
@@ -652,8 +652,6 @@ public class MainFXMLController implements Initializable {
 
                     }
                 }
-                
-               
             }); 
         }
     }

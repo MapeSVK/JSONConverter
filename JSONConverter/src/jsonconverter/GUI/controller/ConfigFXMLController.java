@@ -401,7 +401,7 @@ public class ConfigFXMLController implements Initializable {
     private void createHistoryAfterEditConfig(String nameOfTheConfig) {
         /* create new history after button is presset */
         History history = new History(model.getFormatedActualDateAndTimeAsString(), 1, model.getUserName(),
-                nameOfTheConfig+ " configuration was eddited", false, "");
+                nameOfTheConfig+ " configuration was edited", false, "");
         model.addHistoryToTheDatabase(history);
     }
     
