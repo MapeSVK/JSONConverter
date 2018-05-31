@@ -6,9 +6,6 @@
 package jsonconverter.DAL.facade;
 
 import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import jsonconverter.BE.Config;
 import jsonconverter.BE.History;
@@ -110,8 +107,4 @@ public class DALFacade {
     public String getUserName() {
         return hostName.getUserName();
     }
-    
-//    public boolean isFileSaved() {
-//        return createJson.isSuccess();
-//    }
 }
