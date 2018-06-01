@@ -8,6 +8,7 @@ package jsonconverter.DAL.connection;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import javafx.scene.control.Alert;
 
 /**
  *
@@ -53,6 +54,10 @@ public class JDBCConnectionPool extends ObjectPool<Connection> {
       return (DriverManager.getConnection(dsn, usr, pwd));
     } catch (SQLException e) {
       e.printStackTrace();
+      Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Database Error");
+        alert.setContentText("check your database connection");
+        alert.showAndWait();
       return (null);
     }
   }
