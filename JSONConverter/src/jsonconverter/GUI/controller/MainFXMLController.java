@@ -416,6 +416,7 @@ public class MainFXMLController implements Initializable {
                     failedToAdd = failedToAdd + "," + file.getName();
                 }
             }
+            if(!failedToAdd.equals(""))
             model.Alert("Files failed to add", failedToAdd + " were unable to add because they dont match chosen config");
         }
         createAlertIfFileExistsInRepository(listOfFilesThatCanBeOverrided());
